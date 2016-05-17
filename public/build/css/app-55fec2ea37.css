@@ -35,10 +35,10 @@ h4.features {
     margin-left: 0; }
     @media (min-width: 48em) {
       #catch-part-timers .catch-box {
-        padding: 10%; } }
+        padding: 5%; } }
     @media (min-width: 62em) {
       #catch-part-timers .catch-box {
-        padding: 10%;
+        padding: 5%;
         margin-left: 20%; } }
     @media (min-width: 75em) {
       #catch-part-timers .catch-box {
@@ -50,10 +50,10 @@ h4.features {
   margin-right: 0; }
   @media (min-width: 48em) {
     #catch-employers .catch-box {
-      padding: 10%; } }
+      padding: 5%; } }
   @media (min-width: 62em) {
     #catch-employers .catch-box {
-      padding: 10%;
+      padding: 5%;
       margin-right: 20%; } }
   @media (min-width: 75em) {
     #catch-employers .catch-box {

@@ -11,7 +11,7 @@
             <div class="row catchers">
                 <div id="catch-part-timers"class="col-md-6">
                     <div class="catch-box">
-                        <div class="catch-icon text-xs-center m-b-3">
+                        <div class="catch-icon text-xs-center m-b-3 m-t-2">
                             <img src="images/icon-salary-man.png" alt="Part-timer icon" height="48"/>
                         </div>
                         <h2 class="question m-b-2">Anda mencari kerja <u>part-time</u>?</h2>
@@ -59,7 +59,7 @@
 
                 <div id="catch-employers" class="col-md-6">
                     <div class="catch-box">
-                        <div class="catch-icon text-xs-center m-b-3">
+                        <div class="catch-icon text-xs-center m-b-3 m-t-2">
                             <img src="images/icon-sir.png" alt="Employer icon" height="48"/>
                         </div>
                         <h2 class="question m-b-2">Anda mencari <u>pekerja</u> part-time?</h2>
@@ -107,6 +107,15 @@
                     <h4 class="features">REZEKI BUAT PART-TIME</h4>
                     <p class="m-b-2">
                     Kami di workwork mendoakan semua boleh mencari kerja part-time yang bagus dan bermakna melalui workwork.
+                    </p>
+                    <p>
+                        <small>#KerjaKerasSetiapHari</small>
+                    </p>
+                    <p class="m-b-3">
+                        <img src="images/icon-city.png" alt="work hard icon" width="69" />
+                    </p>
+                    <p>
+                        <img src="images/logo-symbol.png" alt="workwork logo" width="88" />
                     </p>
                 </div>
             </div>
