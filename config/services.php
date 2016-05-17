@@ -35,4 +35,9 @@ return [
         'secret' => env('STRIPE_SECRET'),
     ],
 
+    'mailchimp' => [
+        'secret' => 'c6bc91221a5a6d0cbb51d137770a20c7-us13',
+        'list' => '0c8964f31e',        
+    ]
+
 ];

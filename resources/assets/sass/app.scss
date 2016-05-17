@@ -1,2 +1,118 @@
 // @import "node_modules/bootstrap-sass/assets/stylesheets/bootstrap";
 
+$brand-color: #FFDC10;
+$fancy-font: 'Josefin Slab', serif;
+
+
+header {
+    padding-bottom: 107px;
+
+    .brand-ww
+    {
+        background-color: $brand-color;
+        border-bottom: 2px solid rgba(0,0,0,0.2);
+        box-shadow: 0 8px 0 0 rgba(0,0,0,0.1);
+        position: absolute;
+        left: 0;
+        right: 0;
+        z-index: 1000;
+    }
+
+    .title
+    {
+        padding: 24px 0 16px 0;
+    }
+}
+
+h2.question {
+    font-family: $fancy-font;
+    font-size: 2.5rem;
+    text-align: center;
+}
+
+h3.question {
+    font-family: $fancy-font;
+    // font-size: 2.5rem;
+    text-align: center;
+}
+
+h4.features {
+    font-size: 1.1rem;
+    font-weight: bold;
+    letter-spacing: 1px;
+}
+.content .catchers {
+    // border-bottom: 2px solid rgba(0, 0, 0, 0.2);
+    box-shadow: 0 8px 0 0 rgba(0, 0, 0, 0.1);
+}
+
+#catch-part-timers {
+    background: $brand-color;
+
+    .catch-box
+    {
+        padding: 20px;
+        margin-left: 0;
+
+        @media (min-width: 48em) {
+            padding: 10%;
+        }
+
+        @media (min-width: 62em)
+        {
+            padding: 10%;
+            margin-left: 20%;
+        }
+
+        // Extra large devices (large desktops, 75em and up)
+        @media (min-width: 75em) {
+            padding: 15%;
+            margin-left: 20%;
+        }
+    }
+}
+
+#catch-employers {
+
+    .catch-box
+    {
+        padding: 20px;
+        margin-right: 0;
+
+        @media (min-width: 48em) {
+            padding: 10%;
+        }
+
+        @media (min-width: 62em)
+        {
+            padding: 10%;
+            margin-right: 20%;
+        }
+
+        // Extra large devices (large desktops, 75em and up)
+        @media (min-width: 75em) {
+            padding: 15%;
+            margin-right: 20%;
+        }
+    }
+}
+
+.embed-responsive {
+    padding-bottom: 340px;
+}
+
+.atau {
+    position: absolute;
+    left: 0;
+    right: 0;
+    margin: auto;
+    width: 39px;
+    height: 39px;
+    top: 0;
+    bottom: 0;
+
+    &.hidden-md-up {
+        top: initial;
+        bottom: -19px;
+    }
+}
