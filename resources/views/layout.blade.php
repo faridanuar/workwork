@@ -18,8 +18,8 @@
         @yield('content')
 
         <footer>
-            <p>
-                <small class="copyright text-xs-center m-b-3">© Workwork, Pocket Pixel, Sdn Bhd. 2016.</small>
+            <p class="text-xs-center m-b-3">
+                <small class="copyright">© Workwork, Pocket Pixel, Sdn Bhd. 2016.</small>
             </p>
         </footer>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
