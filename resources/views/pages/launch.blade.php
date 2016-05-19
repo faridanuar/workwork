@@ -111,12 +111,7 @@
                     <p>
                         <small>#KerjaKerasSetiapHari</small>
                     </p>
-                    <div
-                      class="fb-like"
-                      data-share="true"
-                      data-width="450"
-                      data-show-faces="true">
-                    </div>
+                    
                     <p class="m-b-3">
                         <img src="images/icon-city.png" alt="work hard icon" width="69" />
                     </p>
