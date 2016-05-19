@@ -7,6 +7,13 @@
         <meta http-equiv="x-ua-compatible" content="ie=edge">
         <meta property="fb:app_id" content="1578992975731734" />
         <meta property="fb:admins" content="622633523" />
+        <meta property="og:title" content="WorkWork - portal pencarian kerja part-time" />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="http://www.workwork.my/" />
+        <meta property="og:image" content="http://www.workwork.my/images/logo.png" />
+        <meta property="og:locale" content="ms_MY" />
+        <meta property="og:locale:alternate" content="en_GB" />
+        <meta property="og:site_name" content="WorkWork" />
 
         <title></title>
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/css/bootstrap.min.css" integrity="sha384-y3tfxAZXuh4HwSYylfB+J125MxIs6mR5FOHamPBG064zB+AFeWH94NdvaCBm8qnd" crossorigin="anonymous">
