@@ -16,7 +16,7 @@
                         </div>
                         <h2 class="question m-b-2">Anda mencari kerja <u>part-time</u>?</h2>
                         <p class="text-xs-center m-b-2">
-                            Ingin dimaklumkan tentang kekosongan kerja sampingan? Kalau ia, sila letakkan email dan nama anda.
+                            Ingin dimaklumkan tentang kekosongan kerja sampingan? Kalau ya, sila letakkan email dan nama anda.
                         </p>
                         <!-- <form class="" action="{{ route('newsletter.create') }}" method="post">
                             <fieldset class="form-group">
@@ -111,7 +111,7 @@
                     <p>
                         <small>#KerjaKerasSetiapHari</small>
                     </p>
-                    
+
                     <p class="m-b-3">
                         <img src="images/icon-city.png" alt="work hard icon" width="69" />
                     </p>
