@@ -19,7 +19,7 @@
         <meta property="og:locale:alternate" content="en_GB" />
         <meta property="og:site_name" content="WorkWork" />
 
-        <title></title>
+        <title>WorkWork - portal pencarian kerja part-time</title>
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/css/bootstrap.min.css" integrity="sha384-y3tfxAZXuh4HwSYylfB+J125MxIs6mR5FOHamPBG064zB+AFeWH94NdvaCBm8qnd" crossorigin="anonymous">
         <link rel="stylesheet" href="{{ elixir('css/app.css') }}" media="screen" charset="utf-8">
         <link href='https://fonts.googleapis.com/css?family=Josefin+Slab:700' rel='stylesheet' type='text/css'>
