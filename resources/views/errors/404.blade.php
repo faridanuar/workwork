@@ -13,7 +13,7 @@
                     <img src="images/404.png" alt="404" width="120" class="m-b-3 m-t-3"/>
                     <h1 style="
                     font-family: 'Josefin Slab', serif;
-                    font-size: 6rem;">Oh noes, 404!</h1>
+                    font-size: 6rem;">Alamak, 404!</h1>
                     <div class="title">Sesat? <a href="/"> Kembalilah ke pangkal jalan. </a></div>
                 </div>
             </div>
