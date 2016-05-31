@@ -1,9 +1,14 @@
-// @import "node_modules/bootstrap-sass/assets/stylesheets/bootstrap";
+@import "node_modules/bootstrap-sass/assets/stylesheets/bootstrap";
 
 $brand-color: #FFDC10;
 $fancy-font: 'Josefin Slab', serif;
 
+// App Styles
+body {
+    padding-top: 60px;
+}
 
+// Launch Site Styles
 header {
     padding-bottom: 107px;
 

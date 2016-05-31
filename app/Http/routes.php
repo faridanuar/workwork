@@ -1,15 +1,7 @@
 <?php
 
+Route::get('/', 'PagesController@home');
 
+Route::get('/launch', 'PagesController@launch');
 
-// Route::get('about', 'PagesController@about');
-//
-// Route::get('contact', 'PagesController@contact');
-
-
-Route::get('/', 'PagesController@launch');
-
-Route::post('/newsletter/job-seeker', [
-    'as' => 'newsletter.create',
-    'uses' => 'NewsletterController@create',
-]);
+Route::resource('adverts', 'AdvertsController');

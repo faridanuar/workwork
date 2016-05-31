@@ -3,7 +3,7 @@
 @section('content')
     <header>
         <div class="brand-ww">
-            <div class="title text-xs-center"><img src="images/logo.png" alt="" width="187"/></div>
+            <div class="title text-xs-center"><img src="/images/logo.png" alt="" width="187"/></div>
         </div>
     </header>
     <div class="container-fluid">
