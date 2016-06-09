@@ -38,6 +38,12 @@ return [
     'mailchimp' => [
         'secret' => 'c6bc91221a5a6d0cbb51d137770a20c7-us13',
         'list' => '0c8964f31e',        
-    ]
+    ],
 
+    'facebook' => [
+        'client_id' => '1380931751921429',
+        'client_secret' => '0648d09ce597ecfa83078c7a59adc902',
+        'redirect' => 'http://localhost:8000/callback',
+    ]
+    
 ];
