@@ -3,8 +3,8 @@
 {{ csrf_field() }}
 
 <div class="form-group">
-	<label for="job-title">Job title:</label>
-	<input type="text" name="job-title" id="job-title" class="form-control" value="{{ old('job-title') }}" required>
+	<label for="job_title">Job title:</label>
+	<input type="text" name="job_title" id="job_title" class="form-control" value="{{ old('job_title') }}" required>
 </div>
 
 <div class="form-group">
@@ -30,13 +30,13 @@
 <hr>
 
 <div class="form-group">
-	<label for="business-name">Business name:</label>
-	<input type="text" name="business-name" id="business-name" class="form-control" value="{{ old('business-name') }}" required>
+	<label for="business_name">Business name:</label>
+	<input type="text" name="business_name" id="business_name" class="form-control" value="{{ old('business_name') }}" required>
 </div>
 
 <div class="form-group">
-	<label for="business-logo">Business logo: (optional)</label>
-	<input type="file" name="business-logo" id="business-logo" class="form-control" value="{{ old('business-logo') }}">
+	<label for="business_logo">Business logo: (optional)</label>
+	<input type="file" name="business_logo" id="business_logo" class="form-control" value="{{ old('business_logo') }}">
 </div> 	
 
 <div class="form-group">

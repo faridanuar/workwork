@@ -14,11 +14,11 @@ class CreateAdvertsTable extends Migration
     {
         Schema::create('adverts', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('job-title', 50);
+            $table->string('job_title', 50);
             $table->integer('salary');
             $table->text('description');
-            $table->string('business-name', 50);
-            $table->string('business-logo');
+            $table->string('business_name', 50);
+            $table->string('business_logo');
             $table->string('location', 50);
             $table->string('street', 40);
             $table->string('city', 40);

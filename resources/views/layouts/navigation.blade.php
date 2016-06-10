@@ -43,6 +43,10 @@
                         </li>
                     @endif
                 </ul>
+
+                @unless (Auth::guest())
+                    <a href="{{ url('/adverts/create') }}" class="btn btn-primary navbar-btn navbar-right">Create a Job Ad</a>
+                @endunless
             </div>
         </div>
     </nav>

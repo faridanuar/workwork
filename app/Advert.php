@@ -12,10 +12,10 @@ class Advert extends Model
 	 * @var array
 	 */
     protected $fillable = [
-    	'job-title',
+    	'job_title',
         'salary',
         'description',
-        'business-name',            
+        'business_name',            
         'location',
         'street',
         'city',
@@ -23,4 +23,21 @@ class Advert extends Model
         'state',
         'country'
     ];
+
+
+    /**
+    *
+    *
+    *
+    *
+    *
+    */
+    public function scopeLocatedAt($query, $id, $job_title)
+    {
+
+        $job_title = str_replace('-', ' ', $job_title);
+
+        return $query->where(compact('id', 'job_title'));
+
+    }
 }

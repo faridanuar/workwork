@@ -24,10 +24,10 @@ class AdvertRequest extends Request
     public function rules()
     {
         return [
-            'job-title' => 'required',
+            'job_title' => 'required',
             'salary' => 'required|integer',
             'description' => 'required',
-            'business-name' => 'required',            
+            'business_name' => 'required',            
             'location' => 'required',
             'street' => 'required',
             'city' => 'required',

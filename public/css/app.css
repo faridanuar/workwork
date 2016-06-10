@@ -5742,6 +5742,9 @@ body {
 .ww-navbar {
   background-color: #FFDC10; }
 
+#adverts a:hover {
+  text-decoration: none; }
+
 header {
   padding-bottom: 107px; }
   header .brand-ww {
