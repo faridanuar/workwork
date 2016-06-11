@@ -26,8 +26,8 @@ $factory->define(App\User::class, function (Faker\Generator $faker) {
  */
 $factory->define(App\Advert::class, function (Faker\Generator $faker) {
     return [		
-		'job-title'		=>	$faker->jobTitle,
-		'business-name'	=>	$faker->company,
+		'job_title'		=>	$faker->jobTitle,
+		'business_name'	=>	$faker->company,
 		'location'		=>	$faker->streetName,
 		'street'		=>	$faker->streetAddress,
 		'city'			=>	$faker->city,
@@ -36,7 +36,7 @@ $factory->define(App\Advert::class, function (Faker\Generator $faker) {
 		'country'		=>	$faker->country,
 		'salary'		=>	$faker->numberBetween(10,100),
 		// 'description'	=>	$faker->paragraphs(5),
-		'business-logo'	=>	$faker->imageUrl($width = 200, $height = 200, 'abstract'),
+		'business_logo'	=>	$faker->imageUrl($width = 200, $height = 200, 'abstract'),
 		'description'	=>	$faker->realText($maxNbChars = 600, $indexSize = 2),
 		
            

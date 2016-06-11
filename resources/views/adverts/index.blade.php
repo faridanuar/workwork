@@ -8,7 +8,7 @@
 <div class="row">
 	<div class="col-md-3">
 		<div class="panel panel-default">
-			<!-- todo Filter -->
+			<!-- todo: Filter -->
 			<div class="panel-body">
 			Filter jobs
 			</div>
@@ -18,7 +18,11 @@
     <div class="col-md-6" id="adverts">
 		
 		@foreach ($adverts as $advert)
-		<a href="adverts/{{ $advert->id }}/{{ $advert->job_title }}">
+		<!-- 
+			Replace ' ' with '-' 
+			todo: remove special characters
+		 -->
+		<a href="/adverts/{{ $advert->id }}/{{ strtolower(str_replace(' ','-',$advert->job_title)) }}">
 			<div class="panel panel-default">
 			  	<div class="panel-heading">{{ $advert->job_title }}</div>
 			  	<div class="panel-body">		
