@@ -41,9 +41,9 @@ return [
     ],
 
     'facebook' => [
-        'client_id' => '1380931751921429',
-        'client_secret' => '0648d09ce597ecfa83078c7a59adc902',
-        'redirect' => 'http://localhost:8000/callback',
+        'client_id' => '1578992975731734',
+        'client_secret' => '0cf182a8fe4ec8f076c75d7271181ffa',
+        'redirect' => 'http://workwork.app/callback',
     ]
     
 ];
