@@ -22,3 +22,10 @@ Route::get('/callback', 'SocialAuthController@callback');
 Route::resource('adverts', 'AdvertsController');
 
 Route::get('/adverts/{id}/{job_title}', 'AdvertsController@show');
+
+/**
+* Advert's Job Seeker Application
+*/
+Route::get('/adverts/{id}/{job_title}/apply', 'ApplyController@apply');
+
+Route::post('/adverts/{id}/{job_title}/apply/job_seeker', 'ApplyController@store_apply');

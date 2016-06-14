@@ -23,4 +23,13 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
+
+
+    /**
+     * defining "users" table relationship with "job_seekers" table
+     */
+    public function jobseekers()
+    {
+        return $this->hasMany(Job_Seeker::class);
+    }
 }

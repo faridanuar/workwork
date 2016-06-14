@@ -40,4 +40,5 @@ class Advert extends Model
         return $query->where(compact('id', 'job_title'));
 
     }
+
 }

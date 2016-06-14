@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+
 use App\Advert;
 use App\Http\Requests;
 use Illuminate\Http\Request;
@@ -9,6 +10,7 @@ use App\Http\Requests\AdvertRequest;
 
 class AdvertsController extends Controller
 {
+
 	/**
 	 * Index - list of adverts
 	 */
@@ -45,19 +47,19 @@ class AdvertsController extends Controller
 
 
 	/**
+	*show existing data in storage
 	*
+	*calling locatedAt function from Advert MODEL
 	*
-	*
-	*
-	*
+	*@param $id, $job_title
 	*/
 	public function show($id, $job_title)
 	{
 
-
+		// display only the first retrieved
 		$job = Advert::locatedAt($id, $job_title)->first();
 		
-
+		// display "show" page
 		return view('adverts.show', compact('job'));
 
 
