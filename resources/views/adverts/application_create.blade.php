@@ -1,7 +1,9 @@
 @extends('layouts.app')
 
 @section('content')
-<h1>Apply a Job?</h1>
+<h1>Applying for a Job as </h1>
+
+<h2>"{{ $job->job_title }}" ?</h2>
 
 <hr>
 
