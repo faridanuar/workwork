@@ -133,3 +133,35 @@ h4.features {
         bottom: -19px;
     }
 }
+
+$flash-margin: 10px;
+$flash-padding: 10px;
+$flash-text: center;
+
+.Alert--Info {
+    
+    background: #8c8c8c;
+    color: #000000;
+    margin: $flash-margin;
+    padding: $flash-padding;
+    text-align: $flash-text;
+}
+
+.Alert--Success {
+    
+    background: #b3ffb3;
+    color: #000000;
+    margin: $flash-margin;
+    padding: $flash-padding;
+    text-align: $flash-text;
+
+}
+
+.Alert--Error {
+    
+    background: #e62e00;
+    color: #000000;
+    margin: $flash-margin;
+    padding: $flash-padding;
+    text-align: $flash-text;
+}

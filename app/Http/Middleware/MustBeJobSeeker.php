@@ -3,6 +3,7 @@
 namespace App\Http\Middleware;
 
 use Closure;
+use App\User;
 
 class MustBeJobSeeker
 {
@@ -15,9 +16,10 @@ class MustBeJobSeeker
      */
     public function handle($request, Closure $next)
     {
+        //fetch user data with request from authentication
         $user = $request->user();
 
-        if ($user && $user->name == 'daniel dan'){
+        if ( $user && $user->hasRole('job_seeker')){
 
             return $next($request);
 

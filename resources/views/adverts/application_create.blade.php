@@ -8,7 +8,7 @@
 <hr>
 
 <div class="row">
-	<form method="post" action="/adverts/{id}/{job_title}/apply/job_seeker" enctype="multipart/form-data" class="col-md-6">
+	<form method="post" action="/adverts/{id}/{job_title}/apply/add" enctype="multipart/form-data" class="col-md-6">
 		@if (count($errors) > 0)
 		<div class="alert alert-danger">
 			<ul>

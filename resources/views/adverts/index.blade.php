@@ -2,6 +2,9 @@
 
 @section('content')
 
+<div class="flash">
+	@include('messages.flash')
+</div>
 
 <h1>Part-time Jobs</h1>
 

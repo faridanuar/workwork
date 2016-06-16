@@ -40,11 +40,16 @@ class ApplyController extends Controller
 	public function store_apply(ApplicationRequest $request)
 	{
 
+		// create a new user_id and biodata field and store it in jobseekers table
 		$request->user()->jobseekers()->create([
 
+			// 'column' => request->'field'
 			'biodata' => $request->biodata,
 			
 		]);
+
+		// set flash attribute and key. example --> flash('success message', 'flash_message_level')
+		flash('Your application has been sent. Now you have to wait for confirmation from the employer', 'success');
 
 		return redirect('/adverts');
 
