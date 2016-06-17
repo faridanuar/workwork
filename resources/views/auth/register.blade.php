@@ -71,10 +71,10 @@
     <div class="col-md-6 col-md-offset-4">
 <div class="btn-group" data-toggle="buttons">
  <label class="btn btn-primary">
-    <input type="radio" name="options" id="option2" autocomplete="off"> Hire
+    <input type="radio" name="type[0]" id="type2" autocomplete="off" value="employer"> Hire
   </label>
   <label class="btn btn-primary">
-    <input type="radio" name="options" id="option3" autocomplete="off"> Work
+    <input type="radio" name="type[0]" id="type3" autocomplete="off" value="job_seeker"> Work
   </label>
 </div>
 </div>
