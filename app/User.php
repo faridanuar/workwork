@@ -32,9 +32,14 @@ class User extends Authenticatable
     /**
      * defining "users" table relationship with "job_seekers" table
      */
-    public function jobseekers()
+    public function jobSeeker()
     {
-        return $this->hasMany(Job_Seeker::class);
+        return $this->hasOne(Job_Seeker::class);
+    }
+
+    public function employer()
+    {
+        return $this->hasOne(Employer::class);
     }
 
 }

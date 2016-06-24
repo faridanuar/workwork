@@ -22,4 +22,10 @@
 
 @endcan
 
+@can('edit_advert')
+
+	<a href="/adverts/{{ $job->id }}/{{ strtolower(str_replace(' ','-',$job->job_title)) }}/edit" class="btn btn-primary">edit</a>
+
+@endcan
+
 @stop

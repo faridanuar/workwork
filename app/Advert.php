@@ -41,4 +41,23 @@ class Advert extends Model
 
     }
 
+    public function applications()
+    {
+
+        return $this->hasMany(Application::class);
+    }
+
+    public function employer()
+    {
+
+        return $this->belongsTo(Employer::class);
+    }
+
+    public function ownedBy(User $user)
+    {
+       $employer = $user->employer()->first();
+
+        return $this->employer_id == $employer->id;
+    }
+
 }

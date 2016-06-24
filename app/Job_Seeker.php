@@ -4,12 +4,25 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-use App\User;
 class Job_Seeker extends Model
 {
+    /**
+     * Fillable fields for an job_seeker.
+     *
+     * @var array
+     */
     protected $fillable = [
 
     	'biodata',
+        'name',
+        'age',
+        'contact',
+        'location',
+        'street',
+        'city',
+        'zip',
+        'state',
+        'country',
 
     ];
 
@@ -20,6 +33,11 @@ class Job_Seeker extends Model
     public function user()
     {
     	return $this->belongsTo(User::class);
+    }
+
+    public function applications()
+    {
+        return $this->hasMany(Application::class, 'job_seeker_id');
     }
 
 

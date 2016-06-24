@@ -24,8 +24,14 @@ Route::resource('adverts', 'AdvertsController');
 Route::get('/adverts/{id}/{job_title}', 'AdvertsController@show');
 
 /**
-* Advert's Job Seeker Application
+ * Adverts edit routes
+ */
+Route::get('adverts/{id}/{job_title}/edit', 'AdvertsController@edit');
+Route::post('adverts/{id}/{job_title}/edit/update', 'AdvertsController@update');
+
+/**
+* Advert's Job Seeker Apply routes
 */
 Route::get('/adverts/{id}/{job_title}/apply', 'ApplyController@apply');
 
-Route::post('/adverts/{id}/{job_title}/apply/add', 'ApplyController@store_apply');
+Route::post('/adverts/{id}/{job_title}/apply/add', 'ApplyController@storeApply');

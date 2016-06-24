@@ -1,14 +1,13 @@
 @extends('layouts.app')
 
 @section('content')
-<h1>Applying for a Job as </h1>
-
-<h2>"{{ $job->job_title }}" ?</h2>
+<h1>Edit {{ $job->job_title }}</h1>
 
 <hr>
 
 <div class="row">
-	<form method="post" action="/adverts/{{ $job->id }}/{{ $job->job_title }}/apply/add" enctype="multipart/form-data" class="col-md-6">
+	<form method="post" action="/adverts/{{ $job->id }}/{{ $job->job_title }}/edit/update" enctype="multipart/form-data" class="col-md-6">
+
 		@if (count($errors) > 0)
 		<div class="alert alert-danger">
 			<ul>
@@ -19,7 +18,7 @@
 		</div>
 		@endif
 		
-		@include('adverts.application_form')
+		@include('adverts.edit_form')
 
 	</form>
 </div>

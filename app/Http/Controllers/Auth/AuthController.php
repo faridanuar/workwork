@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\User;
+use App\Employer;
 use Validator;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\ThrottlesLogins;
@@ -64,12 +65,37 @@ class AuthController extends Controller
      */
     protected function create(array $data)
     {
-        return User::create([
+        $user = User::create([
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => bcrypt($data['password']),
             'type' => $data['type'],
         ]);
+        
+
+        if ( $user && $user->type == 'job_seeker'){
+
+                $user->assignRole('job_seeker');
+
+        }elseif($user && $user->type == 'employer'){
+
+                $user->assignRole('employer');
+
+                $employer = new Employer;
+
+                $employer->user()->associate($user);
+
+                $employer->save();
+
+        }else{
+
+             abort(401, 'You are not allowed.');
+
+        }
+
+
+
+        return $user;
 
     }
 }

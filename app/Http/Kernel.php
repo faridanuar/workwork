@@ -49,6 +49,7 @@ class Kernel extends HttpKernel
         'can' => \Illuminate\Foundation\Http\Middleware\Authorize::class,
         'guest' => \App\Http\Middleware\RedirectIfAuthenticated::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
-        'jobseeker' => \App\Http\Middleware\MustBeJobSeeker::class
+        'jobSeeker' => \App\Http\Middleware\MustBeJobSeeker::class,
+        'employer' => \App\Http\Middleware\MustBeEmployer::class
     ];
 }

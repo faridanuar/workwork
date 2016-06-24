@@ -25,6 +25,15 @@ class ApplicationRequest extends Request
     {
         return [
             'biodata' => 'required',
+            'name' => 'required',
+            'age' => 'required',
+            'contact' => 'required',
+            'location' => 'required',
+            'street' => 'required',
+            'city' => 'required',
+            'zip' => 'required',
+            'state' => 'required',
+            'country' => 'required',
         ];
     }
 }
