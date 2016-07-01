@@ -24,10 +24,7 @@ class ApplicationRequest extends Request
     public function rules()
     {
         return [
-            'biodata' => 'required',
-            'name' => 'required',
             'age' => 'required',
-            'contact' => 'required',
             'location' => 'required',
             'street' => 'required',
             'city' => 'required',

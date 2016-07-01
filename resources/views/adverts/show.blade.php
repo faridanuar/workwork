@@ -22,10 +22,18 @@
 
 @endcan
 
-@can('edit_advert')
+@if ($authorize == true)
 
-	<a href="/adverts/{{ $job->id }}/{{ strtolower(str_replace(' ','-',$job->job_title)) }}/edit" class="btn btn-primary">edit</a>
+	@can('edit_advert')
 
-@endcan
+		<a href="/adverts/{{ $job->id }}/{{ strtolower(str_replace(' ','-',$job->job_title)) }}/edit" class="btn btn-primary">edit</a>
+
+	@endcan
+
+@else
+
+
+
+@endif
 
 @stop

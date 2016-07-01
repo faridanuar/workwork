@@ -11,7 +11,9 @@ class Employer extends Model
 	 *
 	 * @var array
 	 */
-    //protected $fillable = [];
+    protected $fillable = [
+        'contact'
+    ];
 
 
     public function user()

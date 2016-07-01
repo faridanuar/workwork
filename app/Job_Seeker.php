@@ -12,9 +12,7 @@ class Job_Seeker extends Model
      * @var array
      */
     protected $fillable = [
-
-    	'biodata',
-        'name',
+    
         'age',
         'contact',
         'location',

@@ -9,7 +9,9 @@
         "laravel/framework": "5.2.*",
         "mailchimp/mailchimp": "^2.0",
         "laravel/socialite": "^2.0",
-        "doctrine/dbal": "^2.5"
+        "doctrine/dbal": "^2.5",
+        "guzzlehttp/guzzle": "~5.3|~6.0",
+        "twilio/sdk": "^4.10"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

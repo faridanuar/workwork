@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Auth;
 
+use Mail;
+
 use App\User;
 use App\Employer;
 use Validator;
@@ -53,6 +55,7 @@ class AuthController extends Controller
             'name' => 'required|max:255',
             'email' => 'required|email|max:255|unique:users',
             'password' => 'required|min:6|confirmed',
+            'contact' => 'required',
             'type' => 'required',
         ]);
     }
@@ -69,6 +72,7 @@ class AuthController extends Controller
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => bcrypt($data['password']),
+            'contact' => $data['contact'],
             'type' => $data['type'],
         ]);
         
@@ -76,6 +80,14 @@ class AuthController extends Controller
         if ( $user && $user->type == 'job_seeker'){
 
                 $user->assignRole('job_seeker');
+
+                if($user){
+                    Mail::send('mail.welcomeJobSeeker', compact('user'), function ($m) use ($user) {
+                        $m->from('postmaster@sandbox12f6a7e0d1a646e49368234197d98ca4.mailgun.org', 'WorkWork');
+
+                        $m->to($user->email, $user->name)->subject('Welcome to WorkWork!');
+                    });
+                }
 
         }elseif($user && $user->type == 'employer'){
 
@@ -86,6 +98,14 @@ class AuthController extends Controller
                 $employer->user()->associate($user);
 
                 $employer->save();
+
+                if($user){
+                    Mail::send('mail.welcomeEmployer', compact('user'), function ($m) use ($user) {
+                        $m->from('postmaster@sandbox12f6a7e0d1a646e49368234197d98ca4.mailgun.org', 'WorkWork');
+
+                        $m->to($user->email, $user->name)->subject('Welcome to WorkWork!');
+                    });
+                }
 
         }else{
 

@@ -10,13 +10,14 @@ use App\Http\Requests\AdvertRequest;
 
 class AdvertsController extends Controller
 {
-	/**
+   /**
 	* Auhthenticate user
 	*/
 	public function __construct()
 	{
 	    $this->middleware('employer', ['except' => ['index', 'show']]);
 	}
+
 
 
 	/**
@@ -29,6 +30,8 @@ class AdvertsController extends Controller
 		return view('adverts.index', compact('adverts'));
 	}
 
+
+
 	/**
 	 * Create a new advert
 	 */
@@ -36,6 +39,8 @@ class AdvertsController extends Controller
 	{
 		return view('adverts.create');
 	}
+
+
 
 	/**
 	 * Store a newly created resource in storage
@@ -49,7 +54,7 @@ class AdvertsController extends Controller
 
 		$employer = $user->employer()->first();
 
-	// what do we need to do? if the request validates, the body below of this method will be hit
+		// what do we need to do? if the request validates, the body below of this method will be hit
 		// validate the form - DONE		
 		// persist the advert - DONE
 		//Advert::create($request->all());
@@ -61,14 +66,23 @@ class AdvertsController extends Controller
 	}
 
 
+
+	/**
+	 * Edit created resource in storage
+	 *
+	 * @param $request, $id, $job_title
+	 */
 	public function edit(Request $request, $id, $job_title)
 	{
+
+		//get log in user data
 		$user = $request->user();
 
 		// display only the first retrieved
 		$job = Advert::locatedAt($id, $job_title)->first();
 
 
+		//check if job advert is own by user
 		if(! $job->ownedBy($user))
 		{
 			return $this->unauthorized($request);
@@ -80,6 +94,13 @@ class AdvertsController extends Controller
 
 	}
 
+
+
+	/**
+	 * Check if user is authorized
+	 *
+	 * @param $request
+	 */
 	protected function unauthorized(Request $request)
 	{
 		if($request->ajax())
@@ -93,6 +114,13 @@ class AdvertsController extends Controller
 			return redirect('/adverts');
 	}
 
+
+
+	/**
+	 * Update existing advert
+	 *
+	 * @param $request, $id, $job_title
+	 */
 	public function update(AdvertRequest $request, $id, $job_title)
 	{
 
@@ -121,21 +149,42 @@ class AdvertsController extends Controller
 	}
 
 
+
 	/**
 	*show existing data in storage
 	*
 	*calling locatedAt function from Advert MODEL
 	*
-	*@param $id, $job_title
+	*@param $request, $id, $job_title
 	*/
-	public function show($id, $job_title)
+	public function show(Request $request, $id, $job_title)
 	{
 
 		// fetch only the first retrieved
 		$job = Advert::locatedAt($id, $job_title)->first();
-		
+
+		$advertEmployer = $job->employer_id;
+
+		$user = $request->user();
+
+		if($user)
+		{
+			$thisEmployer = $user->employer;
+
+			if($thisEmployer){
+
+				if ($advertEmployer == $thisEmployer->id)
+				{
+					$authorize = true;
+
+				}
+			}
+		}
+
+		$authorize = false;
+
 		// display "show" page
-		return view('adverts.show', compact('job'));
+		return view('adverts.show', compact('job', 'authorize'));
 
 
 	}

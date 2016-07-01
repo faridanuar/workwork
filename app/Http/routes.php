@@ -17,6 +17,13 @@ Route::get('/redirect', 'SocialAuthController@redirect');
 Route::get('/callback', 'SocialAuthController@callback');
 
 /**
+ * Assign Roles routes
+ */
+Route::get('/choose', 'TypeController@type');
+
+Route::post('/set', 'TypeController@assignType');
+
+/**
  * Adverts routes
  */
 Route::resource('adverts', 'AdvertsController');

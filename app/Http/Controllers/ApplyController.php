@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
+use Mail;
+use Services_Twilio;
+
 use App\User;
 use App\Advert;
 use App\Job_Seeker;
@@ -13,8 +16,8 @@ use App\Http\Requests\ApplicationRequest;
 
 class ApplyController extends Controller
 {
-	/**
-	* Auhthenticate user
+   /**
+	* Auhthenticate user with that has the role of "Job Seeker"
 	*/
 	public function __construct()
 	{
@@ -22,18 +25,24 @@ class ApplyController extends Controller
 	}
 
 
+
 	/**
 	* return view file
 	*/
-    public function apply($id, $job_title)
+    public function apply(Request $request, $id, $job_title)
 	{
+		$user = $request->user();
+
+		$jobSeeker = $user->jobSeeker()->first();
 
 		// display only the first retrieved
 		$job = Advert::locatedAt($id, $job_title)->first();
 
-		return view('adverts.application_create', compact('job'));
+		return view('adverts.application_create', compact('job','user', 'jobSeeker'));
 
 	}
+
+
 
 	/**
 	* storing user's application info
@@ -45,22 +54,25 @@ class ApplyController extends Controller
 		// fetch User model to find a row of data using user method
 		$user = $request->user();
 
-		// fetch Job_Seeker model to find a row of data by referencing users "id" with job_seekers "user_id"
-		$jobSeeker = $user->jobSeeker()->first();
 
+		// fetch Job_Seeker model to find a row of data by referencing users "id" with job_seekers "user_id"
+		$thisJobSeeker = $user->jobSeeker()->first();
 
 
 		// check if Job_Seeker has already have a row of data with this user
-		if(count($jobSeeker) == 1){
+		if(count($thisJobSeeker) == 1){
 
 			// create a new Application model / a new row of data
 			$application = new Application;
 
 			// add a field to "status" column
+			$application->introduction = $request->introduction;
+
+			// add a field to "status" column
 			$application->status = 'PENDING';
 
 			// use associate method to get model relationship from other Job_Seeker model and store its "id"
-			$application->jobSeeker()->associate($jobSeeker);
+			$application->jobSeeker()->associate($thisJobSeeker);
 
 			// use associate method to get model relationship from other Advert model and store its "id"
 			$application->advert()->associate($id);
@@ -73,13 +85,10 @@ class ApplyController extends Controller
 
 
 			// create a new user_id and fields and store it in jobseekers table
-			$jobSeeker = $user->jobSeeker()->create([
+			$thisJobSeeker = $user->jobSeeker()->create([
 
 				// 'column' => request->'field'
-				'biodata' => $request->biodata,
-				'name' => $request->name,
 				'age' => $request->age,
-				'contact' => $request->contact,
 				'location' => $request->location,
 				'street' => $request->street,
 				'city' => $request->city,
@@ -89,14 +98,17 @@ class ApplyController extends Controller
 				
 			]);
 
+
 			// create a new Application model / a new row of data
 			$application = new Application;
+
+			$application->introduction = $request->introduction;
 
 			// add a field to "status" column
 			$application->status = 'PENDING';
 
 			// use associate method to get model relationship from other Job_Seeker model and store its "id"
-			$application->jobSeeker()->associate($jobSeeker);
+			$application->jobSeeker()->associate($thisJobSeeker);
 
 			// use associate method to get model relationship from other Advert model and store its "id"
 			$application->advert()->associate($id);
@@ -106,11 +118,74 @@ class ApplyController extends Controller
 
 		}
 
+
+		if($user){
+            Mail::send('mail.message', compact('user', 'thisJobSeeker', 'application'), function ($m) use ($user) {
+                $m->from('postmaster@sandbox12f6a7e0d1a646e49368234197d98ca4.mailgun.org', 'WorkWork');
+
+                $m->to('farid@pocketpixel.com', $user->name)->subject('Your Reminder!');
+            });
+        }
+
+
+        $advert = Advert::find($id);
+
+		$employer = $advert->employer()->first();
+
+		$contact = $employer->user()->first()->contact;
+
+		if($contact){
+
+		    // Step 2: set our AccountSid and AuthToken from www.twilio.com/user/account
+		    $AccountSid = "AC7931f766c3a838eb713d5e43da4a7882";
+		    $AuthToken = "aa66dacb62d665324438672da3639ed0";
+
+		    // Step 3: instantiate a new Twilio Rest Client
+		    $client = new Services_Twilio($AccountSid, $AuthToken);
+
+		    // Step 4: make an array of people we know, to send them a message. 
+		    // Feel free to change/add your own phone number and name here.
+		    $people = array(
+		        "+6$contact" => $user->name,
+		        //"+14158675310" => "Boots",
+		        //"+14158675311" => "Virgil",
+		    );
+		    
+
+		    // Step 5: Loop over all our friends. $number is a phone number above, and 
+		    // $name is the name next to it
+		    foreach ($people as $number => $name) {
+
+		        $sms = $client->account->messages->sendMessage(
+
+		        // Step 6: Change the 'From' number below to be a valid Twilio number 
+		        // that you've purchased, or the (deprecated) Sandbox number
+		            "+12602184571", 
+
+		            // the number we are sending to - Any phone number
+		            $number,
+
+		            // the sms body
+		            "You have a job applicant request from your advert. Applicant: $name."
+		        );
+
+		        // Display a confirmation message on the screen
+		        echo "Sent message to $name";
+		    }
+
+		    
+		}else{
+
+			abort(404, 'Error');
+		}
+
+
 		// set flash attribute and key. example --> flash('success message', 'flash_message_level')
 		flash('Your application has been sent. Now you have to wait for confirmation from the employer', 'success');
 
+
 		return redirect('/adverts');
 
-
 	}
+
 }

@@ -44,9 +44,9 @@
                     @endif
                 </ul>
 
-                @unless (Auth::guest())
+                @can('edit_advert')
                     <a href="{{ url('/adverts/create') }}" class="btn btn-primary navbar-btn navbar-right">Create a Job Ad</a>
-                @endunless
+                @endcan
             </div>
         </div>
     </nav>
