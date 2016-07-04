@@ -167,6 +167,8 @@ class AdvertsController extends Controller
 
 		$user = $request->user();
 
+		$authorize = "";
+
 
 		if($user)
 		{
