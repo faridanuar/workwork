@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Employer;
+
 use Illuminate\Http\Request;
 
 class TypeController extends Controller
@@ -47,36 +49,36 @@ class TypeController extends Controller
             'type' => $request->type,
 
         ]);
-
-
-        //save changes made
+        
         $user->save();
 
+        if($user){
 
-        //check what kind of role have been selected and assign roles premission to the user
-        if ( $user && $user->type == 'job_seeker')
-        {
-            //assign roles permissions with "assignRole" method from hasRoles trait
-            $user->assignRole('job_seeker');
+            //check what kind of role have been selected and assign roles premission to the user
+            if ( $user && $user->type == 'job_seeker')
+            {
+                //assign roles permissions with "assignRole" method from hasRoles trait
+                $user->assignRole('job_seeker');
 
-        }elseif($user && $user->type == 'employer'){
+            }elseif($user && $user->type == 'employer'){
 
-            $user->assignRole('employer');
+                $user->assignRole('employer');
 
-            //create new model from Employer
-            $employer = new Employer;
+                //create new model from Employer
+                $employer = new Employer;
 
-            //set user_id in the Employer model using associate method
-            $employer->user()->associate($user);
+                //set user_id in the Employer model using associate method
+                $employer->user()->associate($user);
 
-            //save changes
-            $employer->save();
+                //save changes
+                $employer->save();
 
-        }else{
+            }else{
 
-            //abort if condition is not met
-            abort(401, 'You are not allowed.');
+                //abort if condition is not met
+                abort(401, 'You are not allowed.');
 
+            }
         }
 
         return redirect('/home');

@@ -22,7 +22,7 @@
 
 @endcan
 
-@if ($authorize == true)
+@if ($authorize === true)
 
 	@can('edit_advert')
 
@@ -32,7 +32,7 @@
 
 @else
 
-
+Nuthin
 
 @endif
 

@@ -167,21 +167,23 @@ class AdvertsController extends Controller
 
 		$user = $request->user();
 
+
 		if($user)
 		{
 			$thisEmployer = $user->employer;
 
 			if($thisEmployer){
 
-				if ($advertEmployer == $thisEmployer->id)
+				if ($advertEmployer === $thisEmployer->id)
 				{
 					$authorize = true;
 
+				}else{
+
+					$authorize = false;
 				}
 			}
 		}
-
-		$authorize = false;
 
 		// display "show" page
 		return view('adverts.show', compact('job', 'authorize'));
