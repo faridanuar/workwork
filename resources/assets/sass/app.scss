@@ -134,6 +134,11 @@ h4.features {
     }
 }
 
+
+/*****************************
+Flash message styling section
+******************************/
+
 $flash-margin: 10px;
 $flash-padding: 10px;
 $flash-text: center;
@@ -164,4 +169,77 @@ $flash-text: center;
     margin: $flash-margin;
     padding: $flash-padding;
     text-align: $flash-text;
+}
+
+/********************************
+search highlight styling section
+*********************************/
+
+em {
+    
+    background: yellow;
+
+    font-style: normal;
+}
+
+.twitter-typeahead {
+    
+    width: 100%;
+}
+
+.tt-input {
+    
+    padding: 0px 10px;
+
+    text-align: left;
+}
+
+/********************************
+search typeahead styling section
+*********************************/
+
+.job_title {
+    
+    margin-top: 0;
+
+    margin-bottom: .8em;
+
+    font-weight: bold;
+}
+
+.tt-menu {
+
+    width: 100%;
+    
+    border: 1px solid #e3e3e3;
+
+    text-align: left;
+
+    position: relative;
+
+    z-index:2;
+}
+
+.tt-suggestion {
+    
+    padding: 20px 10px;
+
+    background: white;
+
+    border-bottom: 1px solid #e3e3e3;
+
+}
+
+.tt-suggestion:hover {
+    
+    padding: 20px 10px;
+    
+    background: #e3e3e3;
+
+    cursor:pointer
+}
+
+.tt-cursor {
+    
+    background: #e3e3e3;
 }

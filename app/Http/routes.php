@@ -4,8 +4,6 @@
 
 // Route::get('/launch', 'PagesController@launch');
 
-
-
 Route::auth();
 
 Route::get('/', 'HomeController@index');
@@ -26,9 +24,12 @@ Route::post('/set', 'TypeController@assignType');
 /**
  * Adverts routes
  */
+
 Route::resource('adverts', 'AdvertsController');
 
 Route::get('/adverts/{id}/{job_title}', 'AdvertsController@show');
+
+Route::post('adverts/preview', 'AdvertsController@preview');
 
 /**
  * Adverts edit routes

@@ -1,6 +1,11 @@
 @extends('layouts.app')
 
 @section('content')
+
+<div class="flash">
+	@include('messages.flash')
+</div>
+
 <h1>Need a Part-timer?</h1>
 
 <hr>

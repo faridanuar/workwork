@@ -44,6 +44,12 @@ return [
         'client_id' => '1578992975731734',
         'client_secret' => '0cf182a8fe4ec8f076c75d7271181ffa',
         'redirect' => 'http://workwork.app/callback',
+    ],
+
+    'algolia' => [
+        'app_id' => env('ALGOLIA_APP_ID'),
+        'api_key' => env('ALGOLIA_API_KEY')
+
     ]
     
 ];

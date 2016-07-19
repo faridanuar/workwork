@@ -173,6 +173,9 @@ class ApplyController extends Controller
 		        echo "Sent message to $name";
 		    }
 
+			// set flash attribute and key. example --> flash('success message', 'flash_message_level')
+			flash('Your application has been sent. Now you have to wait for confirmation from the employer', 'success');
+
 		    
 		}else{
 
@@ -180,8 +183,7 @@ class ApplyController extends Controller
 		}
 
 
-		// set flash attribute and key. example --> flash('success message', 'flash_message_level')
-		flash('Your application has been sent. Now you have to wait for confirmation from the employer', 'success');
+		
 
 
 		return redirect('/adverts');

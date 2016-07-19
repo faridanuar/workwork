@@ -57,7 +57,7 @@
 <div class="form-group">
 	<label for="state">State:</label>
 	<input type="text" name="state" id="state" class="form-control" value="{{ old('state') }}" required>
-</div>	
+</div>
 
 <div class="form-group">
 	<label for="country">Country:</label>
@@ -67,6 +67,16 @@
 		@endforeach
 	</select>
 </div>
+
+<div class="form-group">
+	<label for="skill">Type of skill required:</label>
+	<input type="text" name="skill" id="skill" class="form-control" value="{{ old('skill') }}" required>
+</div>
+
+<div class="form-group">
+	<label for="category">Job category:</label>
+	<input type="text" name="category" id="category" class="form-control" value="{{ old('category') }}" required>
+</div>		
 
 <div class="form-group">
 	<button type="submit" class="btn btn-primary">Create Advertisement</button>

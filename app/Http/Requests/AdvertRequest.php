@@ -34,6 +34,8 @@ class AdvertRequest extends Request
             'zip' => 'required',
             'state' => 'required',
             'country' => 'required',
+            'skill' => 'required',
+            'category' => 'required',
         ];
     }
 }

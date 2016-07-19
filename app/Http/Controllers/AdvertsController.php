@@ -15,7 +15,7 @@ class AdvertsController extends Controller
 	*/
 	public function __construct()
 	{
-	    $this->middleware('employer', ['except' => ['index', 'show']]);
+	    $this->middleware('employer', ['except' => ['index', 'show', 'algoliaPhp', 'algoliaJava']]);
 	}
 
 
@@ -25,7 +25,7 @@ class AdvertsController extends Controller
 	 */
 	public function index()
 	{
-		$adverts = Advert::all();
+		$adverts = Advert::orderBy('id', 'desc')->paginate(5);
 
 		return view('adverts.index', compact('adverts'));
 	}
@@ -38,6 +38,28 @@ class AdvertsController extends Controller
 	public function create()
 	{
 		return view('adverts.create');
+	}
+
+
+
+	public function preview(Request $request)
+	{
+		$details = [
+		'job_title' => $request->job_title,
+		'salary' => $request->salary,
+		'description' => $request->description,
+		'business_name' => $request->business_name,
+		'location' => $request->location,
+		'street' => $request->street,
+		'city' => $request->city,
+		'zip' => $request->zip,
+		'state' => $request->state,
+		'country' => $request->country,
+		'skill' => $request->skill,
+		'category' => $request->category
+		];
+
+		return view('adverts.preview', compact('details'));
 	}
 
 
@@ -59,6 +81,9 @@ class AdvertsController extends Controller
 		// persist the advert - DONE
 		//Advert::create($request->all());
 		$employer->advert()->create($request->all());
+
+		// set flash attribute and key. example --> flash('success message', 'flash_message_level')
+		flash('Your advert has been successfully created. Go to advert index to find your advert', 'success');
 
 		// redirect to a landing page, so that people can share to the world DONE, kinda
 		// next, flash messaging

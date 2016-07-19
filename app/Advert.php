@@ -21,7 +21,9 @@ class Advert extends Model
         'city',
         'zip',
         'state',
-        'country'
+        'country',
+        'skill',
+        'category'
     ];
 
 
