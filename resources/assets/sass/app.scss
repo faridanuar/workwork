@@ -171,75 +171,60 @@ $flash-text: center;
     text-align: $flash-text;
 }
 
-/********************************
-search highlight styling section
-*********************************/
 
-em {
+/**********************************
+search autocomplete styling section
+**********************************/
+
+.algolia-autocomplete {
     
-    background: yellow;
-
-    font-style: normal;
+    width:100%;
 }
 
-.twitter-typeahead {
-    
-    width: 100%;
+.algolia-autocomplete .aa-input, .algolia-autocomplete .aa-hint {
+  width: 100%;
 }
 
-.tt-input {
-    
-    padding: 0px 10px;
-
-    text-align: left;
+.algolia-autocomplete .aa-hint {
+  color: #999;
 }
 
-/********************************
-search typeahead styling section
-*********************************/
-
-.job_title {
-    
-    margin-top: 0;
-
-    margin-bottom: .8em;
-
-    font-weight: bold;
+.algolia-autocomplete .aa-dropdown-menu {
+  width: 100%;
+  background-color: #fff;
+  border: 1px solid #999;
+  border-top: none;
 }
 
-.tt-menu {
-
-    width: 100%;
-    
-    border: 1px solid #e3e3e3;
-
-    text-align: left;
-
-    position: relative;
-
-    z-index:2;
+.algolia-autocomplete .aa-dropdown-menu .aa-suggestion {
+  cursor: pointer;
+  padding: 5px 4px;
 }
 
-.tt-suggestion {
-    
-    padding: 20px 10px;
-
-    background: white;
-
-    border-bottom: 1px solid #e3e3e3;
-
+.algolia-autocomplete .aa-dropdown-menu .aa-suggestion.aa-cursor {
+  background-color: #B2D7FF;
 }
 
-.tt-suggestion:hover {
-    
-    padding: 20px 10px;
-    
-    background: #e3e3e3;
-
-    cursor:pointer
+.algolia-autocomplete .aa-dropdown-menu .aa-suggestion em {
+  background-color: yellow;
+  font-style: normal;
 }
 
-.tt-cursor {
+/**********************************
+category checkbox styling section
+**********************************/
+
+.ais-refinement-list--count {
     
-    background: #e3e3e3;
+    background: #ddd;
+}
+
+
+/**********************************
+results styling section
+**********************************/
+
+.panel-default em{
+    
+    background-color: yellow;
 }

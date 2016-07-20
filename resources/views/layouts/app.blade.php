@@ -27,6 +27,7 @@
     <link rel="stylesheet" href="{{ elixir('css/app.css') }}" media="screen" charset="utf-8">
     <link href='https://fonts.googleapis.com/css?family=Josefin+Slab:700' rel='stylesheet' type='text/css'>
     <link rel="shortcut icon" href="images/favicon.png" type="image/png">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/instantsearch.js/1/instantsearch.min.css">
 
 </head>
 <body id="app-layout">

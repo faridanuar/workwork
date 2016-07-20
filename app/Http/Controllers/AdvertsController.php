@@ -15,7 +15,7 @@ class AdvertsController extends Controller
 	*/
 	public function __construct()
 	{
-	    $this->middleware('employer', ['except' => ['index', 'show', 'algoliaPhp', 'algoliaJava']]);
+	    $this->middleware('employer', ['except' => ['index', 'show']]);
 	}
 
 
