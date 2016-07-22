@@ -24,7 +24,6 @@ Route::post('/set', 'TypeController@assignType');
 /**
  * Adverts routes
  */
-
 Route::resource('adverts', 'AdvertsController');
 
 Route::get('/adverts/{id}/{job_title}', 'AdvertsController@show');
@@ -43,3 +42,9 @@ Route::post('adverts/{id}/{job_title}/edit/update', 'AdvertsController@update');
 Route::get('/adverts/{id}/{job_title}/apply', 'ApplyController@apply');
 
 Route::post('/adverts/{id}/{job_title}/apply/add', 'ApplyController@storeApply');
+
+/**
+* Payment routes
+*/
+Route::get('/sub', 'PaymentController@selection');
+Route::post('/checkout', 'PaymentController@pay');
