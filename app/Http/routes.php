@@ -46,5 +46,8 @@ Route::post('/adverts/{id}/{job_title}/apply/add', 'ApplyController@storeApply')
 /**
 * Payment routes
 */
-Route::get('/sub', 'PaymentController@selection');
-Route::post('/checkout', 'PaymentController@pay');
+Route::get('/plans', 'PaymentController@plans');
+Route::get('/subscribe', 'PaymentController@subscribe');
+Route::post('/checkout', 'PaymentController@checkout');
+Route::get('/status', 'PaymentController@status');
+Route::get('/cancel', 'PaymentController@cancel');

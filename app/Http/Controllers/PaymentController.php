@@ -19,41 +19,98 @@ class PaymentController extends Controller
 	    $this->middleware('auth');
 	}
 
-	public function selection()
-	{
-		$clientToken = Braintree_ClientToken::generate();
 
-		return view('subscriptions.subscribe', compact('clientToken'));
+
+	public function plans()
+	{
+		return view('subscriptions.plans');
 	}
 
 
 
-	public function pay(Request $request)
+	public function subscribe()
+	{
+
+		return view('subscriptions.subscribe');
+	}
+
+
+
+	public function checkout(Request $request)
 	{
 		$user = $request->user();
 
-		$nonceFromTheClient = $request->payment_method_nonce;
+		$plan = $request->plan;
 
-		dd($nonceFromTheClient);
 
-		$result = Braintree_Transaction::sale([
-		  'amount' => '10.00',
-		  'paymentMethodNonce' => $nonceFromTheClient,
-		  'options' => [
-		    'submitForSettlement' => True
-		  ]
-		]);
+		if($user->subscribed('main')){
 
-		if($result){
+			echo 'You have already subscribed to a plan';
 
-			echo 'success';
+		}else{
+
+			// fetching the card token that has been given and set as a nounce from braintree server and set it as a variable.
+			$nonceFromTheClient = $request->payment_method_nonce;
+
+			// create a NEW subscribtion for the user
+			$subscribing = $user->newSubscription('main', $plan)->create($nonceFromTheClient);
+
+			// check if subscribtion is a success
+			if($subscribing)
+			{
+				echo 'success';
+
+			}else{
+
+				echo 'error';
+			}
+
 		}
-
-
-		//$user->newSubscription('1MonthAdvertisement', '1MonthAdverts')->create($creditCardToken);
 
 		
 	}
+
+
+
+	public function cancel(Request $request)
+	{
+		$user = $request->user();
+
+		if($user->subscribed('main'))
+		{
+			if($user->subscription('main')->cancel())
+			{
+				echo 'true';
+
+			}else{
+
+				echo 'false';
+			}
+
+		}else{
+
+			dd($user->subscription('main')->onGracePeriod());
+
+		}
+
+	}
+
+
+
+	public function resume(Request $request)
+	{
+		$user->subscription('main')->resume();
+	}
+
+
+
+	public function status(Request $request)
+	{
+		$user = $request->user();
+
+		dd($user->subscribed('main'));
+	}
+
 
 
 }
