@@ -70,5 +70,16 @@
 </div>
 
 <div class="form-group">
+	<label for="skill">Type of skill required:</label>
+	<input type="text" name="skill" id="skill" class="form-control" value="{{ $job->skill }}" required>
+</div>
+
+<div class="form-group">
+	<label for="category">Job category:</label>
+	<input type="text" name="category" id="category" class="form-control" value="{{ $job->category }}" required>
+</div>	
+
+<div class="form-group">
 	<button type="submit" class="btn btn-primary">Update Advertisement</button>
+	<a href="/adverts" class="btn btn-primary">Cancel</a>	
 </div> 

@@ -3,7 +3,7 @@
 namespace App\Http\Middleware;
 
 use Closure;
-
+use App\User;
 class MustBeEmployer
 {
     /**
@@ -18,7 +18,8 @@ class MustBeEmployer
         //fetch user data with request from authentication
         $user = $request->user();
 
-        if ( $user && $user->hasRole('employer')){
+        if (($user && $user->hasRole('employer') && $user->subscribed('main')) OR ($user && $user->hasRole('employer') && $user->onTrial('main')))
+        {
 
             return $next($request);
 

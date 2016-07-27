@@ -3,10 +3,13 @@
 namespace App\Http\Controllers\Auth;
 
 use Mail;
+use Validator;
 
 use App\User;
 use App\Employer;
-use Validator;
+use \Braintree_ClientToken;
+use \Braintree_Transaction;
+
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\ThrottlesLogins;
 use Illuminate\Foundation\Auth\AuthenticatesAndRegistersUsers;
@@ -106,6 +109,14 @@ class AuthController extends Controller
                         $m->to($user->email, $user->name)->subject('Welcome to WorkWork!');
                     });
                 }
+
+                $user->update([
+
+                    'trial_ends_at' => Carbon::now()->addDays(7),
+
+                ]);
+
+                $user->save();
 
         }else{
 

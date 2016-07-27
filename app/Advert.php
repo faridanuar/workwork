@@ -6,7 +6,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class Advert extends Model
 {
-    use AlgoliaEloquentTrait;
 
     public static $autoIndex = true;
     public static $autoDelete = true;

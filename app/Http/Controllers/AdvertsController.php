@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 
 use App\Advert;
 use App\Http\Requests;
+use App\Contracts\Search;
 use Illuminate\Http\Request;
 use App\Http\Requests\AdvertRequest;
 
@@ -69,7 +70,7 @@ class AdvertsController extends Controller
 	 *
 	 * @param AdvertRequest $request
 	 */
-	public function store(AdvertRequest $request)
+	public function store(Search $search, AdvertRequest $request)
 	{
 
 		$user = $request->user();
@@ -80,14 +81,59 @@ class AdvertsController extends Controller
 		// validate the form - DONE		
 		// persist the advert - DONE
 		//Advert::create($request->all());
-		$employer->advert()->create($request->all());
+		$saveToDatabase = $employer->advert()->create($request->all());
 
-		// set flash attribute and key. example --> flash('success message', 'flash_message_level')
-		flash('Your advert has been successfully created. Go to advert index to find your advert', 'success');
+		if($saveToDatabase)
+		{
+			$indexFromAlgolia = $search->index('adverts');
 
-		// redirect to a landing page, so that people can share to the world DONE, kinda
-		// next, flash messaging
-		return redirect()->back();
+			$object = $indexFromAlgolia->addObject(
+		
+			    [
+			    	'id' => $saveToDatabase->id,
+			        'job_title' => $saveToDatabase->job_title,
+			        'salary'  => $saveToDatabase->salary,
+			        'description'  => $saveToDatabase->description,
+			        'business_name'  => $saveToDatabase->business_name,
+			        'business_logo'  => $saveToDatabase->business_logo,
+			        'location'  => $saveToDatabase->location,
+			        'street'  => $saveToDatabase->street,
+			        'city'  => $saveToDatabase->city,
+			        'zip'  => $saveToDatabase->zip,
+			        'state'  => $saveToDatabase->state,
+			        'country'  => $saveToDatabase->country,
+			        'created_at'  => $saveToDatabase->created_at,
+			        'updated_at'  => $saveToDatabase->updated_at,
+			        'employer_id'  => $saveToDatabase->employer_id,
+			        'skill'  => $saveToDatabase->skill,
+			        'category'  => $saveToDatabase->category,
+			    ],
+			    $saveToDatabase->id
+			);
+
+			if($object)
+			{
+
+				// set flash attribute and key. example --> flash('success message', 'flash_message_level')
+				flash('Your advert has been successfully created. Go to advert index to find your advert', 'success');
+
+				// redirect to a landing page, so that people can share to the world DONE, kinda
+				// next, flash messaging
+				return redirect()->back();
+
+
+			}else{
+
+				echo "Error: Adding object to index was unsuccessful";
+			}
+
+		}else{
+
+			echo "Error: unable to save record to database. ";
+		}
+
+
+		
 	}
 
 
@@ -146,7 +192,7 @@ class AdvertsController extends Controller
 	 *
 	 * @param $request, $id, $job_title
 	 */
-	public function update(AdvertRequest $request, $id, $job_title)
+	public function update(Search $search, AdvertRequest $request, $id)
 	{
 
 		$advert = Advert::find($id);
@@ -157,20 +203,65 @@ class AdvertsController extends Controller
 				'salary' => $request->salary,
 				'description' => $request->description,
 				'business_name' => $request->business_name,
+				'business_logo'  => $request->business_logo,
 				'location' => $request->location,
 				'street' => $request->street,
 				'city' => $request->city,
 				'zip' => $request->zip,
 				'state' => $request->state,
 				'country' => $request->country,
+				'skill'  => $request->skill,
+			    'category'  => $request->category,
 
 
 		]);
 
-		$advert->save();
+		$updateToDatabase = $advert->save();
 
+		if($updateToDatabase)
+		{
+			$advert->save();
 
-		return redirect('/adverts');
+			$indexFromAlgolia = $search->index('adverts');
+
+			$object = $indexFromAlgolia->saveObject(
+			    [
+			        'job_title' => $updateToDatabase->job_title,
+			        'salary'  => $updateToDatabase->salary,
+			        'description'  => $updateToDatabase->description,
+			        'business_name'  => $updateToDatabase->business_name,
+			        'business_logo'  => $updateToDatabase->business_logo,
+			        'location'  => $updateToDatabase->location,
+			        'street'  => $updateToDatabase->street,
+			        'city'  => $updateToDatabase->city,
+			        'zip'  => $updateToDatabase->zip,
+			        'state'  => $updateToDatabase->state,
+			        'country'  => $updateToDatabase->country,
+			        'created_at'  => $updateToDatabase->created_at,
+			        'updated_at'  => $updateToDatabase->updated_at,
+			        'employer_id'  => $updateToDatabase->employer_id,
+			        'skill'  => $updateToDatabase->skill,
+			        'category'  => $updateToDatabase->category,
+			        'objectID'  => $updateToDatabase->id,
+			    ]
+			);
+
+			if($object)
+			{
+
+				return redirect('/adverts');
+
+			}else{
+
+				echo "Error: updating to index was unsuccessful.";
+			}
+
+		}else{
+
+			echo "Error: Updating to database was unsuccessful.";
+		}
+
+		
 	}
 
 

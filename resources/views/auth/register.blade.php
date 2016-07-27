@@ -81,18 +81,23 @@
                             </div>
                         </div>
 
-<div class="form-group">
-    <div class="col-md-6 col-md-offset-4">
-<div class="btn-group" data-toggle="buttons">
- <label class="btn btn-primary">
-    <input type="radio" name="type" id="type0" autocomplete="off" value="employer"> Hire
-  </label>
-  <label class="btn btn-primary">
-    <input type="radio" name="type" id="type1" autocomplete="off" value="job_seeker"> Work
-  </label>
-</div>
-</div>
-</div>
+                        <div class="form-group">
+                            <div class="col-md-6 col-md-offset-4">
+                                <div class="btn-group" data-toggle="buttons">
+                                 <label class="btn btn-primary">
+                                    <input type="radio" name="type" id="type0" autocomplete="off" value="employer"> Hire
+                                  </label>
+                                  <label class="btn btn-primary">
+                                    <input type="radio" name="type" id="type1" autocomplete="off" value="job_seeker"> Work
+                                  </label>
+                                </div>
+                                @if ($errors->has('type'))
+                                        <span class="help-block">
+                                            <strong>{{ $errors->first('type') }}</strong>
+                                        </span>
+                                @endif
+                            </div>
+                        </div>
 
 
                         <div class="form-group">

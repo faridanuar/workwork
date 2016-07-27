@@ -16,7 +16,7 @@ class PaymentController extends Controller
 	*/
 	public function __construct()
 	{
-	    $this->middleware('auth');
+	    $this->middleware('employer', ['except' => ['plans', 'subscribe']]);
 	}
 
 
@@ -32,6 +32,11 @@ class PaymentController extends Controller
 	{
 
 		return view('subscriptions.subscribe');
+	}
+
+	public function trial()
+	{
+
 	}
 
 
@@ -77,7 +82,8 @@ class PaymentController extends Controller
 		$user = $request->user();
 
 		if($user->subscribed('main'))
-		{
+		{	
+
 			if($user->subscription('main')->cancel())
 			{
 				echo 'true';
@@ -89,6 +95,7 @@ class PaymentController extends Controller
 
 		}else{
 
+			echo 'on Grace Period:';
 			dd($user->subscription('main')->onGracePeriod());
 
 		}
@@ -106,6 +113,8 @@ class PaymentController extends Controller
 
 	public function status(Request $request)
 	{
+		echo "subscription status:";
+
 		$user = $request->user();
 
 		dd($user->subscribed('main'));

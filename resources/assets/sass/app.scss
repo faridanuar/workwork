@@ -210,6 +210,7 @@ search autocomplete styling section
   font-style: normal;
 }
 
+
 /**********************************
 category checkbox styling section
 **********************************/
@@ -221,10 +222,31 @@ category checkbox styling section
 
 
 /**********************************
-results styling section
+search results styling section
 **********************************/
 
-.panel-default em{
+.panel-default em {
     
     background-color: yellow;
+}
+
+
+/**********************************
+subscribe plan styling section
+**********************************/
+
+ul.plan {
+    
+   list-style-type: square;
+   margin-top: 30px;
+}
+
+
+/**********************************
+checkout styling section
+**********************************/
+
+.checkout {
+    
+    margin-top: 20px;
 }
