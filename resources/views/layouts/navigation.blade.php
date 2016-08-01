@@ -14,7 +14,7 @@
                 </button>
 
                 <!-- Branding Image -->
-                <a class="navbar-brand" href="{{ url('/') }}">
+                <a class="navbar-brand" href="{{ url('/adverts') }}">
                     <img alt="WorkWork" src="/images/workwork-logo-symbol.png" height="30" width="60">
                 </a>
             </div>

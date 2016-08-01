@@ -1,13 +1,17 @@
 @extends('layouts.app')
 
 @section('content')
-<h1>Edit {{ $advert->job_title }}</h1>
+
+<div class="flash">
+	@include('messages.flash')
+</div>
+
+<h1>Create Your Company Profile</h1>
 
 <hr>
 
 <div class="row">
-	<form method="post" action="/adverts/{{ $advert->id }}/{{ $advert->job_title }}/edit/update" enctype="multipart/form-data" class="col-md-6">
-
+	<form method="post" action="/profile" enctype="multipart/form-data" class="col-md-6">
 		@if (count($errors) > 0)
 		<div class="alert alert-danger">
 			<ul>
@@ -18,7 +22,7 @@
 		</div>
 		@endif
 		
-		@include('adverts.edit_form')
+		@include('profiles.company_form')
 
 	</form>
 </div>

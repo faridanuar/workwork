@@ -21,6 +21,18 @@ Route::get('/choose', 'TypeController@type');
 
 Route::post('/set', 'TypeController@assignType');
 
+
+
+/**
+ * Adverts routes
+ */
+
+Route::get('/create-profile', 'ProfileController@create');
+
+Route::post('adverts/preview', 'AdvertsController@preview');
+
+
+
 /**
  * Adverts routes
  */
@@ -44,10 +56,24 @@ Route::get('/adverts/{id}/{job_title}/apply', 'ApplyController@apply');
 Route::post('/adverts/{id}/{job_title}/apply/add', 'ApplyController@storeApply');
 
 /**
+* Subcription routes
+*/
+Route::get('/plans', 'SubscribeController@plans');
+Route::get('/subscribe', 'SubscribeController@subscribe');
+Route::post('/checkout', 'SubscribeController@checkout');
+Route::get('/invoices', 'SubscribeController@invoices');
+Route::get('/invoices/download/{invoiceId}', 'SubscribeController@download');
+
+/**
+* Webhook routes
+*/
+Route::post('braintree/webhook', '\Laravel\Cashier\Http\Controllers\WebhookController@handleWebhook');
+
+/**
 * Payment routes
 */
-Route::get('/plans', 'PaymentController@plans');
-Route::get('/subscribe', 'PaymentController@subscribe');
-Route::post('/checkout', 'PaymentController@checkout');
-Route::get('/status', 'PaymentController@status');
-Route::get('/cancel', 'PaymentController@cancel');
+Route::get('/status', 'StatusController@status');
+Route::get('/cancel', 'StatusController@cancel');
+Route::get('/resume', 'StatusController@resume');
+
+

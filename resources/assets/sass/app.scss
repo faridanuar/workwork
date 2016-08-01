@@ -215,9 +215,16 @@ search autocomplete styling section
 category checkbox styling section
 **********************************/
 
+.ais-refinement-list--label > input[type="checkbox"] {
+    
+    margin-right: 5px;
+}
+
 .ais-refinement-list--count {
     
     background: #ddd;
+
+    padding: 0px 5px 0 5px;
 }
 
 

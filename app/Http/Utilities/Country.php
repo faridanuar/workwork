@@ -5,10 +5,10 @@ namespace App\Http\Utilities;
 class Country 
 {
 	protected static $countries = [
-		"MY" => "Malaysia",
-		"ID" => "Indonesia",
-		"SG" => "Singapore",
-		"TH" => "Thailand",
+		"Malaysia" => "Malaysia",
+		"Indonesia" => "Indonesia",
+		"Singapore" => "Singapore",
+		"Thailand" => "Thailand",
 		
 		/**
 		 *  Complete list of countries

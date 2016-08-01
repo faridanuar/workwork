@@ -4,19 +4,21 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-use App\User;
-use App\Http\Requests;
 use \Braintree_ClientToken;
 use \Braintree_Transaction;
 
-class PaymentController extends Controller
+use App\User;
+
+use App\Http\Requests;
+
+class SubscribeController extends Controller
 {
     /**
 	* Auhthenticate user
 	*/
 	public function __construct()
 	{
-	    $this->middleware('employer', ['except' => ['plans', 'subscribe']]);
+	    $this->middleware('employer');
 	}
 
 
@@ -26,17 +28,12 @@ class PaymentController extends Controller
 		return view('subscriptions.plans');
 	}
 
-
+	
 
 	public function subscribe()
 	{
 
 		return view('subscriptions.subscribe');
-	}
-
-	public function trial()
-	{
-
 	}
 
 
@@ -63,63 +60,44 @@ class PaymentController extends Controller
 			// check if subscribtion is a success
 			if($subscribing)
 			{
-				echo 'success';
+				flash('you have successfully subscribe to a new plan', 'success');
+
+				redirect('/home');
 
 			}else{
 
-				echo 'error';
+				flash('Checkout was unsuccessful, please check back your paymnent info and try again', 'error');
+
+				redirect('/subscribe');
 			}
 
 		}
 
-		
 	}
 
 
 
-	public function cancel(Request $request)
+	public function invoices(Request $request)
 	{
 		$user = $request->user();
 
-		if($user->subscribed('main'))
-		{	
+		$invoices = $user->invoices();
 
-			if($user->subscription('main')->cancel())
-			{
-				echo 'true';
+		//dd($invoices);
 
-			}else{
-
-				echo 'false';
-			}
-
-		}else{
-
-			echo 'on Grace Period:';
-			dd($user->subscription('main')->onGracePeriod());
-
-		}
-
+		return view('subscriptions.invoices', compact('invoices'));
 	}
 
 
 
-	public function resume(Request $request)
+	public function download(Request $request, $invoiceId)
 	{
-		$user->subscription('main')->resume();
-	}
-
-
-
-	public function status(Request $request)
-	{
-		echo "subscription status:";
-
 		$user = $request->user();
 
-		dd($user->subscribed('main'));
+		return $user->downloadInvoice($invoiceId, [
+        'vendor'  => 'Your Company',
+        'product' => 'Your Product',
+
+        ]);
 	}
-
-
-
 }

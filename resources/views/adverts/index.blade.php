@@ -124,7 +124,7 @@ var resultsTemplate =
 			'<div class="panel-heading">@{{{ _highlightResult.job_title.value }}}</div>' +
 			  	'<div class="panel-body">' +
 
-					'<div class="salary">RM@{{ salary }} per hour</div>' +
+					'<div class="salary">RM@{{ salary }} per @{{ rate }}</div>' +
 					'<div class="business-name">@{{{ _highlightResult.business-name.value }}}</div>' +
 					'<div class="location">@{{{ _highlightResult.location.value }}}</div>' +
 					'<div class="street">@{{ street }}</div>' +

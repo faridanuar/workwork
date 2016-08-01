@@ -27,7 +27,9 @@ class Advert extends Model
         'state',
         'country',
         'skill',
-        'category'
+        'category',
+        'rate',
+        'oku_friendly'
     ];
 
 

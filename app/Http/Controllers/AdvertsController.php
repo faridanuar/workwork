@@ -43,6 +43,51 @@ class AdvertsController extends Controller
 
 
 
+	/**
+	*show existing data in storage
+	*
+	*calling locatedAt function from Advert MODEL
+	*
+	*@param $request, $id, $job_title
+	*/
+	public function show(Request $request, $id, $job_title)
+	{
+
+		// fetch only the first retrieved
+		$advert = Advert::locatedAt($id, $job_title)->first();
+
+		$advertEmployer = $advert->employer_id;
+
+		$user = $request->user();
+
+
+		$authorize = "";
+
+
+		if($user)
+		{
+			$thisEmployer = $user->employer;
+
+			if($thisEmployer){
+
+				if ($advertEmployer === $thisEmployer->id)
+				{
+					$authorize = true;
+
+				}else{
+
+					$authorize = false;
+				}
+			}
+		}
+
+		// display "show" page
+		return view('adverts.show', compact('advert', 'authorize'));
+
+	}
+
+
+
 	public function preview(Request $request)
 	{
 		$details = [
@@ -57,7 +102,9 @@ class AdvertsController extends Controller
 		'state' => $request->state,
 		'country' => $request->country,
 		'skill' => $request->skill,
-		'category' => $request->category
+		'category' => $request->category,
+		'rate' => $request->rate,
+		'oku_friendly' => $request->oku_friendly
 		];
 
 		return view('adverts.preview', compact('details'));
@@ -92,7 +139,7 @@ class AdvertsController extends Controller
 			    [
 			    	'id' => $saveToDatabase->id,
 			        'job_title' => $saveToDatabase->job_title,
-			        'salary'  => $saveToDatabase->salary,
+			        'salary'  => (float)$saveToDatabase->salary,
 			        'description'  => $saveToDatabase->description,
 			        'business_name'  => $saveToDatabase->business_name,
 			        'business_logo'  => $saveToDatabase->business_logo,
@@ -102,11 +149,13 @@ class AdvertsController extends Controller
 			        'zip'  => $saveToDatabase->zip,
 			        'state'  => $saveToDatabase->state,
 			        'country'  => $saveToDatabase->country,
-			        'created_at'  => $saveToDatabase->created_at,
-			        'updated_at'  => $saveToDatabase->updated_at,
+			        'created_at'  => $saveToDatabase->created_at->toDateTimeString(),
+			        'updated_at'  => $saveToDatabase->updated_at->toDateTimeString(),
 			        'employer_id'  => $saveToDatabase->employer_id,
 			        'skill'  => $saveToDatabase->skill,
 			        'category'  => $saveToDatabase->category,
+			        'rate'  => $saveToDatabase->rate,
+			        'oku_friendly'  => $saveToDatabase->oku_friendly,
 			    ],
 			    $saveToDatabase->id
 			);
@@ -119,7 +168,7 @@ class AdvertsController extends Controller
 
 				// redirect to a landing page, so that people can share to the world DONE, kinda
 				// next, flash messaging
-				return redirect()->back();
+				return redirect('/home');
 
 
 			}else{
@@ -131,9 +180,6 @@ class AdvertsController extends Controller
 
 			echo "Error: unable to save record to database. ";
 		}
-
-
-		
 	}
 
 
@@ -150,18 +196,18 @@ class AdvertsController extends Controller
 		$user = $request->user();
 
 		// display only the first retrieved
-		$job = Advert::locatedAt($id, $job_title)->first();
+		$advert = Advert::locatedAt($id, $job_title)->first();
 
 
 		//check if job advert is own by user
-		if(! $job->ownedBy($user))
+		if(! $advert->ownedBy($user))
 		{
 			return $this->unauthorized($request);
 		}
 
 
 		// display "edit" page
-		return view('adverts.edit', compact('job'));
+		return view('adverts.edit', compact('advert'));
 
 	}
 
@@ -200,7 +246,7 @@ class AdvertsController extends Controller
 		$advert->update([
 
 				'job_title' => $request->job_title,
-				'salary' => $request->salary,
+				'salary' => (float)$request->salary,
 				'description' => $request->description,
 				'business_name' => $request->business_name,
 				'business_logo'  => $request->business_logo,
@@ -212,100 +258,53 @@ class AdvertsController extends Controller
 				'country' => $request->country,
 				'skill'  => $request->skill,
 			    'category'  => $request->category,
+			    'rate'  => $request->rate,
+			    'oku_friendly'  => $request->oku_friendly,
 
 
 		]);
 
-		$updateToDatabase = $advert->save();
+		 $advert->save();
+			
 
-		if($updateToDatabase)
+		$indexFromAlgolia = $search->index('adverts');
+
+		$object = $indexFromAlgolia->saveObject(
+		    [
+		    	'id' => $advert->id,
+		        'job_title' => $advert->job_title,
+		        'salary'  => (float)$advert->salary,
+		        'description'  => $advert->description,
+		        'business_name'  => $advert->business_name,
+		        'business_logo'  => $advert->business_logo,
+		        'location'  => $advert->location,
+		        'street'  => $advert->street,
+		        'city'  => $advert->city,
+		        'zip'  => $advert->zip,
+		        'state'  => $advert->state,
+		        'country'  => $advert->country,
+		        'created_at'  => $advert->created_at->toDateTimeString(),
+		        'updated_at'  => $advert->updated_at->toDateTimeString(),
+		        'employer_id'  => $advert->employer_id,
+		        'skill'  => $advert->skill,
+		        'category'  => $advert->category,
+		        'rate'  => $advert->rate,
+		        'oku_friendly'  => $advert->oku_friendly,
+		        'objectID'  => $advert->id,
+		    ]
+		);
+
+		if($object)
 		{
-			$advert->save();
+			flash('Your advert has been successfully updated.', 'success');
 
-			$indexFromAlgolia = $search->index('adverts');
-
-			$object = $indexFromAlgolia->saveObject(
-			    [
-			        'job_title' => $updateToDatabase->job_title,
-			        'salary'  => $updateToDatabase->salary,
-			        'description'  => $updateToDatabase->description,
-			        'business_name'  => $updateToDatabase->business_name,
-			        'business_logo'  => $updateToDatabase->business_logo,
-			        'location'  => $updateToDatabase->location,
-			        'street'  => $updateToDatabase->street,
-			        'city'  => $updateToDatabase->city,
-			        'zip'  => $updateToDatabase->zip,
-			        'state'  => $updateToDatabase->state,
-			        'country'  => $updateToDatabase->country,
-			        'created_at'  => $updateToDatabase->created_at,
-			        'updated_at'  => $updateToDatabase->updated_at,
-			        'employer_id'  => $updateToDatabase->employer_id,
-			        'skill'  => $updateToDatabase->skill,
-			        'category'  => $updateToDatabase->category,
-			        'objectID'  => $updateToDatabase->id,
-			    ]
-			);
-
-			if($object)
-			{
-
-				return redirect('/adverts');
-
-			}else{
-
-				echo "Error: updating to index was unsuccessful.";
-			}
+			return redirect('/home');
 
 		}else{
 
-			echo "Error: Updating to database was unsuccessful.";
+			echo "Error: updating to index was unsuccessful.";
 		}
 
 		
-	}
-
-
-
-	/**
-	*show existing data in storage
-	*
-	*calling locatedAt function from Advert MODEL
-	*
-	*@param $request, $id, $job_title
-	*/
-	public function show(Request $request, $id, $job_title)
-	{
-
-		// fetch only the first retrieved
-		$job = Advert::locatedAt($id, $job_title)->first();
-
-		$advertEmployer = $job->employer_id;
-
-		$user = $request->user();
-
-		$authorize = "";
-
-
-		if($user)
-		{
-			$thisEmployer = $user->employer;
-
-			if($thisEmployer){
-
-				if ($advertEmployer === $thisEmployer->id)
-				{
-					$authorize = true;
-
-				}else{
-
-					$authorize = false;
-				}
-			}
-		}
-
-		// display "show" page
-		return view('adverts.show', compact('job', 'authorize'));
-
-
 	}
 }

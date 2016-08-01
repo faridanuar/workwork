@@ -1,4 +1,5 @@
 @inject('countries', 'App\Http\Utilities\Country')
+@inject('categories', 'App\Http\Utilities\Category')
 
 {{ csrf_field() }}
 
@@ -12,10 +13,28 @@
 	<div class="input-group">
 		<span class="input-group-addon">RM</span>
 		<input type="text" name="salary" id="salary" class="form-control" value="{{ old('salary') }}" required>
-		<span class="input-group-addon">hourly</span>
+		<span class="input-group-addon"></span>
 	</div>
-
 </div>
+
+<div class="form-group">
+	<label for="rate">Rate:</label>
+	<select name="rate" id="rate" class="form-control" required>
+			<option value="" selected disabled>Select a salary rate</option>
+			<option value="hour">Per Hour</option>
+			<option value="month">Per Month</option>
+	</select>
+</div>
+
+<div class="form-group">
+	<label for="oku_friendly">Is this job also suitable for OKU citizen?:</label>
+	<select name="oku_friendly" id="oku_friendly" class="form-control" required>
+			<option value="" selected disabled>Choose an Answer</option>
+			<option value="yes">Yes</option>
+			<option value="no">No</option>
+	</select>
+</div>
+
 
 <div class="form-group">
 	<label for="description">Job Description:</label>
@@ -62,6 +81,7 @@
 <div class="form-group">
 	<label for="country">Country:</label>
 	<select name="country" id="country" class="form-control" required>
+			<option value="" selected disabled>Select a country</option>
 		@foreach ($countries::all() as $code => $name)
 			<option value="{{ $code }}">{{ $name }}</option>
 		@endforeach
@@ -74,9 +94,14 @@
 </div>
 
 <div class="form-group">
-	<label for="category">Job category:</label>
-	<input type="text" name="category" id="category" class="form-control" value="{{ old('category') }}" required>
-</div>		
+	<label for="category">Job Category:</label>
+	<select name="category" id="category" class="form-control" required>
+			<option value="" selected disabled>Select a category</option>
+		@foreach ($categories::all() as $code => $name)
+			<option value="{{ $code }}">{{ $name }}</option>
+		@endforeach
+	</select>
+</div>	
 
 <div class="form-group">
 	<button type="submit" class="btn btn-primary">Create Advertisement</button>

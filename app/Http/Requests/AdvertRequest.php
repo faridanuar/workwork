@@ -36,6 +36,8 @@ class AdvertRequest extends Request
             'country' => 'required',
             'skill' => 'required',
             'category' => 'required',
+            'rate' => 'required',
+            'oku_friendly' => 'required',
         ];
     }
 }

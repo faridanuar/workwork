@@ -33,12 +33,13 @@ class ApplyController extends Controller
 	{
 		$user = $request->user();
 
+		// display only the first retrieved
 		$jobSeeker = $user->jobSeeker()->first();
 
 		// display only the first retrieved
-		$job = Advert::locatedAt($id, $job_title)->first();
+		$advert = Advert::locatedAt($id, $job_title)->first();
 
-		return view('adverts.application_create', compact('job','user', 'jobSeeker'));
+		return view('adverts.application_create', compact('advert','user', 'jobSeeker'));
 
 	}
 
@@ -123,7 +124,7 @@ class ApplyController extends Controller
             Mail::send('mail.message', compact('user', 'thisJobSeeker', 'application'), function ($m) use ($user) {
                 $m->from('postmaster@sandbox12f6a7e0d1a646e49368234197d98ca4.mailgun.org', 'WorkWork');
 
-                $m->to('farid@pocketpixel.com', $user->name)->subject('Your Reminder!');
+                $m->to('farid@pocketpixel.com', $user->name)->subject('Job Request!');
             });
         }
 
@@ -166,7 +167,7 @@ class ApplyController extends Controller
 		            $number,
 
 		            // the sms body
-		            "You have a job applicant request from your advert. Applicant: $name."
+		            "You have a job applicant request from your advert. Applicant: $name, check out the full details here: ."
 		        );
 
 		        // Display a confirmation message on the screen

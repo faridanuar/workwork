@@ -51,6 +51,7 @@ class Kernel extends HttpKernel
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'jobSeeker' => \App\Http\Middleware\MustBeJobSeeker::class,
         'employer' => \App\Http\Middleware\MustBeEmployer::class,
-        'noRoleType' => \App\Http\Middleware\MustNotHaveRoleType::class
+        'noRoleType' => \App\Http\Middleware\MustNotHaveRoleType::class,
+        'subscribed' => \App\Http\Middleware\MustBeSubscribed::class
     ];
 }

@@ -3,12 +3,12 @@
 @section('content')
 <h1>Applying for a Job as </h1>
 
-<h2>"{{ $job->job_title }}" ?</h2>
+<h2>"{{ $advert->job_title }}" ?</h2>
 
 <hr>
 
 <div class="row">
-	<form method="post" action="/adverts/{{ $job->id }}/{{ $job->job_title }}/apply/add" enctype="multipart/form-data" class="col-md-6">
+	<form method="post" action="/adverts/{{ $advert->id }}/{{ $advert->job_title }}/apply/add" enctype="multipart/form-data" class="col-md-6">
 		@if (count($errors) > 0)
 		<div class="alert alert-danger">
 			<ul>

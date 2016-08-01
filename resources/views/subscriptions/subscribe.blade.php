@@ -1,6 +1,9 @@
 @extends('layouts.app')
 
 @section('content')
+<div class="flash">
+    @include('messages.flash')
+</div>
 
 <div class="checkout">
 <h2>Use payment method with <u>Credit Card</u> or <u>PayPal</u></h2>
