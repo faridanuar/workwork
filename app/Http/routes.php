@@ -24,12 +24,16 @@ Route::post('/set', 'TypeController@assignType');
 
 
 /**
- * Adverts routes
+ * Profile routes
  */
 
 Route::get('/create-profile', 'ProfileController@create');
 
-Route::post('adverts/preview', 'AdvertsController@preview');
+Route::post('/preview-profile', 'ProfileController@preview');
+
+Route::get('/photo', 'ProfileController@photo');
+
+Route::post('/upload', 'ProfileController@upload');
 
 
 

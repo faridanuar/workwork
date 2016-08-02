@@ -12,7 +12,17 @@ class Employer extends Model
 	 * @var array
 	 */
     protected $fillable = [
-        'contact'
+        'business_name',
+        'business_category',
+        'business_contact',
+        'business_website',
+        'location',
+        'street',
+        'city',
+        'zip',
+        'state',
+        'company_intro',
+        'business_logo',
     ];
 
 

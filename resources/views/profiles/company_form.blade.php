@@ -2,17 +2,33 @@
 
 <div class="form-group">
 	<label for="business_name">Business Name:</label>
-	<input type="text" name="business_name" id="business_name" class="form-control" value="{{ old('company_name') }}" required>
+	<input type="text" name="business_name" id="business_name" class="form-control" value="{{ old('business_name') }}" required>
 </div>
 
 <div class="form-group">
-	<label for="business_logo">Business logo: (optional)</label>
-	<input type="file" name="business_logo" id="business_logo" class="form-control" value="{{ old('business_logo') }}">
-</div> 	
+	<label for="business_category">Business Category:</label>
+	<input type="text" name="business_category" id="business_category" class="form-control" value="{{ old('business_category') }}" required>
+</div>
+
+<div class="form-group">
+	<label for="business_contact">Business Contact:</label>
+	<input type="text" name="business_contact" id="business_contact" class="form-control" value="{{ old('business_contact') }}" required>
+</div>
+
+<div class="form-group">
+	<label for="business_website">Business Website (optional):</label>
+	<input type="text" name="business_website" id="business_website" class="form-control" value="{{ old('business_website') }}" required>
+</div>	
+
 
 <hr>
 
-<h3>Company Location</h3>
+<h3>Company / Business Location</h3>
+
+<div class="form-group">
+	<label for="location">Location:</label>
+	<input type="text" name="location" id="location" class="form-control" value="{{ old('location') }}" required>
+</div>
 
 <div class="form-group">
 	<label for="street">Street:</label>
@@ -34,19 +50,13 @@
 	<input type="text" name="state" id="state" class="form-control" value="{{ old('state') }}" required>
 </div>
 
-
-<div class="form-group">
-	<label for="skill">Type of skill required:</label>
-	<input type="text" name="skill" id="skill" class="form-control" value="{{ old('skill') }}" required>
-</div>
-
 <hr>
 
 <div class="form-group">
-	<label for="description">Company Introduction:</label>
-	<textarea type="text" name="description" id="description" class="form-control" rows="10" placeholder="Tell us about your company..." required>{{ old('description') }}</textarea>
+	<label for="company_intro">Company / Employer Introduction:</label>
+	<textarea type="text" name="company_intro" id="company_intro" class="form-control" rows="10" placeholder="Tell us about your business..." required>{{ old('company_intro') }}</textarea>
 </div>
 
 <div class="form-group">
-	<button type="submit" class="btn btn-primary">Create Advertisement</button>
+	<button type="submit" class="btn btn-primary">Create Profile</button>
 </div> 

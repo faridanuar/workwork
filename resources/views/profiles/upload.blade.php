@@ -8,12 +8,13 @@
 	</div>
 
 
-	<h1>Create Your Company Profile</h1>
+	<h1>Upload your Business / Company Photo</h1>
 
 	<hr>
 
 	<div class="row">
-		<form method="post" action="/profile" enctype="multipart/form-data" class="col-md-6">
+		<form method="post" action="/upload" enctype="multipart/form-data" class="col-md-6">
+
 			@if (count($errors) > 0)
 			<div class="alert alert-danger">
 				<ul>
@@ -23,10 +24,11 @@
 				</ul>
 			</div>
 			@endif
+
 			
-			@include('profiles.company_form')
+			@include('profiles.upload_form')
+
 
 		</form>
 	</div>
-	
 @stop

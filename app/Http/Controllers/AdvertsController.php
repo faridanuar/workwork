@@ -34,16 +34,6 @@ class AdvertsController extends Controller
 
 
 	/**
-	 * Create a new advert
-	 */
-	public function create()
-	{
-		return view('adverts.create');
-	}
-
-
-
-	/**
 	*show existing data in storage
 	*
 	*calling locatedAt function from Advert MODEL
@@ -84,6 +74,16 @@ class AdvertsController extends Controller
 		// display "show" page
 		return view('adverts.show', compact('advert', 'authorize'));
 
+	}
+
+
+
+	/**
+	 * Create a new advert
+	 */
+	public function create()
+	{
+		return view('adverts.create');
 	}
 
 
