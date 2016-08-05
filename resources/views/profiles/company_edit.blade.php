@@ -3,18 +3,12 @@
 @section('content')
 
 
-	<div class="flash">
-		@include('messages.flash')
-	</div>
-
-
-	<h1>Upload your Business / Company Photo</h1>
+	<h1>Edit Your Company Profile</h1>
 
 	<hr>
 
 	<div class="row">
-		<form method="post" action="/upload" enctype="multipart/form-data" class="col-md-6">
-
+		<form method="post" action="/save" enctype="multipart/form-data" class="col-md-6">
 			@if (count($errors) > 0)
 			<div class="alert alert-danger">
 				<ul>
@@ -24,11 +18,10 @@
 				</ul>
 			</div>
 			@endif
-
 			
-			@include('profiles.upload_form')
-
+			@include('profiles.company_form')
 
 		</form>
 	</div>
+	
 @stop

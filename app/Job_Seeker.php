@@ -38,6 +38,11 @@ class Job_Seeker extends Model
         return $this->hasMany(Application::class, 'job_seeker_id');
     }
 
+    public function rating()
+    {
+        return $this->hasMany(Rating::class, 'job_seeker_id');
+    }
+
 
     /*
     * referencing which table to use for this MODEL

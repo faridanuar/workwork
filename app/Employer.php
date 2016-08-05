@@ -35,4 +35,9 @@ class Employer extends Model
     {
     	return $this->hasMany(Advert::class);
     }
+
+    public function rating()
+    {
+        return $this->hasMany(Rating::class);
+    }
 }

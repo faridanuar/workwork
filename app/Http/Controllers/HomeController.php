@@ -29,7 +29,8 @@ class HomeController extends Controller
 
         //fetch user's type of role
         $type = $user->type;
-        
+
+        $role = "";
 
         //check if user has a role type, if not it redirect the user
         if(! $type)
@@ -37,12 +38,58 @@ class HomeController extends Controller
             return redirect('/choose');
         }
 
-        
+
+        if($user->employer)
+        {
+            $role = $user->employer;
+
+        }else{
+
+            $role = $user->jobSeeker;
+
+        }
+
         //return user to home dashboard if user has a role type
-        return view('home');
+        return view('home', compact('role', 'user'));
         
+        
+    }
 
 
+
+    public function avatar(Request $request)
+    {
+        $user = $request->user();
+
+        return view('auth.avatar', compact('user'));
+    }
+
+
+    public function uploadAvatar(Request $request)
+    {
+
+        $this->validate($request, [
+
+            'photo' => 'required|mimes:jpg,jpeg,png,bmp' // validate image
+
+        ]);
+
+        $user = $request->user();
+
+        $file = $request->file('photo');
+
+        $name = time() . '-' .$file->getClientOriginalName();
+
+        $file->move('profile_images/avatars', $name);
+
+        $user->update([
+
+                'avatar' => "/profile_images/avatars/{$name}"
+        ]);
+
+        $user->save();
+
+        return back();
     }
 
 }

@@ -36,8 +36,6 @@ class AppServiceProvider extends ServiceProvider
 
             $config = config('services.algolia');
 
-
-
             return new AlgoliaSearch(
 
                 new Client($config['app_id'], $config['api_key'])

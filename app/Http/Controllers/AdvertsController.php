@@ -26,9 +26,12 @@ class AdvertsController extends Controller
 	 */
 	public function index()
 	{
-		$adverts = Advert::orderBy('id', 'desc')->paginate(5);
+		$config = config('services.algolia');
 
-		return view('adverts.index', compact('adverts'));
+		$id = $config['app_id'];
+		$api = $config['api_key'];
+		
+		return view('adverts.index', compact('id', 'api'));
 	}
 
 
@@ -53,12 +56,16 @@ class AdvertsController extends Controller
 
 		$authorize = "";
 
+		$asEmployer = false;
+
 
 		if($user)
 		{
 			$thisEmployer = $user->employer;
 
 			if($thisEmployer){
+
+				$asEmployer = true;
 
 				if ($advertEmployer === $thisEmployer->id)
 				{
@@ -72,7 +79,7 @@ class AdvertsController extends Controller
 		}
 
 		// display "show" page
-		return view('adverts.show', compact('advert', 'authorize'));
+		return view('adverts.show', compact('advert', 'authorize', 'asEmployer'));
 
 	}
 
@@ -162,13 +169,16 @@ class AdvertsController extends Controller
 
 			if($object)
 			{
+				$id = $saveToDatabase->id;
+
+				$job_title = $saveToDatabase->job_title;
 
 				// set flash attribute and key. example --> flash('success message', 'flash_message_level')
 				flash('Your advert has been successfully created. Go to advert index to find your advert', 'success');
 
 				// redirect to a landing page, so that people can share to the world DONE, kinda
 				// next, flash messaging
-				return redirect('/home');
+				return redirect()->route('show', [$id,$job_title]);
 
 
 			}else{
@@ -238,7 +248,7 @@ class AdvertsController extends Controller
 	 *
 	 * @param $request, $id, $job_title
 	 */
-	public function update(Search $search, AdvertRequest $request, $id)
+	public function update(Search $search, AdvertRequest $request, $id, $job_title)
 	{
 
 		$advert = Advert::find($id);
@@ -298,7 +308,7 @@ class AdvertsController extends Controller
 		{
 			flash('Your advert has been successfully updated.', 'success');
 
-			return redirect('/home');
+			return redirect()->route('show', [$id,$job_title]);
 
 		}else{
 

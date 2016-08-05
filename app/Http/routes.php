@@ -10,9 +10,20 @@ Route::get('/', 'HomeController@index');
 
 Route::get('/home', 'HomeController@index');
 
+Route::get('/avatar', 'HomeController@avatar');
+
+Route::post('/upload-avatar', 'HomeController@uploadAvatar');
+
+
+
+/**
+ * Social routes
+ */
 Route::get('/redirect', 'SocialAuthController@redirect');
 
 Route::get('/callback', 'SocialAuthController@callback');
+
+
 
 /**
  * Assign Roles routes
@@ -27,22 +38,33 @@ Route::post('/set', 'TypeController@assignType');
  * Profile routes
  */
 
-Route::get('/create-profile', 'ProfileController@create');
+Route::get('/edit-company', 'ProfileController@edit');
 
-Route::post('/preview-profile', 'ProfileController@preview');
+Route::post('/save', 'ProfileController@store');
 
-Route::get('/photo', 'ProfileController@photo');
+Route::get('/company/{id}/{business_name}', 'ProfileController@profile')->name('company');
 
-Route::post('/upload', 'ProfileController@upload');
+Route::get('/logo', 'ProfileController@logo');
 
+Route::post('/upload-logo', 'ProfileController@uploadLogo');
 
+Route::get('/profile/{id}/{name}', 'ProfileInfoController@profileInfo')->name('jobSeeker');
+
+Route::get('/edit-profile', 'ProfileInfoController@edit');
+
+Route::post('/profile/save', 'ProfileInfoController@store');
+
+/**
+ * Rating routes
+ */
+Route::post('/rate/{id}', 'ProfileInfoController@rate');
 
 /**
  * Adverts routes
  */
 Route::resource('adverts', 'AdvertsController');
 
-Route::get('/adverts/{id}/{job_title}', 'AdvertsController@show');
+Route::get('/adverts/{id}/{job_title}', 'AdvertsController@show')->name('show');
 
 Route::post('adverts/preview', 'AdvertsController@preview');
 
