@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Job_Seeker;
-use App\Rating;
+use App\Employer_Rating;
 use App\Http\Requests;
 
 class ProfileInfoController extends Controller
@@ -93,27 +93,33 @@ class ProfileInfoController extends Controller
 
 
 
-    public function rate(Request $request, $id)
+    public function rate(Request $request, $id, $business_name)
     {
+        $user = $request->user();
+
         $this->validate($request, [
 
         'star' => 'required',
         'comment' => 'required|max:255',
+
         ]);
 
+        $jobSeeker = $user->jobSeeker;
 
-        $jobSeeker = $request->user()->jobSeeker;
-
-        $rating = new Rating;
+        $rating = new Employer_Rating;
 
         $rating->rating = $request->star;
 
         $rating->comment = $request->comment;
+
+        $rating->postedBy = $user->name;
 
         $rating->jobSeeker()->associate($jobSeeker->id);
 
         $rating->employer()->associate($id);
 
         $rating->save();
+
+        return redirect()->back();
     }
 }

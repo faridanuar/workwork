@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateRatingsTable extends Migration
+class CreateEmployersRatingsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -12,12 +12,13 @@ class CreateRatingsTable extends Migration
      */
     public function up()
     {
-        Schema::create('ratings', function (Blueprint $table) {
+        Schema::create('employers_ratings', function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger('employer_id');
             $table->unsignedInteger('job_seeker_id');
-            $table->unsignedInteger('rating');
+            $table->integer('rating');
             $table->string('comment');
+            $table->string('postedBy');
             $table->timestamps();
 
             $table->foreign('employer_id')
@@ -25,8 +26,7 @@ class CreateRatingsTable extends Migration
                 ->onDelete('cascade');
 
             $table->foreign('job_seeker_id')
-                ->references('id')->on('job_seekers')
-                ->onDelete('cascade');
+                ->references('id')->on('job_seekers');
         });
     }
 
@@ -37,6 +37,6 @@ class CreateRatingsTable extends Migration
      */
     public function down()
     {
-        Schema::drop('ratings');
+        Schema::drop('employers_ratings');
     }
 }

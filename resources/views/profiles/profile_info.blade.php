@@ -16,8 +16,6 @@
 
 	<h2>{{ $jobSeeker->age }}</h2>
 
-	<h4>Rate:</h4>
-
 
 	<hr>
 
@@ -52,7 +50,7 @@
 		@can('edit_info')
 			@if ($authorize === true)
 				<div>
-				<a href="/edit-company" class="btn btn-primary">EDIT</a>
+				<a href="/edit-profile" class="btn btn-primary">EDIT</a>
 				</div>
 			@else
 

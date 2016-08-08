@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 
 use App\Employer;
 use App\jobSeeker;
-use App\Rating;
+use App\Employer_Rating;
 use App\Http\Requests;
 use App\Http\Requests\EmployerRequest;
 
@@ -15,7 +15,7 @@ class ProfileController extends Controller
 
     public function __construct()
     {
-        $this->middleware('employer', ['except' => ['profile']]);
+        $this->middleware('employer', ['except' => ['profile', 'companyReview']]);
     }
 
 
@@ -64,11 +64,26 @@ class ProfileController extends Controller
 
         $user = $request->user();
 
-        $authorize = "";
+        $authorize = false;
 
         $asEmployer = false;
 
         $rated = false;
+
+        $ratings = $company->rating->count();
+
+        $ratingSum = $company->rating->sum('rating');
+
+
+        if($ratings === 0)
+        {
+            $average = 0;
+
+        }else{
+
+            $average = $company->rating->avg('rating');
+        }
+
 
         if($user)
         {   
@@ -76,12 +91,19 @@ class ProfileController extends Controller
 
             if($jobSeeker)
             {
-                $rating = Rating::where('job_seeker_id', $jobSeeker->id)->firstOrFail();
+                $haveRating = Employer_Rating::where('employer_id', $id)->where('job_seeker_id', $jobSeeker->id)->first();
 
-                if($rating->job_seeker_id === $jobSeeker->id)
-                {
-                    $rated = true;
-                }
+                if($haveRating === null){
+
+                    $rated = false;
+
+                }else{
+
+                    if($haveRating->job_seeker_id === $jobSeeker->id)
+                    {
+                        $rated = true;
+                    } 
+                }    
             }
 
 
@@ -94,25 +116,23 @@ class ProfileController extends Controller
                 if ($company->id === $thisEmployer->id)
                 {
                     $authorize = true;
-
-                }else{
-
-                    $authorize = false;
                 }
             }
         }
 
-        return view('profiles.company', compact('company', 'authorize', 'rated', 'asEmployer'));
-
+        return view('profiles.company', compact('company', 'authorize', 'rated', 'asEmployer', 'average', 'ratingSum'));
     }
 
 
 
-    public function logo(Request $request)
+    public function companyReview(Request $request, $id, $business_name)
     {
-        $employer = $request->user()->employer()->first();
+        $company = Employer::findEmployer($id, $business_name)->first();
 
-    	return view('profiles.logo', compact('employer'));
+        $userReviews = $company->rating()->paginate(1);
+
+        return view('profiles.company_reviews', compact('company', 'userReviews'));
+
     }
 
 

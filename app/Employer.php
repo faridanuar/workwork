@@ -25,6 +25,10 @@ class Employer extends Model
         'business_logo',
     ];
 
+    public function scopeFindEmployer($query, $id, $business_name)
+    {
+        return $query->where(compact('id', 'business_name'));
+    }
 
     public function user()
     {
@@ -38,6 +42,6 @@ class Employer extends Model
 
     public function rating()
     {
-        return $this->hasMany(Rating::class);
+        return $this->hasMany(Employer_Rating::class);
     }
 }

@@ -13,8 +13,7 @@
 
 <div class="salary">RM {{ $advert->salary }}</div>
 <div class="description">{!! nl2br(e($advert->description)) !!}</div>
-<div class="business-name"><a href="#">{{ $advert->business_name }}</a></div>
-
+<div class="business-name"><a href="/company/{{ $advert->employer_id }}/{{ $advert->business_name }}">{{ $advert->business_name }}</a></div>
 <div class="location">{{ $advert->location }}</div>
 <div class="street">{{ $advert->street }}</div>
 

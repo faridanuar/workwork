@@ -55,9 +55,10 @@ Route::get('/edit-profile', 'ProfileInfoController@edit');
 Route::post('/profile/save', 'ProfileInfoController@store');
 
 /**
- * Rating routes
+ * Rating & review routes
  */
-Route::post('/rate/{id}', 'ProfileInfoController@rate');
+Route::post('/company/{id}/{business_name}/rate', 'ProfileInfoController@rate');
+Route::get('/company/{id}/{business_name}/review', 'ProfileController@companyReview');
 
 /**
  * Adverts routes

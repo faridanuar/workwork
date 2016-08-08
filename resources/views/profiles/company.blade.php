@@ -7,10 +7,14 @@
 		@include('messages.flash')
 	</div>
 
-	<img id="business_logo" src="{{ $company->business_logo}}" height="200" width="200" onerror="imgError(this);"/>
+	<img id="business_logo" src="{{ $company->business_logo }}" height="200" width="200" onerror="imgError(this);"/>
 
 	
 	<h1>{{ $company->business_name }}</h1>
+
+	<h2>{{ $average }} out of 5</h2>
+
+	<h4>Ratings: +{{ $ratingSum }}</h4>
 
 	<hr>
 
@@ -54,6 +58,8 @@
 		{{ $company->state }}
 		</div>
 
+		<a href="/company/{{ $company->id }}/{{ $company->business_name }}/review">Review</a>
+
 		@can('edit_company')
 				<div>
 				<a href="/edit-company" class="btn btn-primary">EDIT</a>
@@ -65,7 +71,7 @@
 			@if($rated === false)
 				<h4>Rate:</h4>
 
-				<form action="/rate/{{ $company->id }}" method="post" id="rateForm">
+				<form action="/company/{{ $company->id }}/{{ $company->business_name }}/rate" method="post" id="rateForm">
 				{{ csrf_field() }}
 
 				<div class="btn-group" data-toggle="buttons">
@@ -90,7 +96,6 @@
 					<label for="comment">Comment:</label>
 					<textarea type="text" name="comment" id="comment" class="form-control" rows="5" required>{{ old('comment') }}</textarea>
 				</div>
-
 				<button type="submit" class="btn btn-primary">Submit</button>
 
 				</form>

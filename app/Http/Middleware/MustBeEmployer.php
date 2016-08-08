@@ -24,6 +24,6 @@ class MustBeEmployer
             return $next($request);
         }
 
-        abort(404, 'You are not allowed.');
+        redirect('/home');
     }
 }

@@ -4,7 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Rating extends Model
+class Employer_Rating extends Model
 {
     /**
      * Fillable fields for an application.
@@ -15,6 +15,7 @@ class Rating extends Model
 
     	'rating',
         'comment',
+        'postedBy',
 
     ];
 
@@ -33,6 +34,6 @@ class Rating extends Model
     /*
     * referencing which table to use for this MODEL
     */
-    protected $table = 'ratings';
+    protected $table = 'employers_ratings';
 
 }

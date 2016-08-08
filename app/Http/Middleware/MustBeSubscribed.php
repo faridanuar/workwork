@@ -26,6 +26,6 @@ class MustBeSubscribed
 
         }
         
-        abort(404, 'You are not allowed.');
+        redirect('/');
     }
 }

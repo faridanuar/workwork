@@ -31,20 +31,19 @@
 
 
     <div class="col-md-6" id="adverts" >
-
     	<div class="form-group">
-		    <input type="text" class="form-control" id="search-box" />
-	    </div>
 
+		    <input type="text" class="form-control" id="search-box" />
+
+	    </div>
 		<div class="results">
-			
+
 		    <div id="hits-container"></div>
 		    <div id="pagination-container"></div>
 
 		</div>
-		
-			
 	</div>
+
 
 	<div class="col-md-3">
 		<div class="panel panel-default">

@@ -40,7 +40,7 @@ class Job_Seeker extends Model
 
     public function rating()
     {
-        return $this->hasMany(Rating::class, 'job_seeker_id');
+        return $this->hasMany(Employer_Rating::class, 'job_seeker_id');
     }
 
 
