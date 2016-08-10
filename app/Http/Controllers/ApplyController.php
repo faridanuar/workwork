@@ -21,7 +21,7 @@ class ApplyController extends Controller
 	*/
 	public function __construct()
 	{
-	    $this->middleware('jobSeeker', ['only' => ['store_apply', 'apply']]);
+	    $this->middleware('jobSeeker', ['except' => ['apply']]);
 	}
 
 
@@ -33,14 +33,28 @@ class ApplyController extends Controller
 	{
 		$user = $request->user();
 
-		// display only the first retrieved
-		$jobSeeker = $user->jobSeeker()->first();
+		// check if user is not logged in
+		if($user === null){
+
+			$user = "";
+
+			$jobSeeker = "";
+
+		}elseif($user->hasRole('employer')){
+
+			return redirect('/home');
+
+		}else{
+
+			// display only the first retrieved
+			$jobSeeker = $user->jobSeeker()->first();
+
+		}
 
 		// display only the first retrieved
 		$advert = Advert::locatedAt($id, $job_title)->first();
 
 		return view('adverts.application_create', compact('advert','user', 'jobSeeker'));
-
 	}
 
 
@@ -50,7 +64,7 @@ class ApplyController extends Controller
 	*
 	*@param $id -> get it from url
 	*/
-	public function storeApply(ApplicationRequest $request, $id)
+	public function storeApply(ApplicationRequest $request, $id, $job_title)
 	{
 		// fetch User model to find a row of data using user method
 		$user = $request->user();
@@ -61,29 +75,7 @@ class ApplyController extends Controller
 
 
 		// check if Job_Seeker has already have a row of data with this user
-		if(count($thisJobSeeker) == 1){
-
-			// create a new Application model / a new row of data
-			$application = new Application;
-
-			// add a field to "status" column
-			$application->introduction = $request->introduction;
-
-			// add a field to "status" column
-			$application->status = 'PENDING';
-
-			// use associate method to get model relationship from other Job_Seeker model and store its "id"
-			$application->jobSeeker()->associate($thisJobSeeker);
-
-			// use associate method to get model relationship from other Advert model and store its "id"
-			$application->advert()->associate($id);
-
-			// save the fields into applications table
-			$application->save();
-
-
-		}else{
-
+		if(! count($thisJobSeeker) === 1){
 
 			// create a new user_id and fields and store it in jobseekers table
 			$thisJobSeeker = $user->jobSeeker()->create([
@@ -100,27 +92,27 @@ class ApplyController extends Controller
 			]);
 
 
-			// create a new Application model / a new row of data
-			$application = new Application;
-
-			$application->introduction = $request->introduction;
-
-			// add a field to "status" column
-			$application->status = 'PENDING';
-
-			// use associate method to get model relationship from other Job_Seeker model and store its "id"
-			$application->jobSeeker()->associate($thisJobSeeker);
-
-			// use associate method to get model relationship from other Advert model and store its "id"
-			$application->advert()->associate($id);
-
-			// save the fields into applications table
-			$application->save();
-
 		}
 
+		// create a new Application model / a new row of data
+		$application = new Application;
 
-		if($user){
+		$application->introduction = $request->introduction;
+
+		// add a field to "status" column
+		$application->status = 'PENDING';
+
+		// use associate method to get model relationship from other Job_Seeker model and store its "id"
+		$application->jobSeeker()->associate($thisJobSeeker);
+
+		// use associate method to get model relationship from other Advert model and store its "id"
+		$application->advert()->associate($id);
+
+		// save the fields into applications table
+		$application->save();
+
+
+		if($application){
             Mail::send('mail.message', compact('user', 'thisJobSeeker', 'application'), function ($m) use ($user) {
                 $m->from('postmaster@sandbox12f6a7e0d1a646e49368234197d98ca4.mailgun.org', 'WorkWork');
 
@@ -128,18 +120,19 @@ class ApplyController extends Controller
             });
         }
 
+        $advert = Advert::locatedAt($id, $job_title)->first();
 
-        $advert = Advert::find($id);
+		$employer = $advert->employer;
 
-		$employer = $advert->employer()->first();
-
-		$contact = $employer->user()->first()->contact;
+		$contact = $employer->user->contact;
 
 		if($contact){
 
+			$config = config('services.twilio');
+
 		    // Step 2: set our AccountSid and AuthToken from www.twilio.com/user/account
-		    $AccountSid = "AC7931f766c3a838eb713d5e43da4a7882";
-		    $AuthToken = "aa66dacb62d665324438672da3639ed0";
+		    $AccountSid = $config['acc_id'];
+			$AuthToken = $config['auth_token'];
 
 		    // Step 3: instantiate a new Twilio Rest Client
 		    $client = new Services_Twilio($AccountSid, $AuthToken);
@@ -159,8 +152,8 @@ class ApplyController extends Controller
 
 		        $sms = $client->account->messages->sendMessage(
 
-		        // Step 6: Change the 'From' number below to be a valid Twilio number 
-		        // that you've purchased, or the (deprecated) Sandbox number
+		        	// Step 6: Change the 'From' number below to be a valid Twilio number 
+		        	// that you've purchased, or the (deprecated) Sandbox number
 		            "+12602184571", 
 
 		            // the number we are sending to - Any phone number
@@ -182,10 +175,6 @@ class ApplyController extends Controller
 
 			abort(404, 'Error');
 		}
-
-
-		
-
 
 		return redirect('/adverts');
 

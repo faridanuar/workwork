@@ -19,14 +19,19 @@ class MustBeJobSeeker
         //fetch user data with request from authentication
         $user = $request->user();
 
-        if ( $user && $user->hasRole('job_seeker')){
+        if (! $user){
 
-            return $next($request);
+            return redirect('/home');
+
+            if(! $user->hasRole('job_seeker')){
+
+                return redirect()->guest('login');
+
+            }
 
         }
 
-        redirect('/');
+        return $next($request);
 
-        
     }
 }

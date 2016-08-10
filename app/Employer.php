@@ -40,8 +40,13 @@ class Employer extends Model
     	return $this->hasMany(Advert::class);
     }
 
-    public function rating()
+    public function ownRating()
     {
         return $this->hasMany(Employer_Rating::class);
+    }
+
+    public function rating()
+    {
+        return $this->hasMany(Job_Seeker_Rating::class);
     }
 }

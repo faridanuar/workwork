@@ -30,6 +30,6 @@
 		<a href="/company/{{ $employer->id }}/{{ $employer->business_name }}" class="btn btn-primary">Done</a>
 	</div>
 
-	@include('javaPlugins.dropzone')
+	@include('java_plugins.dropzone')
 
 @stop

@@ -52,6 +52,12 @@ return [
 
     ],
 
+    'twilio' => [
+        'acc_id' => env('TWILIO_ACC_ID'),
+        'auth_token' => env('TWILIO_AUTH_TOKEN')
+
+    ],
+
     'braintree' => [
         'model'  => App\User::class,
         'environment' => env('BRAINTREE_ENV'),

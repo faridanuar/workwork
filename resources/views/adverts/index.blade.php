@@ -55,7 +55,7 @@
 	</div>
 </div>
 
-@include('javaPlugins.algolia')
+@include('java_plugins.algolia')
 
 
 

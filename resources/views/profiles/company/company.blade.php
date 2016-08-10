@@ -7,6 +7,8 @@
 		@include('messages.flash')
 	</div>
 
+	<h1>Company Profile:</h1>
+
 	<img id="business_logo" src="{{ $company->business_logo }}" height="200" width="200" onerror="imgError(this);"/>
 
 	
@@ -115,8 +117,6 @@
 			@endif
 
 		@endcan
-
-
 	
-	@include('javaPlugins.defaultPhoto')
+	@include('java_plugins.defaultPhoto')
 @stop

@@ -30,6 +30,6 @@
 		<a href="/home" class="btn btn-primary">Done</a>
 	</div>
 
-	@include('javaPlugins.dropzone')
+	@include('java_plugins.dropzone')
 
 @stop

@@ -45,7 +45,6 @@ class AdvertsController extends Controller
 	*/
 	public function show(Request $request, $id, $job_title)
 	{
-
 		// fetch only the first retrieved
 		$advert = Advert::locatedAt($id, $job_title)->first();
 
@@ -80,7 +79,6 @@ class AdvertsController extends Controller
 
 		// display "show" page
 		return view('adverts.show', compact('advert', 'authorize', 'asEmployer'));
-
 	}
 
 
@@ -201,13 +199,11 @@ class AdvertsController extends Controller
 	 */
 	public function edit(Request $request, $id, $job_title)
 	{
-
 		//get log in user data
 		$user = $request->user();
 
 		// display only the first retrieved
 		$advert = Advert::locatedAt($id, $job_title)->first();
-
 
 		//check if job advert is own by user
 		if(! $advert->ownedBy($user))
@@ -215,10 +211,8 @@ class AdvertsController extends Controller
 			return $this->unauthorized($request);
 		}
 
-
 		// display "edit" page
 		return view('adverts.edit', compact('advert'));
-
 	}
 
 
@@ -250,7 +244,6 @@ class AdvertsController extends Controller
 	 */
 	public function update(Search $search, AdvertRequest $request, $id, $job_title)
 	{
-
 		$advert = Advert::find($id);
 
 		$advert->update([
@@ -314,7 +307,14 @@ class AdvertsController extends Controller
 
 			echo "Error: updating to index was unsuccessful.";
 		}
+	}
 
-		
+
+
+	public function myAdverts($id, $business_name)
+	{
+		$adverts = Adverts::find('employer_id', $id)->get();
+
+		return view('profiles.adverts', compact('adverts'));
 	}
 }

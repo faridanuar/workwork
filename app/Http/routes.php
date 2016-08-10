@@ -14,16 +14,12 @@ Route::get('/avatar', 'HomeController@avatar');
 
 Route::post('/upload-avatar', 'HomeController@uploadAvatar');
 
-
-
 /**
  * Social routes
  */
 Route::get('/redirect', 'SocialAuthController@redirect');
 
 Route::get('/callback', 'SocialAuthController@callback');
-
-
 
 /**
  * Assign Roles routes
@@ -32,33 +28,39 @@ Route::get('/choose', 'TypeController@type');
 
 Route::post('/set', 'TypeController@assignType');
 
+/**
+ * Company Profile routes
+ */
+Route::get('/edit-company', 'CompanyProfController@edit');
 
+Route::post('/save', 'CompanyProfController@store');
+
+Route::get('/company/{id}/{business_name}', 'CompanyProfController@profile')->name('company');
+
+Route::get('/logo', 'CompanyProfController@logo');
+
+Route::post('/upload-logo', 'CompanyProfController@uploadLogo');
+
+Route::get('/company/{id}/{business_name}/review', 'CompanyProfController@companyReview');
+
+Route::get('/company/my-adverts', 'CompanyProfController@myAdvert');
+
+Route::get('/advert/{id}/job-requests', 'CompanyProfController@jobRequest');
+
+Route::post('/profile/{id}/{user_id}/rate', 'CompanyProfController@rate');
 
 /**
- * Profile routes
+ * Job Seeker Profile routes
  */
+Route::get('/profile/{id}/{user_id}', 'JobSeekerProfController@profileInfo')->name('jobSeeker');
 
-Route::get('/edit-company', 'ProfileController@edit');
+Route::get('/edit-profile', 'JobSeekerProfController@edit');
 
-Route::post('/save', 'ProfileController@store');
+Route::post('/profile/save', 'JobSeekerProfController@store');
 
-Route::get('/company/{id}/{business_name}', 'ProfileController@profile')->name('company');
+Route::get('/profile/{id}/{user_id}/review', 'JobSeekerProfController@jobSeekerReview');
 
-Route::get('/logo', 'ProfileController@logo');
-
-Route::post('/upload-logo', 'ProfileController@uploadLogo');
-
-Route::get('/profile/{id}/{name}', 'ProfileInfoController@profileInfo')->name('jobSeeker');
-
-Route::get('/edit-profile', 'ProfileInfoController@edit');
-
-Route::post('/profile/save', 'ProfileInfoController@store');
-
-/**
- * Rating & review routes
- */
-Route::post('/company/{id}/{business_name}/rate', 'ProfileInfoController@rate');
-Route::get('/company/{id}/{business_name}/review', 'ProfileController@companyReview');
+Route::post('/company/{id}/{business_name}/rate', 'JobSeekerProfController@rate');
 
 /**
  * Adverts routes
@@ -73,10 +75,11 @@ Route::post('adverts/preview', 'AdvertsController@preview');
  * Adverts edit routes
  */
 Route::get('adverts/{id}/{job_title}/edit', 'AdvertsController@edit');
+
 Route::post('adverts/{id}/{job_title}/edit/update', 'AdvertsController@update');
 
 /**
-* Advert's Job Seeker Apply routes
+* Job Seeker Apply Advert routes
 */
 Route::get('/adverts/{id}/{job_title}/apply', 'ApplyController@apply');
 
@@ -86,9 +89,13 @@ Route::post('/adverts/{id}/{job_title}/apply/add', 'ApplyController@storeApply')
 * Subcription routes
 */
 Route::get('/plans', 'SubscribeController@plans');
+
 Route::get('/subscribe', 'SubscribeController@subscribe');
+
 Route::post('/checkout', 'SubscribeController@checkout');
+
 Route::get('/invoices', 'SubscribeController@invoices');
+
 Route::get('/invoices/download/{invoiceId}', 'SubscribeController@download');
 
 /**
@@ -100,7 +107,9 @@ Route::post('braintree/webhook', '\Laravel\Cashier\Http\Controllers\WebhookContr
 * Payment routes
 */
 Route::get('/status', 'StatusController@status');
+
 Route::get('/cancel', 'StatusController@cancel');
+
 Route::get('/resume', 'StatusController@resume');
 
 

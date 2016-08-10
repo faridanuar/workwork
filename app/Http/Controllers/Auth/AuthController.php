@@ -7,6 +7,7 @@ use Validator;
 
 use App\User;
 use App\Employer;
+use App\Job_Seeker;
 use \Braintree_ClientToken;
 use \Braintree_Transaction;
 
@@ -84,11 +85,17 @@ class AuthController extends Controller
 
                 $user->assignRole('job_seeker');
 
+                $employer = new Job_Seeker;
+
+                $employer->user()->associate($user);
+
+                $employer->save();
+
                 if($user){
                     Mail::send('mail.welcomeJobSeeker', compact('user'), function ($m) use ($user) {
                         $m->from('postmaster@sandbox12f6a7e0d1a646e49368234197d98ca4.mailgun.org', 'WorkWork');
 
-                        $m->to($user->email, $user->name)->subject('Welcome to WorkWork!');
+                        $m->to('farid@pocketpixel.com', $user->name)->subject('Welcome to WorkWork!');
                     });
                 }
 
@@ -106,7 +113,7 @@ class AuthController extends Controller
                     Mail::send('mail.welcomeEmployer', compact('user'), function ($m) use ($user) {
                         $m->from('postmaster@sandbox12f6a7e0d1a646e49368234197d98ca4.mailgun.org', 'WorkWork');
 
-                        $m->to($user->email, $user->name)->subject('Welcome to WorkWork!');
+                        $m->to('farid@pocketpixel.com', $user->name)->subject('Welcome to WorkWork!');
                     });
                 }
 
@@ -124,9 +131,10 @@ class AuthController extends Controller
 
         }
 
-
-
         return $user;
+        
+        return redirect()->intended('defaultpage');
+
 
     }
 }

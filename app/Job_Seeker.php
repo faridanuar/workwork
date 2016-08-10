@@ -25,6 +25,11 @@ class Job_Seeker extends Model
     ];
 
 
+    public function scopeFindJobSeeker($query, $id, $user_id)
+    {
+        return $query->where(compact('id', 'user_id'));
+    }
+
     /**
      * defining "job_seekers" table relationship with "users" table
      */
@@ -41,6 +46,11 @@ class Job_Seeker extends Model
     public function rating()
     {
         return $this->hasMany(Employer_Rating::class, 'job_seeker_id');
+    }
+
+    public function ownRating()
+    {
+        return $this->hasMany(Job_Seeker_Rating::class, 'job_seeker_id');
     }
 
 

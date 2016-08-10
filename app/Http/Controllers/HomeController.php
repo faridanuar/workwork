@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
+use App\Advert;
+
 class HomeController extends Controller
 {
 
@@ -42,6 +44,8 @@ class HomeController extends Controller
         if($user->employer)
         {
             $role = $user->employer;
+
+            $adverts = Advert::where('employer_id', $role->id)->get();
 
         }else{
 

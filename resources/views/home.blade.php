@@ -20,8 +20,12 @@
             <a href="/company/{{ $role->id }}/{{ $role->business_name }}" class="btn btn-primary">Company Profile</a>
             @endcan
 
+            @can('view_my_adverts')
+            <a href="/company/my-adverts" class="btn btn-primary">View Adverts</a>
+            @endcan
+
             @can('edit_info')
-            <a href="/profile/{{ $role->id }}/{{ $user->name }}" class="btn btn-primary">Profile Info</a>
+            <a href="/profile/{{ $role->id }}/{{ $role->user_id }}" class="btn btn-primary">Profile Info</a>
             @endcan
 
             <a href="/avatar" class="btn btn-primary">Upload Avatar</a>
@@ -29,5 +33,5 @@
     </div>
 </div>
 
-@include('javaPlugins.defaultPhoto')
+@include('java_plugins.defaultPhoto')
 @endsection

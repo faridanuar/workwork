@@ -5,32 +5,68 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Job_Seeker;
+use App\Job_Seeker_Rating;
 use App\Employer_Rating;
 use App\Http\Requests;
 
-class ProfileInfoController extends Controller
+class JobSeekerProfController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('jobSeeker', ['except' => ['profileInfo']]);
+        $this->middleware('jobSeeker', ['except' => ['profileInfo','jobSeekerReview']]);
     }
 
 
 
-    public function profileInfo(Request $request, $id, $name)
+    public function profileInfo(Request $request, $id, $user_id)
     {
-    	$profileInfo = Job_Seeker::find($id);
+    	$profileInfo = Job_Seeker::findJobSeeker($id, $user_id)->first();
 
-    	$user = $request->user();
+        $ratings = $profileInfo->ownRating->count();
 
+        $ratingSum = $profileInfo->ownRating->sum('rating');
+
+        $user = $request->user();
+
+        $rated = false;
+
+
+        if($ratings === 0)
+        {
+            $average = 0;
+
+        }else{
+
+            $average = $profileInfo->ownRating->avg('rating');
+        }
 
 
     	if($user)
         {
-        	$jobSeeker = $user->jobSeeker;
+            $employer = $user->employer;
 
-        	if($jobSeeker)
-        	{
+            if($employer)
+            {
+                $haveRating = Job_Seeker_Rating::where('job_seeker_id', $id)->where('employer_id', $employer->id)->first();
+
+                if($haveRating === null){
+
+                    $rated = false;
+
+                }else{
+
+                    if($haveRating->employer_id === $employer->id)
+                    {
+                        $rated = true;
+                    } 
+                }    
+            }
+
+
+            $jobSeeker = $user->jobSeeker;
+
+            if($jobSeeker)
+            {
                 if($jobSeeker->id === $profileInfo->id)
                 {
                     $authorize = true;
@@ -42,7 +78,7 @@ class ProfileInfoController extends Controller
             }
         }
 
-    	return view('profiles.profile_info', compact('user','authorize','jobSeeker'));
+    	return view('profiles.profile_info.profile', compact('user','profileInfo','authorize','rated','average', 'ratingSum'));
 
     }
 
@@ -54,7 +90,7 @@ class ProfileInfoController extends Controller
 
     	$jobSeeker = $user->jobSeeker;
 
-    	return view('profiles.profile_info_edit', compact('user', 'jobSeeker'));
+    	return view('profiles.profile_info.profile_edit', compact('user', 'jobSeeker'));
     }
 
 
@@ -88,12 +124,12 @@ class ProfileInfoController extends Controller
     	// set flash attribute and key. example --> flash('success message', 'flash_message_level')
 		flash('Your profile has been updated', 'success');
 
-    	return redirect()->route('jobSeeker', [$jobSeeker->id,$user->name]);
+    	return redirect()->route('jobSeeker', [$jobSeeker->id,$jobSeeker->user_id]);
     }
 
 
 
-    public function rate(Request $request, $id, $business_name)
+    public function rate(Request $request)
     {
         $user = $request->user();
 
@@ -121,5 +157,16 @@ class ProfileInfoController extends Controller
         $rating->save();
 
         return redirect()->back();
+    }
+
+
+
+    public function jobSeekerReview($id, $user_id)
+    {
+        $jobSeeker = Job_Seeker::findJobSeeker($id, $user_id)->first();
+
+        $userReviews = $jobSeeker->ownRating()->paginate(5);
+
+        return view('profiles.profile_info.profile_reviews', compact('userReviews'));
     }
 }

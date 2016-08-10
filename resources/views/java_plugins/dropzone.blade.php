@@ -27,4 +27,4 @@
 
 </script>
 
-@include('javaPlugins.defaultPhoto')
+@include('java_plugins.defaultPhoto')
