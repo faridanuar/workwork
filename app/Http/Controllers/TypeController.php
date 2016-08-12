@@ -75,7 +75,7 @@ class TypeController extends Controller
                 //save changes
                 $employer->save();
 
-                return redirect('/company-create');
+                return redirect('/create-company');
 
             }else{
 
