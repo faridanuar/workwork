@@ -60,7 +60,7 @@ class TypeController extends Controller
                 //assign roles permissions with "assignRole" method from hasRoles trait
                 $user->assignRole('job_seeker');
 
-                return redirect('/profile-create');
+                return redirect('/create-profile');
 
             }elseif($user && $user->type === 'employer'){
 
