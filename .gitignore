@@ -5,3 +5,5 @@ Homestead.yaml
 Homestead.json
 .env
 .DS_Store
+composer.lock
+.vagrant/machines/default/virtualbox/*
