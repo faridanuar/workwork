@@ -7,11 +7,13 @@ $fancy-font: 'Josefin Slab', serif;
 
 // App Styles
 body {
-    padding-top: 60px;
+    // padding-top: 60px;
 }
 
 .ww-navbar {
     background-color: $brand-color;
+    border-bottom: 2px solid rgba(0,0,0,0.2);
+    box-shadow: 0 8px 0 0 rgba(0,0,0,0.1);
 }
 
 #adverts {
@@ -144,7 +146,7 @@ $flash-padding: 10px;
 $flash-text: center;
 
 .Alert--Info {
-    
+
     background: #8c8c8c;
     color: #000000;
     margin: $flash-margin;
@@ -153,7 +155,7 @@ $flash-text: center;
 }
 
 .Alert--Success {
-    
+
     background: #b3ffb3;
     color: #000000;
     margin: $flash-margin;
@@ -163,7 +165,7 @@ $flash-text: center;
 }
 
 .Alert--Error {
-    
+
     background: #e62e00;
     color: #000000;
     margin: $flash-margin;
@@ -177,7 +179,7 @@ search autocomplete styling section
 **********************************/
 
 .algolia-autocomplete {
-    
+
     width:100%;
 }
 
@@ -216,12 +218,12 @@ category checkbox styling section
 **********************************/
 
 .ais-refinement-list--label > input[type="checkbox"] {
-    
+
     margin-right: 5px;
 }
 
 .ais-refinement-list--count {
-    
+
     background: #ddd;
 
     padding: 0px 5px 0 5px;
@@ -233,7 +235,7 @@ search results styling section
 **********************************/
 
 .panel-default em {
-    
+
     background-color: yellow;
 }
 
@@ -243,7 +245,7 @@ subscribe plan styling section
 **********************************/
 
 ul.plan {
-    
+
    list-style-type: square;
    margin-top: 30px;
 }
@@ -254,7 +256,7 @@ checkout styling section
 **********************************/
 
 .checkout {
-    
+
     margin-top: 20px;
 }
 
@@ -263,7 +265,7 @@ checkout styling section
 **********************************/
 
 .form-group-comment {
-    
+
     width: 500px;
 }
 
@@ -272,7 +274,7 @@ dropzone styling section
 **********************************/
 
 .dropzone {
-    
+
     height: 200px;
     width: 200px;
 }
