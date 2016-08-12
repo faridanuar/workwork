@@ -49,16 +49,6 @@
 <hr>
 
 <div class="form-group">
-	<label for="business_name">Business name:</label>
-	<input type="text" name="business_name" id="business_name" class="form-control" value="{{ old('business_name') }}" required>
-</div>
-
-<div class="form-group">
-	<label for="business_logo">Business logo: (optional)</label>
-	<input type="file" name="business_logo" id="business_logo" class="form-control" value="{{ old('business_logo') }}">
-</div> 	
-
-<div class="form-group">
 	<label for="street">Street:</label>
 	<input type="text" name="street" id="street" class="form-control" value="{{ old('street') }}" required>
 </div> 

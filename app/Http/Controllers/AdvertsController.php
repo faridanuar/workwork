@@ -127,13 +127,34 @@ class AdvertsController extends Controller
 
 		$user = $request->user();
 
-		$employer = $user->employer()->first();
+		$employer = $user->employer;
 
 		// what do we need to do? if the request validates, the body below of this method will be hit
 		// validate the form - DONE		
 		// persist the advert - DONE
 		//Advert::create($request->all());
-		$saveToDatabase = $employer->advert()->create($request->all());
+		$saveToDatabase = $employer->advert()->create(
+			[
+		    	'id' => $request->id,
+		        'job_title' => $request->job_title,
+		        'salary'  => (float)$request->salary,
+		        'description'  => $request->description,
+		        'business_name'  => $employer->business_name,
+		        'location'  => $request->location,
+		        'street'  => $request->street,
+		        'city'  => $request->city,
+		        'zip'  => $request->zip,
+		        'state'  => $request->state,
+		        'country'  => $request->country,
+		        'created_at'  => $request->created_at->toDateTimeString(),
+		        'updated_at'  => $request->updated_at->toDateTimeString(),
+		        'employer_id'  => $request->employer_id,
+		        'skill'  => $request->skill,
+		        'category'  => $request->category,
+		        'rate'  => $request->rate,
+		        'oku_friendly'  => $request->oku_friendly,
+			]
+		);
 
 		if($saveToDatabase)
 		{
@@ -147,7 +168,6 @@ class AdvertsController extends Controller
 			        'salary'  => (float)$saveToDatabase->salary,
 			        'description'  => $saveToDatabase->description,
 			        'business_name'  => $saveToDatabase->business_name,
-			        'business_logo'  => $saveToDatabase->business_logo,
 			        'location'  => $saveToDatabase->location,
 			        'street'  => $saveToDatabase->street,
 			        'city'  => $saveToDatabase->city,
@@ -252,7 +272,6 @@ class AdvertsController extends Controller
 				'salary' => (float)$request->salary,
 				'description' => $request->description,
 				'business_name' => $request->business_name,
-				'business_logo'  => $request->business_logo,
 				'location' => $request->location,
 				'street' => $request->street,
 				'city' => $request->city,
@@ -279,7 +298,6 @@ class AdvertsController extends Controller
 		        'salary'  => (float)$advert->salary,
 		        'description'  => $advert->description,
 		        'business_name'  => $advert->business_name,
-		        'business_logo'  => $advert->business_logo,
 		        'location'  => $advert->location,
 		        'street'  => $advert->street,
 		        'city'  => $advert->city,
