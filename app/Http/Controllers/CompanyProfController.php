@@ -19,25 +19,36 @@ class CompanyProfController extends Controller
 
     public function __construct()
     {
-        $this->middleware('employer', ['except' => ['profile', 'companyReview']]);
+        $this->middleware('employer', ['except' => ['profile', 'companyReview', 'create']]);
+    }
+
+    public function create()
+    {
+        return view('profiles.company.company_create');
     }
 
 
 
     public function profile(Request $request, $id, $business_name)
     {
-        $company = Employer::findEmployer($id, $business_name)->first();
+        if($business_name === null){
 
-        $ratings = $company->ownRating->count();
+            return redirect('/create-company');
 
-        $ratingSum = $company->ownRating->sum('rating');
+        }else{
 
-        $user = $request->user();
+            $company = Employer::findEmployer($id, $business_name)->first();
 
-        $authorize = false;
+            $ratings = $company->ownRating->count();
 
-        $rated = false;
+            $ratingSum = $company->ownRating->sum('rating');
 
+            $user = $request->user();
+
+            $authorize = false;
+
+            $rated = false;
+        }
 
 
         if($ratings === 0)
@@ -90,7 +101,7 @@ class CompanyProfController extends Controller
 
     public function edit(Request $request)
     {
-        $employer = $request->user()->employer()->first();
+        $employer = $request->user()->employer;
 
         return view('profiles.company.company_edit', compact('employer'));
     }
@@ -121,7 +132,9 @@ class CompanyProfController extends Controller
 
         flash('Your profile has been updated', 'success');
 
-        return redirect()->route('company', [$employer->id,$employer->business_name]);
+        return Redirect::intended('/home');
+
+        //return redirect()->route('company', [$employer->id,$employer->business_name]);
     }
 
 
@@ -207,7 +220,8 @@ class CompanyProfController extends Controller
     {
         $employerID = $request->user()->employer->id;
 
-        $myAdverts = Advert::where('employer_id', $employerID)->get();
+        $myAdverts = Advert::where('employer_id', $employerID)->orderBy('updated_at', 'desc')
+                ->get();
 
         return view('profiles.company.company_adverts', compact('myAdverts'));
     }

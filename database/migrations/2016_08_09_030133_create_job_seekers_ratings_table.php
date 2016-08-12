@@ -22,11 +22,11 @@ class CreateJobSeekersRatingsTable extends Migration
             $table->timestamps();
 
             $table->foreign('employer_id')
-                ->references('id')->on('employers')
-                ->onDelete('cascade');
+                ->references('id')->on('employers');
 
             $table->foreign('job_seeker_id')
-                ->references('id')->on('job_seekers');
+                ->references('id')->on('job_seekers')
+                ->onDelete('cascade');
         });
     }
 

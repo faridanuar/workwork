@@ -55,7 +55,6 @@ class StatusController extends Controller
 
 			echo 'on Grace Period:';
 			dd($user->subscription('main')->onGracePeriod());
-
 		}
 	}
 

@@ -17,7 +17,11 @@
                 </div>
             </div>
             @can('edit_company')
-            <a href="/company/{{ $role->id }}/{{ $role->business_name }}" class="btn btn-primary">Company Profile</a>
+                @if($role->business_name)
+                    <a href="/company/{{ $role->id }}/{{ $role->business_name }}" class="btn btn-primary">Company Profile</a>
+                @else
+                    <a href="/create-company" class="btn btn-primary">Create Profile</a>
+                @endif
             @endcan
 
             @can('view_my_adverts')
@@ -25,7 +29,11 @@
             @endcan
 
             @can('edit_info')
-            <a href="/profile/{{ $role->id }}/{{ $role->user_id }}" class="btn btn-primary">Profile Info</a>
+                @if($role->location)
+                    <a href="/profile/{{ $role->id }}/{{ $role->user_id }}" class="btn btn-primary">Profile Info</a>
+                @else
+                    <a href="/create-profile" class="btn btn-primary">Create Profile</a>
+                @endif
             @endcan
 
             <a href="/avatar" class="btn btn-primary">Upload Avatar</a>

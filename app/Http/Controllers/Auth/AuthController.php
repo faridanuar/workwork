@@ -83,58 +83,52 @@ class AuthController extends Controller
 
         if ( $user && $user->type == 'job_seeker'){
 
-                $user->assignRole('job_seeker');
+            $user->assignRole('job_seeker');
 
-                $employer = new Job_Seeker;
+            $employer = new Job_Seeker;
 
-                $employer->user()->associate($user);
+            $employer->user()->associate($user);
 
-                $employer->save();
+            $employer->save();
 
-                if($user){
-                    Mail::send('mail.welcomeJobSeeker', compact('user'), function ($m) use ($user) {
-                        $m->from('postmaster@sandbox12f6a7e0d1a646e49368234197d98ca4.mailgun.org', 'WorkWork');
+            if($user){
+                Mail::send('mail.welcomeJobSeeker', compact('user'), function ($m) use ($user) {
+                    $m->from('postmaster@sandbox12f6a7e0d1a646e49368234197d98ca4.mailgun.org', 'WorkWork');
 
-                        $m->to('farid@pocketpixel.com', $user->name)->subject('Welcome to WorkWork!');
-                    });
-                }
+                    $m->to('farid@pocketpixel.com', $user->name)->subject('Welcome to WorkWork!');
+                });
+            }
 
         }elseif($user && $user->type == 'employer'){
 
-                $user->assignRole('employer');
+            $user->assignRole('employer');
 
-                $employer = new Employer;
+            $employer = new Employer;
 
-                $employer->user()->associate($user);
+            $employer->user()->associate($user);
 
-                $employer->save();
+            $employer->save();
 
-                if($user){
-                    Mail::send('mail.welcomeEmployer', compact('user'), function ($m) use ($user) {
-                        $m->from('postmaster@sandbox12f6a7e0d1a646e49368234197d98ca4.mailgun.org', 'WorkWork');
+            if($user){
+                Mail::send('mail.welcomeEmployer', compact('user'), function ($m) use ($user) {
+                    $m->from('postmaster@sandbox12f6a7e0d1a646e49368234197d98ca4.mailgun.org', 'WorkWork');
 
-                        $m->to('farid@pocketpixel.com', $user->name)->subject('Welcome to WorkWork!');
-                    });
-                }
+                    $m->to('farid@pocketpixel.com', $user->name)->subject('Welcome to WorkWork!');
+                });
+            }
 
-                $user->update([
+            $user->update([
 
-                    'trial_ends_at' => Carbon::now()->addDays(7),
+                'trial_ends_at' => Carbon::now()->addDays(7),
+            ]);
 
-                ]);
-
-                $user->save();
+            $user->save();
 
         }else{
 
              abort(401, 'You are not allowed.');
-
         }
 
         return $user;
-        
-        return redirect()->intended('defaultpage');
-
-
     }
 }

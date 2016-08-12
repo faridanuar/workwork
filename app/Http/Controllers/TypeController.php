@@ -55,12 +55,14 @@ class TypeController extends Controller
         if($user){
 
             //check what kind of role have been selected and assign roles premission to the user
-            if ( $user && $user->type == 'job_seeker')
+            if ( $user && $user->type === 'job_seeker')
             {
                 //assign roles permissions with "assignRole" method from hasRoles trait
                 $user->assignRole('job_seeker');
 
-            }elseif($user && $user->type == 'employer'){
+                return redirect('/profile-create');
+
+            }elseif($user && $user->type === 'employer'){
 
                 $user->assignRole('employer');
 
@@ -73,6 +75,8 @@ class TypeController extends Controller
                 //save changes
                 $employer->save();
 
+                return redirect('/company-create');
+
             }else{
 
                 //abort if condition is not met
@@ -81,7 +85,7 @@ class TypeController extends Controller
             }
         }
 
-        return redirect('/home');
+        
     }
 
 }

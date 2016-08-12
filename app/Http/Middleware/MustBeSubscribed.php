@@ -19,13 +19,16 @@ class MustBeSubscribed
         //fetch user data with request from authentication
         $user = $request->user();
 
-        if (($user && $user->hasRole('employer') && $user->subscribed('main')) OR ($user && $user->hasRole('employer') && $user->onTrial()))
-        {
+        if(!$user){
 
-            return $next($request);
+            if ((!$user && $user->hasRole('employer') && $user->subscribed('main')) OR !($user && $user->hasRole('employer') && $user->onTrial()))
+            {
+                flash('Your must be registered as a company and your subscription must be active to use this feature', 'error');
 
+                return redirect('/home');
+            }
         }
-        
-        redirect('/');
+
+        return $next($request);
     }
 }

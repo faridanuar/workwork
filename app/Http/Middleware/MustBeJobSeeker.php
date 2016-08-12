@@ -21,12 +21,11 @@ class MustBeJobSeeker
 
         if (! $user){
 
-            return redirect('/home');
+            return redirect()->guest('login');
 
             if(! $user->hasRole('job_seeker')){
 
                 return redirect()->guest('login');
-
             }
 
         }

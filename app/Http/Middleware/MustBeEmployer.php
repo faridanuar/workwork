@@ -19,11 +19,12 @@ class MustBeEmployer
         //fetch user data with request from authentication
         $user = $request->user();
 
-        if($user && $user->hasRole('employer')){
+        if(! $user && $user->hasRole('employer')){
 
-            return $next($request);
+            return redirect()->guest('login');
+
         }
 
-        redirect('/home');
+        return $next($request);
     }
 }

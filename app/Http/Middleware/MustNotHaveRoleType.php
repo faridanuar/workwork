@@ -2,6 +2,8 @@
 
 namespace App\Http\Middleware;
 
+use App\User;
+
 use Closure;
 
 class MustNotHaveRoleType
@@ -18,13 +20,14 @@ class MustNotHaveRoleType
         //fetch user data with request from authentication
         $user = $request->user();
 
-        if ( $user && ! $user->type){
+        if ( $user && !$user->type OR !$user->hasRole('employer') OR !$user->hasRole('job_seeker')){
 
             return $next($request);
 
-        }
+        }else{
 
-        redirect('/');
+            return redirect()->guest('login');
+        }
         
     }
 }

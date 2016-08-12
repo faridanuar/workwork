@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
+use App\User;
 use App\Advert;
 
 class HomeController extends Controller
@@ -35,7 +36,7 @@ class HomeController extends Controller
         $role = "";
 
         //check if user has a role type, if not it redirect the user
-        if(! $type)
+        if(!$user->type OR !$user->hasRole('employer') && !$user->hasRole('job_seeker'))
         {
             return redirect('/choose');
         }
@@ -50,7 +51,6 @@ class HomeController extends Controller
         }else{
 
             $role = $user->jobSeeker;
-
         }
 
         //return user to home dashboard if user has a role type

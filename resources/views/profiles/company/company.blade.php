@@ -60,7 +60,7 @@
 		{{ $company->state }}
 		</div>
 
-		<a href="/company/{{ $company->id }}/{{ $company->business_name }}/review">Review</a>
+		<a href="/company/{{ $company->id }}/{{ $company->business_name }}/review">Reviews</a>
 
 		@can('edit_company')
 				<div>

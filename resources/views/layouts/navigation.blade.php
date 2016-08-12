@@ -23,7 +23,7 @@
                 <!-- Left Side Of Navbar -->
                 <ul class="nav navbar-nav">
                     <!-- <li><a href="{{ url('/home') }}">Home</a></li> -->
-                </ul>   
+                </ul>
 
                 <!-- Right Side Of Navbar -->
                 <ul class="nav navbar-nav navbar-right">
@@ -44,9 +44,13 @@
                     @endif
                 </ul>
 
+                <a href="{{ url('/adverts') }}" class="btn btn-primary navbar-btn navbar-right">Advertisements</a>
+                
                 @can('edit_advert')
                     <a href="{{ url('/adverts/create') }}" class="btn btn-primary navbar-btn navbar-right">Create a Job Ad</a>
                 @endcan
+
+                 
             </div>
         </div>
     </nav>

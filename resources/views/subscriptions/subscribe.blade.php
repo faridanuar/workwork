@@ -18,9 +18,9 @@
 			<h4>Select a plan:</h4>
 			  <select name="plan" id="plan" class="form-control" required>
 			  <option value="" selected disabled>Select a plan...</option>
-			  <option value="1month" >TAUKE PLAN</option>
-			  <option value="2month" >GODFATHER PLAN</option>
-			  <option value="pioneerPromo" >PIONEER PROMO PLAN</option>
+			  <option value="1_Month_Plan" >TAUKE PLAN</option>
+			  <option value="2_Month_Plan" >GODFATHER PLAN</option>
+			  <option value="Pioneer_Promo" >PIONEER PROMO PLAN</option>
 			  </select>
 		 </div>
 

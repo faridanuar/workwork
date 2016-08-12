@@ -18,9 +18,9 @@ class JobSeekerProfController extends Controller
 
 
 
-    public function profileInfo(Request $request, $id, $user_id)
+    public function profileInfo(Request $request, $id, $userID)
     {
-    	$profileInfo = Job_Seeker::findJobSeeker($id, $user_id)->first();
+    	$profileInfo = Job_Seeker::findJobSeeker($id, $userID)->first();
 
         $ratings = $profileInfo->ownRating->count();
 

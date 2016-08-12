@@ -31,6 +31,8 @@ Route::post('/set', 'TypeController@assignType');
 /**
  * Company Profile routes
  */
+Route::get('/create-company', 'CompanyProfController@create');
+
 Route::get('/edit-company', 'CompanyProfController@edit');
 
 Route::post('/save', 'CompanyProfController@store');
@@ -52,6 +54,8 @@ Route::post('/profile/{id}/{user_id}/rate', 'CompanyProfController@rate');
 /**
  * Job Seeker Profile routes
  */
+Route::get('/create-profile', 'JobSeekerProfController@create');
+
 Route::get('/profile/{id}/{user_id}', 'JobSeekerProfController@profileInfo')->name('jobSeeker');
 
 Route::get('/edit-profile', 'JobSeekerProfController@edit');

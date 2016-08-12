@@ -52,7 +52,7 @@
 		{{ $profileInfo->country }}
 		</div>
 
-		<a href="/profile/{{ $profileInfo->id }}/{{ $profileInfo->user_id }}/review">Review</a>
+		<a href="/profile/{{ $profileInfo->id }}/{{ $profileInfo->user_id }}/review">Reviews</a>
 
 		@can('edit_info')
 			@if ($authorize === true)

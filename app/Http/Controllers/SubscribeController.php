@@ -32,7 +32,6 @@ class SubscribeController extends Controller
 
 	public function subscribe()
 	{
-
 		return view('subscriptions.subscribe');
 	}
 
@@ -40,39 +39,42 @@ class SubscribeController extends Controller
 
 	public function checkout(Request $request)
 	{
+		// fetch user authentication
 		$user = $request->user();
 
+		// fetch user selected plan
 		$plan = $request->plan;
+
+		// fetching the card token that has been given and set as a nounce from braintree server and set it as a variable.
+		$nonceFromTheClient = $request->payment_method_nonce;
 
 
 		if($user->subscribed('main')){
 
-			echo 'You have already subscribed to a plan';
+			// change to a new plan
+			$subscribing = $user->subscription('main')->swap($plan);
 
 		}else{
 
-			// fetching the card token that has been given and set as a nounce from braintree server and set it as a variable.
-			$nonceFromTheClient = $request->payment_method_nonce;
-
 			// create a NEW subscribtion for the user
-			$subscribing = $user->newSubscription('main', $plan)->create($nonceFromTheClient);
-
-			// check if subscribtion is a success
-			if($subscribing)
-			{
-				flash('you have successfully subscribe to a new plan', 'success');
-
-				redirect('/home');
-
-			}else{
-
-				flash('Checkout was unsuccessful, please check back your paymnent info and try again', 'error');
-
-				redirect('/subscribe');
-			}
-
+			$subscribing = $user->newSubscription('main', $plan)->create($nonceFromTheClient, [
+				'contact' => $user->contact,
+			]);
 		}
 
+		// check if subscribtion is a success
+		if($subscribing)
+		{
+			flash('you have successfully subscribe to a new plan', 'success');
+
+			return redirect('/home');
+
+		}else{
+
+			flash('Checkout was unsuccessful, please check back your paymnent info and try again', 'error');
+
+			return redirect('/subscribe');
+		}
 	}
 
 
@@ -95,8 +97,8 @@ class SubscribeController extends Controller
 		$user = $request->user();
 
 		return $user->downloadInvoice($invoiceId, [
-        'vendor'  => 'Your Company',
-        'product' => 'Your Product',
+        'vendor'  => 'WorkWork.Com',
+        'product' => 'WorkWork Subscription Plan',
 
         ]);
 	}
