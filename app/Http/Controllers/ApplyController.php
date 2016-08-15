@@ -21,7 +21,7 @@ class ApplyController extends Controller
 	*/
 	public function __construct()
 	{
-	    $this->middleware('jobSeeker', ['except' => ['apply']]);
+	    $this->middleware('jobSeeker');
 	}
 
 
@@ -88,7 +88,6 @@ class ApplyController extends Controller
 				'zip' => $request->zip,
 				'state' => $request->state,
 				'country' => $request->country,
-				
 			]);
 		}
 

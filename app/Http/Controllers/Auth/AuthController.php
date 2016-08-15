@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Auth;
 
-use Mail;
 use Validator;
 
 use App\User;
@@ -72,6 +71,7 @@ class AuthController extends Controller
      */
     protected function create(array $data)
     {
+        // create and store a new row of record for newly registered user
         $user = User::create([
             'name' => $data['name'],
             'email' => $data['email'],
@@ -81,47 +81,19 @@ class AuthController extends Controller
         ]);
         
 
-        if ( $user && $user->type == 'job_seeker'){
+        if($user && $user->type == 'job_seeker'){
 
-            $user->assignRole('job_seeker');
-
-            $employer = new Job_Seeker;
-
-            $employer->user()->associate($user);
-
-            $employer->save();
-
-            if($user){
-                Mail::send('mail.welcomeJobSeeker', compact('user'), function ($m) use ($user) {
-                    $m->from('postmaster@sandbox12f6a7e0d1a646e49368234197d98ca4.mailgun.org', 'WorkWork');
-
-                    $m->to('farid@pocketpixel.com', $user->name)->subject('Welcome to WorkWork!');
-                });
-            }
 
         }elseif($user && $user->type == 'employer'){
 
-            $user->assignRole('employer');
-
-            $employer = new Employer;
-
-            $employer->user()->associate($user);
-
-            $employer->save();
-
-            if($user){
-                Mail::send('mail.welcomeEmployer', compact('user'), function ($m) use ($user) {
-                    $m->from('postmaster@sandbox12f6a7e0d1a646e49368234197d98ca4.mailgun.org', 'WorkWork');
-
-                    $m->to('farid@pocketpixel.com', $user->name)->subject('Welcome to WorkWork!');
-                });
-            }
-
+            // update user braintree info
             $user->update([
 
+                //set trial period for newly registered employer
                 'trial_ends_at' => Carbon::now()->addDays(7),
             ]);
 
+            // save changes made
             $user->save();
 
         }else{

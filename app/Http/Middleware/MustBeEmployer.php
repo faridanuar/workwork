@@ -16,15 +16,17 @@ class MustBeEmployer
      */
     public function handle($request, Closure $next)
     {
-        //fetch user data with request from authentication
+        //store user info in a variable
         $user = $request->user();
 
-        if(! $user && $user->hasRole('employer')){
+        //check if user is not authenticated and does not have employer role
+        if(!$user && !$user->hasRole('employer')){
 
+            // redirect if user is not authorized
             return redirect()->guest('login');
-
         }
 
+        // return to true if user is authorized
         return $next($request);
     }
 }

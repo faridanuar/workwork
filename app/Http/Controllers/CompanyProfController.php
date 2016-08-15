@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
+use Mail;
+
 use App\Advert;
 use App\Employer;
 use App\jobSeeker;
@@ -29,6 +31,70 @@ class CompanyProfController extends Controller
 
 
 
+    public function store(Request $request)
+    {
+        // store user info in variable
+        $user = $request->user();
+
+        // update user info
+        $user->update([
+
+            //update user info
+            'name' => $request->name,
+            'contact' => $request->contact,
+        ]);
+
+        //save user's info
+        $user->save();
+
+        // create a new user_id and fields and store it in jobseekers table
+        $employer = $user->employer()->create([
+
+            // 'column' => request->'field'
+            'business_name' => $request->business_name,
+            'business_category' => $request->business_category,
+            'business_contact' => $request->business_contact,
+            'business_website' => $request->business_website,
+            'location' => $request->location,
+            'street' => $request->street,
+            'city' => $request->city,
+            'zip' => $request->zip,
+            'state' => $request->state,
+            'company_intro' => $request->company_intro,
+        ]);
+
+        //set user_id in the Employer model using associate method
+        $employer->user()->associate($user);
+
+        //save changes
+        $employer->save();
+
+        //assign user a roles with permissions using "assignRole" method from hasRoles trait
+        $user->assignRole('employer');
+
+        // check if user storing procedure is a success
+        if($user){
+
+            // use send method form Mail facade to send email. ex: send('view', 'info / array of data', fucntion)
+            Mail::send('mail.welcomeEmployer', compact('user'), function ($m) use ($user) {
+
+                // set email sender stmp url and sender name
+                $m->from('postmaster@sandbox12f6a7e0d1a646e49368234197d98ca4.mailgun.org', 'WorkWork');
+
+                // set email recepient and subject
+                $m->to('farid@pocketpixel.com', $user->name)->subject('Welcome to WorkWork!');
+            });
+        }
+
+        //set success flash message
+        flash('Your profile has been updated', 'success');
+
+        // redirect to home
+        return redirect('/home');
+    }
+
+
+
     public function profile(Request $request, $id, $business_name)
     {
         if($business_name === null){
@@ -40,8 +106,6 @@ class CompanyProfController extends Controller
             $company = Employer::findEmployer($id, $business_name)->first();
 
             $ratings = $company->ownRating->count();
-
-            $ratingSum = $company->ownRating->sum('rating');
 
             $user = $request->user();
 
@@ -94,7 +158,7 @@ class CompanyProfController extends Controller
             }
         }
 
-        return view('profiles.company.company', compact('company', 'authorize', 'rated', 'average', 'ratingSum'));
+        return view('profiles.company.company', compact('company', 'authorize', 'rated', 'average', 'ratings'));
     }
 
 
@@ -108,9 +172,20 @@ class CompanyProfController extends Controller
 
 
 
-    public function store(EmployerRequest $request)
+    public function update(EmployerRequest $request)
     {
         $user = $request->user();
+
+        // update user info
+        $user->update([
+
+            //update user info
+            'name' => $request->name,
+            'contact' => $request->contact,
+        ]);
+
+        //save user's info
+        $user->save();
 
         $employer = $user->employer()->first();
 
@@ -132,9 +207,7 @@ class CompanyProfController extends Controller
 
         flash('Your profile has been updated', 'success');
 
-        return Redirect::intended('/home');
-
-        //return redirect()->route('company', [$employer->id,$employer->business_name]);
+        return redirect()->route('company', [$employer->id,$employer->business_name]);
     }
 
 
@@ -200,6 +273,8 @@ class CompanyProfController extends Controller
         $rating->employer()->associate($employer->id);
 
         $rating->save();
+
+        flash('Thank you for your feedback', 'success');
 
         return redirect()->back();
     }

@@ -11,9 +11,9 @@
 
 	<img id="photo" src="{{ $profileInfo->user->avatar }}" height="200" width="200" onerror="imgError(this);"/>
 
-	<h2>{{ $average }} out of 5</h2>
+	<h2>{{ $average }} out of 5 (STAR)</h2>
 
-	<h4>Ratings: +{{ $ratingSum }}</h4>
+	<h4>Ratings: {{ $ratings }}</h4>
 
 	<h1>{{ $profileInfo->user->name }}</h1>
 
@@ -57,7 +57,7 @@
 		@can('edit_info')
 			@if ($authorize === true)
 				<div>
-				<a href="/edit-profile" class="btn btn-primary">EDIT</a>
+				<a href="/profile/edit" class="btn btn-primary">EDIT</a>
 				</div>
 			@else
 

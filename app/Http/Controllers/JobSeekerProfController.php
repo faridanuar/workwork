@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
+use Mail;
+
 use App\Job_Seeker;
 use App\Job_Seeker_Rating;
 use App\Employer_Rating;
@@ -18,13 +20,78 @@ class JobSeekerProfController extends Controller
 
 
 
-    public function profileInfo(Request $request, $id, $userID)
+    public function create(Request $request)
     {
-    	$profileInfo = Job_Seeker::findJobSeeker($id, $userID)->first();
+        $user = $request->user();
+
+        return view('profiles.profile_info.profile_create', compact('user'));
+    }
+
+
+
+    public function store(Request $request)
+    {
+        $user = $request->user();
+
+        $user->update([
+            // update user info
+            'name' => $request->name,
+            'contact' => $request->contact,
+        ]);
+
+        $user->save();
+
+
+        // create a new user_id and fields and store it in jobseekers table
+        $jobSeeker = $user->jobSeeker()->create([
+
+            // 'column' => request->'field'
+            'age' => $request->age,
+            'location' => $request->location,
+            'street' => $request->street,
+            'city' => $request->city,
+            'zip' => $request->zip,
+            'state' => $request->state,
+            'country' => $request->country, 
+        ]);
+
+        // set user_id in the row created in the Job_Seeker model using associate method
+        $jobSeeker->user()->associate($user);
+
+        // save user's job seeker profile info
+        $jobSeeker->save();
+
+        // assign role "job_seeker" permissions with "assignRole" method from hasRoles trait
+        $user->assignRole('job_seeker');
+
+        // check if user storing procedure is a success
+        if($user){
+
+            // use send method form Mail facade to send email. ex: send('view', 'info / array of data', fucntion)
+            Mail::send('mail.welcomeJobSeeker', compact('user'), function ($m) use ($user) {
+
+                // set email sender stmp url and sender name
+                $m->from('postmaster@sandbox12f6a7e0d1a646e49368234197d98ca4.mailgun.org', 'WorkWork');
+
+                // set email recepient and subject
+                $m->to('farid@pocketpixel.com', $user->name)->subject('Welcome to WorkWork!');
+            });
+        }
+
+        // set flash attribute and key. example --> flash('success message', 'flash_message_level')
+        flash('Your profile has been updated', 'success');
+
+        // redirect to home
+        return redirect('/home');
+    }
+
+
+
+    public function profileInfo(Request $request, $id, $user_id)
+    {
+    	$profileInfo = Job_Seeker::findJobSeeker($id, $user_id)->first();
 
         $ratings = $profileInfo->ownRating->count();
-
-        $ratingSum = $profileInfo->ownRating->sum('rating');
 
         $user = $request->user();
 
@@ -78,7 +145,7 @@ class JobSeekerProfController extends Controller
             }
         }
 
-    	return view('profiles.profile_info.profile', compact('user','profileInfo','authorize','rated','average', 'ratingSum'));
+    	return view('profiles.profile_info.profile', compact('user','profileInfo','authorize','rated','average', 'ratings'));
 
     }
 
@@ -95,7 +162,7 @@ class JobSeekerProfController extends Controller
 
 
 
-    public function store(Request $request)
+    public function update(Request $request)
     {
     	$user = $request->user();
 
@@ -155,6 +222,8 @@ class JobSeekerProfController extends Controller
         $rating->employer()->associate($id);
 
         $rating->save();
+
+        flash('Thank you for your feedback', 'success');
 
         return redirect()->back();
     }

@@ -16,7 +16,7 @@
 		</a>
 		<div>
 			@can('view_request')
-	            <a href="/advert/{{ $myAdvert->id }}/job-requests" class="btn btn-primary">View Job Requests</a>
+	            <a href="/advert/{{ $myAdvert->id }}/job/requests" class="btn btn-primary">View Job Requests</a>
 	        @endcan
 		@endforeach
 		</div>

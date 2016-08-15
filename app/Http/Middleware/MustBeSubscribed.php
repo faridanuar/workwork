@@ -21,7 +21,7 @@ class MustBeSubscribed
 
         if(!$user){
 
-            if ((!$user && $user->hasRole('employer') && $user->subscribed('main')) OR !($user && $user->hasRole('employer') && $user->onTrial()))
+            if ((!$user && $user->hasRole('employer') && $user->subscribed('main')) || (!($user && $user->hasRole('employer') && $user->onTrial())))
             {
                 flash('Your must be registered as a company and your subscription must be active to use this feature', 'error');
 

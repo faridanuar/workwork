@@ -4,7 +4,7 @@
 
 <div class="form-group">
 	<label for="business_name">Name:</label>
-	<input type="text" name="name" id="name" class="form-control" value="{{ old('name') }}" required>
+	<input type="text" name="name" id="name" class="form-control" value="{{ $user->name }}" required>
 </div>
 
 <div class="form-group">
@@ -14,7 +14,7 @@
 
 <div class="form-group">
 	<label for="contact">Contact:</label>
-	<input type="text" name="contact" id="contact" class="form-control" value="{{ old('contact') }}" required>
+	<input type="text" name="contact" id="contact" class="form-control" value="{{ $user->contact }}" required>
 </div>
 
 

@@ -24,43 +24,47 @@ Route::get('/callback', 'SocialAuthController@callback');
 /**
  * Assign Roles routes
  */
-Route::get('/choose', 'TypeController@type');
+Route::get('/choose', 'TypeController@choose');
 
 Route::post('/set', 'TypeController@assignType');
 
 /**
  * Company Profile routes
  */
-Route::get('/create-company', 'CompanyProfController@create');
+Route::get('/company/create', 'CompanyProfController@create');
 
-Route::get('/edit-company', 'CompanyProfController@edit');
-
-Route::post('/save', 'CompanyProfController@store');
+Route::post('/company/store', 'CompanyProfController@store');
 
 Route::get('/company/{id}/{business_name}', 'CompanyProfController@profile')->name('company');
 
+Route::get('/company/edit', 'CompanyProfController@edit');
+
+Route::post('/company/edit/update', 'CompanyProfController@update');
+
 Route::get('/logo', 'CompanyProfController@logo');
 
-Route::post('/upload-logo', 'CompanyProfController@uploadLogo');
+Route::post('/upload/logo', 'CompanyProfController@uploadLogo');
 
 Route::get('/company/{id}/{business_name}/review', 'CompanyProfController@companyReview');
 
-Route::get('/company/my-adverts', 'CompanyProfController@myAdvert');
+Route::get('/company/my/adverts', 'CompanyProfController@myAdvert');
 
-Route::get('/advert/{id}/job-requests', 'CompanyProfController@jobRequest');
+Route::get('/advert/{id}/job/requests', 'CompanyProfController@jobRequest');
 
 Route::post('/profile/{id}/{user_id}/rate', 'CompanyProfController@rate');
 
 /**
  * Job Seeker Profile routes
  */
-Route::get('/create-profile', 'JobSeekerProfController@create');
+Route::get('/profile/create', 'JobSeekerProfController@create');
+
+Route::post('/profile/store', 'JobSeekerProfController@store');
 
 Route::get('/profile/{id}/{user_id}', 'JobSeekerProfController@profileInfo')->name('jobSeeker');
 
-Route::get('/edit-profile', 'JobSeekerProfController@edit');
+Route::get('/profile/edit', 'JobSeekerProfController@edit');
 
-Route::post('/profile/save', 'JobSeekerProfController@store');
+Route::post('/profile/edit/update', 'JobSeekerProfController@update');
 
 Route::get('/profile/{id}/{user_id}/review', 'JobSeekerProfController@jobSeekerReview');
 

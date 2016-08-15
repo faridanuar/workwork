@@ -17,10 +17,11 @@ class MustNotHaveRoleType
      */
     public function handle($request, Closure $next)
     {
-        //fetch user data with request from authentication
+        // store user info in variable
         $user = $request->user();
 
-        if ( $user && !$user->type OR !$user->hasRole('employer') OR !$user->hasRole('job_seeker')){
+        // check if user is authorise and does not have type
+        if($user && !$user->type){
 
             return $next($request);
 

@@ -16,7 +16,7 @@
 
 	<h2>{{ $average }} out of 5</h2>
 
-	<h4>Ratings: +{{ $ratingSum }}</h4>
+	<h4>Ratings: {{ $ratings }}</h4>
 
 	<hr>
 
@@ -64,7 +64,7 @@
 
 		@can('edit_company')
 				<div>
-				<a href="/edit-company" class="btn btn-primary">EDIT</a>
+				<a href="/company/edit" class="btn btn-primary">EDIT</a>
 				<a href="/logo" class="btn btn-primary">EDIT PHOTO</a>
 				</div>
 		@endcan

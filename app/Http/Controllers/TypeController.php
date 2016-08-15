@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Employer;
+use App\Job_Seeker;
 
 use Illuminate\Http\Request;
 
@@ -24,11 +25,9 @@ class TypeController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function type()
+    public function choose()
     {
-        
-        return view('auth.types.fb_type');
-
+        return view('auth.types.choose_type');
     }
 
 
@@ -45,47 +44,30 @@ class TypeController extends Controller
 
         //update user record
         $user->update([
-
             'type' => $request->type,
-
         ]);
-        
+
         $user->save();
 
+        // check if save is successful
         if($user){
 
-            //check what kind of role have been selected and assign roles premission to the user
-            if ( $user && $user->type === 'job_seeker')
-            {
-                //assign roles permissions with "assignRole" method from hasRoles trait
-                $user->assignRole('job_seeker');
+            //check what is user selected type and if user profile info is not created
+            if ($user->type === 'job_seeker' && !$user->jobSeeker)
+            {   
+                // redirect to create profile page
+                return redirect('/profile/create');
 
-                return redirect('/create-profile');
+            }elseif($user->type === 'employer' && !$user->employer){
 
-            }elseif($user && $user->type === 'employer'){
-
-                $user->assignRole('employer');
-
-                //create new model from Employer
-                $employer = new Employer;
-
-                //set user_id in the Employer model using associate method
-                $employer->user()->associate($user);
-
-                //save changes
-                $employer->save();
-
-                return redirect('/create-company');
+                // redirect to create company profile page
+                return redirect('/company/create');
 
             }else{
 
-                //abort if condition is not met
-                abort(401, 'You are not allowed.');
-
+                // redirect to 
+                return redirect('/home');
             }
         }
-
-        
     }
-
 }
