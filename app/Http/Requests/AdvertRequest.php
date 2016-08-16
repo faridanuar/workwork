@@ -26,8 +26,7 @@ class AdvertRequest extends Request
         return [
             'job_title' => 'required',
             'salary' => 'required|integer',
-            'description' => 'required',
-            'business_name' => 'required',            
+            'description' => 'required',           
             'location' => 'required',
             'street' => 'required',
             'city' => 'required',

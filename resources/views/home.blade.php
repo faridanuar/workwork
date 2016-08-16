@@ -17,22 +17,22 @@
                 </div>
             </div>
             @can('edit_company')
-                @if($role->business_name)
+                @if($role->id)
                     <a href="/company/{{ $role->id }}/{{ $role->business_name }}" class="btn btn-primary">Company Profile</a>
                 @else
-                    <a href="/create-company" class="btn btn-primary">Create Profile</a>
+                    <a href="/company/create" class="btn btn-primary">Create Profile</a>
                 @endif
             @endcan
 
             @can('view_my_adverts')
-            <a href="/company/my-adverts" class="btn btn-primary">View Adverts</a>
+            <a href="/my/adverts" class="btn btn-primary">View Adverts</a>
             @endcan
 
             @can('edit_info')
-                @if($role->location)
+                @if($role->id)
                     <a href="/profile/{{ $role->id }}/{{ $role->user_id }}" class="btn btn-primary">Profile Info</a>
                 @else
-                    <a href="/create-profile" class="btn btn-primary">Create Profile</a>
+                    <a href="/profile/create" class="btn btn-primary">Create Profile</a>
                 @endif
             @endcan
 

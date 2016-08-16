@@ -146,8 +146,6 @@ class AdvertsController extends Controller
 		        'zip'  => $request->zip,
 		        'state'  => $request->state,
 		        'country'  => $request->country,
-		        'created_at'  => $request->created_at->toDateTimeString(),
-		        'updated_at'  => $request->updated_at->toDateTimeString(),
 		        'employer_id'  => $request->employer_id,
 		        'skill'  => $request->skill,
 		        'category'  => $request->category,
@@ -192,7 +190,7 @@ class AdvertsController extends Controller
 				$job_title = $saveToDatabase->job_title;
 
 				// set flash attribute and key. example --> flash('success message', 'flash_message_level')
-				flash('Your advert has been successfully created. Go to advert index to find your advert', 'success');
+				flash('Your advert has been successfully created.', 'success');
 
 				// redirect to a landing page, so that people can share to the world DONE, kinda
 				// next, flash messaging

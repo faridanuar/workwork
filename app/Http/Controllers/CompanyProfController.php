@@ -24,9 +24,11 @@ class CompanyProfController extends Controller
         $this->middleware('employer', ['except' => ['profile', 'companyReview', 'create']]);
     }
 
-    public function create()
+    public function create(Request $request)
     {
-        return view('profiles.company.company_create');
+        $user = $request->user();
+
+        return view('profiles.company.company_create', compact('user'));
     }
 
 
@@ -97,26 +99,21 @@ class CompanyProfController extends Controller
 
     public function profile(Request $request, $id, $business_name)
     {
-        if($business_name === null){
-
-            return redirect('/create-company');
-
-        }else{
-
             $company = Employer::findEmployer($id, $business_name)->first();
 
-            $ratings = $company->ownRating->count();
-
             $user = $request->user();
+
+            $ratings = $company->ownRating->count();
 
             $authorize = false;
 
             $rated = false;
-        }
 
 
         if($ratings === 0)
         {
+            $ratings = 0;
+
             $average = 0;
 
         }else{
@@ -124,9 +121,8 @@ class CompanyProfController extends Controller
             $average = $company->ownRating->avg('rating');
         }
 
+        if($user){
 
-        if($user)
-        {   
             $jobSeeker = $user->jobSeeker;
 
             if($jobSeeker)
@@ -165,9 +161,11 @@ class CompanyProfController extends Controller
 
     public function edit(Request $request)
     {
-        $employer = $request->user()->employer;
+        $user = $request->user();
 
-        return view('profiles.company.company_edit', compact('employer'));
+        $employer = $user->employer;
+
+        return view('profiles.company.company_edit', compact('user','employer'));
     }
 
 

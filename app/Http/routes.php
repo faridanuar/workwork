@@ -39,7 +39,7 @@ Route::get('/company/{id}/{business_name}', 'CompanyProfController@profile')->na
 
 Route::get('/company/edit', 'CompanyProfController@edit');
 
-Route::post('/company/edit/update', 'CompanyProfController@update');
+Route::post('/company/update', 'CompanyProfController@update');
 
 Route::get('/logo', 'CompanyProfController@logo');
 
@@ -47,7 +47,7 @@ Route::post('/upload/logo', 'CompanyProfController@uploadLogo');
 
 Route::get('/company/{id}/{business_name}/review', 'CompanyProfController@companyReview');
 
-Route::get('/company/my/adverts', 'CompanyProfController@myAdvert');
+Route::get('/my/adverts', 'CompanyProfController@myAdvert');
 
 Route::get('/advert/{id}/job/requests', 'CompanyProfController@jobRequest');
 
