@@ -41,7 +41,7 @@ class HomeController extends Controller
             if($haveType  === "employer")
             {
                 // redirect to create company profile page
-                return redirect('/compnay/create');
+                return redirect('/company/create');
 
             }elseif($haveType === "job_seeker"){
 
