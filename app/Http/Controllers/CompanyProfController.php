@@ -303,8 +303,26 @@ class CompanyProfController extends Controller
 
     public function jobRequest($id)
     {
-        $requests = Application::where('advert_id', $id)->get();
+        $requestInfos = Application::where('advert_id', $id)->get();
 
-        return view('profiles.company.company_requests', compact('requests'));
+        return view('profiles.company.company_requests', compact('requestInfos'));
+    }
+
+
+
+    public function response(Request $request, $id)
+    {
+        $application = Application::find($id);
+
+        $application->update([
+
+            'status' => $request->response,
+            'employer_reason' => $request->comment,
+            'responded' => 1,
+        ]);
+
+        $application->save();
+
+        return redirect()->back();
     }
 }

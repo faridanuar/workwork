@@ -51,6 +51,8 @@ Route::get('/my/adverts', 'CompanyProfController@myAdvert');
 
 Route::get('/advert/{id}/job/requests', 'CompanyProfController@jobRequest');
 
+Route::post('/advert/job/requests/{id}/response', 'CompanyProfController@response');
+
 Route::post('/profile/{id}/{user_id}/rate', 'CompanyProfController@rate');
 
 /**
