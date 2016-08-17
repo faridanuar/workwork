@@ -247,10 +247,9 @@ class AdvertsController extends Controller
 				return response(['message' => 'No!'], 403);
 			}
 
-
 			flash('Sorry, you are not the owner of that page');
 
-			return redirect('/adverts');
+			return redirect('/');
 	}
 
 

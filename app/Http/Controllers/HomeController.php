@@ -122,7 +122,7 @@ class HomeController extends Controller
         // update user's file path form the database
         $user->update([
 
-                'avatar' => "/profile_images/avatars/{$name}"
+            'avatar' => $name,
         ]);
 
         //save changes made

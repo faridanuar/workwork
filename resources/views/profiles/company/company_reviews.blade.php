@@ -7,6 +7,7 @@
 <div class="container">
 @foreach ($userReviews as $userReview)
 	<div class="form-group">
+		<div>rating: {{ $userReview->rating }}</div>
         <div>{{ $userReview->comment }}</div>
         <div><b>Posted By:</b> {{ $userReview->postedBy }}</div>
     </div>

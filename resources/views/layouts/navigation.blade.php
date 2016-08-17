@@ -44,7 +44,7 @@
                     @endif
                 </ul>
 
-                <a href="{{ url('/adverts') }}" class="btn btn-primary navbar-btn navbar-right">Advertisements</a>
+                <a href="{{ url('/dashboard') }}" class="btn btn-primary navbar-btn navbar-right">Dashboard</a>
                 
                 @can('edit_advert')
                     <a href="{{ url('/adverts/create') }}" class="btn btn-primary navbar-btn navbar-right">Create a Job Ad</a>

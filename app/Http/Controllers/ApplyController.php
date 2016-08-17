@@ -40,9 +40,9 @@ class ApplyController extends Controller
 
 			$jobSeeker = "";
 
-		}elseif($user->hasRole('employer')){
+		}elseif($user->hasRole('employer') || !$user->hasRole('job_seeker')){
 
-			return redirect('/home');
+			return redirect('/');
 
 		}else{
 
@@ -173,8 +173,7 @@ class ApplyController extends Controller
 			abort(404, 'Error');
 		}
 
-		return redirect('/adverts');
-
+		return redirect('/');
 	}
 
 }

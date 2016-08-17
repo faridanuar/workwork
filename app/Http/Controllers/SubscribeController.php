@@ -67,7 +67,7 @@ class SubscribeController extends Controller
 		{
 			flash('you have successfully subscribe to a new plan', 'success');
 
-			return redirect('/home');
+			return redirect('/dashboard');
 
 		}else{
 

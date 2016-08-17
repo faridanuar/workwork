@@ -18,7 +18,7 @@
 
 
 	<div class="upload-box">
-		<form id="addPhotosForm" method="post" action="/upload-avatar" enctype="multipart/form-data" class="dropzone">
+		<form id="addPhotosForm" method="post" action="/avatar/upload" enctype="multipart/form-data" class="dropzone">
 		{{ csrf_field() }}
 
 		</form>
@@ -27,7 +27,7 @@
 	<p>
 
 	<div class="form-group">
-		<a href="/home" class="btn btn-primary">Done</a>
+		<a href="/dashboard" class="btn btn-primary">Done</a>
 	</div>
 
 	@include('java_plugins.dropzone')

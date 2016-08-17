@@ -8,7 +8,7 @@ use Mail;
 
 use App\Advert;
 use App\Employer;
-use App\jobSeeker;
+use App\job_Seeker;
 use App\Job_Seeker_Rating;
 use App\Employer_Rating;
 use App\Application;
@@ -91,23 +91,23 @@ class CompanyProfController extends Controller
         //set success flash message
         flash('Your profile has been updated', 'success');
 
-        // redirect to home
-        return redirect('/home');
+        // redirect to dashboard
+        return redirect('/dashboard');
     }
 
 
 
     public function profile(Request $request, $id, $business_name)
     {
-            $company = Employer::findEmployer($id, $business_name)->first();
+        $company = Employer::findEmployer($id, $business_name)->first();
 
-            $user = $request->user();
+        $user = $request->user();
 
-            $ratings = $company->ownRating->count();
+        $ratings = $company->ownRating->count();
 
-            $authorize = false;
+        $authorize = false;
 
-            $rated = false;
+        $rated = false;
 
 
         if($ratings === 0)
@@ -245,7 +245,7 @@ class CompanyProfController extends Controller
 
 
 
-    public function rate(Request $request, $id, $user_id)
+    public function rate(Request $request, $id)
     {
         $user = $request->user();
 
@@ -303,9 +303,27 @@ class CompanyProfController extends Controller
 
     public function jobRequest($id)
     {
-        $requestInfos = Application::where('advert_id', $id)->get();
+        $requestInfos = Application::where('advert_id', $id)->where('status', 'PENDING')->paginate(5);
 
-        return view('profiles.company.company_requests', compact('requestInfos'));
+        return view('profiles.company.company_requests', compact('requestInfos', 'id'));
+    }
+
+
+
+    public function rejected($id)
+    {
+        $requestInfos = Application::where('advert_id', $id)->where('status', 'REJECTED')->paginate(5);
+
+        return view('profiles.company.company_requests_rejected', compact('requestInfos', 'id'));
+    }
+
+
+
+    public function inReview($id)
+    {
+        $requestInfos = Application::where('advert_id', $id)->where('status', 'IN REVIEW')->paginate(5);
+
+        return view('profiles.company.company_requests_inReview', compact('requestInfos', 'id'));
     }
 
 
@@ -324,5 +342,74 @@ class CompanyProfController extends Controller
         $application->save();
 
         return redirect()->back();
+    }
+
+
+
+    public function appliedProfile(Request $request, $id, $role_id)
+    {
+        $advert = Advert::find($id);
+
+        $user = $request->user();
+
+        //check if job advert is own by user
+        if(!$advert->ownedBy($user))
+        {
+            return $this->unauthorized($request);
+        }
+
+        $profileInfo = Job_Seeker::find($role_id);
+
+        $responded = Application::where('advert_id', $id)->where('job_seeker_id', $role_id)->first()->responded;
+
+        $ratings = $profileInfo->ownRating->count();
+
+        $rated = false;
+
+        if($ratings === 0)
+        {
+            $average = 0;
+
+        }else{
+
+            $average = $profileInfo->ownRating->avg('rating');
+        }
+
+
+        if($user)
+        {
+            $employer = $user->employer;
+
+            $haveRating = Job_Seeker_Rating::where('job_seeker_id', $role_id)->where('employer_id', $employer->id)->first();
+
+            if($haveRating === null){
+
+                $rated = false;
+
+            }else{
+
+                if($haveRating->employer_id === $employer->id)
+                {
+                    $rated = true;
+                } 
+            }    
+        }
+
+        return view('profiles.profile_info.profile_applied', compact('user','profileInfo','rated','average','ratings','responded'));
+    }
+
+    /**
+     * Check if user is authorized
+     *
+     * @param $request
+     */
+    protected function unauthorized(Request $request)
+    {
+        if($request->ajax())
+        {
+            return response(['message' => 'No!'], 403);
+        }
+
+        abort(403, 'Unauthorized action.');
     }
 }

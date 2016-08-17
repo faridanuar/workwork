@@ -30,7 +30,7 @@
 
             @can('edit_info')
                 @if($role->id)
-                    <a href="/profile/{{ $role->id }}/{{ $role->user_id }}" class="btn btn-primary">Profile Info</a>
+                    <a href="/profile/{{ $role->id }}" class="btn btn-primary">Profile Info</a>
                 @else
                     <a href="/profile/create" class="btn btn-primary">Create Profile</a>
                 @endif

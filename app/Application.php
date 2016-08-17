@@ -16,7 +16,6 @@ class Application extends Model
     	'status',
         'employer_reason',
         'responded',
-
     ];
 
     public function jobSeeker()

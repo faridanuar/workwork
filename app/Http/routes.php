@@ -6,13 +6,11 @@
 
 Route::auth();
 
-Route::get('/', 'HomeController@index');
-
-Route::get('/home', 'HomeController@index');
+Route::get('/dashboard', 'HomeController@index');
 
 Route::get('/avatar', 'HomeController@avatar');
 
-Route::post('/upload-avatar', 'HomeController@uploadAvatar');
+Route::post('/avatar/upload', 'HomeController@uploadAvatar');
 
 /**
  * Social routes
@@ -51,9 +49,15 @@ Route::get('/my/adverts', 'CompanyProfController@myAdvert');
 
 Route::get('/advert/{id}/job/requests', 'CompanyProfController@jobRequest');
 
+Route::get('/advert/{id}/job/requests/rejected', 'CompanyProfController@rejected');
+
+Route::get('/advert/{id}/job/requests/reviewing', 'CompanyProfController@inReview');
+
+Route::get('/advert/{id}/job/requests/{role_id}', 'CompanyProfController@appliedProfile');
+
 Route::post('/advert/job/requests/{id}/response', 'CompanyProfController@response');
 
-Route::post('/profile/{id}/{user_id}/rate', 'CompanyProfController@rate');
+Route::post('/profile/{id}/rate', 'CompanyProfController@rate');
 
 /**
  * Job Seeker Profile routes
@@ -62,28 +66,27 @@ Route::get('/profile/create', 'JobSeekerProfController@create');
 
 Route::post('/profile/store', 'JobSeekerProfController@store');
 
-Route::get('/profile/{id}/{user_id}', 'JobSeekerProfController@profileInfo')->name('jobSeeker');
+Route::get('/profile/{id}', 'JobSeekerProfController@profileInfo')->name('jobSeeker');
 
 Route::get('/profile/edit', 'JobSeekerProfController@edit');
 
 Route::post('/profile/edit/update', 'JobSeekerProfController@update');
 
-Route::get('/profile/{id}/{user_id}/review', 'JobSeekerProfController@jobSeekerReview');
+Route::get('/profile/{id}/review', 'JobSeekerProfController@jobSeekerReview');
 
 Route::post('/company/{id}/{business_name}/rate', 'JobSeekerProfController@rate');
 
 /**
  * Adverts routes
  */
-Route::resource('adverts', 'AdvertsController');
+Route::resource('/', 'AdvertsController');
+
+Route::get('/home', 'AdvertsController@index');
 
 Route::get('/adverts/{id}/{job_title}', 'AdvertsController@show')->name('show');
 
 Route::post('adverts/preview', 'AdvertsController@preview');
 
-/**
- * Adverts edit routes
- */
 Route::get('adverts/{id}/{job_title}/edit', 'AdvertsController@edit');
 
 Route::post('adverts/{id}/{job_title}/edit/update', 'AdvertsController@update');

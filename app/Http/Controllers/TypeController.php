@@ -66,7 +66,7 @@ class TypeController extends Controller
             }else{
 
                 // redirect to 
-                return redirect('/home');
+                return redirect('/dashboard');
             }
         }
     }

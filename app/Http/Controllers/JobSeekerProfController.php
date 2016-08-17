@@ -6,9 +6,13 @@ use Illuminate\Http\Request;
 
 use Mail;
 
+use App\Advert;
 use App\Job_Seeker;
 use App\Job_Seeker_Rating;
+use App\Application;
 use App\Employer_Rating;
+
+
 use App\Http\Requests;
 
 class JobSeekerProfController extends Controller
@@ -82,20 +86,18 @@ class JobSeekerProfController extends Controller
         flash('Your profile has been updated', 'success');
 
         // redirect to home
-        return redirect('/home');
+        return redirect('/dashboard');
     }
 
 
 
-    public function profileInfo(Request $request, $id, $user_id)
+    public function profileInfo(Request $request, $id)
     {
-    	$profileInfo = Job_Seeker::findJobSeeker($id, $user_id)->first();
+    	$profileInfo = Job_Seeker::find($id);
 
         $ratings = $profileInfo->ownRating->count();
 
         $user = $request->user();
-
-        $rated = false;
 
 
         if($ratings === 0)
@@ -110,26 +112,6 @@ class JobSeekerProfController extends Controller
 
     	if($user)
         {
-            $employer = $user->employer;
-
-            if($employer)
-            {
-                $haveRating = Job_Seeker_Rating::where('job_seeker_id', $id)->where('employer_id', $employer->id)->first();
-
-                if($haveRating === null){
-
-                    $rated = false;
-
-                }else{
-
-                    if($haveRating->employer_id === $employer->id)
-                    {
-                        $rated = true;
-                    } 
-                }    
-            }
-
-
             $jobSeeker = $user->jobSeeker;
 
             if($jobSeeker)
@@ -145,8 +127,7 @@ class JobSeekerProfController extends Controller
             }
         }
 
-    	return view('profiles.profile_info.profile', compact('user','profileInfo','authorize','rated','average', 'ratings'));
-
+    	return view('profiles.profile_info.profile', compact('profileInfo','authorize','average','ratings'));
     }
 
 
@@ -191,12 +172,12 @@ class JobSeekerProfController extends Controller
     	// set flash attribute and key. example --> flash('success message', 'flash_message_level')
 		flash('Your profile has been updated', 'success');
 
-    	return redirect()->route('jobSeeker', [$jobSeeker->id,$jobSeeker->user_id]);
+    	return redirect()->route('jobSeeker', [$jobSeeker->id]);
     }
 
 
 
-    public function rate(Request $request)
+    public function rate(Request $request, $id, $business_name)
     {
         $user = $request->user();
 
@@ -230,9 +211,9 @@ class JobSeekerProfController extends Controller
 
 
 
-    public function jobSeekerReview($id, $user_id)
+    public function jobSeekerReview($id)
     {
-        $jobSeeker = Job_Seeker::findJobSeeker($id, $user_id)->first();
+        $jobSeeker = Job_Seeker::find($id);
 
         $userReviews = $jobSeeker->ownRating()->paginate(5);
 
