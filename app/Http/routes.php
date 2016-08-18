@@ -12,6 +12,8 @@ Route::get('/avatar', 'HomeController@avatar');
 
 Route::post('/avatar/upload', 'HomeController@uploadAvatar');
 
+Route::delete('/avatar/{avatar_id}', 'HomeController@destroy');
+
 /**
  * Social routes
  */
@@ -42,6 +44,8 @@ Route::post('/company/update', 'CompanyProfController@update');
 Route::get('/logo', 'CompanyProfController@logo');
 
 Route::post('/upload/logo', 'CompanyProfController@uploadLogo');
+
+Route::delete('/logo/{logo_id}', 'CompanyProfController@destroy');
 
 Route::get('/company/{id}/{business_name}/review', 'CompanyProfController@companyReview');
 

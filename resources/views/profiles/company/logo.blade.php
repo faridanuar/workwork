@@ -12,13 +12,13 @@
 
 	<hr>
 	<h4>(Current Photo)</h4>
-	<img id="photo" src="{{ $employer->business_logo }}" onerror="imgError(this);" height="150" width="160" alt="your image" />
+	<img id="photo" src="{{ $photo }}" height="150" width="160" alt="your image" />
 
 	<hr>
 
 
 	<div class="upload-box">
-		<form id="addPhotosForm" method="post" action="/upload-logo" enctype="multipart/form-data" class="dropzone">
+		<form id="addPhotosForm" method="post" action="/upload/logo" enctype="multipart/form-data" class="dropzone">
 		{{ csrf_field() }}
 
 		</form>
@@ -27,9 +27,17 @@
 	<p>
 
 	<div class="form-group">
-		<a href="/company/{{ $employer->id }}/{{ $employer->business_name }}" class="btn btn-primary">Done</a>
-	</div>
+		<form method="post" action="/logo/{{ $employer->id }}">
+		{!! csrf_field() !!}
+		<input type="hidden" name="_method" value="DELETE">
 
+		@if($fileExist === true)
+			<button type="submit" class="btn btn-primary">Remove</button>
+		@endif
+			<a href="/company/{{ $employer->id }}/{{ $employer->business_name }}" class="btn btn-primary">Done</a>
+		</form>
+	</div>
+		
 	@include('java_plugins.dropzone')
 
 @stop

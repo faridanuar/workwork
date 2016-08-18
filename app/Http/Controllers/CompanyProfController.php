@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use Mail;
+use File;
 
 use App\Advert;
 use App\Employer;
@@ -101,6 +102,19 @@ class CompanyProfController extends Controller
     {
         $company = Employer::findEmployer($id, $business_name)->first();
 
+        $exist = File::exists('.'.$company->business_logo);
+
+        $user = $request->user();
+
+        if($exist)
+        {
+            $photo = $company->business_logo;
+
+        }else{
+
+            $photo = "/images/profile_images/defaults/default.jpg";
+        }
+
         $user = $request->user();
 
         $ratings = $company->ownRating->count();
@@ -154,7 +168,7 @@ class CompanyProfController extends Controller
             }
         }
 
-        return view('profiles.company.company', compact('company', 'authorize', 'rated', 'average', 'ratings'));
+        return view('profiles.company.company', compact('photo','company','authorize','rated','average','ratings'));
     }
 
 
@@ -214,33 +228,91 @@ class CompanyProfController extends Controller
     {
         $employer = $request->user()->employer;
 
-        return view('profiles.company.logo', compact('employer'));
+        $exist = File::exists('.'.$employer->business_logo);
+
+        if(!$exist)
+        {
+            $fileExist = false;
+            $photo = "/images/profile_images/defaults/default.jpg";
+
+        }else{
+
+            $fileExist = true;
+            $photo = $employer->business_logo;
+        }
+
+        return view('profiles.company.logo', compact('photo','employer','fileExist'));
     }
 
 
 
     protected function uploadLogo(Request $request)
     {
+        // store user's info in variable
+        $employer = $request->user()->employer()->first();
+
+        //fetch if previous photo name
+        $photo = '.'.$employer->business_logo;
+
+        //check if previous photo exists
+        $exist = File::exists($photo);
+
+        //if previous photo exists then delete
+        if($exist)
+        {
+           unlink($photo);
+
+           $user->update(['avatar' => null]);
+
+           $user->save();
+
+        }else{
+
+        }
+
         $this->validate($request, [
 
             'photo' => 'required|mimes:jpg,jpeg,png,bmp' // validate image
 
         ]);
 
-    	$employer = $request->user()->employer()->first();
-
     	$file = $request->file('photo');
 
     	$name = time() . '-' .$file->getClientOriginalName();
 
-    	$file->move('profile_images', $name);
+    	$file->move('images/profile_images/logo', $name);
 
     	$employer->update([
 
-				'business_logo' => "/profile_images/{$name}"
+				'business_logo' => "/images/profile_images/logo/{$name}",
     	]);
 
     	$employer->save();
+    }
+
+
+
+    public function destroy($logo_id)
+    {
+        $photo = '.'.Employer::findOrFail($logo_id)->business_logo;
+
+        $exist = File::exists($photo);
+
+        if($exist){
+
+            if (unlink($photo))
+            {
+                flash('Your photo is successfully removed', 'success');
+
+                return redirect()->back();
+            }
+
+        }else{
+
+            flash('There are no photos to be removed', 'error');
+
+            return redirect()->back();
+        }
     }
 
 
@@ -360,6 +432,17 @@ class CompanyProfController extends Controller
 
         $profileInfo = Job_Seeker::find($role_id);
 
+        $exist = File::exists('.'.$profileInfo->user->avatar);
+
+        if($exist)
+        {
+            $photo = $profileInfo->user->avatar;
+
+        }else{
+
+            $photo = "/profile_images/defaults/default.jpg";
+        }
+
         $responded = Application::where('advert_id', $id)->where('job_seeker_id', $role_id)->first()->responded;
 
         $ratings = $profileInfo->ownRating->count();
@@ -395,7 +478,7 @@ class CompanyProfController extends Controller
             }    
         }
 
-        return view('profiles.profile_info.profile_applied', compact('user','profileInfo','rated','average','ratings','responded'));
+        return view('profiles.company.request_applied', compact('photo','profileInfo','rated','average','ratings','responded'));
     }
 
     /**

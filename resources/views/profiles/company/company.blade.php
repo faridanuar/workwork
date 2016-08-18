@@ -9,7 +9,7 @@
 
 	<h1>Company Profile:</h1>
 
-	<img id="business_logo" src="{{ $company->business_logo }}" height="200" width="200" onerror="imgError(this);"/>
+	<img id="business_logo" src="{{ $photo }}" height="200" width="200"/>
 
 	
 	<h1>{{ $company->business_name }}</h1>
@@ -117,6 +117,4 @@
 			@endif
 
 		@endcan
-	
-	@include('java_plugins.defaultPhoto')
 @stop

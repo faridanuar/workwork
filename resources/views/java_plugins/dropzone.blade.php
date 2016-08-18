@@ -26,5 +26,3 @@
 	};
 
 </script>
-
-@include('java_plugins.defaultPhoto')

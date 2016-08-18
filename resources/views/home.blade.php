@@ -12,7 +12,7 @@
                 <div class="panel-heading">Dashboard</div>
 
                 <div class="panel-body">
-                    <img src="{{ $user->avatar }}" height="100" width="100" onerror="imgError(this);"/>
+                    <img src="{{ $photo }}" height="100" width="100"/>
                     You are logged in!
                 </div>
             </div>
@@ -40,6 +40,4 @@
         </div>
     </div>
 </div>
-
-@include('java_plugins.defaultPhoto')
 @endsection

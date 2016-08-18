@@ -12,7 +12,7 @@
 
 	<hr>
 	<h4>(Current Photo)</h4>
-	<img id="photo"  src="{{ $user->avatar }}" onerror="imgError(this);" height="150" width="160" alt="your image" />
+	<img id="photo"  src="{{ $photo }}" height="150" width="160" alt="your image" />
 
 	<hr>
 
@@ -27,7 +27,15 @@
 	<p>
 
 	<div class="form-group">
-		<a href="/dashboard" class="btn btn-primary">Done</a>
+		<form method="post" action="/avatar/{{ $user->id }}">
+		{!! csrf_field() !!}
+		<input type="hidden" name="_method" value="DELETE">
+
+		@if($fileExist === true)
+			<button type="submit" class="btn btn-primary">Remove</button>
+		@endif
+			<a href="/dashboard" class="btn btn-primary">Done</a>
+		</form>
 	</div>
 
 	@include('java_plugins.dropzone')

@@ -9,7 +9,7 @@
 
 	<h1>Job Seeker Profile:</h1>
 
-	<img id="photo" src="{{ $profileInfo->user->avatar }}" height="200" width="200" onerror="imgError(this);"/>
+	<img id="photo" src=".{{ $photo }}" height="200" width="200"/>
 
 	<h2>{{ $average }} out of 5 (STAR)</h2>
 
@@ -63,8 +63,4 @@
 
 			@endif
 		@endcan
-
-
-	
-	@include('java_plugins.defaultPhoto')
 @stop

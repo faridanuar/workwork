@@ -44,4 +44,15 @@ class User extends Authenticatable
         return $this->hasOne(Employer::class);
     }
 
+    public function ownedBy(User $user)
+    {
+        $userID = $user->id;
+
+        if(!$userID)
+        {
+            return redirect('/');
+        }
+
+        return $this->id == $userID;
+    }
 }

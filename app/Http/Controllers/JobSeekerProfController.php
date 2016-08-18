@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use Mail;
+use File;
 
 use App\Advert;
 use App\Job_Seeker;
@@ -97,8 +98,18 @@ class JobSeekerProfController extends Controller
 
         $ratings = $profileInfo->ownRating->count();
 
+        $exist = File::exists($profileInfo->user->avatar);
+
         $user = $request->user();
 
+        if($exist)
+        {
+            $photo = $profileInfo->user->avatar;
+
+        }else{
+
+            $photo = "/profile_images/defaults/default.jpg";
+        }
 
         if($ratings === 0)
         {
@@ -127,7 +138,7 @@ class JobSeekerProfController extends Controller
             }
         }
 
-    	return view('profiles.profile_info.profile', compact('profileInfo','authorize','average','ratings'));
+    	return view('profiles.profile_info.profile', compact('photo','profileInfo','authorize','average','ratings'));
     }
 
 
