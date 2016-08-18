@@ -17,6 +17,7 @@
                 </div>
             </div>
             @can('edit_company')
+                <b>Status: {{ $subscription }}</b>
                 @if($role->id)
                     <a href="/company/{{ $role->id }}/{{ $role->business_name }}" class="btn btn-primary">Company Profile</a>
                 @else

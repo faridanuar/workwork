@@ -42,6 +42,7 @@
 	<div class="form-group">
 		<label for="country">Country:</label>
 		<select name="country" id="country" class="form-control" required>
+			<option value="" selected disabled>Select a country</option>
 			@foreach ($countries::all() as $code => $name)
 				<option value="{{ $code }}">{{ $name }}</option>
 			@endforeach
@@ -85,7 +86,7 @@
 	<div class="form-group">
 		<label for="country">Country:</label>
 		<select name="country" id="country" class="form-control" readonly>
-				<option value="{{ $jobSeeker->country}} ">{{ $jobSeeker->country}}</option>
+				<option value="{{ $jobSeeker->country}} " selected>{{ $jobSeeker->country}}</option>
 		</select>
 	</div>
 

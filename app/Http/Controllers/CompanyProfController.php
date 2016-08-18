@@ -90,7 +90,7 @@ class CompanyProfController extends Controller
         }
 
         //set success flash message
-        flash('Your profile has been updated', 'success');
+        flash('Your company profile has been created. Welcome to WorkWork, Employer!', 'success');
 
         // redirect to dashboard
         return redirect('/dashboard');
@@ -228,17 +228,30 @@ class CompanyProfController extends Controller
     {
         $employer = $request->user()->employer;
 
-        $exist = File::exists('.'.$employer->business_logo);
+        $logo = $employer->business_logo;
 
-        if(!$exist)
-        {
-            $fileExist = false;
-            $photo = "/images/profile_images/defaults/default.jpg";
+        $path = '.'.$logo;
+
+        //check if photo path exist
+        if($logo != "" || $logo != null){
+
+            //check if file exists
+            $exist = File::exists($path);
 
         }else{
 
+            $exist = false;
+        }
+
+        if($exist === true)
+        {
             $fileExist = true;
-            $photo = $employer->business_logo;
+            $photo = $logo;
+
+        }else{
+
+            $fileExist = false;
+            $photo = "/images/profile_images/defaults/default.jpg";
         }
 
         return view('profiles.company.logo', compact('photo','employer','fileExist'));
@@ -252,19 +265,31 @@ class CompanyProfController extends Controller
         $employer = $request->user()->employer()->first();
 
         //fetch if previous photo name
-        $photo = '.'.$employer->business_logo;
+        $logo = $employer->business_logo;
 
-        //check if previous photo exists
-        $exist = File::exists($photo);
+        $path = '.'.$logo;
 
-        //if previous photo exists then delete
-        if($exist)
+        //check if photo path exist
+        if($logo != "" || $logo != null){
+
+            //check if previous photo exists
+            $exist = File::exists($path);
+
+        }else{
+
+            $exist = false;
+        }
+
+        //if file exists
+        if($exist === true)
         {
-           unlink($photo);
+            //delete file
+           unlink($path);
 
-           $user->update(['avatar' => null]);
+           //remove path name from database
+           $employer->update(['business_logo' => null]);
 
-           $user->save();
+           $employer->save();
 
         }else{
 
@@ -292,24 +317,47 @@ class CompanyProfController extends Controller
 
 
 
-    public function destroy($logo_id)
+    public function destroy(Request $request, $logo_id)
     {
-        $photo = '.'.Employer::findOrFail($logo_id)->business_logo;
+        $employer = Employer::findOrFail($logo_id);
 
-        $exist = File::exists($photo);
+        $logo = $employer->business_logo;
 
-        if($exist){
+        $path = '.'.$logo;
 
-            if (unlink($photo))
+        $user = $request->user();
+
+        //check if job advert is own by user
+        if(!$employer->logoBy($user))
+        {
+            return $this->unauthorized($request);
+        }
+
+        if($logo != "" || $logo != null){
+
+            $exist = File::exists($path);
+
+        }else{
+
+            $exist = false;
+        }
+
+        if($exist === true){
+
+            if (unlink($path))
             {
-                flash('Your photo is successfully removed', 'success');
+                $employer->update(['business_logo' => null]);
+
+                $employer->save();
+
+                flash('Your photo has been successfully removed', 'success');
 
                 return redirect()->back();
             }
 
         }else{
 
-            flash('There are no photos to be removed', 'error');
+            flash('Error, please try again', 'error');
 
             return redirect()->back();
         }
@@ -393,7 +441,7 @@ class CompanyProfController extends Controller
 
     public function inReview($id)
     {
-        $requestInfos = Application::where('advert_id', $id)->where('status', 'IN REVIEW')->paginate(5);
+        $requestInfos = Application::where('advert_id', $id)->where('status', 'ACCEPTED FOR INTERVIEW')->paginate(5);
 
         return view('profiles.company.company_requests_inReview', compact('requestInfos', 'id'));
     }
@@ -406,12 +454,22 @@ class CompanyProfController extends Controller
 
         $application->update([
 
-            'status' => $request->response,
+            'status' => $request->status,
             'employer_reason' => $request->comment,
             'responded' => 1,
         ]);
 
         $application->save();
+
+        // use send method form Mail facade to send email. ex: send('view', 'info / array of data', fucntion)
+        Mail::send('mail.applicationNotification', compact('application'), function ($m) use ($application) {
+
+            // set email sender stmp url and sender name
+            $m->from('postmaster@sandbox12f6a7e0d1a646e49368234197d98ca4.mailgun.org', 'WorkWork');
+
+            // set email recepient and subject
+            $m->to('farid@pocketpixel.com', $application->jobSeeker->user->name)->subject('Application Notification');
+        });
 
         return redirect()->back();
     }
@@ -432,7 +490,20 @@ class CompanyProfController extends Controller
 
         $profileInfo = Job_Seeker::find($role_id);
 
-        $exist = File::exists('.'.$profileInfo->user->avatar);
+        $avatar = $profileInfo->user->avatar;
+
+        $path = '.'.$avatar;
+
+        $exist = File::exists($path);
+
+        if($avatar != "" || $avatar != null){
+
+            $exist = File::exists($path);
+
+        }else{
+
+            $exist = false;
+        }
 
         if($exist)
         {

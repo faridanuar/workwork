@@ -84,7 +84,7 @@ class JobSeekerProfController extends Controller
         }
 
         // set flash attribute and key. example --> flash('success message', 'flash_message_level')
-        flash('Your profile has been updated', 'success');
+        flash('Your profile has been created. Welcome to WorkWork, Job Seeker!', 'success');
 
         // redirect to home
         return redirect('/dashboard');
@@ -98,17 +98,30 @@ class JobSeekerProfController extends Controller
 
         $ratings = $profileInfo->ownRating->count();
 
-        $exist = File::exists($profileInfo->user->avatar);
+        $avatar = $profileInfo->user->avatar;
+
+        $path = '.'.$avatar;
+
+        $exist = File::exists('.'.$avatar);
 
         $user = $request->user();
 
-        if($exist)
-        {
-            $photo = $profileInfo->user->avatar;
+        if($avatar != "" || $avatar != null){
+
+            $exist = File::exists($path);
 
         }else{
 
-            $photo = "/profile_images/defaults/default.jpg";
+            $exist = false;
+        }
+
+        if($exist)
+        {
+            $photo = $avatar;
+
+        }else{
+
+            $photo = "/images/profile_images/defaults/default.jpg";
         }
 
         if($ratings === 0)
@@ -120,21 +133,17 @@ class JobSeekerProfController extends Controller
             $average = $profileInfo->ownRating->avg('rating');
         }
 
+        $jobSeeker = $user->jobSeeker;
 
-    	if($user)
+        if($jobSeeker)
         {
-            $jobSeeker = $user->jobSeeker;
-
-            if($jobSeeker)
+            if($jobSeeker->id === $profileInfo->id)
             {
-                if($jobSeeker->id === $profileInfo->id)
-                {
-                    $authorize = true;
+                $authorize = true;
 
-                }else{
+            }else{
 
-                    $authorize = false;
-                }
+                $authorize = false;
             }
         }
 

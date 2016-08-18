@@ -85,12 +85,7 @@
 
 <div class="form-group">
 	<label for="category">Job Category:</label>
-	<select name="category" id="category" class="form-control" required>
-			<option value="" selected disabled>Select a category</option>
-		@foreach ($categories::all() as $code => $name)
-			<option value="{{ $code }}">{{ $name }}</option>
-		@endforeach
-	</select>
+	<input type="text" name="category" id="category" class="form-control" value="{{ old('category') }}" required>
 </div>	
 
 <div class="form-group">

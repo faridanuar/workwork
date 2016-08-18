@@ -18,7 +18,7 @@ class SubscribeController extends Controller
 	*/
 	public function __construct()
 	{
-	    $this->middleware('employer');
+	    $this->middleware('employer', ['except' => ['plans']]);
 	}
 
 

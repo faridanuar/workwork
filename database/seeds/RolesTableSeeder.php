@@ -58,6 +58,10 @@ class RolesTableSeeder extends Seeder
             	'name' => 'view_request',
 	            'label' => 'View Job Request',
             ],
+            [
+                'name' => 'view_dashboard',
+                'label' => 'View Dashboard',
+            ],
         ]);
 
 
@@ -73,6 +77,10 @@ class RolesTableSeeder extends Seeder
             [
             	'permission_id' => 5,
 	            'role_id' => 1,
+            ],
+            [
+                'permission_id' => 9,
+                'role_id' => 1,
             ],
             [
             	'permission_id' => 2,
@@ -93,6 +101,10 @@ class RolesTableSeeder extends Seeder
             [
             	'permission_id' => 8,
 	            'role_id' => 2,
+            ],
+            [
+                'permission_id' => 9,
+                    'role_id' => 2,
             ],
         ]);
     }

@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
+use \Braintree_ClientToken;
+use \Braintree_Transaction;
+
 use File;
 
 use App\User;
@@ -35,13 +38,23 @@ class HomeController extends Controller
         // fetch user's type of role
         $haveType = $user->type;
 
-        //check if photo exist
-        $exist = File::exists('.'.$user->avatar);
+        $avatar = $user->avatar;
 
+        $path = '.'.$avatar;
+
+        if($avatar != "" || $avatar != null){
+
+            //check if photo exist
+            $exist = File::exists($path);
+
+        }else{
+
+            $exist = false;
+        }
 
         if($exist)
         {
-            $photo = $user->avatar;
+            $photo = $avatar;
 
         }else{
 
@@ -80,6 +93,19 @@ class HomeController extends Controller
             // fetch advert info that belongs to this user's employer id
             $adverts = Advert::where('employer_id', $role->id)->get();
 
+            if($user->subscribed('main'))
+            {
+                $subscription = "Subscribed";
+
+            }elseif($user->subscription('main')->onTrial()){
+
+                $subscription = "On Trial";
+
+            }else{
+
+                $subscription = "Not Subscribed";
+            }
+
         }elseif($user->jobSeeker){
 
             // set user role in a variable
@@ -90,7 +116,7 @@ class HomeController extends Controller
 
 
         // return user to home dashboard
-        return view('home', compact('role','user','photo'));
+        return view('home', compact('role','user','photo','subscription'));
     }
 
 
@@ -103,13 +129,24 @@ class HomeController extends Controller
         // store user info in variable
         $user = $request->user();
 
-        $exist = File::exists('.'.$user->avatar);
+        $avatar = $user->avatar;
 
-        if($exist)
+        $path = '.'.$avatar;
+
+        if($avatar != "" || $avatar != null){
+
+            $exist = File::exists($path);
+
+        }else{
+
+            $exist = false;
+        }
+
+        if($exist === true)
         {
             $fileExist = true;
 
-            $photo = $user->avatar;
+            $photo = $avatar;
 
         }else{
 
@@ -135,13 +172,23 @@ class HomeController extends Controller
         //fetch if previous photo name
         $photo = $user->avatar;
 
-        //check if previous photo exists
-        $exist = File::exists($photo);
+        $path ='.'.$photo;
+
+
+        if($photo != "" || $photo != null){
+
+            //check if previous photo exists
+            $exist = File::exists($path);
+
+        }else{
+
+            $exist = false;
+        }
 
         //if previous photo exists then delete
-        if($exist)
+        if($exist === true)
         {
-           unlink($photo);
+           unlink($path);
 
            $user->update(['avatar' => null]);
 
@@ -186,36 +233,42 @@ class HomeController extends Controller
     {
         $user = $request->user();
 
-        $avatar = User::findOrFail($avatar_id);
+        $thisPhoto = User::findOrFail($avatar_id);
 
-        $photo = $avatar->avatar;
+        $path = '.'.$thisPhoto->avatar;
 
 
         //check if job advert is own by user
-        if(!$avatar->ownedBy($user))
+        if(!$thisPhoto->avatarBy($user))
         {
             return $this->unauthorized($request);
         }
 
-        $exist = File::exists($photo);
+        if($thisPhoto != "" || $thisPhoto != null){
 
+            $exist = File::exists($path);
 
-        if($exist){
+        }else{
 
-            if (unlink($photo))
+            $exist = false;
+        }
+
+        if($exist === true){
+
+            if (unlink($path))
             {
                 $user->update(['avatar' => null]);
 
                 $user->save();
 
-                flash('Your photo is successfully removed', 'success');
+                flash('Your photo has been successfully removed', 'success');
 
                 return redirect()->back();
             }
 
         }else{
 
-            flash('There are no photos to be removed', 'error');
+            flash('Error, please try again', 'error');
 
             return redirect()->back();
         }

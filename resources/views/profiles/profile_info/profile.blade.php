@@ -9,11 +9,9 @@
 
 	<h1>Job Seeker Profile:</h1>
 
-	<img id="photo" src=".{{ $photo }}" height="200" width="200"/>
+	<img id="photo" src="{{ $photo }}" height="200" width="200"/>
 
-	<h2>{{ $average }} out of 5 (STAR)</h2>
-
-	<h4>Ratings: {{ $ratings }}</h4>
+	<h2>{{ $average }} out of 5 STAR</h2>
 
 	<h1>{{ $profileInfo->user->name }}</h1>
 
@@ -52,7 +50,7 @@
 		{{ $profileInfo->country }}
 		</div>
 
-		<a href="/profile/{{ $profileInfo->id }}/review">Reviews</a>
+		<a href="/profile/{{ $profileInfo->id }}/review">Reviews ({{ $ratings }})</a>
 
 		@can('edit_info')
 			@if ($authorize === true)

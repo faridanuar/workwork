@@ -20,10 +20,15 @@ class MustBeEmployer
         $user = $request->user();
 
         //check if user is not authenticated and does not have employer role
-        if(!$user && !$user->hasRole('employer')){
+        if(!$user){
 
             // redirect if user is not authorized
             return redirect()->guest('login');
+
+            if(!$user->hasRole('employer')){
+
+                return redirect()->guest('login');
+            }
         }
 
         // return to true if user is authorized

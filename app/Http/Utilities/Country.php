@@ -6,13 +6,14 @@ class Country
 {
 	protected static $countries = [
 		"Malaysia" => "Malaysia",
-		"Indonesia" => "Indonesia",
-		"Singapore" => "Singapore",
-		"Thailand" => "Thailand",
+		
 		
 		/**
 		 *  Complete list of countries
 		 */
+		// "Indonesia" => "Indonesia",
+		// "Singapore" => "Singapore",
+		// "Thailand" => "Thailand",
 		// "AF" => "Afghanistan",
 		// "AX" => "Åland Islands",
 		// "AL" => "Albania",

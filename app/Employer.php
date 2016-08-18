@@ -49,4 +49,16 @@ class Employer extends Model
     {
         return $this->hasMany(Job_Seeker_Rating::class);
     }
+
+    public function logoBy(User $user)
+    {
+        $employerID = $user->employer()->first()->id;
+
+        if(!$employerID)
+        {
+            return redirect('/');
+        }
+
+        return $this->id == $employerID;
+    }
 }

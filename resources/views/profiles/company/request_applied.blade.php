@@ -10,7 +10,7 @@
 
 	<img src="{{ $photo }}" height="200" width="200"/>
 
-	<h2>{{ $average }} out of 5 (STAR)</h2>
+	<h2>{{ $average }} out of 5 STAR</h2>
 
 	<h1>{{ $profileInfo->user->name }}</h1>
 

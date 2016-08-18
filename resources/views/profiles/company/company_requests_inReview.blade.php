@@ -6,7 +6,7 @@
 
 <a href="/advert/{{ $id }}/job/requests">PENDING APPLICATION LIST</a> ||
 <a href="/advert/{{ $id }}/job/requests/rejected">REJECTED APPLICATION LIST</a> || 
-<b><a href="/advert/{{ $id }}/job/requests/reviewing">IN REVIEW APPLICATION LIST</a></b>
+<b><a href="/advert/{{ $id }}/job/requests/reviewing">ACCEPTED FOR INTERVIEW APPLICATION LIST</a></b>
 	<hr>
 
 	<div class="row">

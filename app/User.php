@@ -44,7 +44,7 @@ class User extends Authenticatable
         return $this->hasOne(Employer::class);
     }
 
-    public function ownedBy(User $user)
+    public function avatarBy(User $user)
     {
         $userID = $user->id;
 

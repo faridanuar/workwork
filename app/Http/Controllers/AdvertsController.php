@@ -263,12 +263,14 @@ class AdvertsController extends Controller
 	{
 		$advert = Advert::find($id);
 
+		$business = $advert->employer->business_name;
+
 		$advert->update([
 
 				'job_title' => $request->job_title,
 				'salary' => (float)$request->salary,
 				'description' => $request->description,
-				'business_name' => $request->business_name,
+				'business_name' => $business,
 				'location' => $request->location,
 				'street' => $request->street,
 				'city' => $request->city,
