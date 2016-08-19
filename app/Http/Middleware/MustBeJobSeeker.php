@@ -24,7 +24,7 @@ class MustBeJobSeeker
             return redirect()->guest('login');
         }
 
-        if(!$user->hasRole('job_seeker'))
+        if(!$user->type === "job_seeker")
         {
             return redirect('/');
         }

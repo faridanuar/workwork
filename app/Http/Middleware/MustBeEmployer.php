@@ -26,7 +26,7 @@ class MustBeEmployer
             return redirect()->guest('login');
         }
 
-        if(!$user->hasRole('employer')){
+        if(!$user->type === "employer"){
 
                 return redirect('/');
         }
