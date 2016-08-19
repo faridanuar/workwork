@@ -11,7 +11,7 @@
 <hr>
 
 <div class="row">
-	<form method="post" action="/adverts" enctype="multipart/form-data" class="col-md-6">
+	<form method="post" action="/" enctype="multipart/form-data" class="col-md-6">
 		@if (count($errors) > 0)
 		<div class="alert alert-danger">
 			<ul>

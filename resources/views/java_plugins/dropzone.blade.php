@@ -8,9 +8,9 @@
 
 		paramName: 'photo', // input name / id
 
-		maxFilesize: 3, // mb
+		maxFilesize: 0.5, // mb
 
-		acceptedFiles: '.jpg, .jpeg, .png, .bmp', // allowed files
+		acceptedFiles: '.jpg, .jpeg, .png', // allowed files
 
 		accept: function(file, done) {
 		    console.log("uploaded");

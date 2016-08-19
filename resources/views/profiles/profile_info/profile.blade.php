@@ -55,7 +55,7 @@
 		@can('edit_info')
 			@if ($authorize === true)
 				<div>
-				<a href="/profile/edit" class="btn btn-primary">EDIT</a>
+				<a href="/profile/info/edit" class="btn btn-primary">EDIT</a>
 				</div>
 			@else
 

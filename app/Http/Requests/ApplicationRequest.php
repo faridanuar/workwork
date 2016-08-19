@@ -24,13 +24,7 @@ class ApplicationRequest extends Request
     public function rules()
     {
         return [
-            'age' => 'required',
-            'location' => 'required',
-            'street' => 'required',
-            'city' => 'required',
-            'zip' => 'required',
-            'state' => 'required',
-            'country' => 'required',
+            'introduction' => 'required',
         ];
     }
 }

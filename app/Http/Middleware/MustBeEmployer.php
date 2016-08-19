@@ -24,11 +24,11 @@ class MustBeEmployer
 
             // redirect if user is not authorized
             return redirect()->guest('login');
+        }
 
-            if(!$user->hasRole('employer')){
+        if(!$user->hasRole('employer')){
 
-                return redirect()->guest('login');
-            }
+                return redirect('/');
         }
 
         // return to true if user is authorized

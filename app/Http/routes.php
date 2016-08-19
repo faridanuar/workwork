@@ -12,7 +12,7 @@ Route::get('/avatar', 'HomeController@avatar');
 
 Route::post('/avatar/upload', 'HomeController@uploadAvatar');
 
-Route::delete('/avatar/{avatar_id}', 'HomeController@destroy');
+Route::delete('/avatar/{avatar_id}', 'HomeController@remove');
 
 /**
  * Social routes
@@ -31,54 +31,54 @@ Route::post('/set', 'TypeController@assignType');
 /**
  * Company Profile routes
  */
-Route::get('/company/create', 'CompanyProfController@create');
+Route::get('/company/create', 'CompanyProfileController@create');
 
-Route::post('/company/store', 'CompanyProfController@store');
+Route::post('/company/store', 'CompanyProfileController@store');
 
-Route::get('/company/{id}/{business_name}', 'CompanyProfController@profile')->name('company');
+Route::get('/company/{id}/{business_name}', 'CompanyProfileController@profile')->name('company');
 
-Route::get('/company/edit', 'CompanyProfController@edit');
+Route::get('/company/edit', 'CompanyProfileController@edit');
 
-Route::post('/company/update', 'CompanyProfController@update');
+Route::post('/company/update', 'CompanyProfileController@update');
 
-Route::get('/logo', 'CompanyProfController@logo');
+Route::get('/logo', 'CompanyProfileController@logo');
 
-Route::post('/upload/logo', 'CompanyProfController@uploadLogo');
+Route::post('/upload/logo', 'CompanyProfileController@uploadLogo');
 
-Route::delete('/logo/{logo_id}', 'CompanyProfController@destroy');
+Route::delete('/logo/{logo_id}', 'CompanyProfileController@destroy');
 
-Route::get('/company/{id}/{business_name}/review', 'CompanyProfController@companyReview');
+Route::get('/company/{id}/{business_name}/review', 'CompanyProfileController@companyReview');
 
-Route::get('/my/adverts', 'CompanyProfController@myAdvert');
+Route::get('/my/adverts', 'CompanyProfileController@myAdvert');
 
-Route::get('/advert/{id}/job/requests', 'CompanyProfController@jobRequest');
+Route::get('/advert/{id}/job/requests', 'CompanyProfileController@jobRequest');
 
-Route::get('/advert/{id}/job/requests/rejected', 'CompanyProfController@rejected');
+Route::get('/advert/{id}/job/requests/rejected', 'CompanyProfileController@rejected');
 
-Route::get('/advert/{id}/job/requests/reviewing', 'CompanyProfController@inReview');
+Route::get('/advert/{id}/job/requests/reviewing', 'CompanyProfileController@inReview');
 
-Route::get('/advert/{id}/job/requests/{role_id}', 'CompanyProfController@appliedProfile');
+Route::get('/advert/{id}/job/requests/{role_id}', 'CompanyProfileController@appliedProfile');
 
-Route::post('/advert/job/requests/{id}/response', 'CompanyProfController@response');
+Route::post('/advert/job/requests/{id}/response', 'CompanyProfileController@response');
 
-Route::post('/profile/{id}/rate', 'CompanyProfController@rate');
+Route::post('/profile/{id}/rate', 'CompanyProfileController@rate');
 
 /**
  * Job Seeker Profile routes
  */
-Route::get('/profile/create', 'JobSeekerProfController@create');
+Route::get('/profile/create', 'JobSeekerProfileController@create');
 
-Route::post('/profile/store', 'JobSeekerProfController@store');
+Route::post('/profile/store', 'JobSeekerProfileController@store');
 
-Route::get('/profile/{id}', 'JobSeekerProfController@profileInfo')->name('jobSeeker');
+Route::get('/profile/{id}', 'JobSeekerProfileController@profileInfo')->name('jobSeeker');
 
-Route::get('/profile/edit', 'JobSeekerProfController@edit');
+Route::get('/profile/info/edit', 'JobSeekerProfileController@edit');
 
-Route::post('/profile/edit/update', 'JobSeekerProfController@update');
+Route::post('/profile/edit/update', 'JobSeekerProfileController@update');
 
-Route::get('/profile/{id}/review', 'JobSeekerProfController@jobSeekerReview');
+Route::get('/profile/{id}/review', 'JobSeekerProfileController@jobSeekerReview');
 
-Route::post('/company/{id}/{business_name}/rate', 'JobSeekerProfController@rate');
+Route::post('/company/{id}/{business_name}/rate', 'JobSeekerProfileController@rate');
 
 /**
  * Adverts routes
@@ -86,6 +86,8 @@ Route::post('/company/{id}/{business_name}/rate', 'JobSeekerProfController@rate'
 Route::resource('/', 'AdvertsController');
 
 Route::get('/home', 'AdvertsController@index');
+
+Route::get('/adverts/create', 'AdvertsController@create');
 
 Route::get('/adverts/{id}/{job_title}', 'AdvertsController@show')->name('show');
 

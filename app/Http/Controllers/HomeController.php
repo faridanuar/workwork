@@ -7,7 +7,8 @@ use Illuminate\Http\Request;
 use \Braintree_ClientToken;
 use \Braintree_Transaction;
 
-use File;
+use Carbon\Carbon;
+use Image;
 
 use App\User;
 use App\Advert;
@@ -40,12 +41,10 @@ class HomeController extends Controller
 
         $avatar = $user->avatar;
 
-        $path = '.'.$avatar;
-
         if($avatar != "" || $avatar != null){
 
             //check if photo exist
-            $exist = File::exists($path);
+            $exist = true;
 
         }else{
 
@@ -93,17 +92,19 @@ class HomeController extends Controller
             // fetch advert info that belongs to this user's employer id
             $adverts = Advert::where('employer_id', $role->id)->get();
 
+
+
             if($user->subscribed('main'))
             {
                 $subscription = "Subscribed";
 
-            }elseif($user->subscription('main')->onTrial()){
+            }elseif($user->onGenericTrial()){
 
-                $subscription = "On Trial";
+                $subscription = "Trial Plan";
 
             }else{
 
-                $subscription = "Not Subscribed";
+                $subscription = "Expired";
             }
 
         }elseif($user->jobSeeker){
@@ -131,11 +132,9 @@ class HomeController extends Controller
 
         $avatar = $user->avatar;
 
-        $path = '.'.$avatar;
-
         if($avatar != "" || $avatar != null){
 
-            $exist = File::exists($path);
+            $exist = true;
 
         }else{
 
@@ -164,39 +163,10 @@ class HomeController extends Controller
      * Store the uploaded image.
      *
      */
-    public function uploadAvatar(Request $request)
+    protected function uploadAvatar(Request $request)
     {   
         // store user's info in variable
         $user = $request->user();
-
-        //fetch if previous photo name
-        $photo = $user->avatar;
-
-        $path ='.'.$photo;
-
-
-        if($photo != "" || $photo != null){
-
-            //check if previous photo exists
-            $exist = File::exists($path);
-
-        }else{
-
-            $exist = false;
-        }
-
-        //if previous photo exists then delete
-        if($exist === true)
-        {
-           unlink($path);
-
-           $user->update(['avatar' => null]);
-
-           $user->save();
-
-        }else{
-
-        }
 
         // validate function
         $this->validate($request, [
@@ -211,13 +181,14 @@ class HomeController extends Controller
         // set the timestamp to the file name
         $name = time() . '-' .$file->getClientOriginalName();
 
-        // move the file to the directory in the server
-        $file->move('images/profile_images/avatars', $name);
+        $path = "images/profile_images/avatars";
+
+        Image::make($file)->resize(200, 200)->save($path."/".$name);
 
         // update user's file path form the database
         $user->update([
 
-            'avatar' => "/images/profile_images/avatars/{$name}",
+            'avatar' => "/".$path."/".$name,
         ]);
 
         //save changes made
@@ -229,14 +200,11 @@ class HomeController extends Controller
 
 
 
-    public function destroy(Request $request, $avatar_id)
+    public function remove(Request $request, $avatar_id)
     {
         $user = $request->user();
 
         $thisPhoto = User::findOrFail($avatar_id);
-
-        $path = '.'.$thisPhoto->avatar;
-
 
         //check if job advert is own by user
         if(!$thisPhoto->avatarBy($user))
@@ -244,9 +212,9 @@ class HomeController extends Controller
             return $this->unauthorized($request);
         }
 
-        if($thisPhoto != "" || $thisPhoto != null){
+        if($thisPhoto->avatar != "" || $thisPhoto->avatar != null){
 
-            $exist = File::exists($path);
+            $exist = true;
 
         }else{
 
@@ -255,16 +223,13 @@ class HomeController extends Controller
 
         if($exist === true){
 
-            if (unlink($path))
-            {
-                $user->update(['avatar' => null]);
+            $user->update(['avatar' => null]);
 
-                $user->save();
+            $user->save();
 
-                flash('Your photo has been successfully removed', 'success');
+            flash('Your photo has been successfully removed', 'success');
 
-                return redirect()->back();
-            }
+            return redirect()->back();
 
         }else{
 

@@ -69,27 +69,8 @@ class ApplyController extends Controller
 		// fetch User model to find a row of data using user method
 		$user = $request->user();
 
-
 		// fetch Job_Seeker model to find a row of data by referencing users "id" with job_seekers "user_id"
 		$thisJobSeeker = $user->jobSeeker;
-
-
-		// check if Job_Seeker has already have a row of data with this user
-		if(!count($thisJobSeeker) > 1){
-
-			// create a new user_id and fields and store it in jobseekers table
-			$thisJobSeeker = $user->jobSeeker()->create([
-
-				// 'column' => request->'field'
-				'age' => $request->age,
-				'location' => $request->location,
-				'street' => $request->street,
-				'city' => $request->city,
-				'zip' => $request->zip,
-				'state' => $request->state,
-				'country' => $request->country,
-			]);
-		}
 
 		// create a new Application model / a new row of data
 		$application = new Application;

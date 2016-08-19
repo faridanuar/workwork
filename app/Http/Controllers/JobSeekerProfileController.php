@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use Mail;
-use File;
 
 use App\Advert;
 use App\Job_Seeker;
@@ -16,7 +15,7 @@ use App\Employer_Rating;
 
 use App\Http\Requests;
 
-class JobSeekerProfController extends Controller
+class JobSeekerProfileController extends Controller
 {
     public function __construct()
     {
@@ -100,23 +99,10 @@ class JobSeekerProfController extends Controller
 
         $avatar = $profileInfo->user->avatar;
 
-        $path = '.'.$avatar;
-
-        $exist = File::exists('.'.$avatar);
-
         $user = $request->user();
 
         if($avatar != "" || $avatar != null){
 
-            $exist = File::exists($path);
-
-        }else{
-
-            $exist = false;
-        }
-
-        if($exist)
-        {
             $photo = $avatar;
 
         }else{

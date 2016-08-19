@@ -5,7 +5,12 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use Mail;
-use File;
+use Image;
+
+use Carbon\Carbon;
+
+use \Braintree_ClientToken;
+use \Braintree_Transaction;
 
 use App\Advert;
 use App\Employer;
@@ -17,12 +22,12 @@ use App\Application;
 use App\Http\Requests;
 use App\Http\Requests\EmployerRequest;
 
-class CompanyProfController extends Controller
+class CompanyProfileController extends Controller
 {
 
     public function __construct()
     {
-        $this->middleware('employer', ['except' => ['profile', 'companyReview', 'create']]);
+        $this->middleware('employer', ['except' => ['profile', 'companyReview', 'create', 'store']]);
     }
 
     public function create(Request $request)
@@ -45,6 +50,8 @@ class CompanyProfController extends Controller
             //update user info
             'name' => $request->name,
             'contact' => $request->contact,
+            //set trial period for newly registered employer
+            'trial_ends_at' => Carbon::now()->addDays(7),
         ]);
 
         //save user's info
@@ -65,6 +72,9 @@ class CompanyProfController extends Controller
             'state' => $request->state,
             'company_intro' => $request->company_intro,
         ]);
+
+        // save changes made
+        $user->save();
 
         //set user_id in the Employer model using associate method
         $employer->user()->associate($user);
@@ -102,11 +112,9 @@ class CompanyProfController extends Controller
     {
         $company = Employer::findEmployer($id, $business_name)->first();
 
-        $exist = File::exists('.'.$company->business_logo);
-
         $user = $request->user();
 
-        if($exist)
+        if($company->business_logo != "" OR $company->business_logo != null)
         {
             $photo = $company->business_logo;
 
@@ -131,6 +139,8 @@ class CompanyProfController extends Controller
             $average = 0;
 
         }else{
+
+            $ratings;
 
             $average = $company->ownRating->avg('rating');
         }
@@ -230,21 +240,9 @@ class CompanyProfController extends Controller
 
         $logo = $employer->business_logo;
 
-        $path = '.'.$logo;
-
         //check if photo path exist
         if($logo != "" || $logo != null){
 
-            //check if file exists
-            $exist = File::exists($path);
-
-        }else{
-
-            $exist = false;
-        }
-
-        if($exist === true)
-        {
             $fileExist = true;
             $photo = $logo;
 
@@ -264,37 +262,6 @@ class CompanyProfController extends Controller
         // store user's info in variable
         $employer = $request->user()->employer()->first();
 
-        //fetch if previous photo name
-        $logo = $employer->business_logo;
-
-        $path = '.'.$logo;
-
-        //check if photo path exist
-        if($logo != "" || $logo != null){
-
-            //check if previous photo exists
-            $exist = File::exists($path);
-
-        }else{
-
-            $exist = false;
-        }
-
-        //if file exists
-        if($exist === true)
-        {
-            //delete file
-           unlink($path);
-
-           //remove path name from database
-           $employer->update(['business_logo' => null]);
-
-           $employer->save();
-
-        }else{
-
-        }
-
         $this->validate($request, [
 
             'photo' => 'required|mimes:jpg,jpeg,png,bmp' // validate image
@@ -305,11 +272,13 @@ class CompanyProfController extends Controller
 
     	$name = time() . '-' .$file->getClientOriginalName();
 
-    	$file->move('images/profile_images/logo', $name);
+    	$path = "images/profile_images/logo";
+
+        Image::make($file)->resize(200, 200)->save($path."/".$name);
 
     	$employer->update([
 
-				'business_logo' => "/images/profile_images/logo/{$name}",
+				'business_logo' => "/".$path."/".$name,
     	]);
 
     	$employer->save();
@@ -323,8 +292,6 @@ class CompanyProfController extends Controller
 
         $logo = $employer->business_logo;
 
-        $path = '.'.$logo;
-
         $user = $request->user();
 
         //check if job advert is own by user
@@ -335,7 +302,7 @@ class CompanyProfController extends Controller
 
         if($logo != "" || $logo != null){
 
-            $exist = File::exists($path);
+            $exist = true;
 
         }else{
 
@@ -344,8 +311,6 @@ class CompanyProfController extends Controller
 
         if($exist === true){
 
-            if (unlink($path))
-            {
                 $employer->update(['business_logo' => null]);
 
                 $employer->save();
@@ -353,7 +318,6 @@ class CompanyProfController extends Controller
                 flash('Your photo has been successfully removed', 'success');
 
                 return redirect()->back();
-            }
 
         }else{
 
@@ -492,21 +456,8 @@ class CompanyProfController extends Controller
 
         $avatar = $profileInfo->user->avatar;
 
-        $path = '.'.$avatar;
-
-        $exist = File::exists($path);
-
         if($avatar != "" || $avatar != null){
 
-            $exist = File::exists($path);
-
-        }else{
-
-            $exist = false;
-        }
-
-        if($exist)
-        {
             $photo = $profileInfo->user->avatar;
 
         }else{

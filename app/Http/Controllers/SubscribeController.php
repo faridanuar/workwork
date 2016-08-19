@@ -58,7 +58,6 @@ class SubscribeController extends Controller
 
 			// create a NEW subscribtion for the user
 			$subscribing = $user->newSubscription('main', $plan)->create($nonceFromTheClient, [
-				'contact' => $user->contact,
 			]);
 		}
 

@@ -14,7 +14,8 @@
         "twilio/sdk": "^4.10",
         "algolia/algoliasearch-client-php": "^1.10",
         "laravel/cashier-braintree": "~1.0",
-        "dompdf/dompdf": "^0.6.1"
+        "dompdf/dompdf": "^0.6.1",
+        "intervention/image": "^2.3"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

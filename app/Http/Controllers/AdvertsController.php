@@ -16,7 +16,7 @@ class AdvertsController extends Controller
 	*/
 	public function __construct()
 	{
-	    $this->middleware('employer', ['except' => ['index', 'show']]);
+	    $this->middleware('subscribed', ['except' => ['index', 'show']]);
 	}
 
 
@@ -46,12 +46,11 @@ class AdvertsController extends Controller
 	public function show(Request $request, $id, $job_title)
 	{
 		// fetch only the first retrieved
-		$advert = Advert::locatedAt($id, $job_title)->first();
+		$advert = Advert::locatedAt($id, $job_title)->firstOrFail();
 
 		$advertEmployer = $advert->employer_id;
 
 		$user = $request->user();
-
 
 		$authorize = "";
 

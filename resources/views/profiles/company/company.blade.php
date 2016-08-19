@@ -14,9 +14,7 @@
 	
 	<h1>{{ $company->business_name }}</h1>
 
-	<h2>{{ $average }} out of 5</h2>
-
-	<h4>Ratings: {{ $ratings }}</h4>
+	<h2>{{ $average }} out of 5 STAR</h2>
 
 	<hr>
 
@@ -60,7 +58,7 @@
 		{{ $company->state }}
 		</div>
 
-		<a href="/company/{{ $company->id }}/{{ $company->business_name }}/review">Reviews</a>
+		<a href="/company/{{ $company->id }}/{{ $company->business_name }}/review">Reviews ({{ $ratings }})</a>
 
 		@can('edit_company')
 				<div>

@@ -9,4 +9,3 @@ You got a job request from <b>{{ $user->name }}</b> <br><br>
 <b>State:</b> {{ $thisJobSeeker->state }} <br>
 <b>Country:</b> {{ $thisJobSeeker->country }} <br>
 <br><br>
-Well Done ( ˘▽˘)っ♨

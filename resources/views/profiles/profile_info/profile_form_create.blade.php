@@ -50,7 +50,7 @@
 <div class="form-group">
 	<label for="country">Country:</label>
 	<select name="country" id="country" class="form-control" required>
-			<option value="{{ old('country') }}">{{ old('country') }}</option>
+			<option value="" selected disabled>Select a country</option>
 		@foreach ($countries::all() as $code => $name)
 			<option value="{{ $code }}">{{ $name }}</option>
 		@endforeach

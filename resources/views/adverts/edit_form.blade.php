@@ -89,5 +89,5 @@
 
 <div class="form-group">
 	<button type="submit" class="btn btn-primary">Update Advertisement</button>
-	<a href="/adverts" class="btn btn-primary">Cancel</a>	
+	<a href="/" class="btn btn-primary">Cancel</a>	
 </div> 
