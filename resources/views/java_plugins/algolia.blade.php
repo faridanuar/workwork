@@ -67,7 +67,7 @@ var resultsTemplate =
 			  	'<div class="panel-body">' +
 
 					'<div class="salary">RM@{{ salary }} per @{{ rate }}</div>' +
-					'<div class="business-name">@{{{ _highlightResult.business-name.value }}}</div>' +
+					'<div class="business-name">@{{{ _highlightResult.business_name.value }}}</div>' +
 					'<div class="location">@{{{ _highlightResult.location.value }}}</div>' +
 					'<div class="street">@{{ street }}</div>' +
 					'<div class="skill">Skill: @{{{ _highlightResult.skill.value }}}</div>' +
