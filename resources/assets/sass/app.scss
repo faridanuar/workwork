@@ -1,5 +1,5 @@
-@import "node_modules/bootstrap-sass/assets/stylesheets/bootstrap";
-
+@import "bootstrap";
+@import 'https://fonts.googleapis.com/css?family=Josefin+Slab|Montserrat:400,700';
 @import "partials/forms";
 
 $brand-color: #FFDC10;
@@ -19,6 +19,14 @@ body {
 #adverts {
     a:hover {
         text-decoration: none;
+    }
+    .panel {
+        .business-name { font-weight: bold; font-size: 10px; margin-bottom: 5px; }
+        .job-title { font-weight: bold; font-size: 18px; margin-bottom: 8px; }
+        .salary {}
+        .location {}
+        .street {}
+        .skill {}
     }
 }
 

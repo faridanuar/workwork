@@ -1,7 +1,7 @@
 
 
 <nav class="navbar ww-navbar navbar-fixed-top">
-        
+
         <div class="container-fluid">
             <div class="navbar-header">
 
@@ -15,7 +15,7 @@
 
                 <!-- Branding Image -->
                 <a class="navbar-brand" href="{{ url('/') }}">
-                    <img alt="WorkWork" src="/images/workwork-logo-symbol.png" height="30" width="60">
+                    <img alt="WorkWork" src="/images/logo-workwork.png" height="25" width="196">
                 </a>
             </div>
 
@@ -50,13 +50,13 @@
                     @endif
                 </ul>
 
-                
-                
+
+
                 @can('edit_advert')
                     <a href="{{ url('/adverts/create') }}" class="btn btn-primary navbar-btn navbar-right">Create a Job Ad</a>
                 @endcan
 
-                 
+
             </div>
         </div>
     </nav>

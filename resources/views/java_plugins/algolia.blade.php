@@ -63,16 +63,15 @@ search.addWidget(
 var resultsTemplate =
 	'<a href="/adverts/@{{ id }}/@{{ job_title }}">' +
 		'<div class="panel panel-default">' +
-			'<div class="panel-heading">@{{{ _highlightResult.job_title.value }}}</div>' +
-			  	'<div class="panel-body">' +
+		  	'<div class="panel-body">' +
+                '<div class="business-name">@{{{ _highlightResult.business_name.value }}}</div>' +
+                '<div class="job-title">@{{{ _highlightResult.job_title.value }}}</div>' +
+				'<div class="salary"><sup class="currency">RM</sup>@{{ salary }} per @{{ rate }}</div>' +
+				'<div class="location">@{{{ _highlightResult.location.value }}}</div>' +
+				'<div class="street">@{{ street }}</div>' +
+				'<div class="skill">Skill: @{{{ _highlightResult.skill.value }}}</div>' +
 
-					'<div class="salary">RM@{{ salary }} per @{{ rate }}</div>' +
-					'<div class="business-name">@{{{ _highlightResult.business-name.value }}}</div>' +
-					'<div class="location">@{{{ _highlightResult.location.value }}}</div>' +
-					'<div class="street">@{{ street }}</div>' +
-					'<div class="skill">Skill: @{{{ _highlightResult.skill.value }}}</div>' +
-
-				'</div>' +
+			'</div>' +
 		'</div>' +
 	'</a>';
 
