@@ -21,7 +21,7 @@ var index = client.initIndex(itsIndex);
 //autocomplete function configurations
 autocomplete('#search-box', { hint: false }, [
     {
-      source: autocomplete.sources.hits(index, { hitsPerPage: 5 }),
+      source: autocomplete.sources.hits(index, { hitsPerPage: 6 }),
       displayKey: 'job_title',
       templates: {
         suggestion: function(suggestion) {
@@ -91,7 +91,7 @@ search.addWidget(
 	  	empty: noResultsTemplate,
 	    item: resultsTemplate
 	  },
-	  hitsPerPage: 4
+	  hitsPerPage: 20
 	})
 );
 
