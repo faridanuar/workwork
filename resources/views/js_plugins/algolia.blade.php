@@ -1,4 +1,4 @@
-<!-- scripts for algolia API -->
+
 
 <script src="https://cdn.jsdelivr.net/algoliasearch/3/algoliasearch.min.js"></script>
 
@@ -66,8 +66,8 @@ var resultsTemplate =
 		  	'<div class="panel-body">' +
                 '<div class="business-name">@{{{ _highlightResult.business_name.value }}}</div>' +
                 '<div class="job-title">@{{{ _highlightResult.job_title.value }}}</div>' +
-				'<div class="salary"><sup class="currency">RM</sup><span class="amount">@{{ salary }} </span>' +
-                    '<div class="rate"> <span class="per">per</span> <span class="rate">@{{ rate }}</span></div> </div>' +
+				'<div class="salary"><div class="amount"><sup class="currency">RM</sup>@{{ salary }} </div>' +
+                    '<div class="rate"> <span class="per">per</span> <span>@{{ rate }}</span></div> </div>' +
 				'<div class="location">@{{{ _highlightResult.location.value }}}</div>' +
 				'<div class="street">@{{ street }}</div>' +
 				'<div class="skill">Skill: @{{{ _highlightResult.skill.value }}}</div>' +
