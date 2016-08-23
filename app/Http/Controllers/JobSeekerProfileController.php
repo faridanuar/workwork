@@ -119,17 +119,19 @@ class JobSeekerProfileController extends Controller
             $average = $profileInfo->ownRating->avg('rating');
         }
 
-        $jobSeeker = $user->jobSeeker;
+        if($user){
+            $jobSeeker = $user->jobSeeker;
 
-        if($jobSeeker)
-        {
-            if($jobSeeker->id === $profileInfo->id)
+            if($jobSeeker)
             {
-                $authorize = true;
+                if($jobSeeker->id === $profileInfo->id)
+                {
+                    $authorize = true;
 
-            }else{
+                }else{
 
-                $authorize = false;
+                    $authorize = false;
+                }
             }
         }
 
