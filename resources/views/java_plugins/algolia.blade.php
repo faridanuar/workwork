@@ -52,7 +52,7 @@ var search = instantsearch({
 search.addWidget(
 	instantsearch.widgets.searchBox({
 	  container: '#search-box',
-	  placeholder: 'Search for products...',
+	  placeholder: 'Search for part-time jobs...',
 	  searchOnEnterKeyPressOnly: false
 	})
 );
@@ -61,12 +61,13 @@ search.addWidget(
 
 //hits templates
 var resultsTemplate =
-	'<a href="/adverts/@{{ id }}/@{{ job_title }}">' +
+	'<a class="panel-job-links" href="/adverts/@{{ id }}/@{{ job_title }}">' +
 		'<div class="panel panel-default">' +
 		  	'<div class="panel-body">' +
                 '<div class="business-name">@{{{ _highlightResult.business_name.value }}}</div>' +
                 '<div class="job-title">@{{{ _highlightResult.job_title.value }}}</div>' +
-				'<div class="salary"><sup class="currency">RM</sup>@{{ salary }} per @{{ rate }}</div>' +
+				'<div class="salary"><sup class="currency">RM</sup><span class="amount">@{{ salary }} </span>' +
+                    '<div class="rate"> <span class="per">per</span> <span class="rate">@{{ rate }}</span></div> </div>' +
 				'<div class="location">@{{{ _highlightResult.location.value }}}</div>' +
 				'<div class="street">@{{ street }}</div>' +
 				'<div class="skill">Skill: @{{{ _highlightResult.skill.value }}}</div>' +
