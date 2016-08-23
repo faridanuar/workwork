@@ -389,25 +389,11 @@ class CompanyProfileController extends Controller
     {
         $requestInfos = Application::where('advert_id', $id)->where('status', 'PENDING')->paginate(5);
 
-        return view('profiles.company.company_requests', compact('requestInfos', 'id'));
-    }
+        $rejectedInfos = Application::where('advert_id', $id)->where('status', 'REJECTED')->paginate(5);
 
+        $acceptedInfos = Application::where('advert_id', $id)->where('status', 'ACCEPTED FOR INTERVIEW')->paginate(5);
 
-
-    public function rejected($id)
-    {
-        $requestInfos = Application::where('advert_id', $id)->where('status', 'REJECTED')->paginate(5);
-
-        return view('profiles.company.company_requests_rejected', compact('requestInfos', 'id'));
-    }
-
-
-
-    public function inReview($id)
-    {
-        $requestInfos = Application::where('advert_id', $id)->where('status', 'ACCEPTED FOR INTERVIEW')->paginate(5);
-
-        return view('profiles.company.company_requests_inReview', compact('requestInfos', 'id'));
+        return view('profiles.company.company_requests', compact('requestInfos','rejectedInfos','acceptedInfos'));
     }
 
 

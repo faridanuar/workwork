@@ -53,10 +53,6 @@ Route::get('/my/adverts', 'CompanyProfileController@myAdvert');
 
 Route::get('/advert/{id}/job/requests', 'CompanyProfileController@jobRequest');
 
-Route::get('/advert/{id}/job/requests/rejected', 'CompanyProfileController@rejected');
-
-Route::get('/advert/{id}/job/requests/reviewing', 'CompanyProfileController@inReview');
-
 Route::get('/advert/{id}/job/requests/{role_id}', 'CompanyProfileController@appliedProfile');
 
 Route::post('/advert/job/requests/{id}/response', 'CompanyProfileController@response');
@@ -79,6 +75,10 @@ Route::post('/profile/edit/update', 'JobSeekerProfileController@update');
 Route::get('/profile/{id}/review', 'JobSeekerProfileController@jobSeekerReview');
 
 Route::post('/company/{id}/{business_name}/rate', 'JobSeekerProfileController@rate');
+
+Route::get('/my/applications', 'JobSeekerProfileController@application');
+
+Route::get('/my/applications/{app_id}', 'JobSeekerProfileController@appInfo');
 
 /**
  * Adverts routes

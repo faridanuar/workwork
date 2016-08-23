@@ -17,7 +17,7 @@
                 </div>
             </div>
             @can('edit_company')
-                <b>Status: {{ $subscription }}</b><br>
+                    <b>Status: {{ $subscription }}</b><br>
                 @if($role->id)
                     <a href="/company/{{ $role->id }}/{{ $role->business_name }}" class="btn btn-primary">Company Profile</a>
                 @else
@@ -30,6 +30,7 @@
             @endcan
 
             @can('edit_info')
+                    <a href="/my/applications" class="btn btn-primary">My Applications</a>
                 @if($role->id)
                     <a href="/profile/{{ $role->id }}" class="btn btn-primary">Profile Info</a>
                 @else

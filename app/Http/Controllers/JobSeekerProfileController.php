@@ -7,9 +7,9 @@ use Illuminate\Http\Request;
 use Mail;
 
 use App\Advert;
+use App\Application;
 use App\Job_Seeker;
 use App\Job_Seeker_Rating;
-use App\Application;
 use App\Employer_Rating;
 
 
@@ -224,5 +224,25 @@ class JobSeekerProfileController extends Controller
         $userReviews = $jobSeeker->ownRating()->paginate(5);
 
         return view('profiles.profile_info.profile_reviews', compact('userReviews'));
+    }
+
+
+
+    public function application(Request $request)
+    {
+        $jobSeekerID = $request->user()->jobSeeker->id;
+
+        $applications = Application::where('job_seeker_id', $jobSeekerID)->orderBy('created_at', 'desc')->paginate(10);
+
+        return view('profiles.profile_info.application_list', compact('applications'));
+    }
+
+
+
+    public function appInfo($app_id)
+    {
+        $appInfo = Application::find($app_id);
+
+        return view('profiles.profile_info.application_info', compact('appInfo'));
     }
 }
