@@ -38,6 +38,6 @@
 		</form>
 	</div>
 		
-	@include('java_plugins.dropzone')
+	@include('js_plugins.dropzone')
 
 @stop

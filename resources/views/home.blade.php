@@ -30,6 +30,7 @@
             @endcan
 
             @can('edit_info')
+                    <a href="/my/applications" class="btn btn-primary">My Applications</a>
                 @if($role->id)
                     <a href="/profile/{{ $role->id }}" class="btn btn-primary">Profile Info</a>
                 @else
