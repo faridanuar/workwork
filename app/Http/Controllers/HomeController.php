@@ -57,7 +57,7 @@ class HomeController extends Controller
 
         }else{
 
-            $photo = "/images/profile_images/defaults/default.jpg";
+            $photo = "/images/defaults/default.jpg";
         }
 
 
@@ -151,7 +151,7 @@ class HomeController extends Controller
 
             $fileExist = false;
 
-            $photo = "/images/profile_images/defaults/default.jpg";
+            $photo = "/images/defaults/default.jpg";
         }
 
         // display the upload page
