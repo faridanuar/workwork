@@ -263,7 +263,7 @@ class AdvertsController extends Controller
 		 $advert->save();
 			
 
-		$indexFromAlgolia = $search->index('prod_Padverts');
+		$indexFromAlgolia = $search->index('prod_adverts');
 
 		$object = $indexFromAlgolia->saveObject(
 		    [

@@ -12,7 +12,7 @@
 
 var itsAppID = '{{ $id }}';
 var itsApiKey = '{{ $api }}';
-var itsIndex = 'prod_adverts';
+var itsIndex = 'adverts';
 
 //Initialise for autocomplete js
 var client = algoliasearch(itsAppID, itsApiKey)
