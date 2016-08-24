@@ -20,8 +20,6 @@
                     <b>Status: {{ $subscription }}</b><br>
                 @if($role->id)
                     <a href="/company/{{ $role->id }}/{{ $role->business_name }}" class="btn btn-primary">Company Profile</a>
-                @else
-                    <a href="/company/create" class="btn btn-primary">Create Profile</a>
                 @endif
             @endcan
 
@@ -33,8 +31,6 @@
                     <a href="/my/applications" class="btn btn-primary">My Applications</a>
                 @if($role->id)
                     <a href="/profile/{{ $role->id }}" class="btn btn-primary">Profile Info</a>
-                @else
-                    <a href="/profile/create" class="btn btn-primary">Create Profile</a>
                 @endif
             @endcan
 

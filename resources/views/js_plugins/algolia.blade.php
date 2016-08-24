@@ -9,10 +9,9 @@
 <!-- this configuration uses algolia javascript plugin -->
 <script>
 
-
 var itsAppID = '{{ $id }}';
 var itsApiKey = '{{ $api }}';
-var itsIndex = 'adverts';
+var itsIndex = 'prod_adverts';
 
 //Initialise for autocomplete js
 var client = algoliasearch(itsAppID, itsApiKey)
@@ -71,7 +70,7 @@ var resultsTemplate =
 				'<div class="location">@{{{ _highlightResult.location.value }}}</div>' +
 				'<div class="street">@{{ street }}</div>' +
 				'<div class="skill">Skill: @{{{ _highlightResult.skill.value }}}</div>' +
-
+        '<img src="@{{ Employer::where("employer_id", employer_id.value )->business_logo->get(); }}" class="logo" height="150" width="160" />' +
 			'</div>' +
 		'</div>' +
 	'</a>';
@@ -80,7 +79,7 @@ var resultsTemplate =
 var noResultsTemplate =
 	'<div class"noResults">'+
 		'Sorry no results found...' +
-	'</div>'
+	'</div>';
 
 
 
@@ -102,9 +101,9 @@ search.addWidget(
   instantsearch.widgets.sortBySelector({
     container: '#sort-by-container',
     indices: [
-      {name: 'adverts', label: 'All Salary'},
-      {name: 'adverts_salary_asc', label: 'Lowest'},
-      {name: 'adverts_salary_desc', label: 'Highest'}
+      {name: 'prod_adverts', label: 'All Salary'},
+      {name: 'prod_adverts_salary_asc', label: 'Lowest'},
+      {name: 'prod_adverts_salary_desc', label: 'Highest'}
     ]
   })
 );

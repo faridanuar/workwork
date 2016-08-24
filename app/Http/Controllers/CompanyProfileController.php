@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 use Mail;
 use Image;
@@ -24,7 +25,6 @@ use App\Http\Requests\EmployerRequest;
 
 class CompanyProfileController extends Controller
 {
-
     public function __construct()
     {
         $this->middleware('employer', ['except' => ['profile', 'companyReview', 'create', 'store']]);
@@ -32,6 +32,11 @@ class CompanyProfileController extends Controller
 
     public function create(Request $request)
     {
+        if(!Auth::user())
+        {
+           return redirect()->guest('login');
+        }
+
         $user = $request->user();
 
         return view('profiles.company.company_create', compact('user'));
@@ -41,6 +46,11 @@ class CompanyProfileController extends Controller
 
     public function store(Request $request)
     {
+        if(!Auth::user())
+        {
+           return redirect()->guest('login');
+        }
+
         // store user info in variable
         $user = $request->user();
 
@@ -120,7 +130,7 @@ class CompanyProfileController extends Controller
 
         }else{
 
-            $photo = "/images/profile_images/defaults/default.jpg";
+            $photo = "/images/defaults/default.jpg";
         }
 
         $user = $request->user();
@@ -146,7 +156,6 @@ class CompanyProfileController extends Controller
         }
 
         if($user){
-
             $jobSeeker = $user->jobSeeker;
 
             if($jobSeeker)
@@ -249,7 +258,7 @@ class CompanyProfileController extends Controller
         }else{
 
             $fileExist = false;
-            $photo = "/images/profile_images/defaults/default.jpg";
+            $photo = "/images/defaults/default.jpg";
         }
 
         return view('profiles.company.logo', compact('photo','employer','fileExist'));
@@ -448,7 +457,7 @@ class CompanyProfileController extends Controller
 
         }else{
 
-            $photo = "/profile_images/defaults/default.jpg";
+            $photo = "/images/defaults/default.jpg";
         }
 
         $responded = Application::where('advert_id', $id)->where('job_seeker_id', $role_id)->first()->responded;
