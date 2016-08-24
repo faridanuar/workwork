@@ -130,7 +130,7 @@ class CompanyProfileController extends Controller
 
         }else{
 
-            $photo = "/images/profile_images/defaults/default.jpg";
+            $photo = "/images/defaults/default.jpg";
         }
 
         $user = $request->user();
@@ -258,7 +258,7 @@ class CompanyProfileController extends Controller
         }else{
 
             $fileExist = false;
-            $photo = "/images/profile_images/defaults/default.jpg";
+            $photo = "/images/defaults/default.jpg";
         }
 
         return view('profiles.company.logo', compact('photo','employer','fileExist'));
@@ -457,7 +457,7 @@ class CompanyProfileController extends Controller
 
         }else{
 
-            $photo = "/profile_images/defaults/default.jpg";
+            $photo = "/images/defaults/default.jpg";
         }
 
         $responded = Application::where('advert_id', $id)->where('job_seeker_id', $role_id)->first()->responded;

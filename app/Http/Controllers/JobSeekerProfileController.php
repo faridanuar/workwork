@@ -107,7 +107,7 @@ class JobSeekerProfileController extends Controller
 
         }else{
 
-            $photo = "/images/profile_images/defaults/default.jpg";
+            $photo = "/images/defaults/default.jpg";
         }
 
         if($ratings === 0)
