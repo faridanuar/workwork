@@ -25,7 +25,6 @@ use App\Http\Requests\EmployerRequest;
 
 class CompanyProfileController extends Controller
 {
-
     public function __construct()
     {
         $this->middleware('employer', ['except' => ['profile', 'companyReview', 'create', 'store']]);
