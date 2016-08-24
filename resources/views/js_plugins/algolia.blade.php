@@ -102,9 +102,9 @@ search.addWidget(
   instantsearch.widgets.sortBySelector({
     container: '#sort-by-container',
     indices: [
-      {name: 'adverts', label: 'All Salary'},
-      {name: 'adverts_salary_asc', label: 'Lowest'},
-      {name: 'adverts_salary_desc', label: 'Highest'}
+      {name: 'prod_adverts', label: 'All Salary'},
+      {name: 'prod_adverts_salary_asc', label: 'Lowest'},
+      {name: 'prod_adverts_salary_desc', label: 'Highest'}
     ]
   })
 );
