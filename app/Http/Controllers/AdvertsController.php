@@ -92,30 +92,6 @@ class AdvertsController extends Controller
 
 
 
-	public function preview(Request $request)
-	{
-		$details = [
-		'job_title' => $request->job_title,
-		'salary' => $request->salary,
-		'description' => $request->description,
-		'business_name' => $request->business_name,
-		'location' => $request->location,
-		'street' => $request->street,
-		'city' => $request->city,
-		'zip' => $request->zip,
-		'state' => $request->state,
-		'country' => $request->country,
-		'skill' => $request->skill,
-		'category' => $request->category,
-		'rate' => $request->rate,
-		'oku_friendly' => $request->oku_friendly
-		];
-
-		return view('adverts.preview', compact('details'));
-	}
-
-
-
 	/**
 	 * Store a newly created resource in storage
 	 *
@@ -155,7 +131,7 @@ class AdvertsController extends Controller
 
 		if($saveToDatabase)
 		{
-			$indexFromAlgolia = $search->index('adverts');
+			$indexFromAlgolia = $search->index('prod_adverts');
 
 			$object = $indexFromAlgolia->addObject(
 		
@@ -287,7 +263,7 @@ class AdvertsController extends Controller
 		 $advert->save();
 			
 
-		$indexFromAlgolia = $search->index('adverts');
+		$indexFromAlgolia = $search->index('prod_adverts');
 
 		$object = $indexFromAlgolia->saveObject(
 		    [
