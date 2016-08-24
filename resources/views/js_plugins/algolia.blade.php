@@ -9,7 +9,6 @@
 <!-- this configuration uses algolia javascript plugin -->
 <script>
 
-
 var itsAppID = '{{ $id }}';
 var itsApiKey = '{{ $api }}';
 var itsIndex = 'prod_adverts';
@@ -71,7 +70,7 @@ var resultsTemplate =
 				'<div class="location">@{{{ _highlightResult.location.value }}}</div>' +
 				'<div class="street">@{{ street }}</div>' +
 				'<div class="skill">Skill: @{{{ _highlightResult.skill.value }}}</div>' +
-
+        '<img src="@{{ return Employer::where("employer_id", employer_id.value )->business_logo->get(); }}" class="logo" height="150" width="160" />' +
 			'</div>' +
 		'</div>' +
 	'</a>';
@@ -80,7 +79,7 @@ var resultsTemplate =
 var noResultsTemplate =
 	'<div class"noResults">'+
 		'Sorry no results found...' +
-	'</div>'
+	'</div>';
 
 
 
