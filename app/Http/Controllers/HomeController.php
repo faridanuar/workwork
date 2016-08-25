@@ -179,7 +179,7 @@ class HomeController extends Controller
         $name = time(). '-' .$file->getClientOriginalName();
 
         // provide a path
-        $path = "images/profile_images/avatars";
+        $path = "images/profile_images/avatars/avatars";
 
         // provide path URl for Database
         $pathURL = "/".$path."/".$name;
