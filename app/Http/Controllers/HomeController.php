@@ -169,6 +169,9 @@ class HomeController extends Controller
             'photo' => 'required|mimes:jpg,jpeg,png,bmp' 
         ]);
 
+        // provide index
+        $index = "prod_adverts";
+
         // store the uploaded file in a variable and fetch by paramName
         $file = $request->file('photo');
 
@@ -199,7 +202,7 @@ class HomeController extends Controller
             $rows = $adverts->get();
 
             // select algolia index/indice name
-            $indexFromAlgolia = $search->index('adverts');
+            $indexFromAlgolia = $search->index($index);
 
             // loop algolia object update for each row
             foreach($rows as $row)
@@ -227,7 +230,7 @@ class HomeController extends Controller
         $thisPhoto = User::findOrFail($avatar_id);
 
         // provide index
-        $index = "adverts";
+        $index = "prod_adverts";
 
         //check IF job advert is own by user
         if(!$thisPhoto->avatarBy($user))
@@ -263,7 +266,7 @@ class HomeController extends Controller
                 $rows = $adverts->get();
 
                 // select algolia index/indice name
-                $indexFromAlgolia = $search->index('adverts');
+                $indexFromAlgolia = $search->index($index);
 
                 // provide path URl for Database
                 $pathURL = "/images/defaults/default.jpg";

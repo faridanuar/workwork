@@ -109,6 +109,8 @@ class AdvertsController extends Controller
 
 		$employer = $user->employer;
 
+		$index = 'prod_adverts';
+
 		// what do we need to do? if the request validates, the body below of this method will be hit
 		// validate the form - DONE		
 		// persist the advert - DONE
@@ -137,7 +139,7 @@ class AdvertsController extends Controller
 
 		if($saveToDatabase)
 		{
-			$indexFromAlgolia = $search->index('adverts');
+			$indexFromAlgolia = $search->index($index);
 
 			$object = $indexFromAlgolia->addObject(
 		
@@ -246,6 +248,8 @@ class AdvertsController extends Controller
 
 		$business = $advert->employer->business_name;
 
+		$index = 'prod_adverts';
+
 		$advert->update([
 
 				'job_title' => $request->job_title,
@@ -266,7 +270,7 @@ class AdvertsController extends Controller
 
 		$advert->save();
 		
-		$indexFromAlgolia = $search->index('adverts');
+		$indexFromAlgolia = $search->index($index);
 
 		$object = $indexFromAlgolia->partialUpdateObject(
 		    [
