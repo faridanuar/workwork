@@ -4,9 +4,14 @@ namespace App\Http\Controllers;
 
 
 use App\Advert;
+use App\Employer;
+
 use App\Http\Requests;
+
 use App\Contracts\Search;
+
 use Illuminate\Http\Request;
+
 use App\Http\Requests\AdvertRequest;
 
 class AdvertsController extends Controller
@@ -126,12 +131,13 @@ class AdvertsController extends Controller
 		        'category'  => $request->category,
 		        'rate'  => $request->rate,
 		        'oku_friendly'  => $request->oku_friendly,
+		        'avatar'  => $user->avatar,
 			]
 		);
 
 		if($saveToDatabase)
 		{
-			$indexFromAlgolia = $search->index('prod_adverts');
+			$indexFromAlgolia = $search->index('adverts');
 
 			$object = $indexFromAlgolia->addObject(
 		
@@ -154,6 +160,7 @@ class AdvertsController extends Controller
 			        'category'  => $saveToDatabase->category,
 			        'rate'  => $saveToDatabase->rate,
 			        'oku_friendly'  => $saveToDatabase->oku_friendly,
+			        'avatar'  => $saveToDatabase->avatar,
 			    ],
 			    $saveToDatabase->id
 			);
@@ -170,8 +177,7 @@ class AdvertsController extends Controller
 				// redirect to a landing page, so that people can share to the world DONE, kinda
 				// next, flash messaging
 				return redirect()->route('show', [$id,$job_title]);
-
-
+				
 			}else{
 
 				echo "Error: Adding object to index was unsuccessful";
@@ -256,16 +262,13 @@ class AdvertsController extends Controller
 			    'category'  => $request->category,
 			    'rate'  => $request->rate,
 			    'oku_friendly'  => $request->oku_friendly,
-
-
 		]);
 
-		 $advert->save();
-			
+		$advert->save();
+		
+		$indexFromAlgolia = $search->index('adverts');
 
-		$indexFromAlgolia = $search->index('prod_adverts');
-
-		$object = $indexFromAlgolia->saveObject(
+		$object = $indexFromAlgolia->partialUpdateObject(
 		    [
 		    	'id' => $advert->id,
 		        'job_title' => $advert->job_title,
@@ -293,7 +296,7 @@ class AdvertsController extends Controller
 		{
 			flash('Your advert has been successfully updated.', 'success');
 
-			return redirect()->route('show', [$id,$job_title]);
+			return redirect()->route('show', [$id,$advert->job_title]);
 
 		}else{
 

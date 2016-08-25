@@ -19,7 +19,7 @@
 
 	<div class="upload-box">
 		<form id="addPhotosForm" method="post" action="/avatar/upload" enctype="multipart/form-data" class="dropzone">
-		{{ csrf_field() }}
+		{!! csrf_field() !!}
 
 		</form>
 	</div>

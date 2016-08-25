@@ -45,7 +45,7 @@ Route::get('/logo', 'CompanyProfileController@logo');
 
 Route::post('/upload/logo', 'CompanyProfileController@uploadLogo');
 
-Route::delete('/logo/{logo_id}', 'CompanyProfileController@destroy');
+Route::delete('/logo/{logo_id}', 'CompanyProfileController@remove');
 
 Route::get('/company/{id}/{business_name}/review', 'CompanyProfileController@companyReview');
 
@@ -91,7 +91,7 @@ Route::get('/adverts/create', 'AdvertsController@create');
 
 Route::get('/adverts/{id}/{job_title}', 'AdvertsController@show')->name('show');
 
-Route::post('adverts/preview', 'AdvertsController@preview');
+// Route::post('adverts/preview', 'AdvertsController@preview');
 
 Route::get('adverts/{id}/{job_title}/edit', 'AdvertsController@edit');
 
