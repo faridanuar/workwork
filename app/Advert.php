@@ -29,7 +29,8 @@ class Advert extends Model
         'skill',
         'category',
         'rate',
-        'oku_friendly'
+        'oku_friendly',
+        'avatar',
     ];
 
 

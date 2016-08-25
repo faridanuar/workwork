@@ -8,6 +8,9 @@ use \Braintree_ClientToken;
 use \Braintree_Transaction;
 
 use Carbon\Carbon;
+
+use App\Contracts\Search;
+
 use Image;
 
 use App\User;
@@ -134,15 +137,6 @@ class HomeController extends Controller
 
         if($avatar != "" || $avatar != null){
 
-            $exist = true;
-
-        }else{
-
-            $exist = false;
-        }
-
-        if($exist === true)
-        {
             $fileExist = true;
 
             $photo = $avatar;
@@ -163,55 +157,88 @@ class HomeController extends Controller
      * Store the uploaded image.
      *
      */
-    protected function uploadAvatar(Request $request)
+    protected function uploadAvatar(Request $request, Search $search)
     {   
         // store user's info in variable
         $user = $request->user();
 
-        // validate function
+        // validation function
         $this->validate($request, [
 
-            // validate image
+            // allow only this type of image
             'photo' => 'required|mimes:jpg,jpeg,png,bmp' 
         ]);
+
+        // provide index
+        $index = "prod_adverts";
 
         // store the uploaded file in a variable and fetch by paramName
         $file = $request->file('photo');
 
         // set the timestamp to the file name
-        $name = time() . '-' .$file->getClientOriginalName();
+        $name = time(). '-' .$file->getClientOriginalName();
 
-        $path = "images/profile_images/avatars";
+        // provide a path
+        $path = "images/profile_images/avatars/avatars";
 
-        Image::make($file)->resize(200, 200)->save($path."/".$name);
+        // provide path URl for Database
+        $pathURL = "/".$path."/".$name;
 
-        // update user's file path form the database
-        $user->update([
+        // use intervention facade to resize image then move/upload to dir
+        Image::make($file)->fit(200, 200)->save($path."/".$name);
 
-            'avatar' => "/".$path."/".$name,
-        ]);
+        // update user's file path url then save to database
+        $user->update([ 'avatar' => $pathURL ]);
 
-        //save changes made
         $user->save();
-        
-        // redirect to current page
-        return back();
-    }
+
+        // run process if user is an employer
+        if($user->employer)
+        {
+            // determine which rows to fetch
+            $adverts = Advert::where('employer_id', '=',$user->employer->id);
+
+            // fetch the rows
+            $rows = $adverts->get();
+
+            // select algolia index/indice name
+            $indexFromAlgolia = $search->index($index);
+
+            // loop algolia object update for each row
+            foreach($rows as $row)
+            {
+                // update algolia existing object. Determine which by row id
+                $object = $indexFromAlgolia->partialUpdateObject([
+                    'avatar' => $pathURL,
+                    'objectID' => $row->id,
+                ]);
+            }
+
+            //MASS UPDATE existing advert's "avatar" column to database
+            $adverts->update([ 'avatar' => $pathURL ]);
+        }
+}
 
 
 
-    public function remove(Request $request, $avatar_id)
+    public function remove(Request $request, $avatar_id, Search $search)
     {
+        // fetch user's info
         $user = $request->user();
 
+        // find photo's row data using the "avatar_id"
         $thisPhoto = User::findOrFail($avatar_id);
 
-        //check if job advert is own by user
+        // provide index
+        $index = "prod_adverts";
+
+        //check IF job advert is own by user
         if(!$thisPhoto->avatarBy($user))
         {
             return $this->unauthorized($request);
         }
 
+        // check IF avatar path url exist
         if($thisPhoto->avatar != "" || $thisPhoto->avatar != null){
 
             $exist = true;
@@ -221,12 +248,44 @@ class HomeController extends Controller
             $exist = false;
         }
 
+        // run process IF photo path url exist/is true
         if($exist === true){
 
-            $user->update(['avatar' => null]);
+            //UPDATE advert's "avatar" column to null then SAVE changes to database
+            $user->update([ 'avatar' => null ]);
 
             $user->save();
 
+            // run process IF user is an employer
+            if($user->employer)
+            {
+                // determine which rows to fetch
+                $adverts = Advert::where('employer_id', '=',$user->employer->id);
+
+                // fetch the rows
+                $rows = $adverts->get();
+
+                // select algolia index/indice name
+                $indexFromAlgolia = $search->index($index);
+
+                // provide path URl for Database
+                $pathURL = "/images/defaults/default.jpg";
+
+                // loop algolia object update for each row
+                foreach($rows as $row)
+                {
+                    // update algolia existing object. Determine which by row id
+                    $object = $indexFromAlgolia->partialUpdateObject([
+                        'avatar' => $pathURL,
+                        'objectID' => $row->id,
+                    ]);
+                }
+
+                //MASS UPDATE existing advert's "avatar" column to database
+                $adverts->update([ 'avatar' => $pathURL ]);
+            }
+
+            // flash message
             flash('Your photo has been successfully removed', 'success');
 
             return redirect()->back();

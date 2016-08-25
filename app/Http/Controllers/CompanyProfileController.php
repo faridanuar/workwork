@@ -20,6 +20,8 @@ use App\Job_Seeker_Rating;
 use App\Employer_Rating;
 use App\Application;
 
+use App\Contracts\Search;
+
 use App\Http\Requests;
 use App\Http\Requests\EmployerRequest;
 
@@ -274,28 +276,24 @@ class CompanyProfileController extends Controller
         $this->validate($request, [
 
             'photo' => 'required|mimes:jpg,jpeg,png,bmp' // validate image
-
         ]);
 
     	$file = $request->file('photo');
 
-    	$name = time() . '-' .$file->getClientOriginalName();
+    	$name = time(). '-' .$file->getClientOriginalName();
 
     	$path = "images/profile_images/logo";
 
-        Image::make($file)->resize(200, 200)->save($path."/".$name);
+        Image::make($file)->fit(200, 200)->save($path."/".$name);
 
-    	$employer->update([
+    	$employer->update([ 'business_logo' => "/".$path."/".$name ]);
 
-				'business_logo' => "/".$path."/".$name,
-    	]);
-
-    	$employer->save();
+        $employer->save();
     }
 
 
 
-    public function destroy(Request $request, $logo_id)
+    public function remove(Request $request, $logo_id)
     {
         $employer = Employer::findOrFail($logo_id);
 
@@ -320,7 +318,7 @@ class CompanyProfileController extends Controller
 
         if($exist === true){
 
-                $employer->update(['business_logo' => null]);
+                $employer->update([ 'business_logo' => null ]);
 
                 $employer->save();
 

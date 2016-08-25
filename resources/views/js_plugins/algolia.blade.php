@@ -70,7 +70,7 @@ var resultsTemplate =
 				'<div class="location">@{{{ _highlightResult.location.value }}}</div>' +
 				'<div class="street">@{{ street }}</div>' +
 				'<div class="skill">Skill: @{{{ _highlightResult.skill.value }}}</div>' +
-        '<img src="@{{ Employer::where("employer_id", employer_id.value )->business_logo->get(); }}" class="logo" height="150" width="160" />' +
+        '<img src="@{{ avatar }}" class="logo-index" height="150" width="160" />' +
 			'</div>' +
 		'</div>' +
 	'</a>';
