@@ -25,7 +25,6 @@
 
     <!-- Styles -->
     <link rel="stylesheet" href="{{ elixir('css/app.css') }}" media="screen" charset="utf-8">
-    <link href='https://fonts.googleapis.com/css?family=Josefin+Slab:700' rel='stylesheet' type='text/css'>
     <link rel="shortcut icon" href="/images/favicon.png" type="image/png">
 
     <!-- Plugin Styles -->
@@ -33,7 +32,7 @@
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/4.3.0/dropzone.css">
 
 </head>
-<body id="app-layout">
+<body id="@yield('body-id')">
     @include('layouts.navigation')
 
     <div class="container">

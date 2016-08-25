@@ -3,6 +3,7 @@
 @import "partials/forms";
 
 $brand-color: #FFDC10;
+$advert-label-color: #A36500;
 $fancy-font: 'Josefin Slab', serif;
 
 // App Styles
@@ -30,6 +31,26 @@ body {
         .currency { top: -0.25em; margin-right: 0.2em; }
         .amount { border-bottom: 2px solid; border-bottom-color: rgba(0,0,0,0.1); display: inline-block; }
         .rate { font-size: 0.7em; opacity: 0.8; }
+        .location {}
+        .street {}
+        .skill {}
+    }
+}
+
+#advert-view {
+    background-color: #F1F1F1;
+}
+
+#advert {
+    .panel-body {
+        h3{ font-size: 12px; font-weight: bold; text-transform: uppercase; color: $advert-label-color; letter-spacing: 0.1em;}
+        .job-title { font-weight: bold; font-size: 18px; margin-bottom: 8px; margin-top: 10px; }
+        .business-name { font-weight: bold; font-size: 10px; margin-bottom: 5px; opacity: 0.6; text-transform: uppercase; }
+        .salary { font-size: 16px; font-weight: normal; margin-bottom: 16px; }
+        .currency { top: -0.25em; margin-right: 0.2em; }
+        .amount { border-bottom: 2px solid; border-bottom-color: rgba(0,0,0,0.1); display: inline-block; }
+        .rate { font-size: 0.7em; opacity: 0.8; }
+        .description { line-height: 24px; }
         .location {}
         .street {}
         .skill {}
