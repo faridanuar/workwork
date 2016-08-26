@@ -49,6 +49,7 @@ return [
     'algolia' => [
         'app_id' => env('ALGOLIA_APP_ID'),
         'api_key' => env('ALGOLIA_API_KEY'),
+        'search_key' => env('ALGOLIA_SEARCH_KEY'),
         'index' => env('ALGOLIA_INDEX'),
         'index_asc' => env('ALGOLIA_INDEX_ASC'),
         'index_desc' => env('ALGOLIA_INDEX_DESC'),

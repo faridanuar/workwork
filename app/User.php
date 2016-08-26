@@ -30,6 +30,7 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
 
+    // identify the date to make carbon instance
     protected $dates = ['trial_ends_at'];
 
 

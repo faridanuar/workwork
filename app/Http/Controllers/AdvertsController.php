@@ -34,7 +34,7 @@ class AdvertsController extends Controller
 		$config = config('services.algolia');
 
 		$id = $config['app_id'];
-		$api = $config['api_key'];
+		$api = $config['search_key'];
 		$index = $config['index'];
 		$index_asc = $config['index_asc'];
 		$index_desc = $config['index_desc']; 
