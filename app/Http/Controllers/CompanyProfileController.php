@@ -282,7 +282,7 @@ class CompanyProfileController extends Controller
 
     	$name = time(). '-' .$file->getClientOriginalName();
 
-    	$path = "images/profile_images/logo";
+    	$path = "images/profile_images/logo/logo";
 
         Image::make($file)->fit(200, 200)->save($path."/".$name);
 
