@@ -111,6 +111,15 @@ class AdvertsController extends Controller
 
 		$index = 'prod_adverts';
 
+		if($user->avatar != null || $user->avatar != "")
+		{
+			$avatar = $user->avatar;
+
+		}else{
+
+			$avatar = "/images/defaults/default.jpg";
+		}
+
 		// what do we need to do? if the request validates, the body below of this method will be hit
 		// validate the form - DONE		
 		// persist the advert - DONE
@@ -133,7 +142,7 @@ class AdvertsController extends Controller
 		        'category'  => $request->category,
 		        'rate'  => $request->rate,
 		        'oku_friendly'  => $request->oku_friendly,
-		        'avatar'  => $user->avatar,
+		        'avatar'  => $avatar,
 			]
 		);
 
