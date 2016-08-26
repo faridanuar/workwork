@@ -26,9 +26,11 @@ class MustBeEmployer
             return redirect()->guest('login');
         }
 
-        if($user->type != "employer"){
+        if($user->type != "employer" || !$user->hasRole('employer')){
 
-                return redirect('/');
+            flash('Sorry, you are not allowed to access unless you are an Employer and have created a profile', 'info');
+
+            return redirect('/');
         }
 
         // return to true if user is authorized

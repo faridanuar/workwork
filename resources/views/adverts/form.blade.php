@@ -35,6 +35,10 @@
 	</select>
 </div>
 
+<div class="form-group">
+	<label for="schedule">Work Schedule:</label>
+	<textarea type="text" name="schedule" id="schedule" class="form-control" rows="10" required>{{ old('schedule') }}</textarea>
+</div>
 
 <div class="form-group">
 	<label for="description">Job Description:</label>

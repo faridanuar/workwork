@@ -98,7 +98,6 @@ class SubscribeController extends Controller
 		return $user->downloadInvoice($invoiceId, [
         'vendor'  => 'WorkWork.Com',
         'product' => 'WorkWork Subscription Plan',
-
         ]);
 	}
 }

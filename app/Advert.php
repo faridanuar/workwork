@@ -30,7 +30,9 @@ class Advert extends Model
         'category',
         'rate',
         'oku_friendly',
+        'open',
         'avatar',
+        'schedule',
     ];
 
 

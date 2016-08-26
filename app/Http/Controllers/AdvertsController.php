@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-
+use App\User;
 use App\Advert;
 use App\Employer;
 
@@ -112,7 +112,9 @@ class AdvertsController extends Controller
 
 		$employer = $user->employer;
 
-		$index = 'prod_adverts';
+		$config = config('services.algolia');
+
+		$index = $config['index'];
 
 		if($user->avatar != null || $user->avatar != "")
 		{
@@ -146,6 +148,7 @@ class AdvertsController extends Controller
 		        'rate'  => $request->rate,
 		        'oku_friendly'  => $request->oku_friendly,
 		        'avatar'  => $avatar,
+		        'schedule' => $request->schedule,
 			]
 		);
 
@@ -175,6 +178,7 @@ class AdvertsController extends Controller
 			        'rate'  => $saveToDatabase->rate,
 			        'oku_friendly'  => $saveToDatabase->oku_friendly,
 			        'avatar'  => $saveToDatabase->avatar,
+			        'schedule'  => $saveToDatabase->schedule,
 			    ],
 			    $saveToDatabase->id
 			);
@@ -260,7 +264,9 @@ class AdvertsController extends Controller
 
 		$business = $advert->employer->business_name;
 
-		$index = 'prod_adverts';
+		$config = config('services.algolia');
+
+		$index = $config['index'];
 
 		$advert->update([
 
@@ -278,6 +284,7 @@ class AdvertsController extends Controller
 			    'category'  => $request->category,
 			    'rate'  => $request->rate,
 			    'oku_friendly'  => $request->oku_friendly,
+			    'schedule' => $request->schedule,
 		]);
 
 		$advert->save();
@@ -304,6 +311,7 @@ class AdvertsController extends Controller
 		        'category'  => $advert->category,
 		        'rate'  => $advert->rate,
 		        'oku_friendly'  => $advert->oku_friendly,
+		        'schedule'  => $advert->schedule,
 		        'objectID'  => $advert->id,
 		    ]
 		);

@@ -7,14 +7,14 @@ use Illuminate\Http\Request;
 use \Braintree_ClientToken;
 use \Braintree_Transaction;
 
-use Carbon\Carbon;
-
-use App\Contracts\Search;
-
 use Image;
+
+use Carbon\Carbon;
 
 use App\User;
 use App\Advert;
+
+use App\Contracts\Search;
 
 class HomeController extends Controller
 {

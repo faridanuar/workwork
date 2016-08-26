@@ -36,7 +36,8 @@
         </div>
         <div class="schedule">
             <h3>Work Schdule</h3>
-            July-August
+            July-August<br>
+            {{ $advert->schedule }}
         </div>
         <hr>
         <div class="description">
