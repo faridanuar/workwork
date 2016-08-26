@@ -95,8 +95,6 @@ class HomeController extends Controller
             // fetch advert info that belongs to this user's employer id
             $adverts = Advert::where('employer_id', $role->id)->get();
 
-
-
             if($user->subscribed('main'))
             {
                 $subscription = "Subscribed";
@@ -107,7 +105,7 @@ class HomeController extends Controller
 
             }else{
 
-                $subscription = "Expired";
+                $subscription = "Not Subscribed";
             }
 
         }elseif($user->jobSeeker){

@@ -41,14 +41,17 @@ return [
     ],
 
     'facebook' => [
-        'client_id' => '1578992975731734',
-        'client_secret' => '0cf182a8fe4ec8f076c75d7271181ffa',
-        'redirect' => 'http://workwork.app/callback',
+        'client_id' => env('FACEBOOK_CLIENT_ID'),
+        'client_secret' => env('FACEBOOK_SECRET_KEY'),
+        'redirect' => env('FACEBOOK_REDIRECT_CALLBACK'),
     ],
 
     'algolia' => [
         'app_id' => env('ALGOLIA_APP_ID'),
-        'api_key' => env('ALGOLIA_API_KEY')
+        'api_key' => env('ALGOLIA_API_KEY'),
+        'index' => env('ALGOLIA_INDEX'),
+        'index_asc' => env('ALGOLIA_INDEX_ASC'),
+        'index_desc' => env('ALGOLIA_INDEX_DESC'),
 
     ],
 

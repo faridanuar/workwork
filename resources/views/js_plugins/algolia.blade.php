@@ -11,7 +11,9 @@
 
 var itsAppID = '{{ $id }}';
 var itsApiKey = '{{ $api }}';
-var itsIndex = 'prod_adverts';
+var itsIndex = '{{ $index }}';
+var salaryASC = '{{ $index_asc }}';
+var salaryDESC = '{{ $index_desc }}';
 
 //Initialise for autocomplete js
 var client = algoliasearch(itsAppID, itsApiKey)
@@ -101,9 +103,9 @@ search.addWidget(
   instantsearch.widgets.sortBySelector({
     container: '#sort-by-container',
     indices: [
-      {name: 'prod_adverts', label: 'All Salary'},
-      {name: 'prod_adverts_salary_asc', label: 'Lowest'},
-      {name: 'prod_adverts_salary_desc', label: 'Highest'}
+      {name: itsIndex, label: 'All Salary'},
+      {name: salaryASC, label: 'Lowest'},
+      {name: salaryDESC, label: 'Highest'}
     ]
   })
 );

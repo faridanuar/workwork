@@ -35,8 +35,11 @@ class AdvertsController extends Controller
 
 		$id = $config['app_id'];
 		$api = $config['api_key'];
+		$index = $config['index'];
+		$index_asc = $config['index_asc'];
+		$index_desc = $config['index_desc']; 
 		
-		return view('adverts.index', compact('id', 'api'));
+		return view('adverts.index', compact('id', 'api', 'index', 'index_asc', 'index_desc'));
 	}
 
 
