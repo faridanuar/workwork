@@ -63,7 +63,7 @@
 
         @elseif ( $asEmployer === false )
 
-        	<a href="/adverts/{{ $advert->id }}/{{ strtolower($advert->job_title) }}/apply" class="btn btn-primary btn-lg btn-block">Apply</a>
+        	<a href="/adverts/{{ $advert->id }}/{{ strtolower($advert->job_title) }}/apply" class="btn btn-primary btn-lg btn-block btn-ww-lg">Apply</a>
 
         @endif
     </div>

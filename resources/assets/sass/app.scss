@@ -8,7 +8,7 @@ $fancy-font: 'Josefin Slab', serif;
 
 // App Styles Yo
 body {
-    padding-top: 100px;
+    padding-top: 90px;
 }
 
 .ww-navbar {
@@ -312,4 +312,71 @@ dropzone styling section
 
     height: 200px;
     width: 200px;
+}
+
+// button styling
+.btn-ww {
+    &-lg, &-md {
+        border-radius: 100px;
+        font-size: 14px;
+        color: #FFDC10;
+    }
+
+    &-fb {
+        border-radius: 100px;
+        background-color: #3B579D;
+        color: white;
+        border-color: #3B5998;
+        border-bottom-color: #263a63;
+        &:hover {
+            background-color: #4568b2;
+            border-bottom-color: #2d4575;
+            color: white;
+        }
+    }
+}
+
+//icons
+.wwicon img{
+    position: relative;
+    display: inline-block;
+    width: 31px;
+    height: 31px;
+}
+
+// signup separator
+.signup-or-separator {
+    background: none;
+    height: 34px;
+    position: relative;
+    text-align: center;
+    &--text {
+        background-color: #fff;
+        display: inline-block;
+        padding: 8px;
+        margin: 0;
+    }
+    hr {
+        margin: -16px auto 10px;
+        width: 100%;
+    }
+}
+
+//panel
+.panel-heading-ww {
+    background-color: white !important;
+    background-image: url('/images/bg-icons.png');
+    background-size: 396px;
+    background-position: 0 -30px;
+    padding: 20px 20px;
+
+    font-weight: bold;
+    text-transform: uppercase;
+    text-align: center;
+}
+
+.sign-in {
+    &__no-account {
+        line-height: 34px;
+    }
 }
