@@ -28,6 +28,13 @@
                 <!-- Right Side Of Navbar -->
                 <ul class="nav navbar-nav navbar-right">
                     <li><a href="{{ url('/plans') }}">Pricing</a></li>
+                    @can('edit_advert')
+                        <li><a href="{{ url('/adverts/create') }}">Create a Job Ad</a></li>
+                    @endcan
+                    @if(Auth::user())
+                        <li><a href="{{ url('/dashboard') }}">Dashboard</a></li>
+                    @endif
+
                     <!-- Authentication Links -->
                     @if (Auth::guest())
                         <li><a href="{{ url('/login') }}">Login</a></li>
@@ -39,24 +46,11 @@
                             </a>
 
                             <ul class="dropdown-menu" role="menu">
-                                <li>
-                                @can('view_dashboard')
-                                <a href="{{ url('/dashboard') }}" class="fa fa-btn fa-dashboard">Dashboard</a>
-                                @endcan
-                                </li>
                                 <li><a href="{{ url('/logout') }}"><i class="fa fa-btn fa-sign-out"></i>Logout</a></li>
                             </ul>
                         </li>
                     @endif
                 </ul>
-
-
-
-                @can('edit_advert')
-                    <a href="{{ url('/adverts/create') }}" class="btn btn-primary navbar-btn navbar-right">Create a Job Ad</a>
-                @endcan
-
-
             </div>
         </div>
     </nav>

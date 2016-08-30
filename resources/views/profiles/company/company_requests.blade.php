@@ -2,6 +2,8 @@
 
 @section('content')
 
+<a href="/my/adverts">Back</a>
+
 <h1>Job Seekers</h1>
 
   <ul class="nav nav-tabs">
@@ -83,7 +85,8 @@
 		</div>
 	
 		<div id="accepted" class="tab-pane fade">
-		Accepted List
+
+			<h4>Accepted List</h4>
 			@foreach($acceptedInfos as $acceptedInfo)
 
 				<div class="form-group">

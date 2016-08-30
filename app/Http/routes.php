@@ -89,6 +89,8 @@ Route::get('/home', 'AdvertsController@index');
 
 Route::get('/adverts/create', 'AdvertsController@create');
 
+Route::post('/adverts/publish', 'AdvertsController@publish');
+
 Route::get('/adverts/{id}/{job_title}', 'AdvertsController@show')->name('show');
 
 // Route::post('adverts/preview', 'AdvertsController@preview');

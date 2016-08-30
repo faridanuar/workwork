@@ -23,7 +23,6 @@
 		@endif
 		
 		@include('adverts.form')
-
 	</form>
 </div>
 @stop

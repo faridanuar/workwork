@@ -27,7 +27,7 @@ class MustBeSubscribed
 
         if (!$user->subscribed('main') && !$user->onGenericTrial() || !$user->hasRole("employer"))
         {
-            flash('Your must be registered as a company and your subscription must be active to use this feature', 'error');
+            flash('You have a company profile and your subscription must be active to use this feature', 'info');
 
             return redirect('/home');
         }

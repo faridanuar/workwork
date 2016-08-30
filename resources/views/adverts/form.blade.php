@@ -65,7 +65,7 @@
 <div class="form-group">
 	<label for="zip">Zip:</label>
 	<input type="text" name="zip" id="zip" class="form-control" value="{{ old('zip') }}" required>
-</div> 
+</div>
 
 <div class="form-group">
 	<label for="state">State:</label>
@@ -93,5 +93,6 @@
 </div>	
 
 <div class="form-group">
-	<button type="submit" class="btn btn-primary">Create Advertisement</button>
+	<a href="/home" class="btn btn-primary">Cancel</a>
+	<button type="submit" class="btn btn-primary">Save Advertisement</button>
 </div> 
