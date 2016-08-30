@@ -7,14 +7,14 @@ $advert-label-color: #A36500;
 $fancy-font: 'Josefin Slab', serif;
 
 // App Styles Yo
-body {
-    padding-top: 90px;
-}
+body { padding-top: 90px; }
 
 .ww-navbar {
     background-color: $brand-color;
     border-bottom: 2px solid rgba(0,0,0,0.2);
     box-shadow: 0 8px 0 0 rgba(0,0,0,0.1);
+
+    .navbar-toggle .icon-bar { border: 1px solid black; }
 }
 
 #adverts {
@@ -314,6 +314,22 @@ dropzone styling section
     width: 200px;
 }
 
+/**********************************
+Sign up and log in
+**********************************/
+
+.navbar-btn.navbar-btn-ww{
+    padding: 5px 18px;
+    background-color: transparent;
+    border-radius: 100px;
+    border: 2px solid rgba(0, 0, 0, 0.2);
+
+    &:hover {
+        border: 2px solid rgba(0, 0, 0, 1);
+        background-color: transparent;
+    }
+}
+
 // button styling
 .btn-ww {
     &-lg, &-md {
@@ -350,6 +366,7 @@ dropzone styling section
     height: 34px;
     position: relative;
     text-align: center;
+    margin: 18px 0;
     &--text {
         background-color: #fff;
         display: inline-block;
@@ -362,7 +379,10 @@ dropzone styling section
     }
 }
 
-//panel
+//registration and login
+.panel-ww-registration, .panel-ww-login {
+    max-width: 450px;
+}
 .panel-heading-ww {
     background-color: white !important;
     background-image: url('/images/bg-icons.png');
@@ -380,3 +400,9 @@ dropzone styling section
         line-height: 34px;
     }
 }
+
+.ww-user-type {
+    .btn-group { padding: 10px 60px; }
+    h4 { margin: 40px 0 10px; }
+}
+
