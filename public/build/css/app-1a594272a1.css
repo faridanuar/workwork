@@ -5741,6 +5741,8 @@ body {
   background-color: #FFDC10;
   border-bottom: 2px solid rgba(0, 0, 0, 0.2);
   box-shadow: 0 8px 0 0 rgba(0, 0, 0, 0.1); }
+  .ww-navbar .navbar-toggle .icon-bar {
+    border: 1px solid black; }
 
 #adverts a.panel-job-links {
   color: black; }
@@ -5994,6 +5996,18 @@ dropzone styling section
   height: 200px;
   width: 200px; }
 
+/**********************************
+Sign up and log in
+**********************************/
+.navbar-btn.navbar-btn-ww {
+  padding: 5px 18px;
+  background-color: transparent;
+  border-radius: 100px;
+  border: 2px solid rgba(0, 0, 0, 0.2); }
+  .navbar-btn.navbar-btn-ww:hover {
+    border: 2px solid black;
+    background-color: transparent; }
+
 .btn-ww-lg, .btn-ww-md {
   border-radius: 100px;
   font-size: 14px;
@@ -6020,7 +6034,8 @@ dropzone styling section
   background: none;
   height: 34px;
   position: relative;
-  text-align: center; }
+  text-align: center;
+  margin: 18px 0; }
   .signup-or-separator--text {
     background-color: #fff;
     display: inline-block;
@@ -6029,6 +6044,9 @@ dropzone styling section
   .signup-or-separator hr {
     margin: -16px auto 10px;
     width: 100%; }
+
+.panel-ww-registration, .panel-ww-login {
+  max-width: 450px; }
 
 .panel-heading-ww {
   background-color: white !important;
@@ -6042,5 +6060,11 @@ dropzone styling section
 
 .sign-in__no-account {
   line-height: 34px; }
+
+.ww-user-type .btn-group {
+  padding: 10px 60px; }
+
+.ww-user-type h4 {
+  margin: 40px 0 10px; }
 
 /*# sourceMappingURL=app.css.map */
