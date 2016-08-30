@@ -6,10 +6,16 @@
 	@include('messages.flash')
 </div>
 
-<h1>Part-time Jobs</h1>
+<section id="intro">
+	<article>
+		<p class="lead">
+		Workwork is the best place to find and list <strong>part-time</strong> jobs. Follow us on Twitter @workwork
+		</p>
+	</article>
+</section>
 
 <div class="row">
-	<div class="col-md-3">
+	<div class="col-md-3 hidden-xs">
 		<div class="panel panel-default">
 			<!-- todo: Filter -->
 			<div class="panel-body">
