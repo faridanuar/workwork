@@ -230,14 +230,37 @@ class JobSeekerProfileController extends Controller
 
 
 
-    public function application(Request $request)
+    public function pendingList(Request $request)
     {
-        $jobSeekerID = $request->user()->jobSeeker->id;
+        $jobSeeker = $request->user()->jobSeeker;
+        
+        $requestInfos = Application::where('job_seeker_id', $jobSeeker->id)->where('status', 'PENDING')->paginate(5);
 
-        $applications = Application::where('job_seeker_id', $jobSeekerID)->orderBy('created_at', 'desc')->paginate(10);
-
-        return view('profiles.profile_info.application_list', compact('applications'));
+        return view('profiles.profile_info.application_pending_list', compact('requestInfos'));
     }
+
+
+
+    public function rejectList(Request $request)
+    {
+        $jobSeeker = $request->user()->jobSeeker;
+
+        $rejectedInfos = Application::where('job_seeker_id', $jobSeeker->id)->where('status', 'REJECTED')->paginate(5);
+
+        return view('profiles.profile_info.application_rejected_list', compact('rejectedInfos'));
+    }
+
+
+
+    public function acceptList(Request $request)
+    {
+        $jobSeeker = $request->user()->jobSeeker;
+        
+        $acceptedInfos = Application::where('job_seeker_id', $jobSeeker->id)->where('status', 'ACCEPTED FOR INTERVIEW')->paginate(5);
+
+        return view('profiles.profile_info.application_accepted_list', compact('acceptedInfos'));
+    }
+
 
 
 
