@@ -100,21 +100,11 @@ class AdvertsController extends Controller
 
 
 
-	/**
-	 * Store a newly created resource in storage
-	 *
-	 * @param AdvertRequest $request
-	 */
-	public function store(Search $search, AdvertRequest $request)
+	public function store(AdvertRequest $request)
 	{
-
 		$user = $request->user();
 
 		$employer = $user->employer;
-
-		$config = config('services.algolia');
-
-		$index = $config['index'];
 
 		if($user->avatar != null || $user->avatar != "")
 		{
@@ -131,7 +121,6 @@ class AdvertsController extends Controller
 		//Advert::create($request->all());
 		$saveToDatabase = $employer->advert()->create(
 			[
-		    	'id' => $request->id,
 		        'job_title' => $request->job_title,
 		        'salary'  => (float)$request->salary,
 		        'description'  => $request->description,
@@ -151,6 +140,28 @@ class AdvertsController extends Controller
 		        'schedule' => $request->schedule,
 			]
 		);
+
+		return redirect()->route('show', [$saveToDatabase->id,$saveToDatabase ->job_title]);
+	}
+
+
+
+	/**
+	 * Store a newly created resource in storage
+	 *
+	 * @param AdvertRequest $request
+	 */
+	public function publish(Request $request, Search $search)
+	{
+		$config = config('services.algolia');
+
+		$index = $config['index'];
+
+		$saveToDatabase = Advert::find($request->id);
+
+		$saveToDatabase->update([ 'open' => 1 ]);
+
+		$saveToDatabase->save();
 
 		if($saveToDatabase)
 		{
@@ -177,6 +188,7 @@ class AdvertsController extends Controller
 			        'category'  => $saveToDatabase->category,
 			        'rate'  => $saveToDatabase->rate,
 			        'oku_friendly'  => $saveToDatabase->oku_friendly,
+			        'open' => $saveToDatabase->open,
 			        'avatar'  => $saveToDatabase->avatar,
 			        'schedule'  => $saveToDatabase->schedule,
 			    ],
@@ -190,11 +202,11 @@ class AdvertsController extends Controller
 				$job_title = $saveToDatabase->job_title;
 
 				// set flash attribute and key. example --> flash('success message', 'flash_message_level')
-				flash('Your advert has been successfully created.', 'success');
+				flash('Your advert has been successfully published.', 'success');
 
 				// redirect to a landing page, so that people can share to the world DONE, kinda
 				// next, flash messaging
-				return redirect()->route('show', [$id,$job_title]);
+				return redirect()->back();
 				
 			}else{
 
@@ -235,25 +247,6 @@ class AdvertsController extends Controller
 
 
 	/**
-	 * Check if user is authorized
-	 *
-	 * @param $request
-	 */
-	protected function unauthorized(Request $request)
-	{
-		if($request->ajax())
-			{
-				return response(['message' => 'No!'], 403);
-			}
-
-			flash('Sorry, you are not the owner of that page');
-
-			return redirect('/');
-	}
-
-
-
-	/**
 	 * Update existing advert
 	 *
 	 * @param $request, $id, $job_title
@@ -288,43 +281,55 @@ class AdvertsController extends Controller
 		]);
 
 		$advert->save();
+
+		if($advert->open != 0){
 		
-		$indexFromAlgolia = $search->index($index);
+			$indexFromAlgolia = $search->index($index);
 
-		$object = $indexFromAlgolia->partialUpdateObject(
-		    [
-		    	'id' => $advert->id,
-		        'job_title' => $advert->job_title,
-		        'salary'  => (float)$advert->salary,
-		        'description'  => $advert->description,
-		        'business_name'  => $advert->business_name,
-		        'location'  => $advert->location,
-		        'street'  => $advert->street,
-		        'city'  => $advert->city,
-		        'zip'  => $advert->zip,
-		        'state'  => $advert->state,
-		        'country'  => $advert->country,
-		        'created_at'  => $advert->created_at->toDateTimeString(),
-		        'updated_at'  => $advert->updated_at->toDateTimeString(),
-		        'employer_id'  => $advert->employer_id,
-		        'skill'  => $advert->skill,
-		        'category'  => $advert->category,
-		        'rate'  => $advert->rate,
-		        'oku_friendly'  => $advert->oku_friendly,
-		        'schedule'  => $advert->schedule,
-		        'objectID'  => $advert->id,
-		    ]
-		);
+			$object = $indexFromAlgolia->partialUpdateObject(
+			    [
+			    	'id' => $advert->id,
+			        'job_title' => $advert->job_title,
+			        'salary'  => (float)$advert->salary,
+			        'description'  => $advert->description,
+			        'business_name'  => $advert->business_name,
+			        'location'  => $advert->location,
+			        'street'  => $advert->street,
+			        'city'  => $advert->city,
+			        'zip'  => $advert->zip,
+			        'state'  => $advert->state,
+			        'country'  => $advert->country,
+			        'created_at'  => $advert->created_at->toDateTimeString(),
+			        'updated_at'  => $advert->updated_at->toDateTimeString(),
+			        'employer_id'  => $advert->employer_id,
+			        'skill'  => $advert->skill,
+			        'category'  => $advert->category,
+			        'rate'  => $advert->rate,
+			        'oku_friendly'  => $advert->oku_friendly,
+			        'open' => $advert->open,
+			        'schedule'  => $advert->schedule,
+			        'objectID'  => $advert->id,
+			    ]
+			);
 
-		if($object)
-		{
-			flash('Your advert has been successfully updated.', 'success');
+			if($object)
+			{
+				flash('Your advert has been successfully updated to index.', 'success');
 
-			return redirect()->route('show', [$id,$advert->job_title]);
+				return redirect()->route('show', [$id,$advert->job_title]);
+
+			}else{
+
+				flash('Error: updating to index was unsuccessful.', 'error');
+
+				return redirect()->back();
+			}
 
 		}else{
 
-			echo "Error: updating to index was unsuccessful.";
+			flash('Your advert has been successfully updated.', 'success');
+
+			return redirect()->route('show', [$id,$advert->job_title]);
 		}
 	}
 
@@ -335,5 +340,24 @@ class AdvertsController extends Controller
 		$adverts = Adverts::find('employer_id', $id)->get();
 
 		return view('profiles.adverts', compact('adverts'));
+	}
+
+
+
+	/**
+	 * Check if user is authorized
+	 *
+	 * @param $request
+	 */
+	protected function unauthorized(Request $request)
+	{
+		if($request->ajax())
+			{
+				return response(['message' => 'No!'], 403);
+			}
+
+			flash('Sorry, you are not the owner of that page');
+
+			return redirect('/');
 	}
 }

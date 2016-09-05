@@ -167,8 +167,11 @@ class HomeController extends Controller
             'photo' => 'required|mimes:jpg,jpeg,png,bmp' 
         ]);
 
+        //fetch data from config.php
+        $config = config('services.algolia');
+
         // provide index
-        $index = "prod_adverts";
+        $index = $config['index'];
 
         // store the uploaded file in a variable and fetch by paramName
         $file = $request->file('photo');
@@ -227,8 +230,11 @@ class HomeController extends Controller
         // find photo's row data using the "avatar_id"
         $thisPhoto = User::findOrFail($avatar_id);
 
+        //fetch data from config.php
+        $config = config('services.algolia');
+
         // provide index
-        $index = "prod_adverts";
+        $index = $config['index'];
 
         //check IF job advert is own by user
         if(!$thisPhoto->avatarBy($user))
