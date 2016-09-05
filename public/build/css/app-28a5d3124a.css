@@ -5749,6 +5749,10 @@ body {
   #adverts a.panel-job-links:hover {
     text-decoration: none; }
 
+#adverts .panel .panel-body {
+  position: relative;
+  padding-right: 48px; }
+
 #adverts .panel .business-name {
   font-weight: bold;
   font-size: 10px;
@@ -5764,7 +5768,7 @@ body {
 #adverts .panel .salary {
   font-size: 16px;
   font-weight: normal;
-  margin-bottom: 16px; }
+  margin-bottom: 0; }
 
 #adverts .panel .currency {
   top: -0.25em;
@@ -5778,6 +5782,12 @@ body {
 #adverts .panel .rate {
   font-size: 0.7em;
   opacity: 0.8; }
+
+#adverts .panel .avatar-tn {
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
+  border-radius: 100px; }
 
 #advert-view {
   background-color: #F1F1F1; }
@@ -5968,7 +5978,8 @@ category checkbox styling section
 search results styling section
 **********************************/
 .panel-default em {
-  background-color: yellow; }
+  background-color: yellow;
+  font-style: normal; }
 
 /**********************************
 subscribe plan styling section

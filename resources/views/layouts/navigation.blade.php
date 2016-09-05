@@ -27,9 +27,9 @@
 
                 <!-- Right Side Of Navbar -->
                 <ul class="nav navbar-nav navbar-right">
-                    <li><a class="btn btn-default navbar-btn navbar-btn-ww" href="{{ url('/plans') }}">Post part-time Ad</a></li>
                     <!-- Authentication Links -->
                     @if (Auth::guest())
+                        <li><a class="btn btn-default navbar-btn navbar-btn-ww" href="{{ url('/plans') }}">Post part-time Ad</a></li>
                         <li><a href="{{ url('/login') }}">Log In</a></li>
                         <li><a href="{{ url('/register') }}">Sign Up</a></li>
                     @else

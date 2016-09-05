@@ -69,10 +69,10 @@ var resultsTemplate =
                 '<div class="job-title">@{{{ _highlightResult.job_title.value }}}</div>' +
 				'<div class="salary"><div class="amount"><sup class="currency">RM</sup>@{{ salary }} </div>' +
                     '<div class="rate"> <span class="per">per</span> <span>@{{ rate }}</span></div> </div>' +
-				'<div class="location">@{{{ _highlightResult.location.value }}}</div>' +
-				'<div class="street">@{{ street }}</div>' +
-				'<div class="skill">Skill: @{{{ _highlightResult.skill.value }}}</div>' +
-        '<img src="@{{ avatar }}" class="logo-index" height="150" width="160" />' +
+				'<div class="location hidden">@{{{ _highlightResult.location.value }}}</div>' +
+				'<div class="street hidden">@{{ street }}</div>' +
+				'<div class="skill hidden">Skill: @{{{ _highlightResult.skill.value }}}</div>' +
+        '<img src="@{{ avatar }}" class="avatar-tn" height="30" width="30" />' +
 			'</div>' +
 		'</div>' +
 	'</a>';
