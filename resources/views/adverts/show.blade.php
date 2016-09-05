@@ -65,6 +65,12 @@
                                 <input type="hidden" id="id" name="id" value="{{ $advert->id }}" />
                                 <button type="submit" class="btn btn-primary">Publish</button>
                             </form>
+                        @else
+                            <form method="post" action="/adverts/unpublish">
+                                {{ csrf_field() }}
+                                <input type="hidden" id="id" name="id" value="{{ $advert->id }}" />
+                                <button type="submit" class="btn btn-primary">Unpublish</button>
+                            </form>
                         @endif
                 	@endcan
 

@@ -19,7 +19,7 @@
 			</div>
 			@endif
 			
-			@include('profiles.company.company_form_create')
+			@include('profiles.company.company_create_form')
 
 		</form>
 	</div>

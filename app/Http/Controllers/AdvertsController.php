@@ -56,6 +56,8 @@ class AdvertsController extends Controller
 		// fetch only the first retrieved
 		$advert = Advert::locatedAt($id, $job_title)->firstOrFail();
 
+		$status = $advert->open;
+
 		$advertEmployer = $advert->employer_id;
 
 		$user = $request->user();
@@ -197,10 +199,6 @@ class AdvertsController extends Controller
 
 			if($object)
 			{
-				$id = $saveToDatabase->id;
-
-				$job_title = $saveToDatabase->job_title;
-
 				// set flash attribute and key. example --> flash('success message', 'flash_message_level')
 				flash('Your advert has been successfully published.', 'success');
 
@@ -216,6 +214,50 @@ class AdvertsController extends Controller
 		}else{
 
 			echo "Error: unable to save record to database. ";
+		}
+	}
+
+
+
+	public function unpublish(Request $request, Search $search)
+	{
+		$config = config('services.algolia');
+
+		$index = $config['index'];
+
+		$saveToDatabase = Advert::find($request->id);
+
+		$saveToDatabase->update([ 'open' => 0 ]);
+
+		$saveToDatabase->save();
+
+		if($saveToDatabase)
+		{
+			$indexFromAlgolia = $search->index($index);
+
+			$object = $indexFromAlgolia->deleteObject($saveToDatabase->id);
+
+			if($object)
+			{
+				// set flash attribute and key. example --> flash('success message', 'flash_message_level')
+				flash('Your advert has been unpublished.', 'info');
+
+				// redirect to a landing page, so that people can share to the world DONE, kinda
+				// next, flash messaging
+				return redirect()->back();
+				
+			}else{
+
+				flash('Error: publishing to index was unsuccessful, please try again', 'error');
+
+				return redirect()->back();
+			}
+
+		}else{
+
+			flash('Error: saving was unsuccessful, please try again', 'error');
+
+			return redirect()->back();
 		}
 	}
 

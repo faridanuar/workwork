@@ -313,4 +313,15 @@ class HomeController extends Controller
 
         abort(403, 'Unauthorized action.');
     }
+
+
+
+    public function time(Request $request)
+    {
+        $dt = Carbon::now();
+        $endDate = Carbon::createFromDate(2016, 9, 30);
+        echo $dt->diffInDays($endDate);
+        $user = $request->user();
+        $user->invoiceFor('Donation', 10);
+    }
 }

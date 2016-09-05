@@ -14,6 +14,8 @@ Route::post('/avatar/upload', 'HomeController@uploadAvatar');
 
 Route::delete('/avatar/{avatar_id}', 'HomeController@remove');
 
+Route::get('/time', 'HomeController@time');
+
 /**
  * Social routes
  */
@@ -98,6 +100,8 @@ Route::get('/home', 'AdvertsController@index');
 Route::get('/adverts/create', 'AdvertsController@create');
 
 Route::post('/adverts/publish', 'AdvertsController@publish');
+
+Route::post('/adverts/unpublish', 'AdvertsController@unpublish');
 
 Route::get('/adverts/{id}/{job_title}', 'AdvertsController@show')->name('show');
 
