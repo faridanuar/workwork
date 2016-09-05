@@ -1,44 +1,38 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
-    <div class="row">
-        <div class="col-md-4 col-md-offset-4">
-            <div class="panel panel-default">
-                <div class="panel-heading">What are you looking for?</div>
-                <div class="panel-body">
 
-                    <form role="form" method="POST" action="{{ url('/set') }}">
-                        {!! csrf_field() !!}
+<div class="panel-ww-login panel panel-default center-block">
+    <div class="panel-heading panel-heading-ww">Yeay, You're In!</div>
+    <div class="panel-body">
+        <form role="form" method="POST" action="{{ url('/set') }}">
+            {!! csrf_field() !!}
 
-                        <div class="form-group">
-                            <div class="col-md-6 col-md-offset-3">
-                                <div class="btn-group" data-toggle="buttons">
-                                    <label class="btn btn-primary">
-                                        <input type="radio" name="type" id="type0" autocomplete="off" value="employer"> Hire
-                                    </label>
-                                    <label class="btn btn-primary">
-                                        <input type="radio" name="type" id="type1" autocomplete="off" value="job_seeker"> Work
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
-
-                        
-
-                        <div class="form-group">
-                            <div class="col-md-7 col-md-offset-2">
-                            <hr>
-                                <button type="submit" class="btn btn-success btn-block">
-                                    <i class="fa fa-btn fa-sign-in">Submit</i>
-                                </button>
-                            </div>
-                        </div>
-
-                    </form>
+            <div class="form-group ww-user-type">
+                <h4 class="text-center">I want to:</h4>
+                <div class="btn-group btn-group-justified" data-toggle="buttons" role="group" aria-label="...">
+                 <label class="btn btn-default">
+                    <input type="radio" name="type" id="type0" autocomplete="off" value="employer"> Hire
+                  </label>
+                  <label class="btn btn-default">
+                    <input type="radio" name="type" id="type1" autocomplete="off" value="job_seeker"> Work
+                  </label>
                 </div>
+                @if ($errors->has('type'))
+                    <span class="help-block text-center">
+                        <strong>{{ $errors->first('type') }}</strong>
+                    </span>
+                @endif
             </div>
-        </div>
+
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary btn-lg btn-block btn-ww-md">
+                    Let's Go!
+                </button>
+            </div>
+
+        </form>
+
     </div>
 </div>
 @endsection
