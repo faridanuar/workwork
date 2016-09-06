@@ -31,7 +31,7 @@ class User extends Authenticatable
     ];
 
     // identify the date to make carbon instance
-    protected $dates = ['trial_ends_at'];
+    protected $dates = ['trial_ends_at','plan_ends_at'];
 
 
     /**

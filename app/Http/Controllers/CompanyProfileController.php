@@ -502,7 +502,7 @@ class CompanyProfileController extends Controller
             }    
         }
 
-        return view('profiles.company.request_applied', compact('photo','profileInfo','rated','average','ratings','responded'));
+        return view('profiles.company.request_applied', compact('id','photo','profileInfo','rated','average','ratings','responded'));
     }
 
     /**

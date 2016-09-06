@@ -318,10 +318,21 @@ class HomeController extends Controller
 
     public function time(Request $request)
     {
-        $dt = Carbon::now();
+        $todaysDate = Carbon::now();
         $endDate = Carbon::createFromDate(2016, 9, 30);
-        echo $dt->diffInDays($endDate);
-        $user = $request->user();
-        $user->invoiceFor('Donation', 10);
+        $expDate =  $todaysDate->diffInDays($endDate, false);
+
+        if($expDate < 0){
+
+            echo "expiration has passed:";
+            echo " ";
+            echo $expDate;
+
+        }else{
+
+            echo "expiration has not passed:";
+            echo " ";
+            echo $expDate;
+        }
     }
 }

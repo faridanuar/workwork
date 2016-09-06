@@ -6,6 +6,8 @@ use App\User;
 use App\Advert;
 use App\Employer;
 
+use Carbon\Carbon;
+
 use App\Http\Requests;
 
 use App\Contracts\Search;
@@ -140,6 +142,7 @@ class AdvertsController extends Controller
 		        'oku_friendly'  => $request->oku_friendly,
 		        'avatar'  => $avatar,
 		        'schedule' => $request->schedule,
+		        'ends_at' => $user->plan_ends_at,
 			]
 		);
 
@@ -155,46 +158,61 @@ class AdvertsController extends Controller
 	 */
 	public function publish(Request $request, Search $search)
 	{
+
 		$config = config('services.algolia');
 
 		$index = $config['index'];
 
-		$saveToDatabase = Advert::find($request->id);
+		$advert = Advert::find($request->id);
 
-		$saveToDatabase->update([ 'open' => 1 ]);
+		$todaysDate = Carbon::now();
 
-		$saveToDatabase->save();
+        $endDate = $advert->ends_at;
 
-		if($saveToDatabase)
+        $daysLeft =  $todaysDate->diffInDays($endDate, false);
+
+        if($daysLeft < 0)
+        {
+
+            flash('your package has been expired, please purchase a new plan', 'info');
+
+            redirect()->back();
+        }
+
+		$advert->update([ 'open' => 1 ]);
+
+		$advert->save();
+
+		if($advert)
 		{
 			$indexFromAlgolia = $search->index($index);
 
 			$object = $indexFromAlgolia->addObject(
 		
 			    [
-			    	'id' => $saveToDatabase->id,
-			        'job_title' => $saveToDatabase->job_title,
-			        'salary'  => (float)$saveToDatabase->salary,
-			        'description'  => $saveToDatabase->description,
-			        'business_name'  => $saveToDatabase->business_name,
-			        'location'  => $saveToDatabase->location,
-			        'street'  => $saveToDatabase->street,
-			        'city'  => $saveToDatabase->city,
-			        'zip'  => $saveToDatabase->zip,
-			        'state'  => $saveToDatabase->state,
-			        'country'  => $saveToDatabase->country,
-			        'created_at'  => $saveToDatabase->created_at->toDateTimeString(),
-			        'updated_at'  => $saveToDatabase->updated_at->toDateTimeString(),
-			        'employer_id'  => $saveToDatabase->employer_id,
-			        'skill'  => $saveToDatabase->skill,
-			        'category'  => $saveToDatabase->category,
-			        'rate'  => $saveToDatabase->rate,
-			        'oku_friendly'  => $saveToDatabase->oku_friendly,
-			        'open' => $saveToDatabase->open,
-			        'avatar'  => $saveToDatabase->avatar,
-			        'schedule'  => $saveToDatabase->schedule,
+			    	'id' => $advert->id,
+			        'job_title' => $advert->job_title,
+			        'salary'  => (float)$advert->salary,
+			        'description'  => $advert->description,
+			        'business_name'  => $advert->business_name,
+			        'location'  => $advert->location,
+			        'street'  => $advert->street,
+			        'city'  => $advert->city,
+			        'zip'  => $advert->zip,
+			        'state'  => $advert->state,
+			        'country'  => $advert->country,
+			        'created_at'  => $advert->created_at->toDateTimeString(),
+			        'updated_at'  => $advert->updated_at->toDateTimeString(),
+			        'employer_id'  => $advert->employer_id,
+			        'skill'  => $advert->skill,
+			        'category'  => $advert->category,
+			        'rate'  => $advert->rate,
+			        'oku_friendly'  => $advert->oku_friendly,
+			        'open' => $advert->open,
+			        'avatar'  => $advert->avatar,
+			        'schedule'  => $advert->schedule,
 			    ],
-			    $saveToDatabase->id
+			    $advert->id
 			);
 
 			if($object)
@@ -225,17 +243,15 @@ class AdvertsController extends Controller
 
 		$index = $config['index'];
 
-		$saveToDatabase = Advert::find($request->id);
+		$advert = Advert::find($request->id);
+		$advert->update([ 'open' => 0 ]);
+		$advert->save();
 
-		$saveToDatabase->update([ 'open' => 0 ]);
-
-		$saveToDatabase->save();
-
-		if($saveToDatabase)
+		if($advert)
 		{
 			$indexFromAlgolia = $search->index($index);
 
-			$object = $indexFromAlgolia->deleteObject($saveToDatabase->id);
+			$object = $indexFromAlgolia->deleteObject($advert->id);
 
 			if($object)
 			{
@@ -305,54 +321,52 @@ class AdvertsController extends Controller
 
 		$advert->update([
 
-				'job_title' => $request->job_title,
-				'salary' => (float)$request->salary,
-				'description' => $request->description,
-				'business_name' => $business,
-				'location' => $request->location,
-				'street' => $request->street,
-				'city' => $request->city,
-				'zip' => $request->zip,
-				'state' => $request->state,
-				'country' => $request->country,
-				'skill'  => $request->skill,
-			    'category'  => $request->category,
-			    'rate'  => $request->rate,
-			    'oku_friendly'  => $request->oku_friendly,
-			    'schedule' => $request->schedule,
+			'job_title' => $request->job_title,
+			'salary' => (float)$request->salary,
+			'description' => $request->description,
+			'business_name' => $business,
+			'location' => $request->location,
+			'street' => $request->street,
+			'city' => $request->city,
+			'zip' => $request->zip,
+			'state' => $request->state,
+			'country' => $request->country,
+			'skill'  => $request->skill,
+		    'category'  => $request->category,
+		    'rate'  => $request->rate,
+		    'oku_friendly'  => $request->oku_friendly,
+		    'schedule' => $request->schedule,
 		]);
-
 		$advert->save();
 
 		if($advert->open != 0){
 		
 			$indexFromAlgolia = $search->index($index);
 
-			$object = $indexFromAlgolia->partialUpdateObject(
-			    [
-			    	'id' => $advert->id,
-			        'job_title' => $advert->job_title,
-			        'salary'  => (float)$advert->salary,
-			        'description'  => $advert->description,
-			        'business_name'  => $advert->business_name,
-			        'location'  => $advert->location,
-			        'street'  => $advert->street,
-			        'city'  => $advert->city,
-			        'zip'  => $advert->zip,
-			        'state'  => $advert->state,
-			        'country'  => $advert->country,
-			        'created_at'  => $advert->created_at->toDateTimeString(),
-			        'updated_at'  => $advert->updated_at->toDateTimeString(),
-			        'employer_id'  => $advert->employer_id,
-			        'skill'  => $advert->skill,
-			        'category'  => $advert->category,
-			        'rate'  => $advert->rate,
-			        'oku_friendly'  => $advert->oku_friendly,
-			        'open' => $advert->open,
-			        'schedule'  => $advert->schedule,
-			        'objectID'  => $advert->id,
-			    ]
-			);
+			$object = $indexFromAlgolia->partialUpdateObject([
+
+		    	'id' => $advert->id,
+		        'job_title' => $advert->job_title,
+		        'salary'  => (float)$advert->salary,
+		        'description'  => $advert->description,
+		        'business_name'  => $advert->business_name,
+		        'location'  => $advert->location,
+		        'street'  => $advert->street,
+		        'city'  => $advert->city,
+		        'zip'  => $advert->zip,
+		        'state'  => $advert->state,
+		        'country'  => $advert->country,
+		        'created_at'  => $advert->created_at->toDateTimeString(),
+		        'updated_at'  => $advert->updated_at->toDateTimeString(),
+		        'employer_id'  => $advert->employer_id,
+		        'skill'  => $advert->skill,
+		        'category'  => $advert->category,
+		        'rate'  => $advert->rate,
+		        'oku_friendly'  => $advert->oku_friendly,
+		        'open' => $advert->open,
+		        'schedule'  => $advert->schedule,
+		        'objectID'  => $advert->id,
+			]);
 
 			if($object)
 			{
