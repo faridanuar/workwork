@@ -9,7 +9,7 @@
             {!! csrf_field() !!}
 
             <div class="form-group ww-user-type">
-                <h4 class="text-center">I want to:</h4>
+                <h4 class="text-center">But first, let me know what you are looking for:</h4>
                 <div class="btn-group btn-group-justified" data-toggle="buttons" role="group" aria-label="...">
                  <label class="btn btn-default">
                     <input type="radio" name="type" id="type0" autocomplete="off" value="employer"> Hire

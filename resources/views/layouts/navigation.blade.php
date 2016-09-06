@@ -28,18 +28,18 @@
                 <!-- Right Side Of Navbar -->
                 <ul class="nav navbar-nav navbar-right">
                     @can('edit_advert')
-                        <li><a href="{{ url('/adverts/create') }}">Create a Job Ad</a></li>
+                        <li><a class="btn btn-default navbar-btn navbar-btn-ww navbar-btn-ww--cta" href="{{ url('/adverts/create') }}">Create New Part-time Ad</a></li>
                     @endcan
                     @if(Auth::user())
-                        <li><a href="{{ url('/dashboard') }}">Dashboard</a></li>
-                        <li><a href="{{ url('/plans') }}">Pricing</a></li>
+                        <li><a class="btn btn-default navbar-btn navbar-btn-ww" href="{{ url('/dashboard') }}">Dashboard</a></li>
+                        <li><a class="btn btn-default navbar-btn navbar-btn-ww" href="{{ url('/plans') }}">Pricing</a></li>
                     @endif
 
                     <!-- Authentication Links -->
                     @if (Auth::guest())
-                        <li><a class="btn btn-default navbar-btn navbar-btn-ww" href="{{ url('/plans') }}">Post part-time Ad</a></li>
-                        <li><a href="{{ url('/login') }}">Log In</a></li>
-                        <li><a href="{{ url('/register') }}">Sign Up</a></li>
+                        <li><a class="btn btn-default navbar-btn navbar-btn-ww navbar-btn-ww--cta" href="{{ url('/plans') }}">Post part-time Ad</a></li>
+                        <li><a class="btn btn-default navbar-btn navbar-btn-ww" href="{{ url('/login') }}">Log In</a></li>
+                        <li><a class="btn btn-default navbar-btn navbar-btn-ww" href="{{ url('/register') }}">Sign Up</a></li>
                     @else
                         <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">

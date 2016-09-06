@@ -6,15 +6,42 @@ $brand-color: #FFDC10;
 $advert-label-color: #A36500;
 $fancy-font: 'Josefin Slab', serif;
 
-// App Styles Yo
+// App Styles
 body { padding-top: 90px; }
 
+// Navigation
 .ww-navbar {
     background-color: $brand-color;
     border-bottom: 2px solid rgba(0,0,0,0.2);
     box-shadow: 0 8px 0 0 rgba(0,0,0,0.1);
 
     .navbar-toggle .icon-bar { border: 1px solid black; }
+
+    .nav > li { padding: 0 0.3rem; }
+
+    .nav > li > a:hover, .nav > li > a:focus { background-color: transparent; }
+
+    .nav .open > a,
+    .nav .open > a:hover,
+    .nav .open > a:focus {
+        background-color: transparent;
+    }
+
+    .navbar-btn.navbar-btn-ww {
+        padding: 5px 18px;
+        background-color: transparent;
+        border-radius: 100px;
+        border: 2px solid rgba(0, 0, 0, 0);
+
+        &.navbar-btn-ww--cta {
+            border: 2px solid rgba(0, 0, 0, 0.2);
+        }
+
+        &:hover {
+            border: 2px solid rgba(0, 0, 0, 0);
+            background-color: white;
+        }
+    }
 }
 
 #adverts {
@@ -321,18 +348,6 @@ dropzone styling section
 /**********************************
 Sign up and log in
 **********************************/
-
-.navbar-btn.navbar-btn-ww{
-    padding: 5px 18px;
-    background-color: transparent;
-    border-radius: 100px;
-    border: 2px solid rgba(0, 0, 0, 0.2);
-
-    &:hover {
-        border: 2px solid rgba(0, 0, 0, 1);
-        background-color: transparent;
-    }
-}
 
 // button styling
 .btn-ww {
