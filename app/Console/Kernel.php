@@ -2,8 +2,8 @@
 
 namespace App\Console;
 
-use User;
-use Advert;
+use App\User;
+use App\Advert;
 use Carbon\Carbon;
 
 use Illuminate\Console\Scheduling\Schedule;
