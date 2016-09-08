@@ -32,7 +32,6 @@
                     @endcan
                     @if(Auth::user())
                         <li><a class="btn btn-default navbar-btn navbar-btn-ww" href="{{ url('/dashboard') }}">Dashboard</a></li>
-                        <li><a class="btn btn-default navbar-btn navbar-btn-ww" href="{{ url('/plans') }}">Pricing</a></li>
                     @endif
 
                     <!-- Authentication Links -->
@@ -47,6 +46,7 @@
                             </a>
 
                             <ul class="dropdown-menu" role="menu">
+                                <li><a href="{{ url('/plans') }}">Pricing</a></li>
                                 <li><a href="{{ url('/logout') }}"><i class="fa fa-btn fa-sign-out"></i>Log out</a></li>
                             </ul>
                         </li>
