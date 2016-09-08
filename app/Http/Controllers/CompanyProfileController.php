@@ -32,21 +32,19 @@ class CompanyProfileController extends Controller
         $this->middleware('employer', ['except' => ['profile', 'companyReview', 'create', 'store']]);
     }
 
-    public function create(Request $request)
+    public function create()
     {
         if(!Auth::user())
         {
            return redirect()->guest('login');
         }
 
-        $user = $request->user();
-
-        return view('profiles.company.company_create', compact('user'));
+        return view('profiles.company.company_create');
     }
 
 
 
-    public function store(Request $request)
+    public function store(EmployerRequest $request)
     {
         if(!Auth::user())
         {
@@ -59,9 +57,6 @@ class CompanyProfileController extends Controller
         // update user info
         $user->update([
 
-            //update user info
-            'name' => $request->name,
-            'contact' => $request->contact,
             //set trial period for newly registered employer
             'trial_ends_at' => Carbon::now()->addDays(7),
         ]);
@@ -76,12 +71,12 @@ class CompanyProfileController extends Controller
             'business_name' => $request->business_name,
             'business_category' => $request->business_category,
             'business_contact' => $request->business_contact,
-            'business_website' => $request->business_website,
-            'location' => $request->location,
-            'street' => $request->street,
-            'city' => $request->city,
-            'zip' => $request->zip,
-            'state' => $request->state,
+            //'business_website' => $request->business_website,
+            //'location' => $request->location,
+            //'street' => $request->street,
+            //'city' => $request->city,
+            //'zip' => $request->zip,
+            //'state' => $request->state,
             'company_intro' => $request->company_intro,
         ]);
 
@@ -112,10 +107,10 @@ class CompanyProfileController extends Controller
         }
 
         //set success flash message
-        flash('Your company profile has been created. Welcome to WorkWork, Employer!', 'success');
+        flash('Your company profile has been created. Now you can start on creating your first job advert', 'success');
 
         // redirect to dashboard
-        return redirect('/dashboard');
+        return redirect('/adverts/create');
     }
 
 
@@ -507,7 +502,7 @@ class CompanyProfileController extends Controller
             }    
         }
 
-        return view('profiles.company.request_applied', compact('photo','profileInfo','rated','average','ratings','responded'));
+        return view('profiles.company.request_applied', compact('id','photo','profileInfo','rated','average','ratings','responded'));
     }
 
     /**

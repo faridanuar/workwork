@@ -2,12 +2,7 @@
 
 @section('content')
 
-<a href="/dashboard">Back</a>
-
-<div>
-<a href="/my/applications/rejected">Rejected List</a> || 
-<a href="/my/applications/accepted">Accepted List</a>
-</div>
+@include('profiles.profile_info.applications_category')
 
 	<h4><u>Pending List</u></h4>
 	@foreach($requestInfos as $requestInfo)

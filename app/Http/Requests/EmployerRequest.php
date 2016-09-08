@@ -27,11 +27,6 @@ class EmployerRequest extends Request
             'business_name' => 'required',
             'business_category' => 'required',
             'business_contact' => 'required',
-            'location' => 'required',
-            'street' => 'required',
-            'city' => 'required',
-            'zip' => 'required',
-            'state' => 'required',
             'company_intro' => 'required',
         ];
     }

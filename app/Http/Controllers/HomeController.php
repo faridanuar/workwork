@@ -313,4 +313,26 @@ class HomeController extends Controller
 
         abort(403, 'Unauthorized action.');
     }
+
+
+
+    public function time(Request $request)
+    {
+        $todaysDate = Carbon::now();
+        $endDate = Carbon::createFromDate(2016, 9, 30);
+        $expDate =  $todaysDate->diffInDays($endDate, false);
+
+        if($expDate < 0){
+
+            echo "expiration has passed:";
+            echo " ";
+            echo $expDate;
+
+        }else{
+
+            echo "expiration has not passed:";
+            echo " ";
+            echo $expDate;
+        }
+    }
 }

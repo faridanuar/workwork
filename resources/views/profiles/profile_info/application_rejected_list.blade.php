@@ -2,7 +2,9 @@
 
 @section('content')
 
-	<h4>Rejected List</h4>
+@include('profiles.profile_info.applications_category')
+
+	<h4><u>Rejected List</u></h4>
 	@foreach($rejectedInfos as $rejectedInfo)
 
 		<div class="form-group">

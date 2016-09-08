@@ -33,7 +33,11 @@ class Advert extends Model
         'open',
         'avatar',
         'schedule',
+        'ends_at',
     ];
+
+    // identify the date to make carbon instance
+    protected $dates = ['ends_at'];
 
 
     /**

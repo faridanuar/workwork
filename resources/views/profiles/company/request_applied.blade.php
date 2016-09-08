@@ -3,8 +3,10 @@
 @section('content')
 
 <div class="flash">
-		@include('messages.flash')
-	</div>
+	@include('messages.flash')
+</div>
+
+<a href="/advert/{{$id}}/job/requests">Back</a>
 
 	<h1>Applied Job Seeker Profile:</h1>
 

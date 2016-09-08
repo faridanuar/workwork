@@ -5,7 +5,7 @@
 
 <div class="form-group">
 	<label for="job_title">Job title:</label>
-	<input type="text" name="job_title" id="job_title" class="form-control" value="{{ old('job_title') }}" required>
+	<input type="text" name="job_title" id="job_title" class="form-control"  value="{{ old('job_title') }}" maxlength="50" required>
 </div>
 
 <div class="form-group">
@@ -84,12 +84,12 @@
 
 <div class="form-group">
 	<label for="skill">Type of skill required:</label>
-	<input type="text" name="skill" id="skill" class="form-control" value="{{ old('skill') }}" required>
+	<input type="text" name="skill" id="skill" class="form-control" value="{{ old('skill') }}" maxlength="50" required>
 </div>
 
 <div class="form-group">
 	<label for="category">Job Category:</label>
-	<input type="text" name="category" id="category" class="form-control" value="{{ old('category') }}" required>
+	<input type="text" name="category" id="category" class="form-control" value="{{ old('category') }}" maxlength="50" required>
 </div>	
 
 <div class="form-group">

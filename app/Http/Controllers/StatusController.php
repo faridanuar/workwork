@@ -26,7 +26,7 @@ class StatusController extends Controller
 
 	public function status(Request $request)
 	{
-		echo "subscription status:";
+		echo "Subscription status:";
 
 		$user = $request->user();
 
@@ -53,7 +53,7 @@ class StatusController extends Controller
 
 		}else{
 
-			echo 'on Grace Period:';
+			echo 'On Grace Period:';
 			dd($user->subscription('main')->onGracePeriod());
 		}
 	}
