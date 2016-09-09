@@ -4,36 +4,32 @@
 {{ csrf_field() }}
 
 <div class="form-group">
-	<label for="job_title">Job title:</label>
+	<label for="job_title">Part-time job title</label>
 	<input type="text" name="job_title" id="job_title" class="form-control"  value="{{ old('job_title') }}" maxlength="50" required>
 </div>
 
 <div class="form-group">
-	<label for="salary">Salary:</label>
-	<div class="input-group">
-		<span class="input-group-addon">RM</span>
-		<input type="text" name="salary" id="salary" class="form-control" value="{{ old('salary') }}" required>
-		<span class="input-group-addon"></span>
+	<label for="salary">Salary</label>
+	<p class="help-block">You can choose hourly, daily or monthly</p>
+	<div class="input-group ww-salary-input">
+		<span class="input-group-addon ww-salary-input--currency">RM</span>
+		<input type="text" name="salary" id="salary" class="form-control ww-salary-input--amount" value="{{ old('salary') }}" placeholder="7" required>
+		<span class="input-group-addon ww-salary-input--rate">
+			<label class="radio-inline"><input type="radio" aria-label="..." name="salary-rate" value="hour" checked> Hourly</label>
+			<label class="radio-inline"><input type="radio" aria-label="..." name="salary-rate" value="day"> Daily</label>
+			<label class="radio-inline"><input type="radio" aria-label="..." name="salary-rate" value="month"> Monthly</label>
+		</span>
 	</div>
 </div>
 
-<div class="form-group">
+<!-- <div class="form-group">
 	<label for="rate">Rate:</label>
 	<select name="rate" id="rate" class="form-control" required>
 			<option value="" selected disabled>Select a salary rate</option>
 			<option value="hour">Per Hour</option>
 			<option value="month">Per Month</option>
 	</select>
-</div>
-
-<div class="form-group">
-	<label for="oku_friendly">Is this job also suitable for OKU citizen?:</label>
-	<select name="oku_friendly" id="oku_friendly" class="form-control" required>
-			<option value="" selected disabled>Choose an Answer</option>
-			<option value="yes">Yes</option>
-			<option value="no">No</option>
-	</select>
-</div>
+</div> -->
 
 <div class="form-group">
 	<label for="schedule">Work Schedule:</label>
@@ -48,19 +44,19 @@
 <div class="form-group">
 	<label for="location">Location of employment: (example Bangsar Shopping Center, KLCC Convention Center)</label>
 	<input type="text" name="location" id="location" class="form-control" value="{{ old('location') }}" required>
-</div> 
+</div>
 
 <hr>
 
 <div class="form-group">
 	<label for="street">Street:</label>
 	<input type="text" name="street" id="street" class="form-control" value="{{ old('street') }}" required>
-</div> 
+</div>
 
 <div class="form-group">
 	<label for="city">City:</label>
 	<input type="text" name="city" id="city" class="form-control" value="{{ old('city') }}" required>
-</div> 
+</div>
 
 <div class="form-group">
 	<label for="zip">Zip:</label>
@@ -90,9 +86,22 @@
 <div class="form-group">
 	<label for="category">Job Category:</label>
 	<input type="text" name="category" id="category" class="form-control" value="{{ old('category') }}" maxlength="50" required>
-</div>	
+</div>
+
+<div class="form-group">
+	<label for="oku_friendly">Disabled Friendly</label>
+	<p class="help-block">Is this job suitable for people with disabilities?</p>
+	<!-- <select name="oku_friendly" id="oku_friendly" class="form-control" required>
+			<option value="" selected disabled>Choose an Answer</option>
+			<option value="yes">Yes</option>
+			<option value="no">No</option>
+	</select> -->
+	<label class="checkbox-inline">
+		<input type="checkbox" id="oku_friendly" value="yes"> Yes
+	</label>
+</div>
 
 <div class="form-group">
 	<a href="/home" class="btn btn-primary">Cancel</a>
 	<button type="submit" class="btn btn-primary">Save Advertisement</button>
-</div> 
+</div>
