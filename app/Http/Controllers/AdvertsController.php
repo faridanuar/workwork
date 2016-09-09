@@ -111,6 +111,8 @@ class AdvertsController extends Controller
 
 		$employer = $user->employer;
 
+		$later = $request->later;
+
 		if($user->avatar != null || $user->avatar != "")
 		{
 			$avatar = $user->avatar;
@@ -118,6 +120,24 @@ class AdvertsController extends Controller
 		}else{
 
 			$avatar = "/images/defaults/default.jpg";
+		}
+
+		if($later != true){
+			$this->validate($request, [
+		        'job_title' => 'required|max:50',
+		        'salary' => 'required|integer',
+	            'description' => 'required',           
+	            'location' => 'required',
+	            'street' => 'required',
+	            'city' => 'required',
+	            'zip' => 'required',
+	            'state' => 'required',
+	            'country' => 'required',
+	            'skill' => 'required',
+	            'category' => 'required',
+	            'rate' => 'required',
+	            'oku_friendly' => 'required',
+	    	]);
 		}
 
 		// what do we need to do? if the request validates, the body below of this method will be hit
@@ -321,7 +341,7 @@ class AdvertsController extends Controller
 	 *
 	 * @param $request, $id, $job_title
 	 */
-	public function update(Search $search, AdvertRequest $request, $id, $job_title)
+	public function update(AdvertRequest $request, Search $search, $id, $job_title)
 	{
 		$advert = Advert::find($id);
 

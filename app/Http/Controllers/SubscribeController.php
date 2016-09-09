@@ -38,7 +38,6 @@ class SubscribeController extends Controller
 
 	public function choosePlan($id)
 	{
-		
 		return view('subscriptions.choose_plan', compact('id'));
 	}
 
