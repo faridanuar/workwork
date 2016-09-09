@@ -8,12 +8,14 @@ use \Braintree_ClientToken;
 use \Braintree_Transaction;
 use \Braintree_Customer;
 
-use Carbon\Carbon;
-
 use App\User;
 use App\Advert;
 
 use App\Http\Requests;
+
+use App\Contracts\Search;
+
+use Carbon\Carbon;
 
 class SubscribeController extends Controller
 {
@@ -32,16 +34,37 @@ class SubscribeController extends Controller
 		return view('subscriptions.plans');
 	}
 
+
+
+	public function choosePlan($id)
+	{
+		
+		return view('subscriptions.choose_plan', compact('id'));
+	}
+
 	
 
-	public function subscribe()
+	public function checkout(Request $request, $id)
 	{
-		return view('subscriptions.subscribe');
+		$plan = $request->plan;
+
+		if($plan === "Trial")
+		{
+			$advert = Advert::find($id);
+
+			$advert->plan_ends_at = Carbon::now()->addDays($days);
+
+			$saved = $advert->save();
+
+			return redirect('/publish');
+		}
+
+		return view('subscriptions.checkout', compact('id','plan'));
 	}
 
 
 
-	protected function checkout(Request $request)
+	protected function process(Request $request, Search $search, $id)
 	{
 		// fetch user authentication
 		$user = $request->user();
@@ -49,9 +72,10 @@ class SubscribeController extends Controller
 		// fetch user selected plan
 		$plan = $request->plan;
 
-        // fetching the card token that has been given and set as a nounce from braintree server and set it as a variable.
+        // fetched the card token that has been given and set as a nounce by braintree server and set the nounce as a variable.
 		$nonceFromTheClient = $request->payment_method_nonce;
 
+		//check if user has purchase a plan before
 		if($user->braintree_id === null){
 
 			$result = Braintree_Customer::create([
@@ -76,49 +100,76 @@ class SubscribeController extends Controller
 			}
 		}
 
-        if($plan === "1_Month_Plan"){
+		$advert = Advert::find($id);
 
-        	$singleCharge = $user->invoiceFor($plan, 7.50);
+        switch ($plan)
+		{
+			case "Pioneer_Promo":
 
-        	$days = 30;
+				$singleCharge = $user->invoiceFor($plan, 7.50);
 
-        	$user->plan_ends_at = Carbon::now()->addDays($days);
+	        	$days = 30;
 
-        }elseif($plan === "2_Month_Plan"){
+	        	$advert->current_plan = $plan;
 
-        	$singleCharge = $user->invoiceFor($plan, 12.25);
+	        	$advert->plan_ends_at = Carbon::now()->addDays($days);
+				break;
 
-        	$days = 60;
+			case "1_Month_Plan":
 
-        	$user->plan_ends_at = Carbon::now()->addDays($days);
+				$singleCharge = $user->invoiceFor($plan, 7.50);
 
-        }elseif($plan === "Pioneer_Promo"){
+	        	$days = 30;
 
-        	$singleCharge = $user->invoiceFor($plan, 3.70);
+	        	$advert->current_plan = $plan;
 
-        	$days = 30;
+	        	$advert->plan_ends_at = Carbon::now()->addDays($days);
+				break;
 
-        	$user->plan_ends_at = Carbon::now()->addDays($days);
-        }
-        $user->save();
+			default:
 
-        $employerID = $user->employer->id;
+				return redirect('dashboard');
+		}
+        $saved = $advert->save();
 
-        if($employerID != null)
+        if($saved)
         {
-	        $adverts = Advert::where('employer_id', $employerID)->get();
+	        $config = config('services.algolia');
 
-	        if($adverts != null)
-	        {
-	        	foreach($adverts as $advert)
-	        	{
-	        		$advert->ends_at = Carbon::now()->addDays($days);
-	        		$advert->save();
-	        	}
-	        }
-	    }
+			$index = $config['index'];
 
-        if($singleCharge)
+			$indexFromAlgolia = $search->index($index);
+
+			$object = $indexFromAlgolia->addObject(
+		
+			    [
+			    	'id' => $advert->id,
+			        'job_title' => $advert->job_title,
+			        'salary'  => (float)$advert->salary,
+			        'description'  => $advert->description,
+			        'business_name'  => $advert->business_name,
+			        'location'  => $advert->location,
+			        'street'  => $advert->street,
+			        'city'  => $advert->city,
+			        'zip'  => $advert->zip,
+			        'state'  => $advert->state,
+			        'country'  => $advert->country,
+			        'created_at'  => $advert->created_at->toDateTimeString(),
+			        'updated_at'  => $advert->updated_at->toDateTimeString(),
+			        'employer_id'  => $advert->employer_id,
+			        'skill'  => $advert->skill,
+			        'category'  => $advert->category,
+			        'rate'  => $advert->rate,
+			        'oku_friendly'  => $advert->oku_friendly,
+			        'open' => $advert->open,
+			        'avatar'  => $advert->avatar,
+			        'schedule_id'  => $advert->schedule_id,
+			    ],
+			    $advert->id
+			);
+		}
+
+        if($object)
         {
         	flash('you have successfully purchased a new plan', 'success');
 
@@ -181,7 +232,7 @@ class SubscribeController extends Controller
 		$user = $request->user();
 
 		return $user->downloadInvoice($invoiceId, [
-        'vendor'  => 'WorkWork.Com',
+        'vendor'  => 'WorkWork.my',
         'product' => 'WorkWork Subscription Plan',
         ]);
 	}

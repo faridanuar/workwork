@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddPlanEndsAtColumnInUsers extends Migration
+class Add2PlanColumnInUsers extends Migration
 {
     /**
      * Run the migrations.
@@ -13,6 +13,7 @@ class AddPlanEndsAtColumnInUsers extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
+            $table->string('current_plan', 50)->nullable();
             $table->timestamp('plan_ends_at')->nullable();
         });
     }
@@ -25,6 +26,7 @@ class AddPlanEndsAtColumnInUsers extends Migration
     public function down()
     {
         Schema::table('users', function (Blueprint $table) {
+            $table->dropColumn('current_plan');
             $table->dropColumn('plan_ends_at');
         });
     }

@@ -95,11 +95,17 @@ class HomeController extends Controller
             // fetch advert info that belongs to this user's employer id
             $adverts = Advert::where('employer_id', $role->id)->get();
 
-            if($user->subscribed('main'))
+            $todaysDate = Carbon::now();
+
+            $endDate = $user->plan_ends_at;
+
+            $daysLeft =  $todaysDate->diffInDays($endDate, false);
+
+            if($daysLeft >= 0 && $user->current_plan != "trial" )
             {
                 $subscription = "Subscribed";
 
-            }elseif($user->onGenericTrial()){
+            }elseif($daysLeft >= 0 && $user->current_plan === "trial"){
 
                 $subscription = "Trial Plan";
 

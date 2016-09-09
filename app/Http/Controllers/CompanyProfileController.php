@@ -29,7 +29,7 @@ class CompanyProfileController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('employer', ['except' => ['profile', 'companyReview', 'create', 'store']]);
+        $this->middleware('employer', ['except' => ['profile', 'companyReview']]);
     }
 
     public function create()
@@ -53,16 +53,6 @@ class CompanyProfileController extends Controller
 
         // store user info in variable
         $user = $request->user();
-
-        // update user info
-        $user->update([
-
-            //set trial period for newly registered employer
-            'trial_ends_at' => Carbon::now()->addDays(7),
-        ]);
-
-        //save user's info
-        $user->save();
 
         // create a new user_id and fields and store it in jobseekers table
         $employer = $user->employer()->create([
@@ -88,9 +78,6 @@ class CompanyProfileController extends Controller
 
         //save changes
         $employer->save();
-
-        //assign user a roles with permissions using "assignRole" method from hasRoles trait
-        $user->assignRole('employer');
 
         // check if user storing procedure is a success
         if($user){

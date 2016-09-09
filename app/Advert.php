@@ -32,12 +32,10 @@ class Advert extends Model
         'oku_friendly',
         'open',
         'avatar',
-        'schedule',
-        'ends_at',
     ];
 
     // identify the date to make carbon instance
-    protected $dates = ['ends_at'];
+    protected $dates = ['plan_ends_at'];
 
 
     /**

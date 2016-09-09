@@ -2,19 +2,20 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\Request;
+
 use App\User;
 use App\Advert;
 use App\Employer;
 
-use Carbon\Carbon;
-
-use App\Http\Requests;
-
 use App\Contracts\Search;
 
-use Illuminate\Http\Request;
-
+use App\Http\Requests;
 use App\Http\Requests\AdvertRequest;
+
+use Carbon\Carbon;
+
+
 
 class AdvertsController extends Controller
 {
@@ -23,7 +24,7 @@ class AdvertsController extends Controller
 	*/
 	public function __construct()
 	{
-	    $this->middleware('subscribed', ['except' => ['index', 'show']]);
+	    $this->middleware('employer', ['except' => ['index', 'show']]);
 	}
 
 
@@ -141,12 +142,23 @@ class AdvertsController extends Controller
 		        'rate'  => $request->rate,
 		        'oku_friendly'  => $request->oku_friendly,
 		        'avatar'  => $avatar,
-		        'schedule' => $request->schedule,
-		        'ends_at' => $user->plan_ends_at,
 			]
 		);
 
-		return redirect()->route('show', [$saveToDatabase->id,$saveToDatabase ->job_title]);
+		$saveForLater = $request->later;
+
+		switch ($saveForLater)
+		{
+			case "true":
+				return redirect('dashboard');
+				break;
+			default:
+				$saveToDatabase->published = 1;
+				$saveToDatabase->save();
+		}
+
+		return redirect()->route('plan', [$saveToDatabase->id]);
+		//return redirect()->route('show', [$saveToDatabase->id,$saveToDatabase ->job_title]);
 	}
 
 
@@ -158,33 +170,33 @@ class AdvertsController extends Controller
 	 */
 	public function publish(Request $request, Search $search)
 	{
-
-		$config = config('services.algolia');
-
-		$index = $config['index'];
-
 		$advert = Advert::find($request->id);
-
 		$todaysDate = Carbon::now();
-
         $endDate = $advert->ends_at;
-
         $daysLeft =  $todaysDate->diffInDays($endDate, false);
 
-        if($daysLeft < 0)
-        {
+        if($endDate === null){
+
+        	flash('You need to purchase a plan to published your job ad', 'info');
+
+            return redirect()->route('plan', [$advert->id]);
+
+        }elseif($daysLeft < 0){
 
             flash('your package has been expired, please purchase a new plan', 'info');
 
-            redirect()->back();
+            return redirect()->route('plan', [$advert->id]);
         }
 
-		$advert->update([ 'open' => 1 ]);
-
+		$advert->published = 1;
 		$advert->save();
 
 		if($advert)
 		{
+			$config = config('services.algolia');
+
+			$index = $config['index'];
+
 			$indexFromAlgolia = $search->index($index);
 
 			$object = $indexFromAlgolia->addObject(
@@ -210,7 +222,7 @@ class AdvertsController extends Controller
 			        'oku_friendly'  => $advert->oku_friendly,
 			        'open' => $advert->open,
 			        'avatar'  => $advert->avatar,
-			        'schedule'  => $advert->schedule,
+			        'schedule_id'  => $advert->schedule_id,
 			    ],
 			    $advert->id
 			);
@@ -239,16 +251,16 @@ class AdvertsController extends Controller
 
 	public function unpublish(Request $request, Search $search)
 	{
-		$config = config('services.algolia');
-
-		$index = $config['index'];
-
 		$advert = Advert::find($request->id);
-		$advert->update([ 'open' => 0 ]);
+		$advert->published = 0;
 		$advert->save();
 
 		if($advert)
 		{
+			$config = config('services.algolia');
+
+			$index = $config['index'];
+
 			$indexFromAlgolia = $search->index($index);
 
 			$object = $indexFromAlgolia->deleteObject($advert->id);
@@ -339,7 +351,7 @@ class AdvertsController extends Controller
 		]);
 		$advert->save();
 
-		if($advert->open != 0){
+		if($advert->published != 0){
 		
 			$indexFromAlgolia = $search->index($index);
 
@@ -363,7 +375,7 @@ class AdvertsController extends Controller
 		        'category'  => $advert->category,
 		        'rate'  => $advert->rate,
 		        'oku_friendly'  => $advert->oku_friendly,
-		        'open' => $advert->open,
+		        'published' => $advert->open,
 		        'schedule'  => $advert->schedule,
 		        'objectID'  => $advert->id,
 			]);

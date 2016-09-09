@@ -19,7 +19,7 @@ class StatusController extends Controller
 	*/
 	public function __construct()
 	{
-	    $this->middleware('subscribed');
+	    $this->middleware('employer');
 	}
 
 

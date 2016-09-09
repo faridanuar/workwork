@@ -123,9 +123,11 @@ Route::post('/adverts/{id}/{job_title}/apply/add', 'ApplyController@storeApply')
 */
 Route::get('/plans', 'SubscribeController@plans');
 
-Route::get('/subscribe', 'SubscribeController@subscribe');
+Route::get('/choose/plan/{id}', 'SubscribeController@choosePlan')->name('plan');
 
-Route::post('/checkout', 'SubscribeController@checkout');
+Route::post('/checkout/{id}', 'SubscribeController@checkout');
+
+Route::post('/process/{id}', 'SubscribeController@checkout')->name('checkout');
 
 Route::get('/invoices', 'SubscribeController@invoices');
 
