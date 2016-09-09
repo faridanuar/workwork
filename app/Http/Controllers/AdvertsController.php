@@ -104,6 +104,49 @@ class AdvertsController extends Controller
 
 
 
+	public function saveLater(Request $request)
+	{
+		$user = $request->user();
+
+		$employer = $user->employer;
+
+		if($user->avatar != null || $user->avatar != "")
+		{
+			$avatar = $user->avatar;
+
+		}else{
+
+			$avatar = "/images/defaults/default.jpg";
+		}
+
+		// what do we need to do? if the request validates, the body below of this method will be hit
+		// validate the form - DONE		
+		// persist the advert - DONE
+		//Advert::create($request->all());
+		$saveToDatabase = $employer->advert()->create(
+			[
+		        'job_title' => $request->job_title,
+		        'salary'  => (float)$request->salary,
+		        'description'  => $request->description,
+		        'business_name'  => $employer->business_name,
+		        'location'  => $request->location,
+		        'street'  => $request->street,
+		        'city'  => $request->city,
+		        'zip'  => $request->zip,
+		        'state'  => $request->state,
+		        'country'  => $request->country,
+		        'employer_id'  => $request->employer_id,
+		        'skill'  => $request->skill,
+		        'category'  => $request->category,
+		        'rate'  => $request->rate,
+		        'oku_friendly'  => $request->oku_friendly,
+		        'avatar'  => $avatar,
+			]
+		);
+	}
+
+
+
 	public function store(AdvertRequest $request)
 	{
 		$user = $request->user();
@@ -141,12 +184,11 @@ class AdvertsController extends Controller
 		        'rate'  => $request->rate,
 		        'oku_friendly'  => $request->oku_friendly,
 		        'avatar'  => $avatar,
-		        'schedule' => $request->schedule,
-		        'ends_at' => $user->plan_ends_at,
 			]
 		);
 
-		return redirect()->route('show', [$saveToDatabase->id,$saveToDatabase ->job_title]);
+		return redirect()->route('plans', [$saveToDatabase->id]);
+		//return redirect()->route('show', [$saveToDatabase->id,$saveToDatabase ->job_title]);
 	}
 
 
@@ -176,7 +218,7 @@ class AdvertsController extends Controller
 
             flash('your package has been expired, please purchase a new plan', 'info');
 
-            redirect()->back();
+            return redirect()->back();
         }
 
 		$advert->update([ 'open' => 1 ]);
@@ -210,7 +252,7 @@ class AdvertsController extends Controller
 			        'oku_friendly'  => $advert->oku_friendly,
 			        'open' => $advert->open,
 			        'avatar'  => $advert->avatar,
-			        'schedule'  => $advert->schedule,
+			        'schedule_id'  => $advert->schedule_id,
 			    ],
 			    $advert->id
 			);

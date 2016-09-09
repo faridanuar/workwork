@@ -78,6 +78,17 @@ class AuthController extends Controller
             'type' => $data['type'],
         ]);
 
+        if($user->type === 'employer')
+        {
+            //assign user a roles with permissions using "assignRole" method from hasRoles trait
+            $user->assignRole('employer');
+
+        }elseif($user->type === 'job_seeker'){
+
+            //assign user a roles with permissions using "assignRole" method from hasRoles trait
+            $user->assignRole('job_seeker');
+        }
+
         return $user;
     }
 }

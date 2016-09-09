@@ -32,6 +32,11 @@ class SubscribeController extends Controller
 		return view('subscriptions.plans');
 	}
 
+	public function choosePlan($id)
+	{
+		return view('subscriptions.choose_plan', compact('id'));
+	}
+
 	
 
 	public function subscribe()
@@ -41,7 +46,7 @@ class SubscribeController extends Controller
 
 
 
-	protected function checkout(Request $request)
+	protected function checkout(Request $request, $id)
 	{
 		// fetch user authentication
 		$user = $request->user();
@@ -76,13 +81,17 @@ class SubscribeController extends Controller
 			}
 		}
 
+		$advert = Advert::find($id);
+
         if($plan === "1_Month_Plan"){
 
         	$singleCharge = $user->invoiceFor($plan, 7.50);
 
         	$days = 30;
 
-        	$user->plan_ends_at = Carbon::now()->addDays($days);
+        	$advert->current_plan = $plan;
+
+        	$advert->plan_ends_at = Carbon::now()->addDays($days);
 
         }elseif($plan === "2_Month_Plan"){
 
@@ -90,7 +99,7 @@ class SubscribeController extends Controller
 
         	$days = 60;
 
-        	$user->plan_ends_at = Carbon::now()->addDays($days);
+        	$advert->plan_ends_at = Carbon::now()->addDays($days);
 
         }elseif($plan === "Pioneer_Promo"){
 
@@ -98,27 +107,11 @@ class SubscribeController extends Controller
 
         	$days = 30;
 
-        	$user->plan_ends_at = Carbon::now()->addDays($days);
+        	$advert->plan_ends_at = Carbon::now()->addDays($days);
         }
-        $user->save();
+        $saved = $advert->save();
 
-        $employerID = $user->employer->id;
-
-        if($employerID != null)
-        {
-	        $adverts = Advert::where('employer_id', $employerID)->get();
-
-	        if($adverts != null)
-	        {
-	        	foreach($adverts as $advert)
-	        	{
-	        		$advert->ends_at = Carbon::now()->addDays($days);
-	        		$advert->save();
-	        	}
-	        }
-	    }
-
-        if($singleCharge)
+        if($saved)
         {
         	flash('you have successfully purchased a new plan', 'success');
 
@@ -181,7 +174,7 @@ class SubscribeController extends Controller
 		$user = $request->user();
 
 		return $user->downloadInvoice($invoiceId, [
-        'vendor'  => 'WorkWork.Com',
+        'vendor'  => 'WorkWork.my',
         'product' => 'WorkWork Subscription Plan',
         ]);
 	}

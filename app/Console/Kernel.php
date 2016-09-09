@@ -4,6 +4,7 @@ namespace App\Console;
 
 use App\User;
 use App\Advert;
+use App\Contracts\Search;
 use Carbon\Carbon;
 
 use Illuminate\Console\Scheduling\Schedule;
@@ -32,8 +33,8 @@ class Kernel extends ConsoleKernel
         //          ->hourly();
 
         $schedule->call(
-            function(){
-
+            function(Request $request, Search $search)
+            {
                $users = User::where('type', 'employer')->get();
 
                 foreach($users as $user)
@@ -42,17 +43,28 @@ class Kernel extends ConsoleKernel
 
                     $endDate = $user->ends_at;
 
-                    $daysLeft =  $todaysDate->diffInDays($endDate, false);
-
-                    if($daysLeft < 0)
+                    if($endDate != null)
                     {
-                        $adverts = Advert::where('employer_id', $user->employer->id)->get();
+                        $daysLeft =  $todaysDate->diffInDays($endDate, false);
 
-                        foreach($adverts as $advert)
+                        if($daysLeft < 0)
                         {
-                            $advert->open = 0;
+                            $adverts = Advert::where('employer_id', $user->employer->id)->get();
 
-                            $advert->save();
+                            foreach($adverts as $advert)
+                            {
+                                $advert->open = 0;
+
+                                $advert->save();
+
+                                $config = config('services.algolia');
+
+                                $index = $config['index'];
+
+                                $indexFromAlgolia = $search->index($index);
+
+                                $object = $indexFromAlgolia->deleteObject($advert->id);
+                            }
                         }
                     }
                 }

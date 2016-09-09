@@ -37,7 +37,6 @@ class AdvertRequest extends Request
             'category' => 'required',
             'rate' => 'required',
             'oku_friendly' => 'required',
-            'schedule' => 'required',
         ];
     }
 }
