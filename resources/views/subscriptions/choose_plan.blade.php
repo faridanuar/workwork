@@ -2,13 +2,17 @@
 
 @section('content')
 
-<div class="row">
+<h4>Choose a plan</h4>
 
-<form action="/subscribe/{{ $id }}" method="post">
+<form action="/checkout/{{ $id }}" method="post">
 
-<input type="radio" name="trial" id="trial0" value="trial"> 7 days Free Trial Plan</input>
+{!! csrf_field() !!}
 
-<input type="radio" name="trial" id="trial1" value="1_month_plan"> 30 days Plan</input>
+<div class="form-group">
+<input type="radio" name="plan" id="plan0" value="Trial"> 7 days Free Trial Plan</input> || 
+
+<input type="radio" name="plan" id="plan1" value="1_month_plan" checked="checked" required> 30 days Plan</input>
+</div>
 
 <div class="form-group">
 	<button type="submit" class="btn btn-primary">Next : Make Payment</button>
@@ -16,6 +20,4 @@
 
 </form>
 
-
-</div>
 @stop

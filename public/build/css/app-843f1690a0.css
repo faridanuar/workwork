@@ -1073,6 +1073,7 @@ a {
     color: black;
     text-decoration: underline; }
   a:focus {
+    outline: thin dotted;
     outline: 5px auto -webkit-focus-ring-color;
     outline-offset: -2px; }
 
@@ -2284,6 +2285,7 @@ select[size] {
 input[type="file"]:focus,
 input[type="radio"]:focus,
 input[type="checkbox"]:focus {
+  outline: thin dotted;
   outline: 5px auto -webkit-focus-ring-color;
   outline-offset: -2px; }
 
@@ -2788,6 +2790,7 @@ select[multiple].input-lg,
   -ms-user-select: none;
   user-select: none; }
   .btn:focus, .btn.focus, .btn:active:focus, .btn:active.focus, .btn.active:focus, .btn.active.focus {
+    outline: thin dotted;
     outline: 5px auto -webkit-focus-ring-color;
     outline-offset: -2px; }
   .btn:hover, .btn:focus, .btn.focus {
@@ -5957,7 +5960,7 @@ h4.features {
 Flash message styling section
 ******************************/
 .Alert--Info {
-  background: #8c8c8c;
+  background: #cccccc;
   color: #000000;
   margin: 10px;
   padding: 10px;
@@ -5971,7 +5974,7 @@ Flash message styling section
   text-align: center; }
 
 .Alert--Error {
-  background: #e62e00;
+  background: #ff704d;
   color: #000000;
   margin: 10px;
   padding: 10px;
@@ -6037,7 +6040,7 @@ checkout styling section
   margin-top: 20px; }
 
 /**********************************
-checkout styling section
+comment styling section
 **********************************/
 .form-group-comment {
   width: 500px; }

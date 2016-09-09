@@ -13,7 +13,7 @@
 	<p class="help-block">You can choose hourly, daily or monthly</p>
 	<div class="input-group ww-salary-input">
 		<span class="input-group-addon ww-salary-input--currency">RM</span>
-		<input type="text" name="salary" id="salary" class="form-control ww-salary-input--amount" value="{{ old('salary') }}" placeholder="7" required>
+		<input type="text" name="salary" id="salary" class="form-control ww-salary-input--amount" value="{{ old('salary') }}" placeholder="7">
 		<span class="input-group-addon ww-salary-input--rate">
 			<label class="radio-inline"><input type="radio" aria-label="..." name="salary-rate" value="hour" checked> Hourly</label>
 			<label class="radio-inline"><input type="radio" aria-label="..." name="salary-rate" value="day"> Daily</label>
@@ -33,44 +33,46 @@
 
 <div class="form-group">
 	<label for="schedule">Work Schedule:</label>
-	<textarea type="text" name="schedule" id="schedule" class="form-control" rows="10" required>{{ old('schedule') }}</textarea>
+	<label class="radio-inline"><input type="radio" aria-label="..." name="schedule" value="specific" checked> Specific</label>
+	<label class="radio-inline"><input type="radio" aria-label="..." name="schedule" value="daily"> Daily</label>
+	<label class="radio-inline"><input type="radio" aria-label="..." name="schedule" value="no schedule"> No Schedule</label>
 </div>
 
 <div class="form-group">
 	<label for="description">Job Description:</label>
-	<textarea type="text" name="description" id="description" class="form-control" rows="10" required>{{ old('description') }}</textarea>
+	<textarea type="text" name="description" id="description" class="form-control" rows="10">{{ old('description') }}</textarea>
 </div>
 
 <div class="form-group">
 	<label for="location">Location of employment: (example Bangsar Shopping Center, KLCC Convention Center)</label>
-	<input type="text" name="location" id="location" class="form-control" value="{{ old('location') }}" required>
+	<input type="text" name="location" id="location" class="form-control" value="{{ old('location') }}">
 </div>
 
 <hr>
 
 <div class="form-group">
 	<label for="street">Street:</label>
-	<input type="text" name="street" id="street" class="form-control" value="{{ old('street') }}" required>
+	<input type="text" name="street" id="street" class="form-control" value="{{ old('street') }}">
 </div>
 
 <div class="form-group">
 	<label for="city">City:</label>
-	<input type="text" name="city" id="city" class="form-control" value="{{ old('city') }}" required>
+	<input type="text" name="city" id="city" class="form-control" value="{{ old('city') }}">
 </div>
 
 <div class="form-group">
 	<label for="zip">Zip:</label>
-	<input type="text" name="zip" id="zip" class="form-control" value="{{ old('zip') }}" required>
+	<input type="text" name="zip" id="zip" class="form-control" value="{{ old('zip') }}">
 </div>
 
 <div class="form-group">
 	<label for="state">State:</label>
-	<input type="text" name="state" id="state" class="form-control" value="{{ old('state') }}" required>
+	<input type="text" name="state" id="state" class="form-control" value="{{ old('state') }}">
 </div>
 
 <div class="form-group">
 	<label for="country">Country:</label>
-	<select name="country" id="country" class="form-control" required>
+	<select name="country" id="country" class="form-control">
 			<option value="" selected disabled>Select a country</option>
 		@foreach ($countries::all() as $code => $name)
 			<option value="{{ $code }}">{{ $name }}</option>
@@ -80,12 +82,12 @@
 
 <div class="form-group">
 	<label for="skill">Type of skill required:</label>
-	<input type="text" name="skill" id="skill" class="form-control" value="{{ old('skill') }}" maxlength="50" required>
+	<input type="text" name="skill" id="skill" class="form-control" value="{{ old('skill') }}" maxlength="50">
 </div>
 
 <div class="form-group">
 	<label for="category">Job Category:</label>
-	<input type="text" name="category" id="category" class="form-control" value="{{ old('category') }}" maxlength="50" required>
+	<input type="text" name="category" id="category" class="form-control" value="{{ old('category') }}" maxlength="50">
 </div>
 
 <div class="form-group">
@@ -103,5 +105,6 @@
 
 <div class="form-group">
 	<a href="/home" class="btn btn-primary">Cancel</a>
+	<button type="submit" class="btn btn-primary" id="later" name="later" value="true">Save For Later</button>
 	<button type="submit" class="btn btn-primary">Save Advertisement</button>
 </div>

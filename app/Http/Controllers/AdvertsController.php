@@ -2,19 +2,20 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\Request;
+
 use App\User;
 use App\Advert;
 use App\Employer;
 
-use Carbon\Carbon;
-
-use App\Http\Requests;
-
 use App\Contracts\Search;
 
-use Illuminate\Http\Request;
-
+use App\Http\Requests;
 use App\Http\Requests\AdvertRequest;
+
+use Carbon\Carbon;
+
+
 
 class AdvertsController extends Controller
 {
@@ -23,7 +24,7 @@ class AdvertsController extends Controller
 	*/
 	public function __construct()
 	{
-	    $this->middleware('subscribed', ['except' => ['index', 'show']]);
+	    $this->middleware('employer', ['except' => ['index', 'show']]);
 	}
 
 
@@ -104,49 +105,6 @@ class AdvertsController extends Controller
 
 
 
-	public function saveLater(Request $request)
-	{
-		$user = $request->user();
-
-		$employer = $user->employer;
-
-		if($user->avatar != null || $user->avatar != "")
-		{
-			$avatar = $user->avatar;
-
-		}else{
-
-			$avatar = "/images/defaults/default.jpg";
-		}
-
-		// what do we need to do? if the request validates, the body below of this method will be hit
-		// validate the form - DONE		
-		// persist the advert - DONE
-		//Advert::create($request->all());
-		$saveToDatabase = $employer->advert()->create(
-			[
-		        'job_title' => $request->job_title,
-		        'salary'  => (float)$request->salary,
-		        'description'  => $request->description,
-		        'business_name'  => $employer->business_name,
-		        'location'  => $request->location,
-		        'street'  => $request->street,
-		        'city'  => $request->city,
-		        'zip'  => $request->zip,
-		        'state'  => $request->state,
-		        'country'  => $request->country,
-		        'employer_id'  => $request->employer_id,
-		        'skill'  => $request->skill,
-		        'category'  => $request->category,
-		        'rate'  => $request->rate,
-		        'oku_friendly'  => $request->oku_friendly,
-		        'avatar'  => $avatar,
-			]
-		);
-	}
-
-
-
 	public function store(AdvertRequest $request)
 	{
 		$user = $request->user();
@@ -187,7 +145,19 @@ class AdvertsController extends Controller
 			]
 		);
 
-		return redirect()->route('plans', [$saveToDatabase->id]);
+		$saveForLater = $request->later;
+
+		switch ($saveForLater)
+		{
+			case "true":
+				return redirect('dashboard');
+				break;
+			default:
+				$saveToDatabase->published = 1;
+				$saveToDatabase->save();
+		}
+
+		return redirect()->route('plan', [$saveToDatabase->id]);
 		//return redirect()->route('show', [$saveToDatabase->id,$saveToDatabase ->job_title]);
 	}
 
@@ -200,33 +170,33 @@ class AdvertsController extends Controller
 	 */
 	public function publish(Request $request, Search $search)
 	{
-
-		$config = config('services.algolia');
-
-		$index = $config['index'];
-
 		$advert = Advert::find($request->id);
-
 		$todaysDate = Carbon::now();
-
         $endDate = $advert->ends_at;
-
         $daysLeft =  $todaysDate->diffInDays($endDate, false);
 
-        if($daysLeft < 0)
-        {
+        if($endDate === null){
+
+        	flash('You need to purchase a plan to published your job ad', 'info');
+
+            return redirect()->route('plan', [$advert->id]);
+
+        }elseif($daysLeft < 0){
 
             flash('your package has been expired, please purchase a new plan', 'info');
 
-            return redirect()->back();
+            return redirect()->route('plan', [$advert->id]);
         }
 
-		$advert->update([ 'open' => 1 ]);
-
+		$advert->published = 1;
 		$advert->save();
 
 		if($advert)
 		{
+			$config = config('services.algolia');
+
+			$index = $config['index'];
+
 			$indexFromAlgolia = $search->index($index);
 
 			$object = $indexFromAlgolia->addObject(
@@ -281,16 +251,16 @@ class AdvertsController extends Controller
 
 	public function unpublish(Request $request, Search $search)
 	{
-		$config = config('services.algolia');
-
-		$index = $config['index'];
-
 		$advert = Advert::find($request->id);
-		$advert->update([ 'open' => 0 ]);
+		$advert->published = 0;
 		$advert->save();
 
 		if($advert)
 		{
+			$config = config('services.algolia');
+
+			$index = $config['index'];
+
 			$indexFromAlgolia = $search->index($index);
 
 			$object = $indexFromAlgolia->deleteObject($advert->id);
@@ -381,7 +351,7 @@ class AdvertsController extends Controller
 		]);
 		$advert->save();
 
-		if($advert->open != 0){
+		if($advert->published != 0){
 		
 			$indexFromAlgolia = $search->index($index);
 
@@ -405,7 +375,7 @@ class AdvertsController extends Controller
 		        'category'  => $advert->category,
 		        'rate'  => $advert->rate,
 		        'oku_friendly'  => $advert->oku_friendly,
-		        'open' => $advert->open,
+		        'published' => $advert->open,
 		        'schedule'  => $advert->schedule,
 		        'objectID'  => $advert->id,
 			]);

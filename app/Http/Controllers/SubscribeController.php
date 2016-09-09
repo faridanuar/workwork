@@ -8,12 +8,14 @@ use \Braintree_ClientToken;
 use \Braintree_Transaction;
 use \Braintree_Customer;
 
-use Carbon\Carbon;
-
 use App\User;
 use App\Advert;
 
 use App\Http\Requests;
+
+use App\Contracts\Search;
+
+use Carbon\Carbon;
 
 class SubscribeController extends Controller
 {
@@ -32,6 +34,8 @@ class SubscribeController extends Controller
 		return view('subscriptions.plans');
 	}
 
+
+
 	public function choosePlan($id)
 	{
 		return view('subscriptions.choose_plan', compact('id'));
@@ -39,14 +43,27 @@ class SubscribeController extends Controller
 
 	
 
-	public function subscribe()
+	public function checkout(Request $request, $id)
 	{
-		return view('subscriptions.subscribe');
+		$plan = $request->plan;
+
+		if($plan === "Trial")
+		{
+			$advert = Advert::find($id);
+
+			$advert->plan_ends_at = Carbon::now()->addDays($days);
+
+			$saved = $advert->save();
+
+			return redirect('/publish');
+		}
+
+		return view('subscriptions.checkout', compact('id','plan'));
 	}
 
 
 
-	protected function checkout(Request $request, $id)
+	protected function process(Request $request, Search $search, $id)
 	{
 		// fetch user authentication
 		$user = $request->user();
@@ -54,9 +71,10 @@ class SubscribeController extends Controller
 		// fetch user selected plan
 		$plan = $request->plan;
 
-        // fetching the card token that has been given and set as a nounce from braintree server and set it as a variable.
+        // fetched the card token that has been given and set as a nounce by braintree server and set the nounce as a variable.
 		$nonceFromTheClient = $request->payment_method_nonce;
 
+		//check if user has purchase a plan before
 		if($user->braintree_id === null){
 
 			$result = Braintree_Customer::create([
@@ -83,35 +101,74 @@ class SubscribeController extends Controller
 
 		$advert = Advert::find($id);
 
-        if($plan === "1_Month_Plan"){
+        switch ($plan)
+		{
+			case "Pioneer_Promo":
 
-        	$singleCharge = $user->invoiceFor($plan, 7.50);
+				$singleCharge = $user->invoiceFor($plan, 7.50);
 
-        	$days = 30;
+	        	$days = 30;
 
-        	$advert->current_plan = $plan;
+	        	$advert->current_plan = $plan;
 
-        	$advert->plan_ends_at = Carbon::now()->addDays($days);
+	        	$advert->plan_ends_at = Carbon::now()->addDays($days);
+				break;
 
-        }elseif($plan === "2_Month_Plan"){
+			case "1_Month_Plan":
 
-        	$singleCharge = $user->invoiceFor($plan, 12.25);
+				$singleCharge = $user->invoiceFor($plan, 7.50);
 
-        	$days = 60;
+	        	$days = 30;
 
-        	$advert->plan_ends_at = Carbon::now()->addDays($days);
+	        	$advert->current_plan = $plan;
 
-        }elseif($plan === "Pioneer_Promo"){
+	        	$advert->plan_ends_at = Carbon::now()->addDays($days);
+				break;
 
-        	$singleCharge = $user->invoiceFor($plan, 3.70);
+			default:
 
-        	$days = 30;
-
-        	$advert->plan_ends_at = Carbon::now()->addDays($days);
-        }
+				return redirect('dashboard');
+		}
         $saved = $advert->save();
 
         if($saved)
+        {
+	        $config = config('services.algolia');
+
+			$index = $config['index'];
+
+			$indexFromAlgolia = $search->index($index);
+
+			$object = $indexFromAlgolia->addObject(
+		
+			    [
+			    	'id' => $advert->id,
+			        'job_title' => $advert->job_title,
+			        'salary'  => (float)$advert->salary,
+			        'description'  => $advert->description,
+			        'business_name'  => $advert->business_name,
+			        'location'  => $advert->location,
+			        'street'  => $advert->street,
+			        'city'  => $advert->city,
+			        'zip'  => $advert->zip,
+			        'state'  => $advert->state,
+			        'country'  => $advert->country,
+			        'created_at'  => $advert->created_at->toDateTimeString(),
+			        'updated_at'  => $advert->updated_at->toDateTimeString(),
+			        'employer_id'  => $advert->employer_id,
+			        'skill'  => $advert->skill,
+			        'category'  => $advert->category,
+			        'rate'  => $advert->rate,
+			        'oku_friendly'  => $advert->oku_friendly,
+			        'open' => $advert->open,
+			        'avatar'  => $advert->avatar,
+			        'schedule_id'  => $advert->schedule_id,
+			    ],
+			    $advert->id
+			);
+		}
+
+        if($object)
         {
         	flash('you have successfully purchased a new plan', 'success');
 

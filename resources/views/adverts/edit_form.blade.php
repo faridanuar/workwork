@@ -93,6 +93,6 @@
 </div>	
 
 <div class="form-group">
+	<a href="/dashboard" class="btn btn-primary">Cancel</a>	
 	<button type="submit" class="btn btn-primary">Update Advertisement</button>
-	<a href="/" class="btn btn-primary">Cancel</a>	
 </div> 

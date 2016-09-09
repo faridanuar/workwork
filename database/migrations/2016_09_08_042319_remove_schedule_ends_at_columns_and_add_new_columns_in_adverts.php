@@ -31,6 +31,7 @@ class RemoveScheduleEndsAtColumnsAndAddNewColumnsInAdverts extends Migration
             $table->string('category')->nullable()->change();
             $table->string('rate')->nullable()->change();
             $table->string('oku_friendly')->nullable()->change();
+            $table->renameColumn('open', 'published');
 
 
 
@@ -63,6 +64,7 @@ class RemoveScheduleEndsAtColumnsAndAddNewColumnsInAdverts extends Migration
             $table->string('category')->change();
             $table->string('rate')->change();
             $table->string('oku_friendly')->change();
+            $table->renameColumn('published', 'open');
         });
     }
 }

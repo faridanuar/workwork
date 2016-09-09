@@ -25,6 +25,7 @@ class AdvertRequest extends Request
     {
         return [
             'job_title' => 'required',
+            /**
             'salary' => 'required|integer',
             'description' => 'required',           
             'location' => 'required',
@@ -37,6 +38,7 @@ class AdvertRequest extends Request
             'category' => 'required',
             'rate' => 'required',
             'oku_friendly' => 'required',
+            */
         ];
     }
 }
