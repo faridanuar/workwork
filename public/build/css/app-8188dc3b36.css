@@ -5851,6 +5851,30 @@ body {
 #advert .panel-body .description {
   line-height: 24px; }
 
+.panel-ww-advert {
+  max-width: 600px; }
+
+.ww-salary-input .ww-salary-input--currency {
+  padding-left: 6px;
+  padding-right: 4px;
+  background-color: transparent; }
+
+.ww-salary-input .ww-salary-input--amount {
+  min-width: 50px;
+  padding-left: 0;
+  border-left: 0;
+  box-shadow: none;
+  height: 34px; }
+
+.ww-salary-input .ww-salary-input--rate {
+  font-size: 10px;
+  background-color: transparent; }
+  .ww-salary-input .ww-salary-input--rate label {
+    padding-left: 10px;
+    font-weight: bold; }
+  .ww-salary-input .ww-salary-input--rate input[type="radio"] {
+    margin-left: -12px; }
+
 header {
   padding-bottom: 107px; }
   header .brand-ww {
