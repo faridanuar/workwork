@@ -13,7 +13,7 @@
 	<p class="help-block">You can choose hourly, daily or monthly</p>
 	<div class="input-group ww-salary-input">
 		<span class="input-group-addon ww-salary-input--currency">RM</span>
-		<input type="text" name="salary" id="salary" class="form-control ww-salary-input--amount" value="{{ old('salary') }}" placeholder="7" required>
+		<input type="number" name="salary" id="salary" class="form-control ww-salary-input--amount" value="{{ old('salary') }}" placeholder="8" required inputmode="numeric">
 		<span class="input-group-addon ww-salary-input--rate">
 			<label class="radio-inline"><input type="radio" aria-label="..." name="salary-rate" value="hour" checked> Hourly</label>
 			<label class="radio-inline"><input type="radio" aria-label="..." name="salary-rate" value="day"> Daily</label>
@@ -32,60 +32,65 @@
 </div> -->
 
 <div class="form-group">
-	<label for="schedule">Work Schedule:</label>
+	<label for="location">Location</label>
+	<p class="help-block">Where will the job be located?</p>
+	<input type="text" name="location" id="location" class="form-control" value="{{ old('location') }}" required>
+	<p>or <a href="#collapseAddress" role="button" data-toggle="collapse" aria-expanded="false" aria-controls="collapseAddress"> Enter address</a></p>
+	<div class="collapse" id="collapseAddress">
+		<div class="well">
+			<div class="form-group">
+				<label for="street">Street:</label>
+				<input type="text" name="street" id="street" class="form-control" value="{{ old('street') }}">
+			</div>
+
+			<div class="form-group">
+				<label for="city">City:</label>
+				<input type="text" name="city" id="city" class="form-control" value="{{ old('city') }}">
+			</div>
+
+			<div class="form-group">
+				<label for="zip">Zip:</label>
+				<input type="text" name="zip" id="zip" class="form-control" value="{{ old('zip') }}">
+			</div>
+
+			<div class="form-group">
+				<label for="state">State:</label>
+				<input type="text" name="state" id="state" class="form-control" value="{{ old('state') }}">
+			</div>
+
+			<div class="form-group">
+				<label for="country">Country:</label>
+				<select name="country" id="country" class="form-control">
+						<option value=""  disabled>Select a country</option>
+					@foreach ($countries::all() as $code => $name)
+						<option value="{{ $code }}" selected>{{ $name }}</option>
+					@endforeach
+				</select>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="form-group">
+	<label for="schedule">Schedule</label>
+	<p class="help-block">When do you need part-timers?</p>
 	<textarea type="text" name="schedule" id="schedule" class="form-control" rows="10" required>{{ old('schedule') }}</textarea>
 </div>
 
 <div class="form-group">
-	<label for="description">Job Description:</label>
+	<label for="description">Job Description</label>
 	<textarea type="text" name="description" id="description" class="form-control" rows="10" required>{{ old('description') }}</textarea>
 </div>
 
 <div class="form-group">
-	<label for="location">Location of employment: (example Bangsar Shopping Center, KLCC Convention Center)</label>
-	<input type="text" name="location" id="location" class="form-control" value="{{ old('location') }}" required>
-</div>
-
-<hr>
-
-<div class="form-group">
-	<label for="street">Street:</label>
-	<input type="text" name="street" id="street" class="form-control" value="{{ old('street') }}" required>
+	<label for="skill">Skills Needed</label>
+	<!-- <p class="help-block">e.g.: Teamwork, Multitasking</p> -->
+	<input type="text" name="skill" id="skill" class="form-control" value="{{ old('skill') }}" maxlength="50" required placeholder="e.g.: Teamwork, Multitasking">
 </div>
 
 <div class="form-group">
-	<label for="city">City:</label>
-	<input type="text" name="city" id="city" class="form-control" value="{{ old('city') }}" required>
-</div>
-
-<div class="form-group">
-	<label for="zip">Zip:</label>
-	<input type="text" name="zip" id="zip" class="form-control" value="{{ old('zip') }}" required>
-</div>
-
-<div class="form-group">
-	<label for="state">State:</label>
-	<input type="text" name="state" id="state" class="form-control" value="{{ old('state') }}" required>
-</div>
-
-<div class="form-group">
-	<label for="country">Country:</label>
-	<select name="country" id="country" class="form-control" required>
-			<option value="" selected disabled>Select a country</option>
-		@foreach ($countries::all() as $code => $name)
-			<option value="{{ $code }}">{{ $name }}</option>
-		@endforeach
-	</select>
-</div>
-
-<div class="form-group">
-	<label for="skill">Type of skill required:</label>
-	<input type="text" name="skill" id="skill" class="form-control" value="{{ old('skill') }}" maxlength="50" required>
-</div>
-
-<div class="form-group">
-	<label for="category">Job Category:</label>
-	<input type="text" name="category" id="category" class="form-control" value="{{ old('category') }}" maxlength="50" required>
+	<label for="category">Category</label>
+	<input type="text" name="category" id="category" class="form-control" value="{{ old('category') }}" maxlength="50" required placeholder="e.g. Restaurant - Waiter">
 </div>
 
 <div class="form-group">

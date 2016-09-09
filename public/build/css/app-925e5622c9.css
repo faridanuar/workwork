@@ -2309,9 +2309,9 @@ output {
   box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
   transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s; }
   .form-control:focus {
-    border-color: #66afe9;
+    border-color: black;
     outline: 0;
-    box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(102, 175, 233, 0.6); }
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(0, 0, 0, 0.6); }
   .form-control::-moz-placeholder {
     color: #999;
     opacity: 1; }
@@ -5861,19 +5861,14 @@ body {
 
 .ww-salary-input .ww-salary-input--amount {
   min-width: 50px;
-  padding-left: 0;
-  border-left: 0;
+  padding: 6px;
   box-shadow: none;
   height: 34px; }
 
 .ww-salary-input .ww-salary-input--rate {
-  font-size: 10px;
-  background-color: transparent; }
-  .ww-salary-input .ww-salary-input--rate label {
-    padding-left: 10px;
-    font-weight: bold; }
-  .ww-salary-input .ww-salary-input--rate input[type="radio"] {
-    margin-left: -12px; }
+  /*font-size: 10px;*/
+  background-color: transparent;
+  height: 34px; }
 
 header {
   padding-bottom: 107px; }
