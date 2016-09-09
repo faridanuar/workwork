@@ -5854,6 +5854,9 @@ body {
 .panel-ww-advert {
   max-width: 600px; }
 
+.test {
+  display: none; }
+
 .ww-salary-input .ww-salary-input--currency {
   padding-left: 6px;
   padding-right: 4px;
