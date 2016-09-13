@@ -170,7 +170,8 @@ class AdvertsController extends Controller
 		switch ($saveForLater)
 		{
 			case "true":
-				return redirect('dashboard');
+				flash('Your advert has been successfully saved but not yet published', 'info');
+				return redirect('/my/adverts');
 				break;
 			default:
 				$saveToDatabase->published = 1;
@@ -347,9 +348,25 @@ class AdvertsController extends Controller
 
 		$business = $advert->employer->business_name;
 
-		$config = config('services.algolia');
+		$later = $request->later;
 
-		$index = $config['index'];
+		if($later != true){
+			$this->validate($request, [
+		        'job_title' => 'required|max:50',
+		        'salary' => 'required|integer',
+	            'description' => 'required',           
+	            'location' => 'required',
+	            'street' => 'required',
+	            'city' => 'required',
+	            'zip' => 'required',
+	            'state' => 'required',
+	            'country' => 'required',
+	            'skill' => 'required',
+	            'category' => 'required',
+	            'rate' => 'required',
+	            'oku_friendly' => 'required',
+	    	]);
+		}
 
 		$advert->update([
 
@@ -372,6 +389,10 @@ class AdvertsController extends Controller
 		$advert->save();
 
 		if($advert->published != 0){
+
+			$config = config('services.algolia');
+
+			$index = $config['index'];
 		
 			$indexFromAlgolia = $search->index($index);
 
