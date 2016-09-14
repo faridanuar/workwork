@@ -51,11 +51,22 @@ class SubscribeController extends Controller
 		{
 			$advert = Advert::find($id);
 
-			$days = 7;
+			if($advert->trial_used !=0){
 
-			$advert->plan_ends_at = Carbon::now()->addDays($days);
+				flash('Sorry, the trial plan is not valid anymore');
 
-			$saved = $advert->save();
+				return redirect()->route('plan', [$saveToDatabase->id]);
+
+			}else{
+
+				$days = 7;
+
+				$advert->plan_ends_at = Carbon::now()->addDays($days);
+
+				$advert->trial_used = 1;
+
+				$saved = $advert->save();
+			}
 
 			return redirect('/publish');
 		}
