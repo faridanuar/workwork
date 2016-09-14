@@ -5955,7 +5955,7 @@ h4.features {
 Flash message styling section
 ******************************/
 .Alert--Info {
-  background: #8c8c8c;
+  background: #cccccc;
   color: #000000;
   margin: 10px;
   padding: 10px;
@@ -5969,7 +5969,7 @@ Flash message styling section
   text-align: center; }
 
 .Alert--Error {
-  background: #e62e00;
+  background: #ff704d;
   color: #000000;
   margin: 10px;
   padding: 10px;
@@ -6035,7 +6035,7 @@ checkout styling section
   margin-top: 20px; }
 
 /**********************************
-checkout styling section
+comment styling section
 **********************************/
 .form-group-comment {
   width: 500px; }
