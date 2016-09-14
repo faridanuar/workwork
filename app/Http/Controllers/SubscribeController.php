@@ -51,6 +51,8 @@ class SubscribeController extends Controller
 		{
 			$advert = Advert::find($id);
 
+			$days = 7;
+
 			$advert->plan_ends_at = Carbon::now()->addDays($days);
 
 			$saved = $advert->save();
@@ -125,7 +127,7 @@ class SubscribeController extends Controller
 	        	$advert->current_plan = $plan;
 
 	        	$advert->plan_ends_at = Carbon::now()->addDays($days);
-	        	
+
 	        	$advert->published = 1;
 				break;
 
