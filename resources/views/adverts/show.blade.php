@@ -26,16 +26,21 @@
                     <h3>Skills</h3>
                     <span class="label label-default">{{ $advert->skill }}</span>
                 </div>
+                
+                <!--
                 <div class="oku">
                     <h3>Suitable for</h3>
                     @if (str_is('yes',$advert->oku_friendly))
                     <span class="label label-default">OKU</span>
                     @endif
                 </div>
+                -->
+
                 <div class="location">
                     <h3>Location</h3>
                     {{ $advert->location }}
                 </div>
+
                <!--
                 <div class="schedule">
                     <h3>Work Schdule</h3>
@@ -43,6 +48,7 @@
                     {{ $advert->schedule }}
                 </div>
                 -->
+
                 <hr>
                 <div class="description">
                     <h3>Work Description</h3>
@@ -50,7 +56,7 @@
                 </div>
                 <hr>
                 <div class="business-name"><a href="/company/{{ $advert->employer_id }}/{{ $advert->business_name }}">{{ $advert->business_name }}</a></div>
-                <div class="location">{{ $advert->location }}</div>
+                <!-- <div class="location">{{ $advert->location }}</div> -->
                 <div class="street">{{ $advert->street }}</div>
                 <div class="city">{{ $advert->city }}</div>
                 <div class="zip">{{ $advert->zip }}</div>
