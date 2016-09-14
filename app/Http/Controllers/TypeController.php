@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\User;
 use App\Employer;
 use App\Job_Seeker;
 
@@ -48,6 +49,17 @@ class TypeController extends Controller
         ]);
 
         $user->save();
+
+        if($user->type === 'employer')
+        {
+            //assign user a roles with permissions using "assignRole" method from hasRoles trait
+            $user->assignRole('employer');
+
+        }elseif($user->type === 'job_seeker'){
+
+            //assign user a roles with permissions using "assignRole" method from hasRoles trait
+            $user->assignRole('job_seeker');
+        }
 
         // check if save is successful
         if($user){

@@ -13,11 +13,11 @@
 	<p class="help-block">You can choose hourly, daily or monthly</p>
 	<div class="input-group ww-salary-input">
 		<span class="input-group-addon ww-salary-input--currency">RM</span>
-		<input type="number" name="salary" id="salary" class="form-control ww-salary-input--amount" value="{{ old('salary') }}" placeholder="8" required inputmode="numeric">
+		<input type="number" name="salary" id="salary" class="form-control ww-salary-input--amount" value="{{ old('salary') }}" placeholder="8" inputmode="numeric">
 		<span class="input-group-addon ww-salary-input--rate">
-			<label class="radio-inline"><input type="radio" aria-label="..." name="salary-rate" value="hour" checked> Hourly</label>
-			<label class="radio-inline"><input type="radio" aria-label="..." name="salary-rate" value="day"> Daily</label>
-			<label class="radio-inline"><input type="radio" aria-label="..." name="salary-rate" value="month"> Monthly</label>
+			<label class="radio-inline"><input type="radio" aria-label="..." name="rate" id="rate0" value="hour" checked> Hourly</label>
+			<label class="radio-inline"><input type="radio" aria-label="..." name="rate" id="rate1" value="day"> Daily</label>
+			<label class="radio-inline"><input type="radio" aria-label="..." name="rate" id="rate2" value="month"> Monthly</label>
 		</span>
 	</div>
 </div>
@@ -34,7 +34,7 @@
 <div class="form-group">
 	<label for="location">Location</label>
 	<p class="help-block">Where will the job be located?</p>
-	<input type="text" name="location" id="location" class="form-control" value="{{ old('location') }}" required>
+	<input type="text" name="location" id="location" class="form-control" value="{{ old('location') }}">
 	<p>or <a href="#collapseAddress" role="button" data-toggle="collapse" aria-expanded="false" aria-controls="collapseAddress"> Enter address</a></p>
 	<div class="collapse" id="collapseAddress">
 		<div class="well">
@@ -71,26 +71,28 @@
 	</div>
 </div>
 
+<!--
 <div class="form-group">
 	<label for="schedule">Schedule</label>
 	<p class="help-block">When do you need part-timers?</p>
-	<textarea type="text" name="schedule" id="schedule" class="form-control" rows="10" required>{{ old('schedule') }}</textarea>
+	<textarea type="text" name="schedule" id="schedule" class="form-control" rows="10">{{ old('schedule') }}</textarea>
 </div>
+-->
 
 <div class="form-group">
 	<label for="description">Job Description</label>
-	<textarea type="text" name="description" id="description" class="form-control" rows="10" required>{{ old('description') }}</textarea>
+	<textarea type="text" name="description" id="description" class="form-control" rows="10">{{ old('description') }}</textarea>
 </div>
 
 <div class="form-group">
 	<label for="skill">Skills Needed</label>
 	<!-- <p class="help-block">e.g.: Teamwork, Multitasking</p> -->
-	<input type="text" name="skill" id="skill" class="form-control" value="{{ old('skill') }}" maxlength="50" required placeholder="e.g.: Teamwork, Multitasking">
+	<input type="text" name="skill" id="skill" class="form-control" value="{{ old('skill') }}" maxlength="50" placeholder="e.g.: Teamwork, Multitasking">
 </div>
 
 <div class="form-group">
 	<label for="category">Category</label>
-	<input type="text" name="category" id="category" class="form-control" value="{{ old('category') }}" maxlength="50" required placeholder="e.g. Restaurant - Waiter">
+	<input type="text" name="category" id="category" class="form-control" value="{{ old('category') }}" maxlength="50" placeholder="e.g. Restaurant - Waiter">
 </div>
 
 <div class="form-group">
@@ -102,12 +104,24 @@
 			<option value="no">No</option>
 	</select> -->
 	<label class="checkbox-inline">
-		<input type="checkbox" id="oku_friendly" value="yes"> Yes
+		<input type="checkbox" id="oku_friendly" name="oku_friendly" value="yes"> Yes
 	</label>
 </div>
 
 <div class="form-group">
 	<a href="/home" class="btn btn-primary">Cancel</a>
-	<button type="submit" class="btn btn-primary" id="later" name="later" value="true">Save For Later</button>
-	<button type="submit" class="btn btn-primary">Save Advertisement</button>
+	<button type="submit" class="btn btn-primary" id="saveLater" name="saveLater" value=true>Save For Later</button>
+	<button type="submit" class="btn btn-primary">Next : Choose Plan</button>
 </div>
+
+<script type="text/javascript">
+ 
+function PopIt() { return "write your custom message here"; }
+function UnPopIt()  { /* nothing to return */ }
+ 
+jQuery(document).ready(function() {
+window.onbeforeunload = PopIt;
+jQuery("a").click(function(){ window.onbeforeunload = UnPopIt; });
+});
+ 
+</script>

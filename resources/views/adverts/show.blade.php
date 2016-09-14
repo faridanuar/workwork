@@ -36,11 +36,13 @@
                     <h3>Location</h3>
                     {{ $advert->location }}
                 </div>
+               <!--
                 <div class="schedule">
                     <h3>Work Schdule</h3>
                     July-August<br>
                     {{ $advert->schedule }}
                 </div>
+                -->
                 <hr>
                 <div class="description">
                     <h3>Work Description</h3>

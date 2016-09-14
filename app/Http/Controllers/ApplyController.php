@@ -34,15 +34,21 @@ class ApplyController extends Controller
 		$user = $request->user();
 
 		// check if user is not logged in
-		if($user === null){
+		if(!$user){
 
-			$user = "";
+			flash("Sorry you need to create a Job Seeker's Profile", 'info');
 
-			$jobSeeker = "";
+			return redirect()->back();
 
 		}elseif($user->hasRole('employer') || !$user->hasRole('job_seeker')){
 
 			return redirect('/');
+
+		}elseif(!$user->jobSeeker){
+
+			flash("Sorry you need to create a Job Seeker's Profile", 'info');
+
+			return redirect()->back();
 
 		}else{
 
@@ -118,7 +124,8 @@ class ApplyController extends Controller
 		    // Step 4: make an array of people we know, to send them a message. 
 		    // Feel free to change/add your own phone number and name here.
 		    $people = array(
-		        "+6$contact" => $user->name,
+		    	"+60176613069" => $user->name,
+		       // "+6$contact" => $user->name,
 		        //"+14158675310" => "Boots",
 		        //"+14158675311" => "Virgil",
 		    );

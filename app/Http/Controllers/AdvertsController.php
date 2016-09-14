@@ -107,25 +107,41 @@ class AdvertsController extends Controller
 
 	public function store(AdvertRequest $request)
 	{
-		$user = $request->user();
+		$saveLater = $request->saveLater;
 
-		$employer = $user->employer;
+		if($saveLater != true){
+			$this->validate($request, [
+		        'job_title' => 'required|max:50',
+		        'salary' => 'required|integer',
+	            'description' => 'required',           
+	            'location' => 'required',
+	            'street' => 'required',
+	            'city' => 'required',
+	            'zip' => 'required',
+	            'state' => 'required',
+	            'country' => 'required',
+	            'skill' => 'required',
+	            'category' => 'required',
+	            'rate' => 'required',
+	            'oku_friendly' => 'required',
+	    	]);
+		}
+
+		$user = $request->user();
 
 		if($user->avatar != null || $user->avatar != "")
 		{
 			$avatar = $user->avatar;
-
 		}else{
-
 			$avatar = "/images/defaults/default.jpg";
 		}
+
+		$employer = $user->employer;
 
 		// what do we need to do? if the request validates, the body below of this method will be hit
 		// validate the form - DONE		
 		// persist the advert - DONE
-		//Advert::create($request->all());
-		$saveToDatabase = $employer->advert()->create(
-			[
+		$saveToDatabase = $employer->advert()->create([
 		        'job_title' => $request->job_title,
 		        'salary'  => (float)$request->salary,
 		        'description'  => $request->description,
@@ -142,18 +158,18 @@ class AdvertsController extends Controller
 		        'rate'  => $request->rate,
 		        'oku_friendly'  => $request->oku_friendly,
 		        'avatar'  => $avatar,
-			]
-		);
+			]);
 
-		$saveForLater = $request->later;
-
-		switch ($saveForLater)
+		switch ($saveLater)
 		{
 			case "true":
-				return redirect('dashboard');
+				$saveToDatabase->ready_to_publish = 0;
+				$saveToDatabase->save();
+				flash('Your advert has been successfully saved but not yet published', 'info');
+				return redirect('/my/adverts');
 				break;
 			default:
-				$saveToDatabase->published = 1;
+				$saveToDatabase->ready_to_publish = 1;
 				$saveToDatabase->save();
 		}
 
@@ -171,13 +187,27 @@ class AdvertsController extends Controller
 	public function publish(Request $request, Search $search)
 	{
 		$advert = Advert::find($request->id);
-		$todaysDate = Carbon::now();
-        $endDate = $advert->ends_at;
+
+		$ready = $advert->ready_to_publish;
+
+        switch ($ready)
+        {
+        	case 0:
+	        	flash('You must complete your advert form to publish', 'info');
+	        	return redirect()->back();
+	        	break;
+        	default:
+        }
+
+        $todaysDate = Carbon::now();
+
+        $endDate = $advert->plan_ends_at;
+
         $daysLeft =  $todaysDate->diffInDays($endDate, false);
 
         if($endDate === null){
 
-        	flash('You need to purchase a plan to published your job ad', 'info');
+        	flash('You need to purchase a plan to published your job advert', 'info');
 
             return redirect()->route('plan', [$advert->id]);
 
@@ -238,12 +268,16 @@ class AdvertsController extends Controller
 				
 			}else{
 
-				echo "Error: Adding object to index was unsuccessful";
+				flash('There was something wrong when publishing your advert. Please try again.', 'error');
+
+				return redirect()->back();
 			}
 
 		}else{
 
-			echo "Error: unable to save record to database. ";
+			flash('There was something wrong when saving your advert. Please try again.', 'error');
+
+			return redirect()->back();
 		}
 	}
 
@@ -270,20 +304,18 @@ class AdvertsController extends Controller
 				// set flash attribute and key. example --> flash('success message', 'flash_message_level')
 				flash('Your advert has been unpublished.', 'info');
 
-				// redirect to a landing page, so that people can share to the world DONE, kinda
-				// next, flash messaging
 				return redirect()->back();
 				
 			}else{
 
-				flash('Error: publishing to index was unsuccessful, please try again', 'error');
+				flash('There was something wrong when unpublishing your advert. Please try again.', 'error');
 
 				return redirect()->back();
 			}
 
 		}else{
 
-			flash('Error: saving was unsuccessful, please try again', 'error');
+			flash('There was something wrong when changing your advert state. Please try again.', 'error');
 
 			return redirect()->back();
 		}
@@ -321,18 +353,33 @@ class AdvertsController extends Controller
 	 *
 	 * @param $request, $id, $job_title
 	 */
-	public function update(Search $search, AdvertRequest $request, $id, $job_title)
+	public function update(AdvertRequest $request, Search $search, $id, $job_title)
 	{
 		$advert = Advert::find($id);
 
+		$saveLater = $request->saveLater;
+
+		if($saveLater != true){
+			$this->validate($request, [
+		        'job_title' => 'required|max:50',
+		        'salary' => 'required|integer',
+	            'description' => 'required',           
+	            'location' => 'required',
+	            'street' => 'required',
+	            'city' => 'required',
+	            'zip' => 'required',
+	            'state' => 'required',
+	            'country' => 'required',
+	            'skill' => 'required',
+	            'category' => 'required',
+	            'rate' => 'required',
+	            'oku_friendly' => 'required',
+	    	]);
+		}
+
 		$business = $advert->employer->business_name;
 
-		$config = config('services.algolia');
-
-		$index = $config['index'];
-
 		$advert->update([
-
 			'job_title' => $request->job_title,
 			'salary' => (float)$request->salary,
 			'description' => $request->description,
@@ -351,53 +398,80 @@ class AdvertsController extends Controller
 		]);
 		$advert->save();
 
+		switch ($saveLater)
+		{
+			case "true":
+				flash('Changes made from your advert has been successfully saved but not yet published', 'info');
+				return redirect('/my/adverts');
+				break;
+			default:
+				$advert->ready_to_publish = 1;
+				$advert->save();
+
+				$todaysDate = Carbon::now();
+
+		        $endDate = $advert->plan_ends_at;
+
+		        $daysLeft =  $todaysDate->diffInDays($endDate, false);
+
+		        if($endDate === null){
+
+		        	flash('You need to purchase a plan to published your job advert', 'info');
+
+		            return redirect()->route('plan', [$advert->id]);
+
+		        }elseif($daysLeft < 0){
+
+		            flash('your package has been expired, please purchase a new plan', 'info');
+
+		            return redirect()->route('plan', [$advert->id]);
+		        }
+		}
+
 		if($advert->published != 0){
+
+			$config = config('services.algolia');
+
+			$index = $config['index'];
 		
 			$indexFromAlgolia = $search->index($index);
 
 			$object = $indexFromAlgolia->partialUpdateObject([
-
 		    	'id' => $advert->id,
 		        'job_title' => $advert->job_title,
-		        'salary'  => (float)$advert->salary,
-		        'description'  => $advert->description,
-		        'business_name'  => $advert->business_name,
-		        'location'  => $advert->location,
-		        'street'  => $advert->street,
-		        'city'  => $advert->city,
-		        'zip'  => $advert->zip,
-		        'state'  => $advert->state,
-		        'country'  => $advert->country,
-		        'created_at'  => $advert->created_at->toDateTimeString(),
-		        'updated_at'  => $advert->updated_at->toDateTimeString(),
-		        'employer_id'  => $advert->employer_id,
-		        'skill'  => $advert->skill,
-		        'category'  => $advert->category,
-		        'rate'  => $advert->rate,
-		        'oku_friendly'  => $advert->oku_friendly,
+		        'salary' => (float)$advert->salary,
+		        'description' => $advert->description,
+		        'business_name' => $advert->business_name,
+		        'location' => $advert->location,
+		        'street' => $advert->street,
+		        'city' => $advert->city,
+		        'zip' => $advert->zip,
+		        'state' => $advert->state,
+		        'country' => $advert->country,
+		        'created_at' => $advert->created_at->toDateTimeString(),
+		        'updated_at' => $advert->updated_at->toDateTimeString(),
+		        'employer_id' => $advert->employer_id,
+		        'skill' => $advert->skill,
+		        'category' => $advert->category,
+		        'rate' => $advert->rate,
+		        'oku_friendly' => $advert->oku_friendly,
 		        'published' => $advert->open,
-		        'schedule'  => $advert->schedule,
-		        'objectID'  => $advert->id,
+		        'schedule' => $advert->schedule,
+		        'objectID' => $advert->id,
 			]);
 
 			if($object)
 			{
-				flash('Your advert has been successfully updated to index.', 'success');
+				flash('Your advert has been successfully published.', 'success');
 
 				return redirect()->route('show', [$id,$advert->job_title]);
 
 			}else{
 
-				flash('Error: updating to index was unsuccessful.', 'error');
+				flash('There was something wrong when publishing your advert. Please try again.', 'error');
 
 				return redirect()->back();
 			}
-
-		}else{
-
-			flash('Your advert has been successfully updated.', 'success');
-
-			return redirect()->route('show', [$id,$advert->job_title]);
 		}
 	}
 
@@ -420,12 +494,12 @@ class AdvertsController extends Controller
 	protected function unauthorized(Request $request)
 	{
 		if($request->ajax())
-			{
-				return response(['message' => 'No!'], 403);
-			}
+		{
+			return response(['message' => 'No!'], 403);
+		}
 
-			flash('Sorry, you are not the owner of that page');
+		flash('Sorry, you are not the owner of that page');
 
-			return redirect('/');
+		return redirect('/');
 	}
 }

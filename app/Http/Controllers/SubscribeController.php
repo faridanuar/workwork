@@ -38,7 +38,6 @@ class SubscribeController extends Controller
 
 	public function choosePlan($id)
 	{
-		
 		return view('subscriptions.choose_plan', compact('id'));
 	}
 
@@ -52,9 +51,22 @@ class SubscribeController extends Controller
 		{
 			$advert = Advert::find($id);
 
-			$advert->plan_ends_at = Carbon::now()->addDays($days);
+			if($advert->trial_used !=0){
 
-			$saved = $advert->save();
+				flash('Sorry, the trial plan is not valid anymore');
+
+				return redirect()->route('plan', [$saveToDatabase->id]);
+
+			}else{
+
+				$days = 7;
+
+				$advert->plan_ends_at = Carbon::now()->addDays($days);
+
+				$advert->trial_used = 1;
+
+				$saved = $advert->save();
+			}
 
 			return redirect('/publish');
 		}
@@ -64,7 +76,7 @@ class SubscribeController extends Controller
 
 
 
-	protected function process(Request $request, Search $search, $id)
+	protected function charge(Request $request, Search $search, $id)
 	{
 		// fetch user authentication
 		$user = $request->user();
@@ -113,6 +125,8 @@ class SubscribeController extends Controller
 	        	$advert->current_plan = $plan;
 
 	        	$advert->plan_ends_at = Carbon::now()->addDays($days);
+
+	        	$advert->published = 1;
 				break;
 
 			case "1_Month_Plan":
@@ -124,11 +138,14 @@ class SubscribeController extends Controller
 	        	$advert->current_plan = $plan;
 
 	        	$advert->plan_ends_at = Carbon::now()->addDays($days);
+
+	        	$advert->published = 1;
 				break;
 
 			default:
 
-				return redirect('dashboard');
+				flash('Your checkout was unsuccessful', 'error');
+				return redirect()->back();
 		}
         $saved = $advert->save();
 
@@ -171,7 +188,7 @@ class SubscribeController extends Controller
 
         if($object)
         {
-        	flash('you have successfully purchased a new plan', 'success');
+        	flash('You have successfully purchased a new plan', 'success');
 
 			return redirect('/dashboard');
 			
