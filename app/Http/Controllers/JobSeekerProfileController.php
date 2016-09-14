@@ -65,9 +65,6 @@ class JobSeekerProfileController extends Controller
         // save user's job seeker profile info
         $jobSeeker->save();
 
-        // assign role "job_seeker" permissions with "assignRole" method from hasRoles trait
-        $user->assignRole('job_seeker');
-
         // check if user storing procedure is a success
         if($user){
 

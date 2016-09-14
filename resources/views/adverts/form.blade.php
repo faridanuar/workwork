@@ -71,11 +71,13 @@
 	</div>
 </div>
 
+<!--
 <div class="form-group">
 	<label for="schedule">Schedule</label>
 	<p class="help-block">When do you need part-timers?</p>
 	<textarea type="text" name="schedule" id="schedule" class="form-control" rows="10">{{ old('schedule') }}</textarea>
 </div>
+-->
 
 <div class="form-group">
 	<label for="description">Job Description</label>
