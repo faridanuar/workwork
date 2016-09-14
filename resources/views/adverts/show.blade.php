@@ -24,9 +24,12 @@
                 </div>
                 <div class="skill">
                     <h3>Skills</h3>
-                    <span class="label label-default">{{ $advert->skill }}</span>
+                    <!-- <span class="label label-default">{{ $advert->skill }}</span> -->
+                    <div class="skill-description">
+                        {{ $advert->skill }}
+                    </div>
                 </div>
-                
+
                 <!--
                 <div class="oku">
                     <h3>Suitable for</h3>
