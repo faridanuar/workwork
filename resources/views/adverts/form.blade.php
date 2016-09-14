@@ -15,9 +15,9 @@
 		<span class="input-group-addon ww-salary-input--currency">RM</span>
 		<input type="number" name="salary" id="salary" class="form-control ww-salary-input--amount" value="{{ old('salary') }}" placeholder="8" inputmode="numeric">
 		<span class="input-group-addon ww-salary-input--rate">
-			<label class="radio-inline"><input type="radio" aria-label="..." name="salary-rate" value="hour" checked> Hourly</label>
-			<label class="radio-inline"><input type="radio" aria-label="..." name="salary-rate" value="day"> Daily</label>
-			<label class="radio-inline"><input type="radio" aria-label="..." name="salary-rate" value="month"> Monthly</label>
+			<label class="radio-inline"><input type="radio" aria-label="..." name="rate" id="rate0" value="hour" checked> Hourly</label>
+			<label class="radio-inline"><input type="radio" aria-label="..." name="rate" id="rate1" value="day"> Daily</label>
+			<label class="radio-inline"><input type="radio" aria-label="..." name="rate" id="rate2" value="month"> Monthly</label>
 		</span>
 	</div>
 </div>
@@ -102,7 +102,7 @@
 			<option value="no">No</option>
 	</select> -->
 	<label class="checkbox-inline">
-		<input type="checkbox" id="oku_friendly" value="yes"> Yes
+		<input type="checkbox" id="oku_friendly" name="oku_friendly" value="yes"> Yes
 	</label>
 </div>
 
