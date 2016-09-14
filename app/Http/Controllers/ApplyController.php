@@ -34,15 +34,21 @@ class ApplyController extends Controller
 		$user = $request->user();
 
 		// check if user is not logged in
-		if($user === null){
+		if(!$user){
 
-			$user = "";
+			flash("Sorry you need to create a Job Seeker's Profile", 'info');
 
-			$jobSeeker = "";
+			return redirect()->back();
 
 		}elseif($user->hasRole('employer') || !$user->hasRole('job_seeker')){
 
 			return redirect('/');
+
+		}elseif(!$user->jobSeeker){
+
+			flash("Sorry you need to create a Job Seeker's Profile", 'info');
+
+			return redirect()->back();
 
 		}else{
 
