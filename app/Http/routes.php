@@ -125,9 +125,9 @@ Route::get('/plans', 'SubscribeController@plans');
 
 Route::get('/choose/plan/{id}', 'SubscribeController@choosePlan')->name('plan');
 
-Route::post('/checkout/{id}', 'SubscribeController@checkout');
+Route::post('/checkout/{id}', 'SubscribeController@checkout')->name('checkout');
 
-Route::post('/process/{id}', 'SubscribeController@checkout')->name('checkout');
+Route::post('/process/{id}', 'SubscribeController@charge');
 
 Route::get('/invoices', 'SubscribeController@invoices');
 
