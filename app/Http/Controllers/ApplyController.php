@@ -124,7 +124,8 @@ class ApplyController extends Controller
 		    // Step 4: make an array of people we know, to send them a message. 
 		    // Feel free to change/add your own phone number and name here.
 		    $people = array(
-		        "+6$contact" => $user->name,
+		    	"+60176613069" => $user->name,
+		       // "+6$contact" => $user->name,
 		        //"+14158675310" => "Boots",
 		        //"+14158675311" => "Virgil",
 		    );
