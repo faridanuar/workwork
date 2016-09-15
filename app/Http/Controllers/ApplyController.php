@@ -33,28 +33,16 @@ class ApplyController extends Controller
 	{
 		$user = $request->user();
 
-		// check if user is not logged in
-		if(!$user){
+		if(!$user->jobSeeker){
 
-			flash("Sorry you need to create a Job Seeker's Profile", 'info');
+			flash("Sorry, you need to create your profile before applying", 'info');
 
-			return redirect()->back();
-
-		}elseif($user->hasRole('employer') || !$user->hasRole('job_seeker')){
-
-			return redirect('/');
-
-		}elseif(!$user->jobSeeker){
-
-			flash("Sorry you need to create a Job Seeker's Profile", 'info');
-
-			return redirect()->back();
+			return redirect('profile/create');
 
 		}else{
 
 			// display only the first retrieved
 			$jobSeeker = $user->jobSeeker()->first();
-
 		}
 
 		// display only the first retrieved

@@ -2,10 +2,10 @@
 
 namespace App\Console;
 
-use App\User;
+use Carbon\Carbon;
 use App\Advert;
 use App\Contracts\Search;
-use Carbon\Carbon;
+
 
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
@@ -33,39 +33,31 @@ class Kernel extends ConsoleKernel
         //          ->hourly();
 
         $schedule->call(
-            function(Request $request, Search $search)
+            function(Search $search)
             {
-               $users = User::where('type', 'employer')->get();
+                $adverts = Advert::all();
 
-                foreach($users as $user)
+                foreach($adverts as $advert)
                 {
                     $todaysDate = Carbon::now();
 
-                    $endDate = $user->ends_at;
+                    $endDate = $advert->plan_ends_at;
 
-                    if($endDate != null)
-                    {
-                        $daysLeft =  $todaysDate->diffInDays($endDate, false);
+                    $daysLeft =  $todaysDate->diffInDays($endDate, false);
 
-                        if($daysLeft < 0)
-                        {
-                            $adverts = Advert::where('employer_id', $user->employer->id)->get();
+                    if($daysLeft < 0){
 
-                            foreach($adverts as $advert)
-                            {
-                                $advert->open = 0;
+                        $advert->published = 0;
 
-                                $advert->save();
+                        $advert->save();
 
-                                $config = config('services.algolia');
+                        $config = config('services.algolia');
 
-                                $index = $config['index'];
+                        $index = $config['index'];
 
-                                $indexFromAlgolia = $search->index($index);
+                        $indexFromAlgolia = $search->index($index);
 
-                                $object = $indexFromAlgolia->deleteObject($advert->id);
-                            }
-                        }
+                        $object = $indexFromAlgolia->deleteObject($advert->id);
                     }
                 }
             }
