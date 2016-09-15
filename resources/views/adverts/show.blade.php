@@ -16,7 +16,7 @@
                     <div class="rate"><span class="per">per</span> <span>{{ $advert->rate }}</span></div>
                 </div>
                 <hr>
-                <div class="business-name"><a href="/company/{{ $advert->employer_id }}/{{ $advert->business_name }}">{{ $advert->business_name }}</a></div>
+                <img src="{{ $advert->avatar }}" class="avatar-tn" height="30" width="30" /><div class="business-name"><a href="/company/{{ $advert->employer_id }}/{{ $advert->business_name }}">{{ $advert->business_name }}</a></div>
                 <hr>
                 <div class="category">
                     <h3>Category</h3>

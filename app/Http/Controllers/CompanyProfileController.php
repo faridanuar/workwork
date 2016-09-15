@@ -364,7 +364,16 @@ class CompanyProfileController extends Controller
 
     public function myAdvert(Request $request)
     {
-        $employerID = $request->user()->employer->id;
+        $user = $request->user();
+
+        if(!$user->employer)
+        {
+            flash('You need a profile to create an advert', 'info');
+
+            return redirect('/company/create');
+        }
+
+        $employerID = $user->employer->id;
 
         $myAdverts = Advert::where('employer_id', $employerID)->orderBy('updated_at', 'desc')
                 ->get();
