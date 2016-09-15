@@ -6,6 +6,8 @@
 	@include('messages.flash')
 </div>
 
+<!-- <body onbeforeunload="return popUp()"> -->
+
 <div class="panel-ww-advert panel panel-default center-block">
     <div class="panel-heading panel-heading-ww">New Part-time Ad</div>
     <div class="panel-body">

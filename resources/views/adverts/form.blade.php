@@ -115,13 +115,9 @@
 </div>
 
 <script type="text/javascript">
- 
-function PopIt() { return "write your custom message here"; }
-function UnPopIt()  { /* nothing to return */ }
- 
-jQuery(document).ready(function() {
-window.onbeforeunload = PopIt;
-jQuery("a").click(function(){ window.onbeforeunload = UnPopIt; });
-});
- 
+
+function popUp() {
+    return "Changes will not be saved...";
+}
+
 </script>

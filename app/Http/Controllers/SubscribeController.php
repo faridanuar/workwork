@@ -68,7 +68,7 @@ class SubscribeController extends Controller
 				$saved = $advert->save();
 			}
 
-			return redirect('/publish');
+			return redirect()->route('show', [$id,$advert->job_title]);
 		}
 
 		return view('subscriptions.checkout', compact('id','plan'));

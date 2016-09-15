@@ -98,8 +98,17 @@ class AdvertsController extends Controller
 	/**
 	 * Create a new advert
 	 */
-	public function create()
+	public function create(Request $request)
 	{
+		$user = $request->user();
+
+		if(!$user->employer)
+		{
+			flash('You need a profile to create an advert', 'info');
+
+			return redirect('/company/create');
+		}
+
 		return view('adverts.create');
 	}
 
@@ -115,15 +124,10 @@ class AdvertsController extends Controller
 		        'salary' => 'required|integer',
 	            'description' => 'required',           
 	            'location' => 'required',
-	            'street' => 'required',
-	            'city' => 'required',
-	            'zip' => 'required',
-	            'state' => 'required',
 	            'country' => 'required',
 	            'skill' => 'required',
 	            'category' => 'required',
 	            'rate' => 'required',
-	            'oku_friendly' => 'required',
 	    	]);
 		}
 
