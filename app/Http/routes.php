@@ -6,7 +6,7 @@
 
 Route::auth();
 
-Route::get('/dashboard', 'HomeController@index');
+Route::get('/dashboard', 'HomeController@dashboard');
 
 Route::get('/avatar', 'HomeController@avatar');
 
