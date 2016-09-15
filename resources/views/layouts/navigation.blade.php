@@ -55,3 +55,27 @@
             </div>
         </div>
     </nav>
+
+    @if (Auth::user())
+    <nav class="auth-nav">
+        <div class="container">
+            <ul>
+                <li>
+                    <a href="/dashboard" class="auth-nav-item" aria-selected="true">Dashboard</a>
+                </li>
+                <li>
+                    <a href="" class="auth-nav-item" aria-selected="false">Your Adverts</a>
+                </li>
+                <li>
+                    <a href="" class="auth-nav-item" aria-selected="false">Company Profile</a>
+                </li>
+                <li>
+                    <a href="" class="auth-nav-item" aria-selected="false">Your Profile</a>
+                </li>
+                <li>
+                    <a href="" class="auth-nav-item" aria-selected="false">Account</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    @endif

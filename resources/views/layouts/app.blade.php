@@ -32,7 +32,12 @@
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/4.3.0/dropzone.css">
 
 </head>
+
+@if (Auth::user())
+<body id="@yield('body-id')" class="auth-body">
+@else
 <body id="@yield('body-id')">
+@endif
     @include('layouts.navigation')
 
     <div class="container">

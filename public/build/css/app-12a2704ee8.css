@@ -5737,6 +5737,9 @@ button.close {
 body {
   padding-top: 90px; }
 
+body.auth-body {
+  padding-top: 134px; }
+
 .ww-navbar {
   background-color: #FFDC10;
   border-bottom: 2px solid rgba(0, 0, 0, 0.2);
@@ -5761,6 +5764,37 @@ body {
     .ww-navbar .navbar-btn.navbar-btn-ww:hover {
       border: 2px solid transparent;
       background-color: white; }
+
+.auth-nav {
+  position: fixed;
+  right: 0;
+  left: 0;
+  z-index: 1029;
+  top: 50px;
+  background-color: rgba(0, 0, 0, 0.68); }
+  .auth-nav ul {
+    margin: 0;
+    padding: 0;
+    list-style: none; }
+  .auth-nav li {
+    padding: 0;
+    position: relative; }
+    .auth-nav li a.auth-nav-item {
+      color: white;
+      position: relative;
+      float: left;
+      padding: 14px 14px 18px 14px;
+      margin-top: 8px; }
+      .auth-nav li a.auth-nav-item:hover {
+        text-decoration: none; }
+      .auth-nav li a.auth-nav-item[aria-selected="true"]:before {
+        position: absolute;
+        content: '';
+        bottom: 0;
+        left: 14px;
+        right: 14px;
+        height: 4px;
+        background: #FFDC10; }
 
 #adverts a.panel-job-links {
   color: black; }
