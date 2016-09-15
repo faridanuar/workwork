@@ -5773,9 +5773,9 @@ body {
 
 #adverts .panel .business-name {
   font-weight: bold;
-  font-size: 10px;
+  font-size: 12px;
   margin-bottom: 5px;
-  opacity: 0.6;
+  opacity: 1;
   text-transform: uppercase; }
 
 #adverts .panel .job-title {
@@ -5853,9 +5853,6 @@ body {
 
 .panel-ww-advert {
   max-width: 600px; }
-
-.test {
-  display: none; }
 
 .ww-salary-input .ww-salary-input--currency {
   padding-left: 6px;

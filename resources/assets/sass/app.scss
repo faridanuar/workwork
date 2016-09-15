@@ -55,7 +55,7 @@ body { padding-top: 90px; }
     .panel {
         .panel-body { position: relative; padding-right: 48px; }
 
-        .business-name { font-weight: bold; font-size: 10px; margin-bottom: 5px; opacity: 0.6; text-transform: uppercase; }
+        .business-name { font-weight: bold; font-size: 12px; margin-bottom: 5px; opacity: 1; text-transform: uppercase; }
         .job-title { font-weight: bold; font-size: 18px; margin-bottom: 8px; }
         .salary { font-size: 16px; font-weight: normal; margin-bottom: 0; }
         .currency { top: -0.25em; margin-right: 0.2em; }
@@ -92,12 +92,8 @@ body { padding-top: 90px; }
 .panel-ww-advert {
     max-width: 600px;
 }
-<<<<<<< HEAD
-.test {display:none;}
-=======
 
 .ww-salary-input {
->>>>>>> f703852a4a2ca5957a8482fa2fc7ef20a58145c7
     .ww-salary-input--currency { padding-left: 6px; padding-right: 4px; background-color: transparent; }
     .ww-salary-input--amount { min-width: 50px; padding: 6px; box-shadow: none; height: 34px; }
     .ww-salary-input--rate { /*font-size: 10px;*/ background-color: transparent; height: 34px;
