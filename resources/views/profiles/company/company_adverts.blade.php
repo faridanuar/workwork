@@ -4,7 +4,7 @@
 
 
 	<h1>My Adverts</h1>
-
+	lala
 	<hr>
 
 	<div class="row">
@@ -21,5 +21,5 @@
 		@endforeach
 		</div>
 	</div>
-	
+
 @stop

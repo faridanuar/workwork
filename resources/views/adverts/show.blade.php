@@ -3,7 +3,7 @@
 @section('content')
 
 <div class="row">
-    <div class="col-md-8">
+    <div class="col-sm-8">
         <div class="flash">
         	@include('messages.flash')
         </div>
@@ -18,11 +18,11 @@
                 <hr>
                 <div class="business-name"><a href="/company/{{ $advert->employer_id }}/{{ $advert->business_name }}">{{ $advert->business_name }}</a></div>
                 <hr>
-                <div class="category">
+                <div class="category visible-xs-*">
                     <h3>Category</h3>
                     <span class="label label-default">{{ $advert->category }}</span>
                 </div>
-                <div class="skill">
+                <div class="skill visible-xs-*">
                     <h3>Skills</h3>
                     <!-- <span class="label label-default">{{ $advert->skill }}</span> -->
                     <div class="skill-description">
@@ -39,9 +39,10 @@
                 </div>
                 -->
 
-                <div class="location">
+                <div class="location visible-xs-*">
                     <h3>Location</h3>
                     {{ $advert->location }}
+                    <hr>
                 </div>
 
                <!--
@@ -52,45 +53,104 @@
                 </div>
                 -->
 
-                <hr>
                 <div class="description">
                     <h3>Work Description</h3>
                     {!! nl2br(e($advert->description)) !!}
                 </div>
-                <hr>
-                <div class="business-name"><a href="/company/{{ $advert->employer_id }}/{{ $advert->business_name }}">{{ $advert->business_name }}</a></div>
+
+                <div class="business-name visible-xs-*">
+                    <hr>
+                    <a href="/company/{{ $advert->employer_id }}/{{ $advert->business_name }}">{{ $advert->business_name }}</a>
+                </div>
                 <!-- <div class="location">{{ $advert->location }}</div> -->
-                <div class="street">{{ $advert->street }}</div>
-                <div class="city">{{ $advert->city }}</div>
-                <div class="zip">{{ $advert->zip }}</div>
-                <div class="state">{{ $advert->state }}</div>
-                <hr>
+                <div class="address visible-xs-*">
+                    <div class="street">{{ $advert->street }}</div>
+                    <div class="city">{{ $advert->city }}</div>
+                    <div class="zip">{{ $advert->zip }}</div>
+                    <div class="state">{{ $advert->state }}</div>
+                    <hr>
+                </div>
 
-                @if ($authorize === true)
+                <div class="visible-xs-*">
+                    @if ($authorize === true)
 
-                	@can('edit_advert')
-                    	<a href="/adverts/{{ $advert->id }}/{{ strtolower($advert->job_title) }}/edit" class="btn btn-primary">edit</a>
-                        @if($advert->published === 0)
-                            <form method="post" action="/adverts/publish">
-                                {{ csrf_field() }}
-                                <input type="hidden" id="id" name="id" value="{{ $advert->id }}" />
-                                <button type="submit" class="btn btn-primary">Publish</button>
-                            </form>
-                        @else
-                            <form method="post" action="/adverts/unpublish">
-                                {{ csrf_field() }}
-                                <input type="hidden" id="id" name="id" value="{{ $advert->id }}" />
-                                <button type="submit" class="btn btn-primary">Unpublish</button>
-                            </form>
-                        @endif
-                	@endcan
+                    	@can('edit_advert')
+                        	<a href="/adverts/{{ $advert->id }}/{{ strtolower($advert->job_title) }}/edit" class="btn btn-primary">edit</a>
+                            @if($advert->published === 0)
+                                <form method="post" action="/adverts/publish">
+                                    {{ csrf_field() }}
+                                    <input type="hidden" id="id" name="id" value="{{ $advert->id }}" />
+                                    <button type="submit" class="btn btn-primary">Publish</button>
+                                </form>
+                            @else
+                                <form method="post" action="/adverts/unpublish">
+                                    {{ csrf_field() }}
+                                    <input type="hidden" id="id" name="id" value="{{ $advert->id }}" />
+                                    <button type="submit" class="btn btn-primary">Unpublish</button>
+                                </form>
+                            @endif
+                    	@endcan
 
-                @elseif ( $asEmployer === false )
+                    @elseif ( $asEmployer === false )
 
-                	<a href="/adverts/{{ $advert->id }}/{{ strtolower($advert->job_title) }}/apply" class="btn btn-primary btn-lg btn-block btn-ww-lg">Apply</a>
+                    	<a href="/adverts/{{ $advert->id }}/{{ strtolower($advert->job_title) }}/apply" class="btn btn-primary btn-lg btn-block btn-ww-lg">Apply</a>
 
-                @endif
+                    @endif
+                </div>
             </div>
+        </div>
+    </div>
+    <div class="col-sm-4 hidden-xs hidden-print">
+        <div class="panel panel-default" id="advertSidebar">
+            <div class="panel-body">
+                <div class="category">
+                    <h3>Category</h3>
+                    <span class="label label-default">{{ $advert->category }}</span>
+                </div>
+                <div class="skill">
+                    <h3>Skills</h3>
+                    <!-- <span class="label label-default">{{ $advert->skill }}</span> -->
+                    <div class="skill-description">
+                        {{ $advert->skill }}
+                    </div>
+                </div>
+                <div class="location">
+                    <h3>Location</h3>
+                    {{ $advert->location }}
+                </div>
+                <hr>
+                <div><a href="/company/{{ $advert->employer_id }}/{{ $advert->business_name }}">{{ $advert->business_name }}</a></div>
+                <div class="address">
+                    <div class="street">{{ $advert->street }}</div>
+                    <div class="city">{{ $advert->city }}</div>
+                    <div class="zip">{{ $advert->zip }}</div>
+                    <div class="state">{{ $advert->state }}</div>
+                </div>
+            </div>
+            @if ($authorize === true)
+
+                @can('edit_advert')
+                    <a href="/adverts/{{ $advert->id }}/{{ strtolower($advert->job_title) }}/edit" class="btn btn-primary">edit</a>
+                    @if($advert->published === 0)
+                        <form method="post" action="/adverts/publish">
+                            {{ csrf_field() }}
+                            <input type="hidden" id="id" name="id" value="{{ $advert->id }}" />
+                            <button type="submit" class="btn btn-primary">Publish</button>
+                        </form>
+                    @else
+                        <form method="post" action="/adverts/unpublish">
+                            {{ csrf_field() }}
+                            <input type="hidden" id="id" name="id" value="{{ $advert->id }}" />
+                            <button type="submit" class="btn btn-primary">Unpublish</button>
+                        </form>
+                    @endif
+                @endcan
+
+            @elseif ( $asEmployer === false )
+
+                <a href="/adverts/{{ $advert->id }}/{{ strtolower($advert->job_title) }}/apply" class="btn btn-primary btn-lg btn-block btn-ww-lg">Apply</a>
+
+            @endif
         </div>
     </div>
 </div>
