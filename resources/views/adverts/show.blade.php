@@ -101,7 +101,7 @@
         </div>
     </div>
     <div class="col-sm-4 hidden-xs hidden-print">
-        <div class="panel panel-default" id="advertInfo" data-spy="affix">
+        <div class="panel panel-default" id="advertInfo">
             <div class="panel-body">
                 <div class="category">
                     <h3>Category</h3>
