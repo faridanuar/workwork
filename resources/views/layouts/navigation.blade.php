@@ -46,6 +46,7 @@
                             </a>
 
                             <ul class="dropdown-menu" role="menu">
+                                <li><a href="">Account</a></li>
                                 <li><a href="{{ url('/plans') }}">Pricing</a></li>
                                 <li><a href="{{ url('/logout') }}"><i class="fa fa-btn fa-sign-out"></i>Log out</a></li>
                             </ul>
@@ -61,35 +62,32 @@
         <div class="container">
             <ul>
                 <li>
-                    <a href="/dashboard" class="auth-nav-item" aria-selected="true">Dashboard</a>
+                    <a href="/dashboard" class="auth-nav-item" aria-selected="{{ set_active('dashboard') }}">Dashboard</a>
                 </li>
                 @can('view_my_adverts')
                     <li>
-                        <a href="/my/adverts" class="auth-nav-item" aria-selected="false">Your Adverts</a>
+                        <a href="/my/adverts" class="auth-nav-item" aria-selected="{{ set_active('my/adverts') }}">Your Adverts</a>
                     </li>
                 @endcan
                 @can('edit_company')
                         @if(Auth::user()->employer)
                         <li>
-                            <a href="/company/{{ Auth::user()->employer->id }}/{{ Auth::user()->employer->business_name }}" class="auth-nav-item" aria-selected="false">Company Profile</a>
+                            <a href="/company/{{ Auth::user()->employer->id }}/{{ Auth::user()->employer->business_name }}" class="auth-nav-item" aria-selected="{{ set_active('company/' . Auth::user()->employer->id . '/' . Auth::user()->employer->business_name)}}">Company Profile</a>
                         </li>
                     @endif
                 @endcan
                 @can('edit_info')
                     @if(Auth::user()->jobSeeker)
                         <li>
-                            <a href="/profile/{{ Auth::user()->jobSeeker->id }}" class="auth-nav-item" aria-selected="false">Your Profile</a>
+                            <a href="/profile/{{ Auth::user()->jobSeeker->id }}" class="auth-nav-item" aria-selected="false" aria-selected="{{ set_active('profile/' . Auth::user()->jobSeeker->id) }}">Your Profile</a>
                         </li>
                     @endif
                         <li>
-                            <a href="/my/applications" class="auth-nav-item" aria-selected="false">My Applications</a>
+                            <a href="/my/applications" class="auth-nav-item" aria-selected="{{set_active('my/applications')}}">My Applications</a>
                         </li>
                 @endcan
                 <li>
-                    <a href="/avatar" class="auth-nav-item" aria-selected="false">Upload Avatar</a>
-                </li>
-                <li>
-                    <a href="" class="auth-nav-item" aria-selected="false">Account</a>
+                    <a href="" class="auth-nav-item" aria-selected="{{set_active('')}}">Account</a>
                 </li>
             </ul>
         </div>

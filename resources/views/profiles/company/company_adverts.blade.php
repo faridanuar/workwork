@@ -2,12 +2,45 @@
 
 @section('content')
 
+	<h2>Adverts</h2>
 
-	<h1>My Adverts</h1>
-	lala
 	<hr>
 
 	<div class="row">
+		<div class="col-sm-8">
+			@foreach($myAdverts as $myAdvert)
+			<div class="panel panel-default">
+				<div class="panel-body">
+					<a href="/adverts/{{ $myAdvert->id }}/{{ strtolower($myAdvert->job_title) }}">
+					<h4>{{ $myAdvert->job_title }}</h4>
+					</a>
+					@can('view_request')
+						<a href="/adverts/{{ $myAdvert->id }}/{{ strtolower($myAdvert->job_title) }}/edit" class="btn btn-default">
+						Edit</a>
+						<a href="/adverts/{{ $myAdvert->id }}/{{ strtolower($myAdvert->job_title) }}" class="btn btn-default">
+						Preview</a>
+			            <a href="/advert/{{ $myAdvert->id }}/job/requests" class="btn btn-default">View Job Requests</a>
+			        @endcan
+				</div>
+			</div>
+			@endforeach
+		</div>
+
+		<div class="col-sm-4">
+			<div class="panel panel-default">
+				<div class="panel-body">
+					<p>
+						This is where you view all your part-time adverts.
+					</p>
+					@can('edit_advert')
+	                    <a class="btn btn-primary btn-lg btn-block btn-ww-lg" href="{{ url('/adverts/create') }}">Create Part-time Ad</a>
+	                @endcan
+                </div>
+			</div>
+		</div>
+	</div>
+
+<!-- 	<div class="row">
 		@foreach($myAdverts as $myAdvert)
 		<a href="/adverts/{{ $myAdvert->id }}/{{ $myAdvert->job_title }}">
 		<div class="form-group">
@@ -20,6 +53,6 @@
 	        @endcan
 		@endforeach
 		</div>
-	</div>
+	</div> -->
 
 @stop

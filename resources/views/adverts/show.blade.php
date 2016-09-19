@@ -75,7 +75,7 @@
                     @if ($authorize === true)
 
                     	@can('edit_advert')
-                        	<a href="/adverts/{{ $advert->id }}/{{ strtolower($advert->job_title) }}/edit" class="btn btn-primary">edit</a>
+                        	<a href="/adverts/{{ $advert->id }}/{{ strtolower($advert->job_title) }}/edit" class="btn btn-default">Edit</a>
                             @if($advert->published === 0)
                                 <form method="post" action="/adverts/publish">
                                     {{ csrf_field() }}
@@ -133,7 +133,7 @@
                 <div class="actions">
                     @if ($authorize === true)
                         @can('edit_advert')
-                            <a href="/adverts/{{ $advert->id }}/{{ strtolower($advert->job_title) }}/edit" class="btn btn-primary">edit</a>
+                            <a href="/adverts/{{ $advert->id }}/{{ strtolower($advert->job_title) }}/edit" class="btn btn-default">Edit</a>
                             @if($advert->published === 0)
                                 <form method="post" action="/adverts/publish">
                                     {{ csrf_field() }}
