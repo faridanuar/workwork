@@ -7,15 +7,10 @@
 
 <div class="container">
     <div class="row">
-        <div class="col-md-4">
-            <div class="panel panel-default">
-                <div class="panel-heading">Dashboard</div>
+        <div class="col-sm-3 col-md-2">
 
-                <div class="panel-body">
-                    <img src="{{ $photo }}" height="100" width="100"/>
-                    You are logged in!
-                </div>
-            </div>
+            <img src="{{ $photo }}" class="img-responsive img-thumbnail" />
+            <h3>{{ Auth::user()->name }}</h3>
             @can('edit_company')
                 @if($role->id)
                     <a href="/company/{{ $role->id }}/{{ $role->business_name }}" class="btn btn-primary">Company Profile</a>
