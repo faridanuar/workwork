@@ -69,14 +69,14 @@
                     </li>
                 @endcan
                 @can('edit_company')
-                        @if(Auth::user()->employer->id)
+                        @if(Auth::user()->employer)
                         <li>
                             <a href="/company/{{ Auth::user()->employer->id }}/{{ Auth::user()->employer->business_name }}" class="auth-nav-item" aria-selected="false">Company Profile</a>
                         </li>
                     @endif
                 @endcan
                 @can('edit_info')
-                    @if(Auth::user()->jobSeeker->id)
+                    @if(Auth::user()->jobSeeker)
                         <li>
                             <a href="/profile/{{ Auth::user()->jobSeeker->id }}" class="auth-nav-item" aria-selected="false">Your Profile</a>
                         </li>

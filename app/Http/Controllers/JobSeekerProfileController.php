@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 
 use Mail;
 
+use App\User;
 use App\Advert;
 use App\Application;
 use App\Job_Seeker;
