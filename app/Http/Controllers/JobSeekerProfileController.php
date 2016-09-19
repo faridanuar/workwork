@@ -69,16 +69,16 @@ class JobSeekerProfileController extends Controller
         // check if user storing procedure is a success
         if($user){
 
-            $config = config('services.mailgun');
-
-            $domain = $config['domain'];
-
-            $recipient = 'farid@pocketpixel.com';
-
-            $recepientName = $user->name;
-
             // use send method form Mail facade to send email. ex: send('view', 'info / array of data', fucntion)
             Mail::send('mail.welcomeJobSeeker', compact('user'), function ($m) use ($user) {
+
+                $config = config('services.mailgun');
+
+                $domain = $config['sender'];
+
+                $recipient = 'farid@pocketpixel.com';
+
+                $recepientName = $user->name;
 
                 // set email sender stmp url and sender name
                 $m->from($domain, 'WorkWork');
