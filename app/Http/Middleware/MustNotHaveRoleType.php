@@ -21,14 +21,15 @@ class MustNotHaveRoleType
         $user = $request->user();
 
         // check if user is authorise and does not have type
-        if($user && !$user->type){
+        if(!$user){
 
-            return $next($request);
+            return redirect()->guest('login');
 
-        }else{
+        }elseif(!$user->type){
 
             return redirect()->guest('login');
         }
-        
+
+        return $next($request);
     }
 }

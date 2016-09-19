@@ -82,14 +82,22 @@ class CompanyProfileController extends Controller
         // check if user storing procedure is a success
         if($user){
 
+            $config = config('services.mailgun');
+
+            $domain = $config['domain'];
+
+            $recipient = 'farid@pocketpixel.com';
+
+            $recepientName = $user->name;
+
             // use send method form Mail facade to send email. ex: send('view', 'info / array of data', fucntion)
             Mail::send('mail.welcomeEmployer', compact('user'), function ($m) use ($user) {
 
                 // set email sender stmp url and sender name
-                $m->from('postmaster@sandbox12f6a7e0d1a646e49368234197d98ca4.mailgun.org', 'WorkWork');
+                $m->from($domain, 'WorkWork');
 
                 // set email recepient and subject
-                $m->to('farid@pocketpixel.com', $user->name)->subject('Welcome to WorkWork!');
+                $m->to($recepient, $recepientName)->subject('Welcome to WorkWork!');
             });
         }
 

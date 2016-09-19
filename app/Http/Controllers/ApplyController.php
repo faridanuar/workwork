@@ -85,10 +85,19 @@ class ApplyController extends Controller
 
 
 		if($application){
-            Mail::send('mail.message', compact('user', 'thisJobSeeker', 'application'), function ($m) use ($user) {
-                $m->from('postmaster@sandbox12f6a7e0d1a646e49368234197d98ca4.mailgun.org', 'WorkWork');
+			
+			$config = config('services.mailgun');
 
-                $m->to('farid@pocketpixel.com', $user->name)->subject('Job Request!');
+            $domain = $config['domain'];
+
+            $recipient = 'farid@pocketpixel.com';
+
+            $recepientName = $user->name;
+
+            Mail::send('mail.message', compact('user', 'thisJobSeeker', 'application'), function ($m) use ($user) {
+                $m->from($domain, 'WorkWork');
+
+                $m->to($recipient, $recepientName)->subject('Job Request!');
             });
         }
 
