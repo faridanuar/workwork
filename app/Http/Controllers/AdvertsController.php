@@ -197,7 +197,7 @@ class AdvertsController extends Controller
         switch ($ready)
         {
         	case 0:
-	        	flash('You must complete your advert form to publish', 'info');
+	        	flash('You need to update your advert, then publish', 'info');
 	        	return redirect()->back();
 	        	break;
         	default:

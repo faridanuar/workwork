@@ -47,7 +47,15 @@
 
 <div class="form-group">
 	<label for="location">Location of employment: (example Bangsar Shopping Center, KLCC Convention Center)</label>
-	<input type="text" name="location" id="location" class="form-control" value="{{ $advert->location }}">
+	<input 
+		type="search"
+		class="form-control"
+		id="address-input"
+	   	name="location"
+	    value="{{ old('location') }}"
+	    placeholder="Work Location?" 
+	 />
+	<!-- <input type="text" name="location" id="location" class="form-control" value="{{ $advert->location }}"> -->
 </div> 
 
 <hr>
@@ -96,4 +104,6 @@
 	<a href="/dashboard" class="btn btn-primary">Cancel</a>
 	<button type="submit" class="btn btn-primary" id="saveLater" name="saveLater" value=true>Save For Later</button>
 	<button type="submit" class="btn btn-primary">Update And Publish Advertisement</button>
-</div> 
+</div>
+
+@include('js_plugins.algolia_places')

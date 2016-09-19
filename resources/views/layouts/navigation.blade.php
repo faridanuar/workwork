@@ -65,7 +65,7 @@
                 </li>
                 @can('view_my_adverts')
                     <li>
-                        <a href="/my/adverts" class="auth-nav-item" aria-selected="false">Your Adverts</a>
+                        <a href="/adverts" class="auth-nav-item" aria-selected="false">Your Adverts</a>
                     </li>
                 @endcan
                 @can('edit_company')

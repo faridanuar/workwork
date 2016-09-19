@@ -32,9 +32,23 @@
 </div> -->
 
 <div class="form-group">
+	
+</div>
+
+<div class="form-group">
 	<label for="location">Location</label>
 	<p class="help-block">Where will the job be located?</p>
-	<input type="text" name="location" id="location" class="form-control" value="{{ old('location') }}">
+
+	<input 
+		type="search"
+		class="form-control"
+		id="address-input"
+	   	name="location"
+	    value="{{ old('location') }}"
+	    placeholder="Work Location?" 
+	 />
+	<!-- <input type="text" name="location" id="location" class="form-control" value="{{ old('location') }}"> -->
+	
 	<p>or <a href="#collapseAddress" role="button" data-toggle="collapse" aria-expanded="false" aria-controls="collapseAddress"> Enter address</a></p>
 	<div class="collapse" id="collapseAddress">
 		<div class="well">
@@ -114,10 +128,4 @@
 	<button type="submit" class="btn btn-primary">Next : Choose Plan</button>
 </div>
 
-<script type="text/javascript">
-
-function popUp() {
-    return "Changes will not be saved...";
-}
-
-</script>
+@include('js_plugins.algolia_places')
