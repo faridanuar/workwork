@@ -43,7 +43,7 @@ return [
     'facebook' => [
         'client_id' => env('FACEBOOK_CLIENT_ID'),
         'client_secret' => env('FACEBOOK_SECRET_KEY'),
-        'redirect' => env('FACEBOOK_REDIRECT_CALLBACK'),
+        'redirect' => env('FACEBOOK_REDIRECT_CALLBACK', 'FACEBOOK_REDIRECT_OTHER_CALLBACK'),
     ],
 
     'algolia' => [
