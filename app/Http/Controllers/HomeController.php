@@ -34,7 +34,7 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function dashboard(Request $request)
     {
         // fetch log in user data
         $user = $request->user();

@@ -63,14 +63,30 @@
                 <li>
                     <a href="/dashboard" class="auth-nav-item" aria-selected="true">Dashboard</a>
                 </li>
+                @can('view_my_adverts')
+                    <li>
+                        <a href="/my/adverts" class="auth-nav-item" aria-selected="false">Your Adverts</a>
+                    </li>
+                @endcan
+                @can('edit_company')
+                        @if(Auth::user()->employer)
+                        <li>
+                            <a href="/company/{{ Auth::user()->employer->id }}/{{ Auth::user()->employer->business_name }}" class="auth-nav-item" aria-selected="false">Company Profile</a>
+                        </li>
+                    @endif
+                @endcan
+                @can('edit_info')
+                    @if(Auth::user()->jobSeeker)
+                        <li>
+                            <a href="/profile/{{ Auth::user()->jobSeeker->id }}" class="auth-nav-item" aria-selected="false">Your Profile</a>
+                        </li>
+                    @endif
+                        <li>
+                            <a href="/my/applications" class="auth-nav-item" aria-selected="false">My Applications</a>
+                        </li>
+                @endcan
                 <li>
-                    <a href="" class="auth-nav-item" aria-selected="false">Your Adverts</a>
-                </li>
-                <li>
-                    <a href="" class="auth-nav-item" aria-selected="false">Company Profile</a>
-                </li>
-                <li>
-                    <a href="" class="auth-nav-item" aria-selected="false">Your Profile</a>
+                    <a href="/avatar" class="auth-nav-item" aria-selected="false">Upload Avatar</a>
                 </li>
                 <li>
                     <a href="" class="auth-nav-item" aria-selected="false">Account</a>
