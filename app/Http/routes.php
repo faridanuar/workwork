@@ -14,6 +14,10 @@ Route::post('/avatar/upload', 'HomeController@uploadAvatar');
 
 Route::delete('/avatar/{avatar_id}', 'HomeController@remove');
 
+Route::get('/tag', 'HomeController@tag');
+
+Route::post('/values', 'HomeController@values');
+
 // Route::get('/time', 'HomeController@time');
 
 /**

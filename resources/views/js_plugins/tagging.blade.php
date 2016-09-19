@@ -1,24 +1,10 @@
-<input type="text" value="Amsterdam,Washington" data-role="tagsinput" />
-<script>
-var citynames = new Bloodhound({
-  datumTokenizer: Bloodhound.tokenizers.obj.whitespace('name'),
-  queryTokenizer: Bloodhound.tokenizers.whitespace,
-  prefetch: {
-    url: 'assets/citynames.json',
-    filter: function(list) {
-      return $.map(list, function(cityname) {
-        return { name: cityname }; });
-    }
-  }
-});
-citynames.initialize();
+@extends('layouts.app')
 
-$('input').tagsinput({
-  typeaheadjs: {
-    name: 'citynames',
-    displayKey: 'name',
-    valueKey: 'name',
-    source: citynames.ttAdapter()
-  }
-});
-</script>
+@section('content')
+<script src="https://cdn.jsdelivr.net/places.js/1/places.min.js"></script>
+<form action="/values" method="post">
+{!! csrf_field() !!}
+<input type="text" value="Amsterdam,Washington,Sydney,Beijing,Cairo" name="tags" data-role="tagsinput" />
+<input type="submit" />
+</form>
+@stop

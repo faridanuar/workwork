@@ -321,6 +321,18 @@ class HomeController extends Controller
     }
 
 
+
+    public function tag()
+    {
+        return view('js_plugins.tagging');
+    }
+
+    public function values(Request $request)
+    {
+        dd($request->tags);
+    }
+
+
     /**
     public function time()
     {
