@@ -8,7 +8,7 @@
 
 	<div class="row">
 		<div class="col-sm-8">
-			@foreach($myAdverts as $myAdvert)
+			@forelse($myAdverts as $myAdvert)
 			<div class="panel panel-default">
 				<div class="panel-body">
 					<a href="/adverts/{{ $myAdvert->id }}/{{ strtolower($myAdvert->job_title) }}">
@@ -23,9 +23,14 @@
 			        @endcan
 				</div>
 			</div>
-			@endforeach
+			@empty
+			<p>You have no part-time advertisements yet, lets create one...
+			@can('edit_advert')
+	                    <a class="btn btn-primary btn-lg btn-ww-lg" href="{{ url('/adverts/create') }}">Create Part-time Ad</a>
+	                @endcan
+			@endforelse</p>
 		</div>
-
+		@if (count($myAdverts) > 0)
 		<div class="col-sm-4">
 			<div class="panel panel-default">
 				<div class="panel-body">
@@ -38,6 +43,7 @@
                 </div>
 			</div>
 		</div>
+		@endif
 	</div>
 
 <!-- 	<div class="row">
