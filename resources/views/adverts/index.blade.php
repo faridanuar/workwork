@@ -52,11 +52,9 @@
 
 
 	<div class="col-md-3">
-		<div class="panel panel-default">
+		<div class="well">
 			<!-- todo Jumpbar -->
-			<div class="panel-body">
 			Other things, i.e. adverts, announcements.
-			</div>
 		</div>
 	</div>
 </div>

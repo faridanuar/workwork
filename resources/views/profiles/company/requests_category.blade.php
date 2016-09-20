@@ -1,7 +1,6 @@
-<a href="/my/adverts">Back</a>
 
-<div>
-<a href="/advert/{{ $id }}/job/requests">Pending Request</a> || 
-<a href="/advert/{{ $id }}/job/requests/rejected">Rejected Request</a> || 
-<a href="/advert/{{ $id }}/job/requests/accepted">Accepted Request</a>
-</div>
+<ul class="nav nav-pills">
+  <li role="presentation" class="active"><a href="/advert/{{ $id }}/job/requests/">Pending</a></li>
+  <li role="presentation"><a href="/advert/{{ $id }}/job/requests/rejected">Rejected</a></li>
+  <li role="presentation"><a href="/advert/{{ $id }}/job/requests/accepted">Accepted</a></li>
+</ul>
