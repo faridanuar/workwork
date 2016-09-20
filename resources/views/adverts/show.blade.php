@@ -16,7 +16,19 @@
                     <div class="rate"><span class="per">per</span> <span>{{ $advert->rate }}</span></div>
                 </div>
                 <hr>
-                <img src="{{ $advert->avatar }}" class="avatar-tn" height="30" width="30" /><div class="business-name"><a href="/company/{{ $advert->employer_id }}/{{ $advert->business_name }}">{{ $advert->business_name }}</a></div>
+                <div class="media">
+                    <div class="media-left">
+                        <a href="#">
+                            <img src="{{ $advert->avatar }}" class="media-object avatar-tn img-circle" height="30" width="30" />
+                        </a>
+                    </div>
+                    <div class="media-body">
+                        <h4 class="media-heading">
+                        <div class="business-name"><a href="/company/{{ $advert->employer_id }}/{{ $advert->business_name }}">{{ $advert->business_name }}</a></div>
+                        </h4>
+                    </div>
+                </div>
+
                 <hr>
                 <div class="category visible-xs-block">
                     <h3>Category</h3>
