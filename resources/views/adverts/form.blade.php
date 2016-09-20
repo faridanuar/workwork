@@ -121,10 +121,9 @@
 		<input type="checkbox" id="oku_friendly" name="oku_friendly" value="yes"> Yes
 	</label>
 </div>
-
+<hr>
 <div class="form-group">
-	<a href="/home" class="btn btn-primary">Cancel</a>
-	<button type="submit" class="btn btn-primary" id="saveLater" name="saveLater" value=true>Save For Later</button>
+	<button type="submit" class="btn btn-default" id="saveLater" name="saveLater" value=true>Save For Later</button>
 	<button type="submit" class="btn btn-primary">Next : Choose Plan</button>
 </div>
 
