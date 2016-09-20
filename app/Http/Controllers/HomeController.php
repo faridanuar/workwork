@@ -281,13 +281,15 @@ class HomeController extends Controller
                 // provide path URl for Database
                 $pathURL = "/images/defaults/default.jpg";
 
+                $liveAds = $advert->where('published', 1)->get();
+
                 // loop algolia object update for each row
-                foreach($rows as $row)
+                foreach($liveAds as $liveAd)
                 {
                     // update algolia existing object. Determine which by row id
                     $object = $indexFromAlgolia->partialUpdateObject([
                         'avatar' => $pathURL,
-                        'objectID' => $row->id,
+                        'objectID' => $liveAd->id,
                     ]);
                 }
 
