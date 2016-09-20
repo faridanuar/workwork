@@ -211,13 +211,15 @@ class HomeController extends Controller
             // select algolia index/indice name
             $indexFromAlgolia = $search->index($index);
 
+            $liveAds = $adverts->where('published', 1)->get();
+
             // loop algolia object update for each row
-            foreach($rows as $row)
+            foreach($liveAds as $liveAd)
             {
                 // update algolia existing object. Determine which by row id
                 $object = $indexFromAlgolia->partialUpdateObject([
                     'avatar' => $pathURL,
-                    'objectID' => $row->id,
+                    'objectID' => $liveAd->id,
                 ]);
             }
 
@@ -281,7 +283,7 @@ class HomeController extends Controller
                 // provide path URl for Database
                 $pathURL = "/images/defaults/default.jpg";
 
-                $liveAds = $advert->where('published', 1)->get();
+                $liveAds = $adverts->where('published', 1)->get();
 
                 // loop algolia object update for each row
                 foreach($liveAds as $liveAd)
@@ -331,7 +333,9 @@ class HomeController extends Controller
 
     public function values(Request $request)
     {
-        dd($request->tags);
+        $values = $request->tags;
+
+        dd($values);
     }
 
 
