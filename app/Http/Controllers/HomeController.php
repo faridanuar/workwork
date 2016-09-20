@@ -322,10 +322,22 @@ class HomeController extends Controller
 
 
 
-    public function time(Request $request)
+    public function tag()
+    {
+        return view('js_plugins.tagging');
+    }
+
+    public function values(Request $request)
+    {
+        dd($request->tags);
+    }
+
+
+    /**
+    public function time()
     {
         $todaysDate = Carbon::now();
-        $endDate = Carbon::createFromDate(2016, 9, 30);
+        $endDate = Carbon::createFromDate(2016, 9, 2);
         $expDate =  $todaysDate->diffInDays($endDate, false);
 
         if($expDate < 0){
@@ -341,4 +353,5 @@ class HomeController extends Controller
             echo $expDate;
         }
     }
+    */
 }

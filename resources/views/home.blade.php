@@ -18,7 +18,7 @@
         @endcan
 
         @can('view_my_adverts')
-        <a href="/my/adverts" class="btn btn-primary">View Adverts</a>
+        <a href="/adverts" class="btn btn-primary">View Adverts</a>
         @endcan
 
         @can('edit_info')

@@ -25,7 +25,7 @@ class MustNotHaveRoleType
 
             return redirect()->guest('login');
 
-        }elseif(!$user->type){
+        }elseif($user->type){
 
             return redirect()->guest('login');
         }

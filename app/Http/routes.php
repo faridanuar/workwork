@@ -14,7 +14,11 @@ Route::post('/avatar/upload', 'HomeController@uploadAvatar');
 
 Route::delete('/avatar/{avatar_id}', 'HomeController@remove');
 
-Route::get('/time', 'HomeController@time');
+Route::get('/tag', 'HomeController@tag');
+
+Route::post('/values', 'HomeController@values');
+
+// Route::get('/time', 'HomeController@time');
 
 /**
  * Social routes
@@ -51,7 +55,7 @@ Route::delete('/logo/{logo_id}', 'CompanyProfileController@remove');
 
 Route::get('/company/{id}/{business_name}/review', 'CompanyProfileController@companyReview');
 
-Route::get('/my/adverts', 'CompanyProfileController@myAdvert');
+Route::get('/adverts', 'CompanyProfileController@myAdvert');
 
 Route::get('/advert/{id}/job/requests', 'CompanyProfileController@requestList');
 
