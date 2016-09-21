@@ -57,7 +57,9 @@ Route::get('/company/{id}/{business_name}/review', 'CompanyProfileController@com
 
 Route::get('/adverts', 'CompanyProfileController@myAdvert');
 
-Route::get('/advert/{id}/job/requests', 'CompanyProfileController@requestList');
+Route::get('/advert/{id}/job/requests/all', 'CompanyProfileController@allList');
+
+Route::get('/advert/{id}/job/requests/pending', 'CompanyProfileController@pendingList');
 
 Route::get('/advert/{id}/job/requests/rejected', 'CompanyProfileController@rejectedList');
 

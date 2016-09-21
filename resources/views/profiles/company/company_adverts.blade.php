@@ -19,7 +19,7 @@
 							Edit</a>
 							<a href="/adverts/{{ $myAdvert->id }}/{{ strtolower($myAdvert->job_title) }}" class="btn btn-default">
 							Preview</a>
-				            <a href="/advert/{{ $myAdvert->id }}/job/requests" class="btn btn-default">View Job Requests</a>
+				            <a href="/advert/{{ $myAdvert->id }}/job/requests/pending" class="btn btn-default">View Job Requests</a>
 				        @endcan
 					</div>
 				</div>

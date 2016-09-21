@@ -389,31 +389,44 @@ class CompanyProfileController extends Controller
         return view('profiles.company.company_adverts', compact('myAdverts'));
     }
 
-
-
-    public function requestList($id)
+    public function allList($id)
     {
+        $advert = Advert::find($id);
+
+        $allInfos = Application::where('advert_id', $id)->paginate(5);
+
+        return view('profiles.company.all_job_requests', compact('allInfos', 'id', 'advert'));
+    }
+
+    public function pendingList($id)
+    {
+        $advert = Advert::find($id);
+
         $requestInfos = Application::where('advert_id', $id)->where('status', 'PENDING')->paginate(5);
 
-        return view('profiles.company.job_requests', compact('requestInfos', 'id'));
+        return view('profiles.company.pending_job_requests', compact('requestInfos', 'id', 'advert'));
     }
 
 
 
     public function rejectedList($id)
     {
+        $advert = Advert::find($id);
+
         $rejectedInfos = Application::where('advert_id', $id)->where('status', 'REJECTED')->paginate(5);
 
-        return view('profiles.company.rejected_job_requests', compact('rejectedInfos', 'id'));
+        return view('profiles.company.rejected_job_requests', compact('rejectedInfos', 'id', 'advert'));
     }
 
 
 
     public function acceptedList($id)
     {
+        $advert = Advert::find($id);
+
         $acceptedInfos = Application::where('advert_id', $id)->where('status', 'ACCEPTED FOR INTERVIEW')->paginate(5);
 
-        return view('profiles.company.accepted_job_requests', compact('acceptedInfos', 'id'));
+        return view('profiles.company.accepted_job_requests', compact('acceptedInfos', 'id', 'advert'));
     }
 
 
