@@ -6,7 +6,7 @@
 	@include('messages.flash')
 </div>
 
-<a href="/advert/{{$id}}/job/requests">Back</a>
+<a href="/advert/{{$id}}/job/requests/pending">Back</a>
 
 	<h1>Applied Job Seeker Profile:</h1>
 
@@ -19,6 +19,12 @@
 	<h3>{{ $profileInfo->user->contact }}</h3>
 
 	<h2>{{ $profileInfo->age }}</h2>
+
+	<hr>
+
+	<div>
+		<h4>Introduction: {{ $request->introduction }}</h4>
+	</div>
 
 	<hr>
 
@@ -53,7 +59,7 @@
 		<a href="/profile/{{ $profileInfo->id }}/review">Reviews ({{ $ratings }})</a>
 
 		@can('rate_jobSeeker')
-			@if($responded === 1)
+			@if($request->responded === 1)
 				@if($rated === false)
 					<h4>Rate:</h4>
 

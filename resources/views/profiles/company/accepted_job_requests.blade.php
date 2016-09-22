@@ -6,8 +6,7 @@
 
 <h1>Job Seekers</h1>
 	<h4>Accepted List</h4>
-	@foreach($acceptedInfos as $acceptedInfo)
-
+	@forelse($acceptedInfos as $acceptedInfo)
 		<div class="form-group">
 			<a href="/advert/{{ $acceptedInfo->advert_id }}/job/requests/{{ $acceptedInfo->jobSeeker->id }}">
 			<div><h4>Status: {{ $acceptedInfo->status }}</h4></div>
@@ -16,8 +15,9 @@
 			<div><h4>Introduction: {{ $acceptedInfo->introduction }}</h4></div>
 			</a>
 		</div>
-
-	@endforeach
+	@empty
+		<p>Looks like there's no job applications yet.</p>
+	@endforelse</p>
 	{!! $acceptedInfos->render() !!}
 	</div>
 @stop

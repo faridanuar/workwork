@@ -7,8 +7,20 @@
 	<div class="col-md-12">
 		<h1>Job Seekers</h1>
 			<h4>Pending List</h4>
+		@if (count($errors) > 0)
+		<div class="alert alert-danger">
+			<ul>
+				@foreach ($errors->all() as $error)
+				<li>{{ $error }}</li>
+				@endforeach
+			</ul>
+		</div>
+		@endif
 		@forelse($requestInfos as $requestInfo)
 
+			@if($requestInfo->viewed != 1)
+				<span>New!</span>
+			@endif
 			<a href="/advert/{{ $requestInfo->advert_id }}/job/requests/{{ $requestInfo->jobSeeker->id }}">
 				<h4>Status: {{ $requestInfo->status }}</h4>
 				<h4>Name: {{ $requestInfo->jobSeeker->user->name }}</h4>
@@ -33,8 +45,8 @@
 									<form action="/advert/job/requests/{{ $requestInfo->id }}/response" method="post">
 										{{ csrf_field() }}
 										<h4>Send a Message</h4>
-							        	<textarea type="text" name="comment" id="comment" class="form-control" rows="10" placeholder="Give feedback for rejecting" required>{{ old('comment') }}</textarea>
-										<button type="submit" name="response" id="response0" class="btn btn-primary">Submit</button>
+							        	<textarea type="text" name="feedback" id="feedback" class="form-control" rows="10" placeholder="Give feedback for rejecting" required>{{ old('comment') }}</textarea>
+										<button type="submit" class="btn btn-primary" name="status" id="status" value="REJECTED">Submit</button>
 									</form>
 								</div>
 					   		</div>
@@ -60,8 +72,8 @@
 									<form action="/advert/job/requests/{{ $requestInfo->id }}/response" method="post">
 										{{ csrf_field() }}
 										<h4>Send a Message</h4>
-							        	<textarea type="text" name="comment" id="comment" class="form-control" rows="10" placeholder="Setup an interview" required>{{ old('comment') }}</textarea>
-										<button type="submit" name="response" id="response0" class="btn btn-primary">Submit</button>
+							        	<textarea type="text" name="arrangement" id="arrangement" class="form-control" rows="10" placeholder="Setup an interview" required>{{ old('comment') }}</textarea>
+										<button type="submit" class="btn btn-primary" name="status" id="status" value="ACCEPTED FOR INTERVIEW">Submit</button>
 									</form>
 								</div>
 					   		</div>

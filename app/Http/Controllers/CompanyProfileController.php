@@ -383,7 +383,7 @@ class CompanyProfileController extends Controller
 
         $employerID = $user->employer->id;
 
-        $myAdverts = Advert::where('employer_id', $employerID)->orderBy('updated_at', 'desc')
+        $myAdverts = Advert::where('employer_id', $employerID)->orderBy('created_at', 'desc')
                 ->get();
 
         return view('profiles.company.company_adverts', compact('myAdverts'));
@@ -435,12 +435,38 @@ class CompanyProfileController extends Controller
     {
         $application = Application::find($id);
 
+        
+
+        $status = $request->status;
+
+        if($status != "REJECTED"){
+
+            $this->validate($request, [
+                'status' => 'required|max:50',
+                'arrangement' => 'required',
+            ]);
+
+            $comment = $request->arrangement;
+
+        }else{
+
+            $this->validate($request, [
+                'status' => 'required|max:50',
+                'feedback' => 'required',
+            ]);
+
+            $comment = $request->feedback;
+        }
+
         $application->update([
 
             'status' => $request->status,
-            'employer_reason' => $request->comment,
-            'responded' => 1,
+            'employer_comment' => $comment,
         ]);
+
+        $application->responded = 1;
+
+        $application->viewed = 1;
 
         $application->save();
 
@@ -484,7 +510,7 @@ class CompanyProfileController extends Controller
             $photo = "/images/defaults/default.jpg";
         }
 
-        $responded = Application::where('advert_id', $id)->where('job_seeker_id', $role_id)->first()->responded;
+        $request = Application::where('advert_id', $id)->where('job_seeker_id', $role_id)->first();
 
         $ratings = $profileInfo->ownRating->count();
 
@@ -519,7 +545,7 @@ class CompanyProfileController extends Controller
             }    
         }
 
-        return view('profiles.company.request_applied', compact('id','photo','profileInfo','rated','average','ratings','responded'));
+        return view('profiles.company.request_applied', compact('id','photo','profileInfo','rated','average','ratings','request'));
     }
 
     /**

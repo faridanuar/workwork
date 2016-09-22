@@ -94,11 +94,11 @@ class ApplyController extends Controller
 
                 $recipient = 'farid@pocketpixel.com';
 
-                $recepientName = $user->name;
+                $recipientName = $user->name;
 
                 $m->from($domain, 'WorkWork');
 
-                $m->to($recipient, $recepientName)->subject('Job Request!');
+                $m->to($recipient, $recipientName)->subject('Job Request!');
             });
         }
 
@@ -159,7 +159,7 @@ class ApplyController extends Controller
 			abort(404, 'Error');
 		}
 
-		return redirect('/');
+		return redirect()->route('show', [$id,$job_title]);
 	}
 
 }

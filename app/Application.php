@@ -14,8 +14,7 @@ class Application extends Model
     protected $fillable = [
 
     	'status',
-        'employer_reason',
-        'responded',
+        'employer_comment',
     ];
 
     public function jobSeeker()

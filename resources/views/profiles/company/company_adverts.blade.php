@@ -20,6 +20,9 @@
 							<a href="/adverts/{{ $myAdvert->id }}/{{ strtolower($myAdvert->job_title) }}" class="btn btn-default">
 							Preview</a>
 				            <a href="/advert/{{ $myAdvert->id }}/job/requests/pending" class="btn btn-default">View Job Requests</a>
+				            @if(count($myAdvert->applications->where('viewed', 0)) > 0)
+				            	<span>{{ count($myAdvert->applications->where('viewed', 0)) }} New Request!</span>
+				            @endif
 				        @endcan
 					</div>
 				</div>
