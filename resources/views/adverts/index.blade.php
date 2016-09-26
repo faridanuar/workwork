@@ -9,7 +9,7 @@
 <section id="intro">
 	<article>
 		<p class="lead">
-		Workwork is the best place to find and list <strong>part-time</strong> jobs. Follow us on Twitter @workwork
+		@lang('messages.welcome')
 		</p>
 	</article>
 </section>
