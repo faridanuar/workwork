@@ -1,4 +1,5 @@
 @inject('countries', 'App\Http\Utilities\Country')
+@inject('categories', 'App\Http\Utilities\Category')
 
 {{ csrf_field() }}
 
@@ -92,12 +93,20 @@
 
 <div class="form-group">
 	<label for="skill">Type of skill required:</label>
-	<input type="text" name="skill" id="skill" class="form-control" value="{{ $advert->skill }}">
+	<div class="form-group">
+		<label for="skill">(Example: Teamwork, Multitasking)</label>
+		<input type="text" name="skills" id="skills" value="@foreach($advert->skills as $skill) {{ $skill->skill }} @endforeach" data-role="tagsinput" />
+	</div>
 </div>
 
 <div class="form-group">
-	<label for="category">Job Category:</label>
-	<input type="text" name="category" id="category" class="form-control" value="{{ $advert->category }}">
+	<label for="category">Category</label>
+	<select name="category" id="category" class="form-control">
+			<option value="{{ $advert->category }}" selected>{{ $advert->category }}</option>
+		@foreach ($categories::all() as $code => $name)
+			<option value="{{ $code }}">{{ $name }}</option>
+		@endforeach
+	</select>
 </div>	
 
 <div class="form-group">
@@ -107,3 +116,4 @@
 </div>
 
 @include('js_plugins.algolia_places')
+@include('js_plugins.tagging')
