@@ -1,179 +1,156 @@
 <?php
 
+// Route::get('/', 'PagesController@home');
+
+// Route::get('/launch', 'PagesController@launch');
+
+Route::auth();
+
+Route::get('/dashboard', 'HomeController@dashboard');
+
+Route::get('/avatar', 'HomeController@avatar');
+
+Route::post('/avatar/upload', 'HomeController@uploadAvatar');
+
+Route::delete('/avatar/{avatar_id}', 'HomeController@remove');
+
+Route::get('/tag', 'HomeController@tag');
+
+Route::post('/values', 'HomeController@values');
+
+// Route::get('/time', 'HomeController@time');
+
 /**
- * redirect non-www url to www
- */ 
-Route::filter('www',  function () {
-    //Add the 'www.' to all requests
-  $request=app('request');
-  $host=$request->header('host');
-  if (substr($host, 0, 4) != 'www.') {
-    $request->headers->set('host', 'www.'.$host);
-    return Redirect::to($request->path());
-  }
-});
+ * Social routes
+ */
+Route::get('/redirect', 'SocialAuthController@redirect');
 
-Route::group(['before' => 'www'], function () {
+Route::get('/callback', 'SocialAuthController@callback');
 
-	/**
-	 * other routes here ...
-	 *
-	 */
+/**
+ * Assign Roles routes
+ */
+Route::get('/choose', 'TypeController@choose');
 
-    // Route::get('/', 'PagesController@home');
+Route::post('/set', 'TypeController@assignType');
 
-	// Route::get('/launch', 'PagesController@launch');
+/**
+ * Company Profile routes
+ */
+Route::get('/company/create', 'CompanyProfileController@create');
 
-	Route::auth();
+Route::post('/company/store', 'CompanyProfileController@store');
 
-	Route::get('/dashboard', 'HomeController@dashboard');
+Route::get('/company/{id}/{business_name}', 'CompanyProfileController@profile')->name('company');
 
-	Route::get('/avatar', 'HomeController@avatar');
+Route::get('/company/edit', 'CompanyProfileController@edit');
 
-	Route::post('/avatar/upload', 'HomeController@uploadAvatar');
+Route::post('/company/update', 'CompanyProfileController@update');
 
-	Route::delete('/avatar/{avatar_id}', 'HomeController@remove');
+Route::get('/logo', 'CompanyProfileController@logo');
 
-	Route::get('/tag', 'HomeController@tag');
+Route::post('/upload/logo', 'CompanyProfileController@uploadLogo');
 
-	Route::post('/values', 'HomeController@values');
+Route::delete('/logo/{logo_id}', 'CompanyProfileController@remove');
 
-	// Route::get('/time', 'HomeController@time');
+Route::get('/company/{id}/{business_name}/review', 'CompanyProfileController@companyReview');
 
-	/**
-	 * Social routes
-	 */
-	Route::get('/redirect', 'SocialAuthController@redirect');
+Route::get('/adverts', 'CompanyProfileController@myAdvert');
 
-	Route::get('/callback', 'SocialAuthController@callback');
+Route::get('/advert/{id}/job/requests/all', 'CompanyProfileController@allList');
 
-	/**
-	 * Assign Roles routes
-	 */
-	Route::get('/choose', 'TypeController@choose');
+Route::get('/advert/{id}/job/requests/pending', 'CompanyProfileController@pendingList');
 
-	Route::post('/set', 'TypeController@assignType');
+Route::get('/advert/{id}/job/requests/rejected', 'CompanyProfileController@rejectedList');
 
-	/**
-	 * Company Profile routes
-	 */
-	Route::get('/company/create', 'CompanyProfileController@create');
+Route::get('/advert/{id}/job/requests/accepted', 'CompanyProfileController@acceptedList');
 
-	Route::post('/company/store', 'CompanyProfileController@store');
+Route::get('/advert/{id}/job/requests/{role_id}', 'CompanyProfileController@appliedProfile');
 
-	Route::get('/company/{id}/{business_name}', 'CompanyProfileController@profile')->name('company');
+Route::post('/advert/job/requests/{id}/response', 'CompanyProfileController@response');
 
-	Route::get('/company/edit', 'CompanyProfileController@edit');
+Route::post('/profile/{id}/rate', 'CompanyProfileController@rate');
 
-	Route::post('/company/update', 'CompanyProfileController@update');
+/**
+ * Job Seeker Profile routes
+ */
+Route::get('/profile/create', 'JobSeekerProfileController@create');
 
-	Route::get('/logo', 'CompanyProfileController@logo');
+Route::post('/profile/store', 'JobSeekerProfileController@store');
 
-	Route::post('/upload/logo', 'CompanyProfileController@uploadLogo');
+Route::get('/profile/{id}', 'JobSeekerProfileController@profileInfo')->name('jobSeeker');
 
-	Route::delete('/logo/{logo_id}', 'CompanyProfileController@remove');
+Route::get('/profile/info/edit', 'JobSeekerProfileController@edit');
 
-	Route::get('/company/{id}/{business_name}/review', 'CompanyProfileController@companyReview');
+Route::post('/profile/edit/update', 'JobSeekerProfileController@update');
 
-	Route::get('/adverts', 'CompanyProfileController@myAdvert');
+Route::get('/profile/{id}/review', 'JobSeekerProfileController@jobSeekerReview');
 
-	Route::get('/advert/{id}/job/requests/all', 'CompanyProfileController@allList');
+Route::post('/company/{id}/{business_name}/rate', 'JobSeekerProfileController@rate');
 
-	Route::get('/advert/{id}/job/requests/pending', 'CompanyProfileController@pendingList');
+Route::get('/my/applications', 'JobSeekerProfileController@pendingList');
 
-	Route::get('/advert/{id}/job/requests/rejected', 'CompanyProfileController@rejectedList');
+Route::get('/my/applications/rejected', 'JobSeekerProfileController@rejectList');
 
-	Route::get('/advert/{id}/job/requests/accepted', 'CompanyProfileController@acceptedList');
+Route::get('/my/applications/accepted', 'JobSeekerProfileController@acceptList');
 
-	Route::get('/advert/{id}/job/requests/{role_id}', 'CompanyProfileController@appliedProfile');
+Route::get('/my/applications/{app_id}', 'JobSeekerProfileController@appInfo');
 
-	Route::post('/advert/job/requests/{id}/response', 'CompanyProfileController@response');
+/**
+ * Adverts routes
+ */
+Route::resource('/', 'AdvertsController');
 
-	Route::post('/profile/{id}/rate', 'CompanyProfileController@rate');
+Route::get('/home', 'AdvertsController@index');
 
-	/**
-	 * Job Seeker Profile routes
-	 */
-	Route::get('/profile/create', 'JobSeekerProfileController@create');
+Route::get('/adverts/create', 'AdvertsController@create');
 
-	Route::post('/profile/store', 'JobSeekerProfileController@store');
+Route::post('/adverts/publish', 'AdvertsController@publish');
 
-	Route::get('/profile/{id}', 'JobSeekerProfileController@profileInfo')->name('jobSeeker');
+Route::post('/adverts/unpublish', 'AdvertsController@unpublish');
 
-	Route::get('/profile/info/edit', 'JobSeekerProfileController@edit');
+Route::get('/adverts/{id}/{job_title}', 'AdvertsController@show')->name('show');
 
-	Route::post('/profile/edit/update', 'JobSeekerProfileController@update');
+// Route::post('adverts/preview', 'AdvertsController@preview');
 
-	Route::get('/profile/{id}/review', 'JobSeekerProfileController@jobSeekerReview');
+Route::get('adverts/{id}/{job_title}/edit', 'AdvertsController@edit');
 
-	Route::post('/company/{id}/{business_name}/rate', 'JobSeekerProfileController@rate');
+Route::post('adverts/{id}/{job_title}/edit/update', 'AdvertsController@update');
 
-	Route::get('/my/applications', 'JobSeekerProfileController@pendingList');
+/**
+* Job Seeker Apply Advert routes
+*/
+Route::get('/adverts/{id}/{job_title}/apply', 'ApplyController@apply');
 
-	Route::get('/my/applications/rejected', 'JobSeekerProfileController@rejectList');
+Route::post('/adverts/{id}/{job_title}/apply/add', 'ApplyController@storeApply');
 
-	Route::get('/my/applications/accepted', 'JobSeekerProfileController@acceptList');
+/**
+* Subcription routes
+*/
+Route::get('/plans', 'SubscribeController@plans');
 
-	Route::get('/my/applications/{app_id}', 'JobSeekerProfileController@appInfo');
+Route::get('/choose/plan/{id}', 'SubscribeController@choosePlan')->name('plan');
 
-	/**
-	 * Adverts routes
-	 */
-	Route::resource('/', 'AdvertsController');
+Route::post('/checkout/{id}', 'SubscribeController@checkout')->name('checkout');
 
-	Route::get('/home', 'AdvertsController@index');
+Route::post('/process/{id}', 'SubscribeController@charge');
 
-	Route::get('/adverts/create', 'AdvertsController@create');
+Route::get('/invoices', 'SubscribeController@invoices');
 
-	Route::post('/adverts/publish', 'AdvertsController@publish');
+Route::get('/invoices/download/{invoiceId}', 'SubscribeController@download');
 
-	Route::post('/adverts/unpublish', 'AdvertsController@unpublish');
+/**
+* Webhook routes
+*/
+Route::post('braintree/webhook', '\Laravel\Cashier\Http\Controllers\WebhookController@handleWebhook');
 
-	Route::get('/adverts/{id}/{job_title}', 'AdvertsController@show')->name('show');
+/**
+* Payment routes
+*/
+Route::get('/status', 'StatusController@status');
 
-	// Route::post('adverts/preview', 'AdvertsController@preview');
+Route::get('/cancel', 'StatusController@cancel');
 
-	Route::get('adverts/{id}/{job_title}/edit', 'AdvertsController@edit');
-
-	Route::post('adverts/{id}/{job_title}/edit/update', 'AdvertsController@update');
-
-	/**
-	* Job Seeker Apply Advert routes
-	*/
-	Route::get('/adverts/{id}/{job_title}/apply', 'ApplyController@apply');
-
-	Route::post('/adverts/{id}/{job_title}/apply/add', 'ApplyController@storeApply');
-
-	/**
-	* Subcription routes
-	*/
-	Route::get('/plans', 'SubscribeController@plans');
-
-	Route::get('/choose/plan/{id}', 'SubscribeController@choosePlan')->name('plan');
-
-	Route::post('/checkout/{id}', 'SubscribeController@checkout')->name('checkout');
-
-	Route::post('/process/{id}', 'SubscribeController@charge');
-
-	Route::get('/invoices', 'SubscribeController@invoices');
-
-	Route::get('/invoices/download/{invoiceId}', 'SubscribeController@download');
-
-	/**
-	* Webhook routes
-	*/
-	Route::post('braintree/webhook', '\Laravel\Cashier\Http\Controllers\WebhookController@handleWebhook');
-
-	/**
-	* Payment routes
-	*/
-	Route::get('/status', 'StatusController@status');
-
-	Route::get('/cancel', 'StatusController@cancel');
-
-	Route::get('/resume', 'StatusController@resume');
-	});
-
-
+Route::get('/resume', 'StatusController@resume');
 
 

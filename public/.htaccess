@@ -17,4 +17,9 @@
     # Handle Authorization Header
     RewriteCond %{HTTP:Authorization} .
     RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+
+    # Handle url www redirect
+    RewriteEngine on
+    RewriteCond %{HTTP_HOST} !^workwork.my [NC]
+    RewriteRule ^/?(.*)$ http://www.workwork.my/$1 [L,R=301]
 </IfModule>
