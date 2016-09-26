@@ -38,10 +38,8 @@ class Advert extends Model
     protected $dates = ['plan_ends_at'];
 
 
-    /**
-    *
-    *
-    *
+   /**
+    * Scope Together the query
     *
     *
     */
@@ -52,16 +50,31 @@ class Advert extends Model
         return $query->where(compact('id', 'job_title'));
     }
 
+   /**
+    * Get advert assosicated with the given application request 
+    *
+    *
+    */
     public function applications()
     {
         return $this->hasMany(Application::class);
     }
 
+   /**
+    * Get advert assosicated with the given employer
+    *
+    *
+    */
     public function employer()
     {
         return $this->belongsTo(Employer::class);
     }
 
+   /**
+    * Get the logged in user id and compare with the given advert's employer id
+    *
+    *
+    */
     public function ownedBy(User $user)
     {
         $employer = $user->employer()->first();
@@ -72,6 +85,16 @@ class Advert extends Model
         }
 
         return $this->employer_id == $employer->id;
+    }
+
+   /**
+    * Get tags assosicated with the given advert
+    *
+    *
+    */
+    public function skills()
+    {
+        return $this->belongsToMany(Skill::class)->withTimestamps();
     }
 
 }
