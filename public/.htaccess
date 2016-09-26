@@ -20,6 +20,6 @@
 
     # Handle url www redirect
     RewriteEngine On
-    RewriteCond %{HTTP_HOST} !^www\.
-    RewriteRule ^(.*)$ http://www.%{HTTP_HOST}/$1 [R=301,L]
+    RewriteCond %{HTTP_HOST} ^workwork.my$
+    RewriteRule (.*) http://www.workwork.my/$1 [R=301,L] 
 </IfModule>
