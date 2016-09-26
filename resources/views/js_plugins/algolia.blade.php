@@ -6,7 +6,6 @@
 
 <!-- this configuration uses algolia javascript plugin -->
 <script>
-
 var itsAppID = '{{ $id }}';
 var itsApiKey = '{{ $api }}';
 var itsIndex = '{{ $index }}';
@@ -136,5 +135,4 @@ search.addWidget(
 
 //Once all the widgets have been added to the instantsearch instance, start rendering by calling start() method
 search.start();
-
 </script>

@@ -13,7 +13,7 @@
 	<p class="help-block">You can choose hourly, daily or monthly</p>
 	<div class="input-group ww-salary-input">
 		<span class="input-group-addon ww-salary-input--currency">RM</span>
-		<input type="number" name="salary" id="salary" class="form-control ww-salary-input--amount" value="{{ old('salary') }}" placeholder="8" inputmode="numeric">
+		<input type="text" name="salary" id="salary" class="form-control ww-salary-input--amount" value="{{ old('salary') }}" placeholder="8" inputmode="numeric">
 		<span class="input-group-addon ww-salary-input--rate">
 			<label class="radio-inline"><input type="radio" aria-label="..." name="rate" id="rate0" value="hour" checked> Hourly</label>
 			<label class="radio-inline"><input type="radio" aria-label="..." name="rate" id="rate1" value="day"> Daily</label>
@@ -21,15 +21,6 @@
 		</span>
 	</div>
 </div>
-
-<!-- <div class="form-group">
-	<label for="rate">Rate:</label>
-	<select name="rate" id="rate" class="form-control" required>
-			<option value="" selected disabled>Select a salary rate</option>
-			<option value="hour">Per Hour</option>
-			<option value="month">Per Month</option>
-	</select>
-</div> -->
 
 <div class="form-group">
 	
@@ -47,7 +38,6 @@
 	    value="{{ old('location') }}"
 	    placeholder="Work Location?" 
 	 />
-	<!-- <input type="text" name="location" id="location" class="form-control" value="{{ old('location') }}"> -->
 	
 	<p>or <a href="#collapseAddress" role="button" data-toggle="collapse" aria-expanded="false" aria-controls="collapseAddress"> Enter address</a></p>
 	<div class="collapse" id="collapseAddress">
@@ -100,8 +90,11 @@
 
 <div class="form-group">
 	<label for="skill">Skills Needed</label>
-	<!-- <p class="help-block">e.g.: Teamwork, Multitasking</p> -->
-	<input type="text" name="skill" id="skill" class="form-control" value="{{ old('skill') }}" maxlength="50" placeholder="e.g.: Teamwork, Multitasking">
+	<!-- <p class="help-block">e.g.: Teamwork, Multitasking</p>
+	<input type="text" name="skill" id="skill" class="form-control" value="{{ old('skill') }}" maxlength="50" placeholder="e.g. Teamwork, Multitasking"> -->
+	<div class="form-group">
+		<input type="text" name="skills" id="skills" value="" data-role="tagsinput" />
+	</div>
 </div>
 
 <div class="form-group">
@@ -112,11 +105,6 @@
 <div class="form-group">
 	<label for="oku_friendly">Disabled Friendly</label>
 	<p class="help-block">Is this job suitable for people with disabilities?</p>
-	<!-- <select name="oku_friendly" id="oku_friendly" class="form-control" required>
-			<option value="" selected disabled>Choose an Answer</option>
-			<option value="yes">Yes</option>
-			<option value="no">No</option>
-	</select> -->
 	<label class="checkbox-inline">
 		<input type="checkbox" id="oku_friendly" name="oku_friendly" value="yes"> Yes
 	</label>
@@ -128,3 +116,4 @@
 </div>
 
 @include('js_plugins.algolia_places')
+@include('js_plugins.tagging')

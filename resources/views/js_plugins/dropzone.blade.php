@@ -3,26 +3,24 @@
 
 
 <script>
+Dropzone.options.addPhotosForm = {
 
-	Dropzone.options.addPhotosForm = {
+	paramName: 'photo', // input name / id
 
-		paramName: 'photo', // input name / id
+	maxFilesize: 0.5, // mb
 
-		maxFilesize: 0.5, // mb
+	acceptedFiles: '.jpg, .jpeg, .png', // allowed files
 
-		acceptedFiles: '.jpg, .jpeg, .png', // allowed files
-
-		accept: function(file, done) {
-		    console.log("uploaded");
-		    done();
-		},
-		init: function() {
-		    this.on("addedfile", function() {
-				if (this.files[1]!=null){
-					this.removeFile(this.files[0]);
-				}
-		    });
-		}
-	};
-
+	accept: function(file, done) {
+	    console.log("uploaded");
+	    done();
+	},
+	init: function() {
+	    this.on("addedfile", function() {
+			if (this.files[1]!=null){
+				this.removeFile(this.files[0]);
+			}
+	    });
+	}
+};
 </script>

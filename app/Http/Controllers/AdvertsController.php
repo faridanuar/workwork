@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 
 use App\User;
 use App\Advert;
+use App\Skill;
 use App\Employer;
 
 use App\Contracts\Search;
@@ -125,7 +126,7 @@ class AdvertsController extends Controller
 	            'description' => 'required',           
 	            'location' => 'required',
 	            'country' => 'required',
-	            'skill' => 'required',
+	            'skills' => 'required',
 	            'category' => 'required',
 	            'rate' => 'required',
 	    	]);
@@ -157,12 +158,20 @@ class AdvertsController extends Controller
 		        'state'  => $request->state,
 		        'country'  => $request->country,
 		        'employer_id'  => $request->employer_id,
-		        'skill'  => $request->skill,
 		        'category'  => $request->category,
 		        'rate'  => $request->rate,
 		        'oku_friendly'  => $request->oku_friendly,
 		        'avatar'  => $avatar,
 			]);
+
+		$arrayOfSkills = explode(",",$request->skills);
+
+		foreach($arrayOfSkills as $skill){
+			$newSkill = new Skill;
+			$newSkill->skill = $skill;
+			$newSkill->save();
+			$saveToDatabase->skills()->attach($newSkill);
+		}
 
 		switch ($saveLater)
 		{
