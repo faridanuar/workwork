@@ -5,6 +5,10 @@
 
     RewriteEngine On
 
+    # Handle url www redirect
+    RewriteCond %{HTTP_HOST} ^workwork.my$
+    RewriteRule (.*) http://www.workwork.my/$1 [R=301,L] 
+
     # Redirect Trailing Slashes If Not A Folder...
     RewriteCond %{REQUEST_FILENAME} !-d
     RewriteRule ^(.*)/$ /$1 [L,R=301]
@@ -17,9 +21,4 @@
     # Handle Authorization Header
     RewriteCond %{HTTP:Authorization} .
     RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
-
-    # Handle url www redirect
-    RewriteEngine On
-    RewriteCond %{HTTP_HOST} ^workwork.my$
-    RewriteRule (.*) http://www.workwork.my/$1 [R=301,L] 
 </IfModule>
