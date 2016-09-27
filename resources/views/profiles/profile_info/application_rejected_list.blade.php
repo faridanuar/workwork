@@ -4,7 +4,7 @@
 
 @include('profiles.profile_info.applications_category')
 
-	<h4><u>Rejected List</u></h4>
+	<h3><u>Rejected List</u></h3>
 	@foreach($rejectedInfos as $rejectedInfo)
 
 		<div class="form-group">

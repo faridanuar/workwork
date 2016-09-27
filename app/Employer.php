@@ -35,17 +35,22 @@ class Employer extends Model
     	return $this->belongsTo(User::class);
     }
 
-    public function advert()
+    public function adverts()
     {
     	return $this->hasMany(Advert::class);
     }
 
-    public function ownRating()
+    public function applications()
+    {
+        return $this->hasMany(Application::class);
+    }
+
+    public function ownRatings()
     {
         return $this->hasMany(Employer_Rating::class);
     }
 
-    public function rating()
+    public function ratings()
     {
         return $this->hasMany(Job_Seeker_Rating::class);
     }

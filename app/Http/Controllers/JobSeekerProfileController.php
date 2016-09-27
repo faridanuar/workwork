@@ -78,13 +78,13 @@ class JobSeekerProfileController extends Controller
 
                 $recipient = 'farid@pocketpixel.com';
 
-                $recepientName = $user->name;
+                $recipientName = $user->name;
 
                 // set email sender stmp url and sender name
                 $m->from($domain, 'WorkWork');
 
                 // set email recepient and subject
-                $m->to($recipient, $recepientName)->subject('Welcome to WorkWork!');
+                $m->to($recipient, $recipientName)->subject('Welcome to WorkWork!');
             });
         }
 
@@ -240,9 +240,9 @@ class JobSeekerProfileController extends Controller
     {
         $jobSeeker = $request->user()->jobSeeker;
         
-        $requestInfos = Application::where('job_seeker_id', $jobSeeker->id)->where('status', 'PENDING')->paginate(5);
+        $requestInfos = $jobSeeker->applications()->where('job_seeker_id', $jobSeeker->id)->where('status', 'PENDING')->paginate(5);
 
-        return view('profiles.profile_info.application_pending_list', compact('requestInfos'));
+        return view('profiles.profile_info.application_pending_list', compact('jobSeeker','requestInfos'));
     }
 
 
@@ -251,9 +251,9 @@ class JobSeekerProfileController extends Controller
     {
         $jobSeeker = $request->user()->jobSeeker;
 
-        $rejectedInfos = Application::where('job_seeker_id', $jobSeeker->id)->where('status', 'REJECTED')->paginate(5);
+        $rejectedInfos = $jobSeeker->applications()->where('job_seeker_id', $jobSeeker->id)->where('status', 'REJECTED')->paginate(5);
 
-        return view('profiles.profile_info.application_rejected_list', compact('rejectedInfos'));
+        return view('profiles.profile_info.application_rejected_list', compact('jobSeeker','rejectedInfos'));
     }
 
 
@@ -262,11 +262,10 @@ class JobSeekerProfileController extends Controller
     {
         $jobSeeker = $request->user()->jobSeeker;
         
-        $acceptedInfos = Application::where('job_seeker_id', $jobSeeker->id)->where('status', 'ACCEPTED FOR INTERVIEW')->paginate(5);
+        $acceptedInfos = $jobSeeker->applications()->where('job_seeker_id', $jobSeeker->id)->where('status', 'ACCEPTED FOR INTERVIEW')->paginate(5);
 
-        return view('profiles.profile_info.application_accepted_list', compact('acceptedInfos'));
+        return view('profiles.profile_info.application_accepted_list', compact('jobSeeker','acceptedInfos'));
     }
-
 
 
 
@@ -275,5 +274,20 @@ class JobSeekerProfileController extends Controller
         $appInfo = Application::find($app_id);
 
         return view('profiles.profile_info.application_info', compact('appInfo'));
+    }
+
+
+
+    protected function setAsViewed(Request $request)
+    {
+        $jobSeeker = $request->user()->jobSeeker;
+
+        $requests = $jobSeeker->applications->where('status', 'ACCEPTED FOR INTERVIEW')->where('responded', 1)->where('viewed', 0);
+
+        foreach($requests as $request)
+        {
+            $request->viewed = 1;
+            $request->save();
+        }
     }
 }

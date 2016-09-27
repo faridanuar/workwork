@@ -91,13 +91,13 @@ class CompanyProfileController extends Controller
 
                 $recipient = 'farid@pocketpixel.com';
 
-                $recepientName = $user->name;
+                $recipientName = $user->name;
 
                 // set email sender stmp url and sender name
                 $m->from($domain, 'WorkWork');
 
                 // set email recepient and subject
-                $m->to($recepient, $recepientName)->subject('Welcome to WorkWork!');
+                $m->to($recipient, $recipientName)->subject('Welcome to WorkWork!');
             });
         }
 
@@ -127,7 +127,7 @@ class CompanyProfileController extends Controller
 
         $user = $request->user();
 
-        $ratings = $company->ownRating->count();
+        $ratings = $company->ownRatings->count();
 
         $authorize = false;
 
@@ -144,7 +144,7 @@ class CompanyProfileController extends Controller
 
             $ratings;
 
-            $average = $company->ownRating->avg('rating');
+            $average = $company->ownRatings->avg('rating');
         }
 
         if($user){
@@ -341,7 +341,7 @@ class CompanyProfileController extends Controller
 
         $rating = new Job_Seeker_Rating;
 
-        $rating->rating = $request->star;
+        $rating->ratings = $request->star;
 
         $rating->comment = $request->comment;
 
@@ -363,7 +363,7 @@ class CompanyProfileController extends Controller
     {
         $company = Employer::findEmployer($id, $business_name)->first();
 
-        $userReviews = $company->ownRating()->paginate(5);
+        $userReviews = $company->ownRatings()->paginate(5);
 
         return view('profiles.company.company_reviews', compact('company', 'userReviews'));
     }
@@ -383,7 +383,7 @@ class CompanyProfileController extends Controller
 
         $employerID = $user->employer->id;
 
-        $myAdverts = Advert::where('employer_id', $employerID)->orderBy('created_at', 'desc')
+        $myAdverts = Advert::where('employer_id', $employerID)->orderBy('published', 'desc')->orderBy('created_at', 'desc')
                 ->get();
 
         return view('profiles.company.company_adverts', compact('myAdverts'));
@@ -466,8 +466,6 @@ class CompanyProfileController extends Controller
 
         $application->responded = 1;
 
-        $application->viewed = 1;
-
         $application->save();
 
         // use send method form Mail facade to send email. ex: send('view', 'info / array of data', fucntion)
@@ -512,7 +510,7 @@ class CompanyProfileController extends Controller
 
         $request = Application::where('advert_id', $id)->where('job_seeker_id', $role_id)->first();
 
-        $ratings = $profileInfo->ownRating->count();
+        $ratings = $profileInfo->ownRatings->count();
 
         $rated = false;
 
@@ -522,7 +520,7 @@ class CompanyProfileController extends Controller
 
         }else{
 
-            $average = $profileInfo->ownRating->avg('rating');
+            $average = $profileInfo->ownRatings->avg('rating');
         }
 
 

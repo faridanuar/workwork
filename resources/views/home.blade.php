@@ -15,6 +15,17 @@
         <div class="panel panel-default">
             <div class="panel-body">
                 Notifications
+                <div>
+                    @if($user->type === "employer")
+                        @if($requestTotal > 0)
+                            You have {{ $requestTotal }} request! - <a href="/adverts">View</a>
+                        @endif
+                    @else
+                        @if($responseTotal > 0)
+                            You have {{ $responseTotal }} response! - <a href="/my/applications">View</a>
+                        @endif
+                    @endif
+                </div>
             </div>
         </div>
     </div>

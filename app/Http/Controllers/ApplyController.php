@@ -66,6 +66,8 @@ class ApplyController extends Controller
 		// fetch Job_Seeker model to find a row of data by referencing users "id" with job_seekers "user_id"
 		$thisJobSeeker = $user->jobSeeker;
 
+		$advert = Advert::locatedAt($id, $job_title)->firstOrFail();
+
 		// create a new Application model / a new row of data
 		$application = new Application;
 
@@ -79,6 +81,9 @@ class ApplyController extends Controller
 
 		// use associate method to get model relationship from other Advert model and store its "id"
 		$application->advert()->associate($id);
+
+		// use associate method to get model relationship from other Employer model and store its "id"
+		$application->employer()->associate($advert->employer_id);
 
 		// save the fields into applications table
 		$application->save();

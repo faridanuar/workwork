@@ -5,7 +5,7 @@
 @include('profiles.company.requests_category')
 
 <h1>Job Seekers</h1>
-	<h4>Accepted List</h4>
+	<h3><u>Accepted List</u></h3>
 	@forelse($acceptedInfos as $acceptedInfo)
 		<div class="form-group">
 			<a href="/advert/{{ $acceptedInfo->advert_id }}/job/requests/{{ $acceptedInfo->jobSeeker->id }}">

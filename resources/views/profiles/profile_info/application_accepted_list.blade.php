@@ -4,7 +4,7 @@
 
 @include('profiles.profile_info.applications_category')
 
-	<h4><u>Accepted List</u></h4>
+	<h3><u>Accepted List</u></h3>
 	@foreach($acceptedInfos as $acceptedInfo)
 
 		<div class="form-group">

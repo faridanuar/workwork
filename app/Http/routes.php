@@ -14,10 +14,6 @@ Route::post('/avatar/upload', 'HomeController@uploadAvatar');
 
 Route::delete('/avatar/{avatar_id}', 'HomeController@remove');
 
-Route::get('/tag', 'HomeController@tag');
-
-Route::post('/values', 'HomeController@values');
-
 // Route::get('/time', 'HomeController@time');
 
 /**
@@ -95,6 +91,9 @@ Route::get('/my/applications/rejected', 'JobSeekerProfileController@rejectList')
 Route::get('/my/applications/accepted', 'JobSeekerProfileController@acceptList');
 
 Route::get('/my/applications/{app_id}', 'JobSeekerProfileController@appInfo');
+
+// ajax post url
+Route::post('/set-as-viewed', 'JobSeekerProfileController@setAsViewed');
 
 /**
  * Adverts routes
