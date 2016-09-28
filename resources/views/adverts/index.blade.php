@@ -54,7 +54,7 @@
 	<div class="col-md-3">
 		<div class="well">
 			<!-- todo Jumpbar -->
-			Other things, i.e. adverts, announcements.
+			@lang('marketing.welcome')
 		</div>
 	</div>
 </div>
