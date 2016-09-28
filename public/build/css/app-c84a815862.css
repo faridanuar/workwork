@@ -1073,7 +1073,6 @@ a {
     color: black;
     text-decoration: underline; }
   a:focus {
-    outline: thin dotted;
     outline: 5px auto -webkit-focus-ring-color;
     outline-offset: -2px; }
 
@@ -2285,7 +2284,6 @@ select[size] {
 input[type="file"]:focus,
 input[type="radio"]:focus,
 input[type="checkbox"]:focus {
-  outline: thin dotted;
   outline: 5px auto -webkit-focus-ring-color;
   outline-offset: -2px; }
 
@@ -2790,7 +2788,6 @@ select[multiple].input-lg,
   -ms-user-select: none;
   user-select: none; }
   .btn:focus, .btn.focus, .btn:active:focus, .btn:active.focus, .btn.active:focus, .btn.active.focus {
-    outline: thin dotted;
     outline: 5px auto -webkit-focus-ring-color;
     outline-offset: -2px; }
   .btn:hover, .btn:focus, .btn.focus {
@@ -5862,10 +5859,13 @@ body.auth-body {
 
 #advert .panel-body .business-name {
   font-weight: bold;
-  font-size: 10px;
+  font-size: 12px;
   margin-bottom: 5px;
-  opacity: 0.6;
+  opacity: 1;
   text-transform: uppercase; }
+  #advert .panel-body .business-name small {
+    display: block;
+    margin-bottom: 5px; }
 
 #advert .panel-body .salary {
   font-size: 16px;
