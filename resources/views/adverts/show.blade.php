@@ -24,7 +24,10 @@
                     </div>
                     <div class="media-body">
                         <h4 class="media-heading">
-                        <div class="business-name"><a href="/company/{{ $advert->employer_id }}/{{ $advert->business_name }}">{{ $advert->business_name }}</a></div>
+                        <div class="business-name">
+                            <small>Posted by:</small>
+                            <a href="/company/{{ $advert->employer_id }}/{{ $advert->business_name }}">{{ $advert->business_name }}</a>
+                        </div>
                         </h4>
                     </div>
                 </div>
