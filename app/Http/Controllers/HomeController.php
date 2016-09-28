@@ -13,6 +13,7 @@ use Carbon\Carbon;
 
 use App\User;
 use App\Advert;
+use App\Application;
 
 use App\Contracts\Search;
 
@@ -46,20 +47,18 @@ class HomeController extends Controller
 
         if($avatar != "" || $avatar != null){
 
-            //check if photo exist
+            // check if photo exist
             $exist = true;
-
         }else{
-
             $exist = false;
         }
 
-        if($exist)
-        {
+        if($exist != false)
+        {   
+            // avatar photo
             $photo = $avatar;
-
         }else{
-
+            // default avatar photo
             $photo = "/images/defaults/default.jpg";
         }
 
@@ -86,45 +85,32 @@ class HomeController extends Controller
         }
 
 
-        // fetch a row of record from user if exist
+        // check if user profile record exist
         if($user->employer)
         {
             // set user role in a variable
             $role = $user->employer;
 
-            // fetch advert info that belongs to this user's employer id
-            $adverts = Advert::where('employer_id', $role->id)->get();
+            $requests = $role->applications->where('status', 'PENDING');
 
-            $todaysDate = Carbon::now();
-
-            $endDate = $user->plan_ends_at;
-
-            $daysLeft =  $todaysDate->diffInDays($endDate, false);
-
-            if($daysLeft >= 0 && $user->current_plan != "trial" )
-            {
-                $subscription = "Subscribed";
-
-            }elseif($daysLeft >= 0 && $user->current_plan === "trial"){
-
-                $subscription = "Trial Plan";
-
-            }else{
-
-                $subscription = "Not Subscribed";
-            }
+            $requestTotal = count($requests);
 
         }elseif($user->jobSeeker){
 
             // set user role in a variable
             $role = $user->jobSeeker;
 
+            $responses = $role->applications->where('responded', 1)->where('viewed', 0);
+
+            $responseTotal = count($responses);
         }else{
+            $role = "";
+            $requestTotal = 0;
+            $responseTotal = 0;
         }
 
-
         // return user to home dashboard
-        return view('home', compact('role','user','photo','subscription'));
+        return view('home', compact('role','user','photo','requestTotal','responseTotal'));
     }
 
 
@@ -322,20 +308,6 @@ class HomeController extends Controller
         }
 
         abort(403, 'Unauthorized action.');
-    }
-
-
-
-    public function tag()
-    {
-        return view('js_plugins.tagging');
-    }
-
-    public function values(Request $request)
-    {
-        $values = $request->tags;
-
-        dd($values);
     }
 
 

@@ -27,7 +27,7 @@ class AddForeignKeyAtJobSeekersTable extends Migration
     public function down()
     {
         Schema::table('job_seekers', function (Blueprint $table) {
-            $table->dropForeign('users_user_id_foreign');
+            $table->dropForeign('job_seekers_user_id_foreign');
         });
     }
 }

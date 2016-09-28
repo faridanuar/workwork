@@ -1,3 +1,5 @@
+@inject('categories', 'App\Http\Utilities\Category')
+
 {{ csrf_field() }}
 
 <div class="form-group">
@@ -7,7 +9,13 @@
 
 <div class="form-group">
 	<label for="business_category">Business Category:</label>
-	<input type="text" name="business_category" id="business_category" class="form-control" value="{{ old('business_category') }}" required>
+	<!-- <input type="text" name="business_category" id="business_category" class="form-control" value="{{ old('business_category') }}" required> -->
+	<select name="business_category" id="business_category" class="form-control">
+			<option value=""  disabled selected>Select a Business category</option>
+		@foreach ($categories::all() as $code => $name)
+			<option value="{{ $code }}">{{ $name }}</option>
+		@endforeach
+	</select>
 </div>
 
 <div class="form-group">

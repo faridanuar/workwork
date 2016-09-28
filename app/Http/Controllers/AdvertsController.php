@@ -125,7 +125,6 @@ class AdvertsController extends Controller
 		        'salary' => 'required|integer',
 	            'description' => 'required',           
 	            'location' => 'required',
-	            'country' => 'required',
 	            'skills' => 'required',
 	            'category' => 'required',
 	            'rate' => 'required',
@@ -141,12 +140,18 @@ class AdvertsController extends Controller
 			$avatar = "/images/defaults/default.jpg";
 		}
 
+		if($request->oku_friendly != null){
+			$oku_friendly = "Yes";
+		}else{
+			$oku_friendly = "No";
+		}
+
 		$employer = $user->employer;
 
 		// what do we need to do? if the request validates, the body below of this method will be hit
 		// validate the form - DONE		
 		// persist the advert - DONE
-		$saveToDatabase = $employer->advert()->create([
+		$saveToDatabase = $employer->adverts()->create([
 		        'job_title' => $request->job_title,
 		        'salary'  => (float)$request->salary,
 		        'description'  => $request->description,
@@ -160,7 +165,7 @@ class AdvertsController extends Controller
 		        'employer_id'  => $request->employer_id,
 		        'category'  => $request->category,
 		        'rate'  => $request->rate,
-		        'oku_friendly'  => $request->oku_friendly,
+		        'oku_friendly'  => $oku_friendly,
 		        'avatar'  => $avatar,
 			]);
 
@@ -410,6 +415,15 @@ class AdvertsController extends Controller
 		    'schedule' => $request->schedule,
 		]);
 		$advert->save();
+
+		$arrayOfSkills = explode(",",$request->skills);
+
+		foreach($arrayOfSkills as $skill){
+			$newSkill = new Skill;
+			$newSkill->skill = $skill;
+			$newSkill->save();
+			$saveToDatabase->skills()->attach($newSkill);
+		}
 
 		switch ($saveLater)
 		{

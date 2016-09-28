@@ -65,9 +65,9 @@
 			<div class="form-group">
 				<label for="country">Country:</label>
 				<select name="country" id="country" class="form-control">
-						<option value=""  disabled>Select a country</option>
+						<option value=""  disabled selected>Select a country</option>
 					@foreach ($countries::all() as $code => $name)
-						<option value="{{ $code }}" selected>{{ $name }}</option>
+						<option value="{{ $code }}">{{ $name }}</option>
 					@endforeach
 				</select>
 			</div>
@@ -93,13 +93,19 @@
 	<!-- <p class="help-block">e.g.: Teamwork, Multitasking</p>
 	<input type="text" name="skill" id="skill" class="form-control" value="{{ old('skill') }}" maxlength="50" placeholder="e.g. Teamwork, Multitasking"> -->
 	<div class="form-group">
+		<label for="skill">(Example: Teamwork, Multitasking)</label>
 		<input type="text" name="skills" id="skills" value="" data-role="tagsinput" />
 	</div>
 </div>
 
 <div class="form-group">
 	<label for="category">Category</label>
-	<input type="text" name="category" id="category" class="form-control" value="{{ old('category') }}" maxlength="50" placeholder="e.g. Restaurant - Waiter">
+	<select name="category" id="category" class="form-control">
+			<option value=""  disabled selected>Select a category</option>
+		@foreach ($categories::all() as $code => $name)
+			<option value="{{ $code }}">{{ $name }}</option>
+		@endforeach
+	</select>
 </div>
 
 <div class="form-group">

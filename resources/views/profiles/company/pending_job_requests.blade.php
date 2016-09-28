@@ -6,7 +6,7 @@
 <div class="row">
 	<div class="col-md-12">
 		<h1>Job Seekers</h1>
-			<h4>Pending List</h4>
+			<h3><u>Pending List</u></h3>
 		@if (count($errors) > 0)
 		<div class="alert alert-danger">
 			<ul>
@@ -17,10 +17,6 @@
 		</div>
 		@endif
 		@forelse($requestInfos as $requestInfo)
-
-			@if($requestInfo->viewed != 1)
-				<span>New!</span>
-			@endif
 			<a href="/advert/{{ $requestInfo->advert_id }}/job/requests/{{ $requestInfo->jobSeeker->id }}">
 				<h4>Status: {{ $requestInfo->status }}</h4>
 				<h4>Name: {{ $requestInfo->jobSeeker->user->name }}</h4>

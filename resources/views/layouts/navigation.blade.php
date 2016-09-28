@@ -30,9 +30,6 @@
                     @can('edit_advert')
                         <li><a class="btn btn-default navbar-btn navbar-btn-ww navbar-btn-ww--cta" href="{{ url('/adverts/create') }}">Create New Part-time Ad</a></li>
                     @endcan
-                    @if(Auth::user())
-                        <li><a class="btn btn-default navbar-btn navbar-btn-ww" href="{{ url('/dashboard') }}">Dashboard</a></li>
-                    @endif
 
                     <!-- Authentication Links -->
                     @if (Auth::guest())
