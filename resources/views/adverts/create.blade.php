@@ -6,6 +6,10 @@
 	@include('messages.flash')
 </div>
 
+@if($user->ftu_level != 'completed')
+	<ul><li>Done</li><li>Current</li><li>Not Done</li><li>Not Done</li></ul>
+@endif
+
 <!-- <body onbeforeunload="return popUp()"> -->
 
 <div class="panel-ww-advert panel panel-default center-block">

@@ -32,14 +32,16 @@ class CompanyProfileController extends Controller
         $this->middleware('employer', ['except' => ['profile', 'companyReview']]);
     }
 
-    public function create()
+    public function create(Request $request)
     {
         if(!Auth::user())
         {
            return redirect()->guest('login');
         }
 
-        return view('profiles.company.company_create');
+        $user = $request->user();
+
+        return view('profiles.company.company_create', compact('user'));
     }
 
 
@@ -54,7 +56,7 @@ class CompanyProfileController extends Controller
         // store user info in variable
         $user = $request->user();
 
-        // create a new user_id and fields and store it in jobseekers table
+        // create a new company profile and store it in employers table
         $employer = $user->employer()->create([
 
             // 'column' => request->'field'
@@ -70,14 +72,17 @@ class CompanyProfileController extends Controller
             'company_intro' => $request->company_intro,
         ]);
 
-        // save changes made
+        // user proceed to create advert
+        $user->ftu_level = "lvl2";
+
+        // 
         $user->save();
 
         //set user_id in the Employer model using associate method
-        $employer->user()->associate($user);
+        //$employer->user()->associate($user);
 
         //save changes
-        $employer->save();
+        //$employer->save();
 
         // check if user storing procedure is a success
         if($user){

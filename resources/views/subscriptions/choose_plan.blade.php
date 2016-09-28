@@ -2,6 +2,10 @@
 
 @section('content')
 
+@if($user->ftu_level != 'completed')
+	<ul><li>Done</li><li>Done</li><li>Current</li><li>Not Done</li></ul>
+@endif
+
 <h4>Choose a plan</h4>
 
 <form action="/checkout/{{ $id }}" method="post">

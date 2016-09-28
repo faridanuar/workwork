@@ -110,7 +110,7 @@ class AdvertsController extends Controller
 			return redirect('/company/create');
 		}
 
-		return view('adverts.create');
+		return view('adverts.create', compact('user'));
 	}
 
 
@@ -189,6 +189,11 @@ class AdvertsController extends Controller
 			default:
 				$saveToDatabase->ready_to_publish = 1;
 				$saveToDatabase->save();
+				if($user->ftu_level === "lvl2")
+				{
+					$user->ftu_level = "lvl3";
+					$user->save();
+				}
 		}
 
 		return redirect()->route('plan', [$saveToDatabase->id]);
@@ -277,6 +282,11 @@ class AdvertsController extends Controller
 
 			if($object)
 			{
+				if($user->ftu_progress === "lv3")
+				{
+					$user->ftu_progress = "lvl4";
+					$user->save();
+				}
 				// set flash attribute and key. example --> flash('success message', 'flash_message_level')
 				flash('Your advert has been successfully published.', 'success');
 

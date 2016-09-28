@@ -36,22 +36,26 @@ class SubscribeController extends Controller
 
 
 
-	public function choosePlan($id)
+	public function choosePlan(Request $request, $id)
 	{
-		return view('subscriptions.choose_plan', compact('id'));
+		$user = $request->user();
+
+		return view('subscriptions.choose_plan', compact('id','user'));
 	}
 
 	
 
 	public function checkout(Request $request, $id)
 	{
+		$user = $request->user();
+
 		$plan = $request->plan;
 
 		if($plan === "Trial")
 		{
 			$advert = Advert::find($id);
 
-			if($advert->trial_used !=0){
+			if($advert->trial_used != 0){
 
 				flash('Sorry, the trial plan is not valid anymore');
 
@@ -66,12 +70,18 @@ class SubscribeController extends Controller
 				$advert->trial_used = 1;
 
 				$saved = $advert->save();
+
+				if($user->ftu_level === "lv3")
+				{
+					$user->ftu_level = "lvl4";
+					$user->save();
+				}
 			}
 
 			return redirect()->route('show', [$id,$advert->job_title]);
 		}
 
-		return view('subscriptions.checkout', compact('id','plan'));
+		return view('subscriptions.checkout', compact('id','plan','user'));
 	}
 
 

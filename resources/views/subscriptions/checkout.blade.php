@@ -5,8 +5,12 @@
     @include('messages.flash')
 </div>
 
+@if($user->ftu_level != 'completed')
+	<ul><li>Done</li><li>Done</li><li>Current</li><li>Not Done</li></ul>
+@endif
+
 <div class="info">
-<h2>Use payment method with <u>Credit Card</u> or <u>PayPal</u></h2>
+	<h2>Use payment method with <u>Credit Card</u> or <u>PayPal</u></h2>
 </div>
 
 <div class="checkout">
