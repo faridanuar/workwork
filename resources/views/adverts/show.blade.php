@@ -132,10 +132,10 @@
                 </div>
                 <hr>
                 <div>
+                    <h3>Company</h3>
                     <a href="/company/{{ $advert->employer_id }}/{{ $advert->business_name }}">{{ $advert->business_name }}</a>
                 </div>
                 <div class="address">
-                    <h3>Address</h3>
                     <div class="street">{{ $advert->street }}</div>
                     <div class="city">{{ $advert->city }}</div>
                     <div class="zip">{{ $advert->zip }}</div>

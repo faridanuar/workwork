@@ -13,7 +13,7 @@
 	<p class="help-block">You can choose hourly, daily or monthly</p>
 	<div class="input-group ww-salary-input">
 		<span class="input-group-addon ww-salary-input--currency">RM</span>
-		<input type="text" name="salary" id="salary" class="form-control ww-salary-input--amount" value="{{ old('salary') }}" placeholder="8" inputmode="numeric">
+		<input type="text" name="salary" id="salary" class="form-control ww-salary-input--amount" value="{{ old('salary') }}" placeholder="0" inputmode="numeric">
 		<span class="input-group-addon ww-salary-input--rate">
 			<label class="radio-inline"><input type="radio" aria-label="..." name="rate" id="rate0" value="hour" checked> Hourly</label>
 			<label class="radio-inline"><input type="radio" aria-label="..." name="rate" id="rate1" value="day"> Daily</label>
@@ -23,22 +23,22 @@
 </div>
 
 <div class="form-group">
-	
+
 </div>
 
 <div class="form-group">
 	<label for="location">Location</label>
 	<p class="help-block">Where will the job be located?</p>
 
-	<input 
+	<input
 		type="search"
 		class="form-control"
 		id="address-input"
 	   	name="location"
 	    value="{{ old('location') }}"
-	    placeholder="Work Location?" 
+	    placeholder="Work Location?"
 	 />
-	
+
 	<p>or <a href="#collapseAddress" role="button" data-toggle="collapse" aria-expanded="false" aria-controls="collapseAddress"> Enter address</a></p>
 	<div class="collapse" id="collapseAddress">
 		<div class="well">
