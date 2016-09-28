@@ -50,7 +50,7 @@ var search = instantsearch({
 search.addWidget(
 	instantsearch.widgets.searchBox({
 	  container: '#search-box',
-	  placeholder: 'Search for part-time jobs...',
+	  placeholder: '@lang("adverts.search_for")',
 	  searchOnEnterKeyPressOnly: false
 	})
 );
@@ -77,7 +77,7 @@ var resultsTemplate =
 //no hits template
 var noResultsTemplate =
 	'<div class"noResults">'+
-		'Sorry no results found...' +
+		'@lang("adverts.no_results")' +
 	'</div>';
 
 
@@ -100,9 +100,9 @@ search.addWidget(
   instantsearch.widgets.sortBySelector({
     container: '#sort-by-container',
     indices: [
-      {name: itsIndex, label: 'All Salary'},
-      {name: salaryASC, label: 'Lowest'},
-      {name: salaryDESC, label: 'Highest'}
+      {name: itsIndex, label: '@lang("adverts.all")'},
+      {name: salaryASC, label: '@lang("adverts.lowest")'},
+      {name: salaryDESC, label: '@lang("adverts.highest")'}
     ]
   })
 );
@@ -116,7 +116,7 @@ search.addWidget(
     operator: 'or',
     limit: 10,
     templates: {
-      header: '<h3 class="category-header">Categories</h3>'
+      header: '<h3 class="category-header">@lang("adverts.category")</h3>'
     }
   })
 );

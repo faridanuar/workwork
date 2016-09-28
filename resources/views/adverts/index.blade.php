@@ -20,10 +20,10 @@
 			<!-- todo: Filter -->
 			<div class="panel-body">
 
-			Filter jobs
+			@lang('adverts.filter')
 
 			<div class="form-group">
-			<h3>Salary:</h3>
+			<h3>@lang('adverts.salary')</h3>
 				<div id="sort-by-container"></div>
 			</div>
 

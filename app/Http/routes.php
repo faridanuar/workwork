@@ -153,4 +153,3 @@ Route::get('/cancel', 'StatusController@cancel');
 
 Route::get('/resume', 'StatusController@resume');
 
-
