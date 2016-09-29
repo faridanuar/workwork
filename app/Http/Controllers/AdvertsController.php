@@ -73,6 +73,15 @@ class AdvertsController extends Controller
 
 		if($user)
 		{
+			if($user->ftu_level < 4)
+			{
+				$done = 3;
+		        $notDone = 3;
+	    	}else{
+	    		$done = 2;
+		        $notDone = 2;
+	    	}
+
 			$thisEmployer = $user->employer;
 
 			if($thisEmployer){
@@ -89,15 +98,6 @@ class AdvertsController extends Controller
 				}
 			}
 		}
-
-		if($user->ftu_level < 4)
-		{
-			$done = 3;
-	        $notDone = 3;
-    	}else{
-    		$done = 2;
-	        $notDone = 2;
-    	}
 
 		// display "show" page
 		return view('adverts.show', compact('advert','authorize','asEmployer','user','done','notDone'));

@@ -109,9 +109,6 @@ class CompanyProfileController extends Controller
             });
         }
 
-        //set success flash message
-        flash('Your company profile has been created. Now you can start on creating your first job advert', 'success');
-
         // redirect to dashboard
         return redirect('/adverts/create');
     }
