@@ -90,8 +90,17 @@ class AdvertsController extends Controller
 			}
 		}
 
+		if($user->ftu_level < 4)
+		{
+			$done = 3;
+	        $notDone = 3;
+    	}else{
+    		$done = 2;
+	        $notDone = 2;
+    	}
+
 		// display "show" page
-		return view('adverts.show', compact('advert', 'authorize', 'asEmployer'));
+		return view('adverts.show', compact('advert','authorize','asEmployer','user','done','notDone'));
 	}
 
 
@@ -110,7 +119,19 @@ class AdvertsController extends Controller
 			return redirect('/company/create');
 		}
 
-		return view('adverts.create', compact('user'));
+		if($user->ftu_level < 4)
+		{
+			// ftu level
+			$done = 1;
+        	$notDone = -2;
+    	}else{
+    		// advert level
+    		$done = 0;
+	        $notDone = -2;
+    	}
+		
+
+		return view('adverts.create', compact('user','done','notDone'));
 	}
 
 
@@ -151,7 +172,7 @@ class AdvertsController extends Controller
 		// what do we need to do? if the request validates, the body below of this method will be hit
 		// validate the form - DONE		
 		// persist the advert - DONE
-		$saveToDatabase = $employer->adverts()->create([
+		$advert = $employer->adverts()->create([
 		        'job_title' => $request->job_title,
 		        'salary'  => (float)$request->salary,
 		        'description'  => $request->description,
@@ -175,29 +196,31 @@ class AdvertsController extends Controller
 			$newSkill = new Skill;
 			$newSkill->skill = $skill;
 			$newSkill->save();
-			$saveToDatabase->skills()->attach($newSkill);
+			$advert->skills()->attach($newSkill);
 		}
 
 		switch ($saveLater)
 		{
 			case "true":
-				$saveToDatabase->ready_to_publish = 0;
-				$saveToDatabase->save();
+				$advert->ready_to_publish = 0;
+				$advert->save();
 				flash('Your advert has been successfully saved but not yet published', 'info');
-				return redirect('/my/adverts');
+				return redirect('/adverts');
 				break;
 			default:
-				$saveToDatabase->ready_to_publish = 1;
-				$saveToDatabase->save();
-				if($user->ftu_level === "lvl2")
+				$advert->ready_to_publish = 1;
+				$advert->save();
+				if($user->ftu_level < 4)
 				{
-					$user->ftu_level = "lvl3";
+					$user->ftu_level = 2;
 					$user->save();
+				}elseif($advert->advert_level < 3){
+					$advert->advert_level = 1;
+					$advert->save();
 				}
 		}
 
-		return redirect()->route('plan', [$saveToDatabase->id]);
-		//return redirect()->route('show', [$saveToDatabase->id,$saveToDatabase ->job_title]);
+		return redirect()->route('plan', [$advert->id]);
 	}
 
 
@@ -242,6 +265,7 @@ class AdvertsController extends Controller
         }
 
 		$advert->published = 1;
+		$advert->advert_level = 3;
 		$advert->save();
 
 		if($advert)
@@ -269,7 +293,6 @@ class AdvertsController extends Controller
 			        'created_at'  => $advert->created_at->toDateTimeString(),
 			        'updated_at'  => $advert->updated_at->toDateTimeString(),
 			        'employer_id'  => $advert->employer_id,
-			        'skill'  => $advert->skill,
 			        'category'  => $advert->category,
 			        'rate'  => $advert->rate,
 			        'oku_friendly'  => $advert->oku_friendly,
@@ -282,11 +305,10 @@ class AdvertsController extends Controller
 
 			if($object)
 			{
-				if($user->ftu_progress === "lv3")
-				{
-					$user->ftu_progress = "lvl4";
-					$user->save();
-				}
+				$user = $request->user();
+				$user->ftu_level = 4;
+				$user->save();
+
 				// set flash attribute and key. example --> flash('success message', 'flash_message_level')
 				flash('Your advert has been successfully published.', 'success');
 
@@ -393,12 +415,7 @@ class AdvertsController extends Controller
 		        'salary' => 'required|integer',
 	            'description' => 'required',           
 	            'location' => 'required',
-	            'street' => 'required',
-	            'city' => 'required',
-	            'zip' => 'required',
-	            'state' => 'required',
 	            'country' => 'required',
-	            'skill' => 'required',
 	            'category' => 'required',
 	            'rate' => 'required',
 	            'oku_friendly' => 'required',
@@ -418,7 +435,6 @@ class AdvertsController extends Controller
 			'zip' => $request->zip,
 			'state' => $request->state,
 			'country' => $request->country,
-			'skill'  => $request->skill,
 		    'category'  => $request->category,
 		    'rate'  => $request->rate,
 		    'oku_friendly'  => $request->oku_friendly,
@@ -432,7 +448,7 @@ class AdvertsController extends Controller
 			$newSkill = new Skill;
 			$newSkill->skill = $skill;
 			$newSkill->save();
-			$saveToDatabase->skills()->attach($newSkill);
+			$advert->skills()->attach($newSkill);
 		}
 
 		switch ($saveLater)
@@ -497,6 +513,9 @@ class AdvertsController extends Controller
 		        'objectID' => $advert->id,
 			]);
 
+			$advert->published = 1;
+			$advert->save();
+
 			if($object)
 			{
 				flash('Your advert has been successfully published.', 'success');
@@ -509,16 +528,10 @@ class AdvertsController extends Controller
 
 				return redirect()->back();
 			}
+
+		}else{
+			return redirect()->route('plan', [$id]);
 		}
-	}
-
-
-
-	public function myAdverts($id, $business_name)
-	{
-		$adverts = Adverts::find('employer_id', $id)->get();
-
-		return view('profiles.adverts', compact('adverts'));
 	}
 
 

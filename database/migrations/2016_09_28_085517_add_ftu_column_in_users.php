@@ -13,7 +13,7 @@ class AddFtuColumnInUsers extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->string('ftu_level')->nullable();
+            $table->integer('ftu_level')->unsigned();
         });
     }
 

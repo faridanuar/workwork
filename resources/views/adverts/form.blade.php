@@ -65,7 +65,7 @@
 			<div class="form-group">
 				<label for="country">Country:</label>
 				<select name="country" id="country" class="form-control">
-						<option value=""  disabled selected>Select a country</option>
+						<option value="Malaysia" selected>Malaysia</option>
 					@foreach ($countries::all() as $code => $name)
 						<option value="{{ $code }}">{{ $name }}</option>
 					@endforeach

@@ -8,6 +8,14 @@
         	@include('messages.flash')
         </div>
 
+        @if ($authorize === true)
+            @if($user->ftu_level < 4)
+                @include('messages.ftu_level')
+            @elseif($advert->advert_level < 3)
+                @include('messages.advert_level')
+            @endif
+        @endif
+
         <div class="panel panel-default">
             <div class="panel-body">
                 <h1 class="job-title">{{ $advert->job_title }}</h1>

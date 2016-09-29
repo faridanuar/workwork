@@ -41,7 +41,10 @@ class CompanyProfileController extends Controller
 
         $user = $request->user();
 
-        return view('profiles.company.company_create', compact('user'));
+        $done = 0;
+        $notDone = -3;
+
+        return view('profiles.company.company_create', compact('user','done','notDone'));
     }
 
 
@@ -73,7 +76,7 @@ class CompanyProfileController extends Controller
         ]);
 
         // user proceed to create advert
-        $user->ftu_level = "lvl2";
+        $user->ftu_level = 1;
 
         // 
         $user->save();

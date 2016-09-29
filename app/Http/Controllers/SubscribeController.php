@@ -40,7 +40,19 @@ class SubscribeController extends Controller
 	{
 		$user = $request->user();
 
-		return view('subscriptions.choose_plan', compact('id','user'));
+		if($user->ftu_level < 4)
+		{
+			// ftu level
+			$done = 2;
+        	$notDone = 1;
+    	}else{
+    		// advert level
+    		$done = 1;
+	        $notDone = 0;
+    	}
+		
+
+		return view('subscriptions.choose_plan', compact('id','user','done','notDone'));
 	}
 
 	
@@ -59,11 +71,11 @@ class SubscribeController extends Controller
 
 				flash('Sorry, the trial plan is not valid anymore');
 
-				return redirect()->route('plan', [$saveToDatabase->id]);
+				return redirect()->route('plan', [$id]);
 
 			}else{
 
-				$days = 7;
+				$days = 30;
 
 				$advert->plan_ends_at = Carbon::now()->addDays($days);
 
@@ -71,22 +83,36 @@ class SubscribeController extends Controller
 
 				$saved = $advert->save();
 
-				if($user->ftu_level === "lv3")
+				if($user->ftu_level < 4)
 				{
-					$user->ftu_level = "lvl4";
+					$user->ftu_level = 3;
 					$user->save();
+				}elseif($advert->advert_level < 3){
+					$advert->advert_level = 2;
+					$advert->save();
 				}
 			}
 
 			return redirect()->route('show', [$id,$advert->job_title]);
 		}
 
-		return view('subscriptions.checkout', compact('id','plan','user'));
+		if($user->ftu_level < 4)
+		{
+			// ftu level
+			$done = 2;
+        	$notDone = 1;
+    	}else{
+    		// advert level
+    		$done = 1;
+	        $notDone = 0;
+    	}
+
+		return view('subscriptions.checkout', compact('id','plan','user','done','notDone'));
 	}
 
 
 
-	protected function charge(Request $request, Search $search, $id)
+	protected function charge(Request $request, $id)
 	{
 		// fetch user authentication
 		$user = $request->user();
@@ -115,6 +141,10 @@ class SubscribeController extends Controller
 
 			}else{
 
+				flash('Checkout was unsuccessful, please try again later', 'error');
+
+				return redirect('/subscribe');
+
 			    foreach($result->errors->deepAll() AS $error){
 
 			        echo($error->code . ": " . $error->message . "\n");
@@ -135,8 +165,6 @@ class SubscribeController extends Controller
 	        	$advert->current_plan = $plan;
 
 	        	$advert->plan_ends_at = Carbon::now()->addDays($days);
-
-	        	$advert->published = 1;
 				break;
 
 			case "1_Month_Plan":
@@ -148,8 +176,6 @@ class SubscribeController extends Controller
 	        	$advert->current_plan = $plan;
 
 	        	$advert->plan_ends_at = Carbon::now()->addDays($days);
-
-	        	$advert->published = 1;
 				break;
 
 			default:
@@ -159,6 +185,16 @@ class SubscribeController extends Controller
 		}
         $saved = $advert->save();
 
+        if($user->ftu_level === 2)
+		{
+			$user->ftu_level = 3;
+			$user->save();
+		}elseif($advert->advert_level < 3){
+			$advert->advert_level = 2;
+			$advert->save();
+		}
+
+        /**
         if($saved)
         {
 	        $config = config('services.algolia');
@@ -195,12 +231,13 @@ class SubscribeController extends Controller
 			    $advert->id
 			);
 		}
+		*/
 
-        if($object)
+        if($saved)
         {
-        	flash('You have successfully purchased a new plan', 'success');
+        	flash('You have successfully purchased a new plan. check back your advert details before publishing', 'success');
 
-			return redirect('/dashboard');
+        	return redirect()->route('show', [$id,$advert->job_title]);
 			
         }else{
 
@@ -208,35 +245,6 @@ class SubscribeController extends Controller
 
 			return redirect('/subscribe');
         }
-
-		/*
-		if($user->subscribed('main')){
-
-			// change to a new plan
-			$subscribing = $user->subscription('main')->swap($plan);
-
-		}else{
-
-			// create a NEW subscribtion for the user
-			$subscribing = $user->newSubscription('main', $plan)->create($nonceFromTheClient, [
-			]);
-		}
-		
-
-		// check if subscribtion is a success
-		if($subscribing)
-		{
-			flash('you have successfully purchase a new plan', 'success');
-
-			return redirect('/dashboard');
-
-		}else{
-
-			flash('Checkout was unsuccessful, please check back your paymnent info and try again', 'error');
-
-			return redirect('/subscribe');
-		}
-		*/
 	}
 
 
@@ -263,4 +271,37 @@ class SubscribeController extends Controller
         'product' => 'WorkWork Subscription Plan',
         ]);
 	}
+	
+
+	/*
+	public function subscribe(Request $request, $id)
+	{
+		if($user->subscribed('main')){
+
+			// change to a new plan
+			$subscribing = $user->subscription('main')->swap($plan);
+
+		}else{
+
+			// create a NEW subscribtion for the user
+			$subscribing = $user->newSubscription('main', $plan)->create($nonceFromTheClient, [
+			]);
+		}
+		
+
+		// check if subscribtion is a success
+		if($subscribing)
+		{
+			flash('you have successfully purchase a new plan', 'success');
+
+			return redirect('/dashboard');
+
+		}else{
+
+			flash('Checkout was unsuccessful, please check back your paymnent info and try again', 'error');
+
+			return redirect('/subscribe');
+		}
+	}
+	*/
 }

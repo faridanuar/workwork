@@ -6,9 +6,7 @@
 	@include('messages.flash')
 </div>
 
-@if($user->ftu_level != 'completed')
-	<ul><li>Current</li><li>Not Done</li><li>Not Done</li><li>Not Done</li></ul>
-@endif
+@include('messages.ftu_level')
 
 <h1>Create Your Company Profile</h1>
 

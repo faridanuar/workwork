@@ -20,6 +20,13 @@
                         @if($requestTotal > 0)
                             You have {{ $requestTotal }} request! - <a href="/adverts">View</a>
                         @endif
+                        @if($user->ftu_level === 1)
+                            You haven't completed creating your first advert! - <a href="/adverts/create">Continue</a>
+                        @elseif($user->ftu_level === 2)
+                            You haven't completed creating your first advert! - <a href="/adverts">Continue</a>
+                        @elseif($user->ftu_level === 3)
+                            You haven't completed creating your first advert! - <a href="/adverts">Continue</a>
+                        @endif
                     @else
                         @if($responseTotal > 0)
                             You have {{ $responseTotal }} response! - <a href="/my/applications">View</a>

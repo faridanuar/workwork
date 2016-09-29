@@ -6,8 +6,10 @@
 	@include('messages.flash')
 </div>
 
-@if($user->ftu_level != 'completed')
-	<ul><li>Done</li><li>Current</li><li>Not Done</li><li>Not Done</li></ul>
+@if($user->ftu_level < 4)
+	@include('messages.ftu_level')
+@else
+	@include('messages.advert_level')
 @endif
 
 <!-- <body onbeforeunload="return popUp()"> -->

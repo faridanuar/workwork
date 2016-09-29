@@ -80,18 +80,10 @@ class AuthController extends Controller
 
         if($user->type === 'employer')
         {
-            $user->ftu_level = "lvl1";
-
-            $user->save();
-
             //assign user a roles with permissions using "assignRole" method from hasRoles trait
             $user->assignRole('employer');
 
         }elseif($user->type === 'job_seeker'){
-
-            $user->ftu_level = "lvl1";
-
-            $user->save();
 
             //assign user a roles with permissions using "assignRole" method from hasRoles trait
             $user->assignRole('job_seeker');

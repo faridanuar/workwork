@@ -13,7 +13,7 @@ class AddAdvertLevelColumnInAdverts extends Migration
     public function up()
     {
         Schema::table('adverts', function (Blueprint $table) {
-            $table->string('advert_level')->nullable();
+            $table->integer('advert_level')->unsigned();
         });
     }
 
