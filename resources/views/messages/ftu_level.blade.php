@@ -1,9 +1,11 @@
 <ul class="levels">
 @for($i = 0; $i < $done; $i++)
-	<li>Done,</li>
+	<li class="done">Done,</li>
 @endfor
-	<li>Current,</li>
+
+	<li class="current">Current,</li>
+
 @for($x = $notDone; $x < $done; $x++)
-	<li>Not Done,</li>
+	<li class="notdone">Not Done,</li>
 @endfor
 </ul>

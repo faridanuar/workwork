@@ -47,6 +47,16 @@ class Job_Seeker extends Model
         return $this->hasMany(Job_Seeker_Rating::class, 'job_seeker_id');
     }
 
+    /**
+    * Get categories assosicated with the given job seeker
+    *
+    *
+    */
+    public function categories()
+    {
+        return $this->belongsToMany(Category::class, 'category_jobSeeker', 'job_seeker_id')->withTimestamps();
+    }
+
     /*
     * referencing which table to use for this MODEL
     */

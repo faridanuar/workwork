@@ -13,7 +13,7 @@
 	<p class="help-block">You can choose hourly, daily or monthly</p>
 	<div class="input-group ww-salary-input">
 		<span class="input-group-addon ww-salary-input--currency">RM</span>
-		<input type="text" name="salary" id="salary" class="form-control ww-salary-input--amount" value="{{ old('salary') }}" placeholder="0" inputmode="numeric">
+		<input type="number" name="salary" id="salary" class="form-control ww-salary-input--amount" value="{{ old('salary') }}" placeholder="0" inputmode="numeric">
 		<span class="input-group-addon ww-salary-input--rate">
 			<label class="radio-inline"><input type="radio" aria-label="..." name="rate" id="rate0" value="hour" checked> Hourly</label>
 			<label class="radio-inline"><input type="radio" aria-label="..." name="rate" id="rate1" value="day"> Daily</label>

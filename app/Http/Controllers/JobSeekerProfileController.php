@@ -8,6 +8,7 @@ use Mail;
 
 use App\User;
 use App\Advert;
+use App\Category;
 use App\Application;
 use App\Job_Seeker;
 use App\Job_Seeker_Rating;
@@ -93,6 +94,45 @@ class JobSeekerProfileController extends Controller
 
         // redirect to home
         return redirect('/dashboard');
+    }
+
+
+
+    public function preferCategory(Request $request)
+    {
+        return view('profiles.profile_info.preferred_category');
+    }
+
+
+
+    public function getCategory(Request $request)
+    {
+        $jobSeeker = $request->user()->jobSeeker;
+
+        $categories = $request->job_category;
+
+        foreach($categories as $category)
+        {
+            $jobCategory = Category::where('name', $category)->get();
+            $jobSeeker->categories()->attach($jobCategory);
+        }
+
+        return redirect('/recommended-jobs');
+    }
+
+
+
+    public function recommendedJobs(Request $request)
+    {
+        $user = $request->user();
+
+        $interest = $user->jobSeeker->categories;
+
+        dd($interest);
+
+        $adverts = Advert::where('category', 'General Work')->orWhere('name', 'John')->take(5)->get();
+
+        return view('profiles.profile_info.recommended_jobs', compact('adverts'));
     }
 
 

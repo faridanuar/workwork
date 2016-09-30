@@ -11,7 +11,7 @@ class Skill extends Model
 	];
 
    /**
-	*
+	* retrieve the advert related to this skill
 	*
 	*/
     public function adverts()

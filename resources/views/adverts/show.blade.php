@@ -135,6 +135,9 @@
                     <!-- <span class="label label-default">{{ $advert->skill }}</span> -->
                     <div class="skill-description">
                         {{ $advert->skill }}
+                        @foreach($advert->skills as $talent)
+                            {{$talent->skill}},
+                        @endforeach
                     </div>
                 </div>
                 <div class="location">

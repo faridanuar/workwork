@@ -12,7 +12,7 @@
 	<label for="salary">Salary:</label>
 	<div class="input-group">
 		<span class="input-group-addon">RM</span>
-		<input type="text" name="salary" id="salary" class="form-control" value="{{ $advert->salary }}">
+		<input type="number" name="salary" id="salary" class="form-control" value="{{ $advert->salary }}">
 		<span class="input-group-addon">hourly</span>
 </div>
 
@@ -53,7 +53,7 @@
 		class="form-control"
 		id="address-input"
 	   	name="location"
-	    value="{{ old('location') }}"
+	    value="{{ $advert->location }}"
 	    placeholder="Work Location?" 
 	 />
 	<!-- <input type="text" name="location" id="location" class="form-control" value="{{ $advert->location }}"> -->
@@ -69,7 +69,7 @@
 <div class="form-group">
 	<label for="city">City:</label>
 	<input type="text" name="city" id="city" class="form-control" value="{{ $advert->city }}">
-</div> 
+</div>
 
 <div class="form-group">
 	<label for="zip">Zip:</label>
@@ -95,7 +95,7 @@
 	<label for="skill">Type of skill required:</label>
 	<div class="form-group">
 		<label for="skill">(Example: Teamwork, Multitasking)</label>
-		<input type="text" name="skills" id="skills" value="@foreach($advert->skills as $skill) {{ $skill->skill }} @endforeach" data-role="tagsinput" />
+		<input type="text" name="skills" id="skills" value="@foreach($advert->skills as $skill) {{ $skill->skill }}, @endforeach" data-role="tagsinput" />
 	</div>
 </div>
 
