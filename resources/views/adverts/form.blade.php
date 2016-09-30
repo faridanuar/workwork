@@ -94,14 +94,14 @@
 	<input type="text" name="skill" id="skill" class="form-control" value="{{ old('skill') }}" maxlength="50" placeholder="e.g. Teamwork, Multitasking"> -->
 	<div class="form-group">
 		<label for="skill">(Example: Teamwork, Multitasking)</label>
-		<input type="text" name="skills" id="skills" value="" data-role="tagsinput" />
+		<input type="text" name="skills" id="skills" value="{{ old('skills') }}" data-role="tagsinput" />
 	</div>
 </div>
 
 <div class="form-group">
 	<label for="category">Category</label>
 	<select name="category" id="category" class="form-control">
-			<option value=""  disabled selected>Select a category</option>
+			<option value="{{ old('description') }}"  disabled selected>{{ old('description') }}</option>
 		@foreach ($categories::all() as $code => $name)
 			<option value="{{ $code }}">{{ $name }}</option>
 		@endforeach
