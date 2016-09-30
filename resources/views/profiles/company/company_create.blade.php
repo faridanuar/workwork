@@ -23,7 +23,7 @@
 			</ul>
 		</div>
 		@endif
-		
+
 		@include('profiles.company.company_create_form')
 
 	</form>
