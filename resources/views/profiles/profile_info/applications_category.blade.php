@@ -3,7 +3,7 @@
 <div>
 <a href="/my/applications" id="urlPending">Pending List</a> ||
 <a href="/my/applications/rejected" id="urlRejected">Rejected List</a> || 
-<a href="#" 
+<a href="/my/applications/accepted" 
 	id="urlAccepted" onclick="setAsViewed()">Accepted List 
 	@if(count($jobSeeker->applications
 			->where('status', 'ACCEPTED FOR INTERVIEW')
