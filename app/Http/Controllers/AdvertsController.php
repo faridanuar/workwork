@@ -123,7 +123,7 @@ class AdvertsController extends Controller
 		{
 			// ftu level
 			$done = 1;
-        	$notDone = -2;
+        	$notDone = -1;
     	}else{
     		// advert level
     		$done = 0;
