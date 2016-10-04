@@ -33,9 +33,10 @@
 
                     <!-- Authentication Links -->
                     @if (Auth::guest())
-                        <li><a class="btn btn-default navbar-btn navbar-btn-ww navbar-btn-ww--cta" href="{{ url('/plans') }}">@lang('navigation.create')</a></li>
+                        <li><a class="btn btn-default navbar-btn navbar-btn-ww" href="{{ url('/plans') }}">@lang('navigation.price')</a></li>
                         <li><a class="btn btn-default navbar-btn navbar-btn-ww" href="{{ url('/login') }}">@lang('navigation.login')</a></li>
                         <li><a class="btn btn-default navbar-btn navbar-btn-ww" href="{{ url('/register') }}">@lang('navigation.signup')</a></li>
+                        <li><a class="btn btn-default navbar-btn navbar-btn-ww navbar-btn-ww--cta" href="{{ url('/register') }}">@lang('navigation.create')</a></li>
                     @else
                         <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
@@ -44,7 +45,6 @@
 
                             <ul class="dropdown-menu" role="menu">
                                 <li><a href="">Account</a></li>
-                                <li><a href="{{ url('/plans') }}">Pricing</a></li>
                                 <li><a href="{{ url('/logout') }}"><i class="fa fa-btn fa-sign-out"></i>@lang('navigation.logout')</a></li>
                             </ul>
                         </li>
@@ -83,9 +83,9 @@
                             <a href="/my/applications" class="auth-nav-item" aria-selected="{{set_active('my/applications')}}">@lang('navigation.my_applications')</a>
                         </li>
                 @endcan
-                <li>
+                {{--<li>
                     <a href="" class="auth-nav-item" aria-selected="{{set_active('')}}">@lang('navigation.account')</a>
-                </li>
+                </li>--}}
             </ul>
         </div>
     </nav>

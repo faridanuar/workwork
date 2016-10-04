@@ -14,7 +14,7 @@
 
 <!-- <body onbeforeunload="return popUp()"> -->
 
-<div class="panel-ww-advert panel panel-default center-block">
+<div class="panel-ww-600 panel panel-default center-block">
     <div class="panel-heading panel-heading-ww">New Part-time Ad</div>
     <div class="panel-body">
 	    <form method="post" action="/" enctype="multipart/form-data">

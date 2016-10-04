@@ -3,6 +3,7 @@
 return [
     'toggle' => 'Toggle Navigation',
     'create' => 'Create New Part-time Ad',
+    'price' => 'Price',
     'login' => 'Log In',
     'signup' => 'Sign Up',
     'logout' => 'Log Out',

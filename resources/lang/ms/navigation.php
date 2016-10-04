@@ -3,6 +3,7 @@
 return [
     'toggle' => 'Togol Navigasi',
     'create' => 'Reka Iklan Baru',
+    'price' => 'Harga',
     'login' => 'Log Masuk',
     'signup' => 'Daftar',
     'logout' => 'Log Keluar',

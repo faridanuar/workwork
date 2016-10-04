@@ -7,8 +7,11 @@ $advert-label-color: #A36500;
 $fancy-font: 'Josefin Slab', serif;
 
 // App Styles
-body { padding-top: 90px; }
-body.auth-body { padding-top: 134px; }
+body { padding-top: 90px; background: #F1F1F1; }
+body.auth-body {
+    padding-top: 104px;
+    @media (min-width: 768px) { padding-top: 134px; }
+}
 
 // Navigation
 .ww-navbar {
@@ -57,8 +60,11 @@ body.auth-body { padding-top: 134px; }
             color: white;
             position: relative;
             float: left;
-            padding: 14px 14px 18px 14px;
+            padding: 5px 7px 10px 7px;
             margin-top: 8px;
+            font-size: 12px;
+
+            @media (min-width: 768px) { font-size: 14px; padding: 14px 14px 18px 14px; }
 
             &:hover { text-decoration: none; }
 
@@ -66,10 +72,12 @@ body.auth-body { padding-top: 134px; }
                 position: absolute;
                 content: '';
                 bottom: 0;
-                left: 14px;
-                right: 14px;
+                left: 7px;
+                right: 7px;
                 height: 4px;
                 background: #FFDC10;
+
+                @media (min-width: 768px) { left: 14px; right: 14px; }
             }
         }
     }
@@ -125,7 +133,7 @@ body.auth-body { padding-top: 134px; }
 }
 
 // Adverts - New
-.panel-ww-advert {
+.panel-ww-600 {
     max-width: 600px;
 }
 
@@ -432,15 +440,20 @@ FTU styling section
         &.level- {
             &nope {
                 &::before {background-color: #d6d6d6; }
-                .dot { background-color: #d6d6d6; }
+                .dot {
+                    background-color: #d6d6d6;
+                    background-image: url('/images/icon-check-mark.png');
+                    background-repeat: no-repeat;
+                    background-size: 30px;
+                }
             }
             &current {
                 &::before {background-color: #7ED321; }
                 .dot {
                     background-color: #7ED321;
-                    // background-image: url('/images/icon-check-mark.png');
-                    // background-repeat: no-repeat;
-                    // background-size: 30px;
+                    background-image: url('/images/icon-check-mark.png');
+                    background-repeat: no-repeat;
+                    background-size: 30px;
                 }
             }
             &done {
@@ -467,6 +480,31 @@ FTU styling section
         border-radius: 50%;
     }
 }
+
+.ftu-intro {
+    font-size: 24px;
+    text-align: center;
+    padding: 10px 0;
+}
+
+.ftu-arrow {
+    position: absolute;
+    width: 33px;
+    height: 21px;
+    top: -21px;
+    margin-left: auto;
+    margin-right: auto;
+    left: 0;
+    right: 0;
+    background-image: url('/images/ftu-arrow.png');
+    background-size: 33px;
+}
+
+.ftu-panel {
+    position: relative;
+    margin-top: 21px;
+}
+
 /**********************************
 Sign up and log in
 **********************************/
@@ -547,3 +585,12 @@ Sign up and log in
     h4 { margin: 40px 0 10px; }
 }
 
+// Form UI
+.form-group {
+    margin-bottom: 30px;
+}
+
+.help-block {
+    margin-top: -5px;
+    font-size: 12px;
+}
