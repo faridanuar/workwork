@@ -45,7 +45,6 @@
 
                             <ul class="dropdown-menu" role="menu">
                                 <li><a href="">Account</a></li>
-                                <li><a href="{{ url('/plans') }}">Pricing</a></li>
                                 <li><a href="{{ url('/logout') }}"><i class="fa fa-btn fa-sign-out"></i>@lang('navigation.logout')</a></li>
                             </ul>
                         </li>
@@ -84,9 +83,9 @@
                             <a href="/my/applications" class="auth-nav-item" aria-selected="{{set_active('my/applications')}}">@lang('navigation.my_applications')</a>
                         </li>
                 @endcan
-                <li>
+                {{--<li>
                     <a href="" class="auth-nav-item" aria-selected="{{set_active('')}}">@lang('navigation.account')</a>
-                </li>
+                </li>--}}
             </ul>
         </div>
     </nav>

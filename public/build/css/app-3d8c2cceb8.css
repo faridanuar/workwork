@@ -5735,10 +5735,14 @@ button.close {
   height: 39px; }
 
 body {
-  padding-top: 90px; }
+  padding-top: 90px;
+  background: #F1F1F1; }
 
 body.auth-body {
-  padding-top: 134px; }
+  padding-top: 104px; }
+  @media (min-width: 768px) {
+    body.auth-body {
+      padding-top: 134px; } }
 
 .ww-navbar {
   background-color: #FFDC10;
@@ -6151,7 +6155,8 @@ FTU styling section
 
 .ftu-intro {
   font-size: 24px;
-  text-align: center; }
+  text-align: center;
+  padding: 10px 0; }
 
 .ftu-arrow {
   position: absolute;
@@ -6230,5 +6235,12 @@ Sign up and log in
 
 .ww-user-type h4 {
   margin: 40px 0 10px; }
+
+.form-group {
+  margin-bottom: 30px; }
+
+.help-block {
+  margin-top: -5px;
+  font-size: 12px; }
 
 /*# sourceMappingURL=app.css.map */
