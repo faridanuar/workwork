@@ -36,24 +36,39 @@ autocomplete('#search-box', { hint: false }, [
   });
 
 
-//initialise instant search
-var search = instantsearch({
-  appId: itsAppID,
-	apiKey: itsApiKey,
-	indexName: itsIndex,
-	urlSync: true,
-  searchParameters: {
-    facetsRefinements: {
-      group: ['All']
+if( '{{ $exist }}' != false )
+{
+  // array attribute in a variable
+  //var recommend = "";
+
+  //initialise instant search
+  var search = instantsearch({
+    appId: itsAppID,
+  	apiKey: itsApiKey,
+  	indexName: itsIndex,
+  	urlSync: true,
+    searchParameters: {
+      facetsRefinements: {
+        group: ['All']
+      },
+      disjunctiveFacetsRefinements: {
+        category: recommend
+      },
+      // Add to "facets" all attributes for which you
+      // do NOT have a widget defined
+      facets: ['group']
     },
-    disjunctiveFacetsRefinements: {
-      category: ['Others']
-    },
-    // Add to "facets" all attributes for which you
-    // do NOT have a widget defined
-    facets: ['group']
-  },
-});
+  });
+
+}else{
+  //initialise instant search
+  var search = instantsearch({
+    appId: itsAppID,
+    apiKey: itsApiKey,
+    indexName: itsIndex,
+    urlSync: true,
+  });
+}
 
 
 
@@ -90,6 +105,18 @@ var noResultsTemplate =
 	'<div class"noResults">'+
 		'@lang("adverts.no_results")' +
 	'</div>';
+
+
+
+search.addWidget(
+  instantsearch.widgets.clearAll({
+    container: '#clear-all',
+    templates: {
+      link: 'Clear All'
+    },
+    autoHideContainer: false
+  })
+);
 
 
 

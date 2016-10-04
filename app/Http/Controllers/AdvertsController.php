@@ -33,8 +33,22 @@ class AdvertsController extends Controller
 	/**
 	 * Index - list of adverts
 	 */
-	public function index()
+	public function index(Request $request)
 	{
+		if($request->user())
+		{
+			if($request->user()->jobSeeker){
+				$plucked = $request->user()->jobSeeker->categories->pluck('name');
+				$categories = $plucked->all();
+				$exist = false;
+				//dd($categories);
+			}else{
+				$exist = false;
+			}
+		}else{
+			$exist = false;
+		}
+
 		$config = config('services.algolia');
 
 		$id = $config['app_id'];
@@ -43,7 +57,7 @@ class AdvertsController extends Controller
 		$index_asc = $config['index_asc'];
 		$index_desc = $config['index_desc']; 
 		
-		return view('adverts.index', compact('id', 'api', 'index', 'index_asc', 'index_desc'));
+		return view('adverts.index', compact('id', 'api', 'index', 'index_asc', 'index_desc', 'categories', 'exist'));
 	}
 
 
@@ -516,6 +530,7 @@ class AdvertsController extends Controller
 		        'published' => $advert->published,
 		        //'schedule_id' => $advert->schedule,
 		        //'schedule' => $advert->schedule,
+		        'avatar' => $advert->avatar,
 		        'objectID' => $advert->id,
 			]);
 

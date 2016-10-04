@@ -20,7 +20,13 @@
 			<!-- todo: Filter -->
 			<div class="panel-body">
 
-			@lang('adverts.filter')
+			<div class="form-group">
+				@lang('adverts.filter')
+			</div>
+
+			<div class="form-group">
+				<div id="clear-all"></div>
+			</div>
 
 			<div class="form-group">
 			<h3>@lang('adverts.salary')</h3>
