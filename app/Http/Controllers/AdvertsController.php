@@ -293,12 +293,13 @@ class AdvertsController extends Controller
 			        'created_at'  => $advert->created_at->toDateTimeString(),
 			        'updated_at'  => $advert->updated_at->toDateTimeString(),
 			        'employer_id'  => $advert->employer_id,
+			        'group' => 'All',
 			        'category'  => $advert->category,
 			        'rate'  => $advert->rate,
 			        'oku_friendly'  => $advert->oku_friendly,
-			        'open' => $advert->open,
+			        'published' => $advert->published,
 			        'avatar'  => $advert->avatar,
-			        'schedule_id'  => $advert->schedule_id,
+			        //'schedule_id'  => $advert->schedule_id,
 			    ],
 			    $advert->id
 			);
@@ -483,13 +484,16 @@ class AdvertsController extends Controller
 
 		if($advert->published != 0){
 
+			$advert->published = 1;
+			$advert->save();
+
 			$config = config('services.algolia');
 
 			$index = $config['index'];
 		
 			$indexFromAlgolia = $search->index($index);
 
-			$object = $indexFromAlgolia->partialUpdateObject([
+			$object = $indexFromAlgolia->saveObject([
 		    	'id' => $advert->id,
 		        'job_title' => $advert->job_title,
 		        'salary' => (float)$advert->salary,
@@ -504,17 +508,16 @@ class AdvertsController extends Controller
 		        'created_at' => $advert->created_at->toDateTimeString(),
 		        'updated_at' => $advert->updated_at->toDateTimeString(),
 		        'employer_id' => $advert->employer_id,
-		        'skill' => $advert->skill,
+		        //'skill' => $advert->skill,
+		        'group' => 'All',
 		        'category' => $advert->category,
 		        'rate' => $advert->rate,
 		        'oku_friendly' => $advert->oku_friendly,
-		        'published' => $advert->open,
-		        'schedule' => $advert->schedule,
+		        'published' => $advert->published,
+		        //'schedule_id' => $advert->schedule,
+		        //'schedule' => $advert->schedule,
 		        'objectID' => $advert->id,
 			]);
-
-			$advert->published = 1;
-			$advert->save();
 
 			if($object)
 			{

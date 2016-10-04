@@ -45,6 +45,8 @@ class JobSeekerProfileController extends Controller
             'contact' => $request->contact,
         ]);
 
+        $user->ftu_level = 1;
+
         $user->save();
 
 
@@ -89,11 +91,8 @@ class JobSeekerProfileController extends Controller
             });
         }
 
-        // set flash attribute and key. example --> flash('success message', 'flash_message_level')
-        flash('Your profile has been created. Welcome to WorkWork, Job Seeker!', 'success');
-
         // redirect to home
-        return redirect('/dashboard');
+        return redirect('/preferred-category');
     }
 
 

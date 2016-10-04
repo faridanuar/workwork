@@ -235,7 +235,7 @@ class SubscribeController extends Controller
 
         if($saved)
         {
-        	flash('You have successfully purchased a new plan. check back your advert details before publishing', 'success');
+        	flash('You have successfully purchased a new plan. check back your advert details before publishing', 'info');
 
         	return redirect()->route('show', [$id,$advert->job_title]);
 			

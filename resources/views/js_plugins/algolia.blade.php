@@ -38,10 +38,21 @@ autocomplete('#search-box', { hint: false }, [
 
 //initialise instant search
 var search = instantsearch({
-	appId: itsAppID,
+  appId: itsAppID,
 	apiKey: itsApiKey,
 	indexName: itsIndex,
-	urlSync: true
+	urlSync: true,
+  searchParameters: {
+    facetsRefinements: {
+      group: ['All']
+    },
+    disjunctiveFacetsRefinements: {
+      category: ['Others']
+    },
+    // Add to "facets" all attributes for which you
+    // do NOT have a widget defined
+    facets: ['group']
+  },
 });
 
 
