@@ -6116,10 +6116,7 @@ FTU styling section
     .levels > li.level-current::before {
       background-color: #7ED321; }
     .levels > li.level-current .dot {
-      background-color: #7ED321;
-      background-image: url("/images/icon-check-mark.png");
-      background-repeat: no-repeat;
-      background-size: 30px; }
+      background-color: #7ED321; }
     .levels > li.level-done::before {
       background-color: #7ED321; }
     .levels > li.level-done .dot {
