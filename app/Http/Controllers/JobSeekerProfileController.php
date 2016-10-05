@@ -10,9 +10,9 @@ use App\User;
 use App\Advert;
 use App\Category;
 use App\Application;
-use App\Job_Seeker;
-use App\Job_Seeker_Rating;
-use App\Employer_Rating;
+use App\JobSeeker;
+use App\JobSeekerRating;
+use App\EmployerRating;
 
 
 use App\Http\Requests;
@@ -30,7 +30,10 @@ class JobSeekerProfileController extends Controller
     {
         $user = $request->user();
 
-        return view('profiles.profile_info.profile_create', compact('user'));
+        $done = 0;
+        $notDone = -1;
+
+        return view('profiles.profile_info.profile_create', compact('user','done','notDone'));
     }
 
 
@@ -38,21 +41,17 @@ class JobSeekerProfileController extends Controller
     public function store(Request $request)
     {
         $user = $request->user();
-
         $user->update([
             // update user info
             'name' => $request->name,
             'contact' => $request->contact,
         ]);
-
         $user->ftu_level = 1;
-
         $user->save();
 
 
         // create a new user_id and fields and store it in jobseekers table
         $jobSeeker = $user->jobSeeker()->create([
-
             // 'column' => request->'field'
             'age' => $request->age,
             'location' => $request->location,
@@ -99,14 +98,26 @@ class JobSeekerProfileController extends Controller
 
     public function preferCategory(Request $request)
     {
-        return view('profiles.profile_info.preferred_category');
+        if(count($request->user()->jobSeeker->categories) != 0)
+        {
+            return redirect('/');
+        }
+
+        $done = 1;
+        $notDone = 1;
+
+        return view('profiles.profile_info.preferred_category',compact('done','notDone'));
     }
 
 
 
     public function getCategory(Request $request)
     {
-        $jobSeeker = $request->user()->jobSeeker;
+        $user = $request->user();
+        $user->ftu_level = 2;
+        $user->save();
+
+        $jobSeeker = $user->jobSeeker;
 
         $categories = $request->job_category;
 
@@ -116,31 +127,17 @@ class JobSeekerProfileController extends Controller
             $jobSeeker->categories()->attach($jobCategory);
         }
 
-        return redirect('/recommended-jobs');
-    }
-
-
-
-    public function recommendedJobs(Request $request)
-    {
-        $user = $request->user();
-
-        $interest = $user->jobSeeker->categories;
-
-        dd($interest);
-
-        $adverts = Advert::where('category', 'General Work')->orWhere('name', 'John')->take(5)->get();
-
-        return view('profiles.profile_info.recommended_jobs', compact('adverts'));
+        flash('Welcome to WorkWork Job Seeker!','success');
+        return redirect('/');
     }
 
 
 
     public function profileInfo(Request $request, $id)
     {
-    	$profileInfo = Job_Seeker::find($id);
+    	$profileInfo = JobSeeker::find($id);
 
-        $ratings = $profileInfo->ownRating->count();
+        $ratings = $profileInfo->ownRatings->count();
 
         $avatar = $profileInfo->user->avatar;
 
@@ -161,7 +158,7 @@ class JobSeekerProfileController extends Controller
 
         }else{
 
-            $average = $profileInfo->ownRating->avg('rating');
+            $average = $profileInfo->ownRatings->avg('rating');
         }
 
         if($user){
@@ -243,7 +240,7 @@ class JobSeekerProfileController extends Controller
 
         $jobSeeker = $user->jobSeeker;
 
-        $rating = new Employer_Rating;
+        $rating = new EmployerRating;
 
         $rating->rating = $request->star;
 
@@ -266,9 +263,9 @@ class JobSeekerProfileController extends Controller
 
     public function jobSeekerReview($id)
     {
-        $jobSeeker = Job_Seeker::find($id);
+        $jobSeeker = JobSeeker::find($id);
 
-        $userReviews = $jobSeeker->ownRating()->paginate(5);
+        $userReviews = $jobSeeker->ownRatings()->paginate(5);
 
         return view('profiles.profile_info.profile_reviews', compact('userReviews'));
     }

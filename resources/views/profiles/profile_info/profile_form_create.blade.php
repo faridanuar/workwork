@@ -8,13 +8,13 @@
 </div>
 
 <div class="form-group">
-	<label for="business_category">Age:</label>
-	<input type="text" name="age" id="age" class="form-control" value="{{ old('age') }}" required>
+	<label for="contact">Contact:</label>
+	<input type="number" name="contact" id="contact" class="form-control" value="{{ $user->contact }}" required>
 </div>
 
 <div class="form-group">
-	<label for="contact">Contact:</label>
-	<input type="text" name="contact" id="contact" class="form-control" value="{{ $user->contact }}" required>
+	<label for="business_category">Age:</label>
+	<input type="number" name="age" id="age" min="1" class="form-control" value="{{ old('age') }}" required>
 </div>
 
 

@@ -1,9 +1,3 @@
-<script src="https://cdn.jsdelivr.net/algoliasearch/3/algoliasearch.min.js"></script>
-
-<script src="https://cdn.jsdelivr.net/autocomplete.js/0/autocomplete.min.js"></script>
-
-<script src="https://cdn.jsdelivr.net/instantsearch.js/1/instantsearch.min.js"></script>
-
 <!-- this configuration uses algolia javascript plugin -->
 <script>
 var itsAppID = '{{ $id }}';
@@ -27,7 +21,7 @@ autocomplete('#search-box', { hint: false }, [
           	'<div class="hits">'+
           		'<span class="job_title">' + suggestion._highlightResult.job_title.value + '</span>' +
           	'</div>'
-          	);
+          );
         }
       }
     }
@@ -36,10 +30,11 @@ autocomplete('#search-box', { hint: false }, [
   });
 
 
-if( '{{ $exist }}' != false )
+if( '{{ $categories }}' != false )
 {
   // array attribute in a variable
-  //var recommend = "";
+  var string = '{{ $categories }}';
+  var recommend = string.split(",");
 
   //initialise instant search
   var search = instantsearch({

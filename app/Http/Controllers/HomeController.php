@@ -90,18 +90,14 @@ class HomeController extends Controller
         {
             // set user role in a variable
             $role = $user->employer;
-
             $requests = $role->applications->where('status', 'PENDING');
-
             $requestTotal = count($requests);
 
         }elseif($user->jobSeeker){
 
             // set user role in a variable
             $role = $user->jobSeeker;
-
             $responses = $role->applications->where('responded', 1)->where('viewed', 0);
-
             $responseTotal = count($responses);
         }else{
             $role = "";
@@ -110,7 +106,7 @@ class HomeController extends Controller
         }
 
         // return user to home dashboard
-        return view('home', compact('role','user','photo','requestTotal','responseTotal'));
+        return view('dashboard', compact('role','user','photo','requestTotal','responseTotal'));
     }
 
 

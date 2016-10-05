@@ -6,6 +6,8 @@
 		@include('messages.flash')
 	</div>
 
+	@include('messages.ftu_level')
+
 	<h1>Create Your Profile</h1>
 
 	<hr>

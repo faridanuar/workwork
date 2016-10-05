@@ -22,14 +22,32 @@
 
     <title>WorkWork - portal pencarian kerja part-time</title>
 
+    <!-- plugins -->
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+
+    <!-- Algolia plugins -->
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/algoliasearch/3/algoliasearch.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/autocomplete.js/0/autocomplete.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/instantsearch.js/1/instantsearch.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/places.js/1/places.min.js"></script>
+
+    <!-- Dropzone plugins -->
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/4.3.0/dropzone.js"></script>
+
+    <!-- Bootstrap-tagsinput plugins -->
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tagsinput/0.8.0/bootstrap-tagsinput.min.js"></script>
 
     <!-- Styles -->
     <link rel="stylesheet" href="{{ elixir('css/app.css') }}" media="screen" charset="utf-8">
     <link rel="shortcut icon" href="/images/favicon.png" type="image/png">
 
-    <!-- Plugin Styles -->
+    <!-- Algolia Stylesheet -->
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/instantsearch.js/1/instantsearch.min.css">
+
+    <!-- Dropzone Stylesheet -->
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/4.3.0/dropzone.css">
+
+    <!-- Bootstrap-tagsinput Stylesheet -->
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tagsinput/0.8.0/bootstrap-tagsinput.css">
 
 </head>
@@ -40,6 +58,7 @@
 <body id="@yield('body-id')">
 @endif
     @include('layouts.navigation')
+    @include('js_plugins.algolia_global')
 
     <div class="container">
         @yield('content')

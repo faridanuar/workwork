@@ -39,7 +39,7 @@ class User extends Authenticatable
      */
     public function jobSeeker()
     {
-        return $this->hasOne(Job_Seeker::class);
+        return $this->hasOne(JobSeeker::class);
     }
 
     public function employer()

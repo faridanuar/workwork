@@ -4,7 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Employer_Rating extends Model
+class EmployerRating extends Model
 {
     /**
      * Fillable fields for an application.
@@ -28,7 +28,7 @@ class Employer_Rating extends Model
 
     public function jobSeeker()
     {
-        return $this->belongsTo(Job_Seeker::class);
+        return $this->belongsTo(JobSeeker::class);
     }
 
     /*

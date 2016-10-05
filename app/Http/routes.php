@@ -96,8 +96,6 @@ Route::get('/preferred-category', 'JobSeekerProfileController@preferCategory');
 
 Route::post('/selected-category', 'JobSeekerProfileController@getCategory');
 
-Route::get('/recommended-jobs', 'JobSeekerProfileController@recommendedJobs');
-
 // ajax post url
 Route::post('/set-as-viewed', 'JobSeekerProfileController@setAsViewed');
 

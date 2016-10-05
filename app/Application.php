@@ -19,7 +19,7 @@ class Application extends Model
 
     public function jobSeeker()
     {
-    	return $this->belongsTo(Job_Seeker::class);
+    	return $this->belongsTo(JobSeeker::class);
     }
 
     public function advert()

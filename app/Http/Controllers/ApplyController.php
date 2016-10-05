@@ -9,7 +9,7 @@ use Services_Twilio;
 
 use App\User;
 use App\Advert;
-use App\Job_Seeker;
+use App\JobSeeker;
 use App\Application;
 use App\Http\Requests;
 use App\Http\Requests\ApplicationRequest;
@@ -127,7 +127,7 @@ class ApplyController extends Controller
 		    // Step 4: make an array of people we know, to send them a message. 
 		    // Feel free to change/add your own phone number and name here.
 		    $people = array(
-		    	"+60176613069" => $user->name,
+		    	"0176613069" => $user->name,
 		       // "+6$contact" => $user->name,
 		        //"+14158675310" => "Boots",
 		        //"+14158675311" => "Virgil",

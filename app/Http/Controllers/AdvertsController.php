@@ -40,13 +40,13 @@ class AdvertsController extends Controller
 			if($request->user()->jobSeeker){
 				$plucked = $request->user()->jobSeeker->categories->pluck('name');
 				$categories = $plucked->all();
-				$exist = false;
+				$categories = implode(",", $categories);
 				//dd($categories);
 			}else{
-				$exist = false;
+				$categories = false;
 			}
 		}else{
-			$exist = false;
+			$categories = false;
 		}
 
 		$config = config('services.algolia');
@@ -57,7 +57,7 @@ class AdvertsController extends Controller
 		$index_asc = $config['index_asc'];
 		$index_desc = $config['index_desc']; 
 		
-		return view('adverts.index', compact('id', 'api', 'index', 'index_asc', 'index_desc', 'categories', 'exist'));
+		return view('adverts.index', compact('id', 'api', 'index', 'index_asc', 'index_desc', 'categories'));
 	}
 
 

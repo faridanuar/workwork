@@ -1,5 +1,3 @@
-
-
 <nav class="navbar ww-navbar navbar-fixed-top">
 
         <div class="container-fluid">
@@ -17,6 +15,11 @@
                 <a class="navbar-brand" href="{{ url('/') }}">
                     <img alt="WorkWork" src="/images/logo-workwork.png" height="25" width="196">
                 </a>
+
+                 <!-- global searchbox -->
+                <div class="form-group">
+                    <input type="text" class="form-control" id="global-search-box" />
+                </div>
             </div>
 
             <div class="collapse navbar-collapse" id="app-navbar-collapse">

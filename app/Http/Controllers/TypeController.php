@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\User;
 use App\Employer;
-use App\Job_Seeker;
+use App\JobSeeker;
 
 use Illuminate\Http\Request;
 

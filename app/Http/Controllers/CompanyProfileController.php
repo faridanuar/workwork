@@ -15,9 +15,9 @@ use \Braintree_Transaction;
 
 use App\Advert;
 use App\Employer;
-use App\job_Seeker;
-use App\Job_Seeker_Rating;
-use App\Employer_Rating;
+use App\jobSeeker;
+use App\JobSeekerRating;
+use App\EmployerRating;
 use App\Application;
 
 use App\Contracts\Search;
@@ -157,7 +157,7 @@ class CompanyProfileController extends Controller
 
             if($jobSeeker)
             {
-                $haveRating = Employer_Rating::where('employer_id', $id)->where('job_seeker_id', $jobSeeker->id)->first();
+                $haveRating = EmployerRating::where('employer_id', $id)->where('job_seeker_id', $jobSeeker->id)->first();
 
                 if($haveRating === null){
 
@@ -344,7 +344,7 @@ class CompanyProfileController extends Controller
 
         $employer = $user->employer;
 
-        $rating = new Job_Seeker_Rating;
+        $rating = new JobSeekerRating;
 
         $rating->ratings = $request->star;
 
@@ -500,7 +500,7 @@ class CompanyProfileController extends Controller
             return $this->unauthorized($request);
         }
 
-        $profileInfo = Job_Seeker::find($role_id);
+        $profileInfo = JobSeeker::find($role_id);
 
         $avatar = $profileInfo->user->avatar;
 
@@ -533,7 +533,7 @@ class CompanyProfileController extends Controller
         {
             $employer = $user->employer;
 
-            $haveRating = Job_Seeker_Rating::where('job_seeker_id', $role_id)->where('employer_id', $employer->id)->first();
+            $haveRating = JobSeekerRating::where('job_seeker_id', $role_id)->where('employer_id', $employer->id)->first();
 
             if($haveRating === null){
 

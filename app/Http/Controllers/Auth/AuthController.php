@@ -6,7 +6,7 @@ use Validator;
 
 use App\User;
 use App\Employer;
-use App\Job_Seeker;
+use App\JobSeeker;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\ThrottlesLogins;

@@ -47,12 +47,12 @@ class Employer extends Model
 
     public function ownRatings()
     {
-        return $this->hasMany(Employer_Rating::class);
+        return $this->hasMany(EmployerRating::class);
     }
 
     public function ratings()
     {
-        return $this->hasMany(Job_Seeker_Rating::class);
+        return $this->hasMany(JobSeekerRating::class);
     }
 
     public function logoBy(User $user)
