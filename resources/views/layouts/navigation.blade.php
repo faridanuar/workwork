@@ -13,15 +13,16 @@
 
                 <!-- Branding Image -->
                 <a class="navbar-brand" href="{{ url('/') }}">
-                    <img alt="WorkWork" src="/images/logo-workwork.png" height="25" width="196">
+                    <img alt="WorkWork" src="/images/logo-workwork.png" height="25" width="196" class="hidden-sm">
+                    <img alt="WorkWork" src="/images/logo-symbol.png" height="25" class="visible-sm-inline">
                 </a>
-
-                 <!-- global searchbox -->
+            </div>
+            <!-- global searchbox -->
+            <div class="navbar-form navbar-left">
                 <div class="form-group">
                     <input type="text" class="form-control" id="global-search-box" />
                 </div>
             </div>
-
             <div class="collapse navbar-collapse" id="app-navbar-collapse">
                 <!-- Left Side Of Navbar -->
                 <ul class="nav navbar-nav">

@@ -18,6 +18,11 @@ body.auth-body {
     background-color: $brand-color;
     border-bottom: 2px solid rgba(0,0,0,0.2);
     box-shadow: 0 8px 0 0 rgba(0,0,0,0.1);
+    background-image: url(/images/bg-icons-15.png);
+    background-size: 396px;
+    background-position: 0 -30px;
+    // background-blend-mode: color-burn;
+    background-repeat: repeat;
 
     .navbar-toggle .icon-bar { border: 1px solid black; }
 
@@ -32,7 +37,7 @@ body.auth-body {
     }
 
     .navbar-btn.navbar-btn-ww {
-        padding: 5px 18px;
+        padding: 7px 18px;
         background-color: transparent;
         border-radius: 100px;
         border: 2px solid rgba(0, 0, 0, 0);
@@ -45,6 +50,14 @@ body.auth-body {
             border: 2px solid rgba(0, 0, 0, 0);
             background-color: white;
         }
+    }
+
+    .navbar-right {
+        margin-right: 0;
+    }
+
+    @media (max-width: 767px) {
+        .navbar-form { margin-top:0; margin-bottom: 0; }
     }
 }
 
