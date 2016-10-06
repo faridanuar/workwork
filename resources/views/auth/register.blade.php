@@ -36,8 +36,8 @@
             </div>
 
             <div class="form-group{{ $errors->has('contact') ? ' has-error' : '' }}">
-                <label>Phone (+6)</label>
-                <input type="number" class="form-control" name="contact" value="{{ old('contact') }}" placeholder="012 3456 7890">
+                <label>Phone</label>
+                <input type="tel" class="form-control" name="contact" value="{{ old('contact') }}" placeholder="012 3456 7890">
 
                 @if ($errors->has('contact'))
                     <span class="help-block">
