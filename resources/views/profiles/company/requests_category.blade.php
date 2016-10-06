@@ -1,3 +1,7 @@
+<div class="flash">
+	@include('messages.flash')
+</div>
+
 <a href="/adverts">Back to adverts</a>
 <h2>Job Requests for {{$advert->job_title}}</h2>
 <hr>

@@ -66,6 +66,7 @@ class ApplyController extends Controller
 		// fetch Job_Seeker model to find a row of data by referencing users "id" with job_seekers "user_id"
 		$thisJobSeeker = $user->jobSeeker;
 
+		// get the appropriate advert with this id and job title
 		$advert = Advert::locatedAt($id, $job_title)->firstOrFail();
 
 		// create a new Application model / a new row of data
@@ -85,41 +86,34 @@ class ApplyController extends Controller
 		// use associate method to get model relationship from other Employer model and store its "id"
 		$application->employer()->associate($advert->employer_id);
 
-		// save the fields into applications table
-		$application->save();
-
-
-		if($application){
-
+		if($application->save())
+		{
+			// use send method from Mail facade to send email. ex: send('view', 'info / array of data', fucntion)
             Mail::send('mail.message', compact('user', 'thisJobSeeker', 'application', 'advert'), function ($m) use ($user) {
 
+            	// set the required variables
             	$config = config('services.mailgun');
+	            $domain = $config['sender'];
+	            $recipient = 'farid@pocketpixel.com';
+	            $recipientName = $user->name;
 
-                $domain = $config['sender'];
-
-                $recipient = 'farid@pocketpixel.com';
-
-                $recipientName = $user->name;
-
+	            // provide sender domain and sender name
                 $m->from($domain, 'WorkWork');
 
+                // provide recipient email, name and email subject
                 $m->to($recipient, $recipientName)->subject('Job Request!');
             });
-        }
 
-        $advert = Advert::locatedAt($id, $job_title)->first();
-
-		$employer = $advert->employer;
-
-		$contact = $employer->user->contact;
-
-		if($contact){
-
+	        $advert = Advert::locatedAt($id, $job_title)->first();
+			$employer = $advert->employer;
+			$contact = $employer->user->contact;
 			$config = config('services.twilio');
 
 		    // Step 2: set our AccountSid and AuthToken from www.twilio.com/user/account
 		    $AccountSid = $config['acc_id'];
 			$AuthToken = $config['auth_token'];
+			$url = "http://workwork.my/$id/job/requests/pending";
+			$job_title = $advert->job_title;
 
 		    // Step 3: instantiate a new Twilio Rest Client
 		    $client = new Services_Twilio($AccountSid, $AuthToken);
@@ -133,12 +127,9 @@ class ApplyController extends Controller
 		        //"+14158675311" => "Virgil",
 		    );
 		    
-
 		    // Step 5: Loop over all our friends. $number is a phone number above, and 
 		    // $name is the name next to it
-		    /**foreach ($people as $number => $name) {
-
-		    	$url = "workwork.app/$id/job/requests/pending";
+		    foreach ($people as $number => $name) {
 
 		        $sms = $client->account->messages->sendMessage(
 
@@ -150,38 +141,17 @@ class ApplyController extends Controller
 		            $number,
 
 		            // the sms body
-		            "You have a job applicant request from your advert. Applicant: $name, check out the full details here: $url ."
+		            "You have a job applicant request from your advert: $job_title. Applicant Name: $name, check out the full details here: $url ."
 		        );
-
 		        // Display a confirmation message on the screen
-		        echo "Sent message to $name";
-		    }*/
-
-		    $url = "workwork.app/$id/job/requests/pending";
-
-	        $sms = $client->account->messages->sendMessage(
-
-	        	// Step 6: Change the 'From' number below to be a valid Twilio number 
-	        	// that you've purchased, or the (deprecated) Sandbox number
-	            "+12602184571", 
-
-	            // the number we are sending to - Any phone number
-	            $number,
-
-	            // the sms body
-	            "You have a job applicant request from your advert. Applicant: $name, check out the full details here: $url ."
-	        );
-
-	        // Display a confirmation message on the screen
-	        echo "Sent message to $name";
-
+		        //echo "Sent message to $name";
+		    }
 			// set flash attribute and key. example --> flash('success message', 'flash_message_level')
 			flash('Your application has been sent. Now you have to wait for confirmation from the employer', 'success');
-
-		    
 		}else{
-
-			abort(404, 'Error');
+			// set flash attribute and key. example --> flash('success message', 'flash_message_level')
+			flash('Uh Oh, something went wrong when saving your application. Please try again later.', 'error');
+			return redirect()->back();
 		}
 
 		return redirect()->route('show', [$id,$job_title]);
