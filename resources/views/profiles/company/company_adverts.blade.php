@@ -21,7 +21,7 @@
 							Preview</a>
 				            <a href="/advert/{{ $myAdvert->id }}/job/requests/pending" class="btn btn-default">View Job Requests</a>
 				            @if(count($myAdvert->applications->where('responded', 0)) > 0)
-				            	<span>{{ count($myAdvert->applications->where('viewed', 0)) }} New Request!</span>
+				            	<span>{{ count($myAdvert->applications->where('responded', 0)) }} New Request!</span>
 				            @endif
 				        @endcan
 					</div>

@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth;
 
 use Mail;
 use Image;
+use Services_Twilio;
 
 use Carbon\Carbon;
 
@@ -439,8 +440,8 @@ class CompanyProfileController extends Controller
     public function response(Request $request, $id)
     {
         $application = Application::find($id);
-
-        
+        $recipientName = $application->jobSeeker->user->name;
+        $contact = $application->jobSeeker->user->contact;
 
         $status = $request->status;
 
@@ -452,9 +453,7 @@ class CompanyProfileController extends Controller
             ]);
 
             $comment = $request->arrangement;
-
         }else{
-
             $this->validate($request, [
                 'status' => 'required|max:50',
                 'feedback' => 'required',
@@ -464,25 +463,76 @@ class CompanyProfileController extends Controller
         }
 
         $application->update([
-
             'status' => $request->status,
             'employer_comment' => $comment,
         ]);
 
         $application->responded = 1;
 
-        $application->save();
+        if($application->save())
+        {
+            // use send method from Mail facade to send email. ex: send('view', 'info / array of data', fucntion)
+            Mail::send('mail.applicationNotification', compact('application'), function ($m) use ($application) {
 
-        // use send method form Mail facade to send email. ex: send('view', 'info / array of data', fucntion)
-        Mail::send('mail.applicationNotification', compact('application'), function ($m) use ($application) {
+                // set the required variables
+                $config = config('services.mailgun');
+                $domain = $config['sender'];
+                $recipient = 'farid@pocketpixel.com';
+                $recipientName = $application->jobSeeker->user->name;
+                
+                // provide sender domain and sender name
+                $m->from($domain, 'WorkWork');
 
-            // set email sender stmp url and sender name
-            $m->from('postmaster@sandbox12f6a7e0d1a646e49368234197d98ca4.mailgun.org', 'WorkWork');
+                // provide recpient email, recepient name and email subject
+                $m->to($recipient, $recipientName)->subject('Application Notification');
+            });
 
-            // set email recepient and subject
-            $m->to('farid@pocketpixel.com', $application->jobSeeker->user->name)->subject('Application Notification');
-        });
+            $config = config('services.twilio');
 
+            // Step 2: set our AccountSid and AuthToken from www.twilio.com/user/account
+            $AccountSid = $config['acc_id'];
+            $AuthToken = $config['auth_token'];
+            $url = "http://workwork.my/my/applications/$id";
+            $job_title = $application->advert->job_title;
+
+            // Step 3: instantiate a new Twilio Rest Client
+            $client = new Services_Twilio($AccountSid, $AuthToken);
+
+            // Step 4: make an array of people we know, to send them a message. 
+            // Feel free to change/add your own phone number and name here.
+            $people = array(
+                "+60176613069" => $recipientName,
+                //"+6$contact" => $user->name,
+                //"+14158675310" => "Boots",
+                //"+14158675311" => "Virgil",
+            );
+            
+            // Step 5: Loop over all our friends. $number is a phone number above, and 
+            // $name is the name next to it
+            foreach ($people as $number => $name) {
+
+                $sms = $client->account->messages->sendMessage(
+
+                    // Step 6: Change the 'From' number below to be a valid Twilio number 
+                    // that you've purchased, or the (deprecated) Sandbox number
+                    "+12602184571", 
+
+                    // the number we are sending to - Any phone number
+                    $number,
+
+                    // the sms body
+                    "The employer has responded your request job for $job_title, check out the full details here: $url ."
+                );
+                // Display a confirmation message on the screen
+                //echo "Sent message to $name";
+            }
+            // set flash attribute and key. example --> flash('success message', 'flash_message_level')
+            flash('Your response has been sent', 'success');
+        }else{
+            // set flash attribute and key. example --> flash('success message', 'flash_message_level')
+            flash('Uh Oh, something went wrong when saving your response. Please try again later.', 'error');
+            return redirect()->back();
+        }
         return redirect()->back();
     }
 
