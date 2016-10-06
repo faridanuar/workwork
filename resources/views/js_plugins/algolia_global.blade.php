@@ -1,8 +1,15 @@
+<?php
+$config = config('services.algolia');
+$id = $config['app_id'];
+$api = $config['search_key'];
+$index = $config['index'];
+?>
+
 <!-- this configuration uses algolia javascript plugin -->
 <script>
-var itsAppID = 'DXWCE2Q6H1';
-var itsApiKey = '2f0e4f4b170e55a09e152a2d9677734a';
-var itsIndex = 'adverts';
+var itsAppID = '{{ $id }}';
+var itsApiKey = '{{ $api }}';
+var itsIndex = '{{ $index }}';
 
 //Initialise for autocomplete js
 var client = algoliasearch(itsAppID, itsApiKey)
