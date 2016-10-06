@@ -26,7 +26,7 @@
 <div class="form-group">
 	<label for="company_intro">@lang('forms.business_introduction')</label>
 	<span id="helpBlock_companyIntro" class="help-block">@lang('forms.business_introduction_helper')</span>
-	<textarea type="text" name="company_intro" id="company_intro" class="form-control" rows="10" aria-describedby="helpBlock_companyIntro" required>{{ old('company_intro') }}</textarea>
+	<textarea type="text" name="company_intro" id="company_intro" class="form-control" rows="10" aria-describedby="helpBlock_companyIntro" maxlength="500">{{ old('company_intro') }}</textarea>
 </div>
 
 <div class="form-group">
