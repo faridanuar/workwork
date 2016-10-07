@@ -3,7 +3,6 @@
 return [
     // business profile
     'business_profile' => 'Profil Bisnes / Organisasi',
-    'business_profile' => 'Business / Organisation Profile',
     'business_name' => 'Apakah nama bisnes atau organisasi anda?',
     'business_category' => 'Kategori',
     'business_category_selection' => 'Pilih satu:',

@@ -5735,8 +5735,11 @@ button.close {
   height: 39px; }
 
 body {
-  padding-top: 90px;
+  padding-top: 140px;
   background: #F1F1F1; }
+  @media (min-width: 768px) {
+    body {
+      padding-top: 90px; } }
 
 body.auth-body {
   padding-top: 104px; }
