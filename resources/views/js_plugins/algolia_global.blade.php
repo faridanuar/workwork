@@ -3,6 +3,8 @@ $config = config('services.algolia');
 $id = $config['app_id'];
 $api = $config['search_key'];
 $index = $config['index'];
+$index_asc = $config['index_asc'];
+$index_desc = $config['index_desc']; 
 ?>
 
 <!-- this configuration uses algolia javascript plugin -->
@@ -10,13 +12,15 @@ $index = $config['index'];
 var itsAppID = '{{ $id }}';
 var itsApiKey = '{{ $api }}';
 var itsIndex = '{{ $index }}';
+var salaryASC = '{{ $index_asc }}';
+var salaryDESC = '{{ $index_desc }}';
 
 //Initialise for autocomplete js
 var client = algoliasearch(itsAppID, itsApiKey)
 var index = client.initIndex(itsIndex);
 
 //autocomplete function configurations
-autocomplete('#global-search-box', { hint: false }, [
+autocomplete('#global-search', { hint: false }, [
     {
       source: autocomplete.sources.hits(index, { hitsPerPage: 6 }),
       displayKey: 'job_title',
@@ -48,7 +52,7 @@ autocomplete('#global-search-box', { hint: false }, [
 //search widgets
 search.addWidget(
 	instantsearch.widgets.searchBox({
-	  container: '#global-search-box',
+	  container: '#global-search',
 	  placeholder: '@lang("adverts.search_for")',
 	  searchOnEnterKeyPressOnly: false
 	})

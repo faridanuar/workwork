@@ -1,14 +1,8 @@
 <!-- this configuration uses algolia javascript plugin -->
 <script>
-var itsAppID = '{{ $id }}';
-var itsApiKey = '{{ $api }}';
-var itsIndex = '{{ $index }}';
-var salaryASC = '{{ $index_asc }}';
-var salaryDESC = '{{ $index_desc }}';
-
 //Initialise for autocomplete js
-var client = algoliasearch(itsAppID, itsApiKey)
-var index = client.initIndex(itsIndex);
+//var client = algoliasearch(itsAppID, itsApiKey)
+//var index = client.initIndex(itsIndex);
 
 //autocomplete function configurations
 autocomplete('#search-box', { hint: false }, [

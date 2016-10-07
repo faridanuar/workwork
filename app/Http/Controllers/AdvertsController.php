@@ -48,16 +48,7 @@ class AdvertsController extends Controller
 		}else{
 			$categories = false;
 		}
-
-		$config = config('services.algolia');
-
-		$id = $config['app_id'];
-		$api = $config['search_key'];
-		$index = $config['index'];
-		$index_asc = $config['index_asc'];
-		$index_desc = $config['index_desc']; 
-		
-		return view('adverts.index', compact('id', 'api', 'index', 'index_asc', 'index_desc', 'categories'));
+		return view('adverts.index', compact('categories'));
 	}
 
 
@@ -187,30 +178,39 @@ class AdvertsController extends Controller
 		// validate the form - DONE		
 		// persist the advert - DONE
 		$advert = $employer->adverts()->create([
-		        'job_title' => $request->job_title,
-		        'salary'  => (float)$request->salary,
-		        'description'  => $request->description,
-		        'business_name'  => $employer->business_name,
-		        'location'  => $request->location,
-		        'street'  => $request->street,
-		        'city'  => $request->city,
-		        'zip'  => $request->zip,
-		        'state'  => $request->state,
-		        'country'  => $request->country,
-		        'employer_id'  => $request->employer_id,
-		        'category'  => $request->category,
-		        'rate'  => $request->rate,
-		        'oku_friendly'  => $oku_friendly,
-		        'avatar'  => $avatar,
-			]);
+	        'job_title' => $request->job_title,
+	        'salary'  => (float)$request->salary,
+	        'description'  => $request->description,
+	        'business_name'  => $employer->business_name,
+	        'location'  => $request->location,
+	        'street'  => $request->street,
+	        'city'  => $request->city,
+	        'zip'  => $request->zip,
+	        'state'  => $request->state,
+	        'country'  => $request->country,
+	        'employer_id'  => $request->employer_id,
+	        'category'  => $request->category,
+	        'rate'  => $request->rate,
+	        'oku_friendly'  => $oku_friendly,
+	        'avatar'  => $avatar,
+		]);
 
 		$arrayOfSkills = explode(",",$request->skills);
 
 		foreach($arrayOfSkills as $skill){
-			$newSkill = new Skill;
-			$newSkill->skill = $skill;
-			$newSkill->save();
-			$advert->skills()->attach($newSkill);
+			// convert string into lower case only
+			$skill = strtolower($skill);
+
+			// check if skill already exist in list
+			if(count(Skill::where('skill',$skill)->first()) === 1)
+			{
+				$advert->skills()->attach($skill);
+			}else{
+				$newSkill = new Skill;
+				$newSkill->skill = $skill;
+				$newSkill->save();
+				$advert->skills()->attach($newSkill);
+			}
 		}
 
 		switch ($saveLater)
