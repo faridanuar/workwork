@@ -37,7 +37,7 @@ autocomplete('#global-search', { hint: false }, [
       }
     }
   ]).on('autocomplete:selected', function(event, suggestion, dataset) {
-    window.location = url + 'adverts/' suggestion.id + '/' + suggestion.job_title;
+    window.location = url + 'adverts/' + suggestion.id + '/' + suggestion.job_title;
     console.log(suggestion, dataset);
   });
 
