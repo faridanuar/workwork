@@ -318,12 +318,19 @@ class JobSeekerProfileController extends Controller
     {
         $jobSeeker = $request->user()->jobSeeker;
 
-        $requests = $jobSeeker->applications->where('status', 'ACCEPTED FOR INTERVIEW')->where('responded', 1)->where('viewed', 0);
+        $viewed = $request->viewed;
 
-        foreach($requests as $request)
+        if($viewed === 'accepted')
         {
-            $request->viewed = 1;
-            $request->save();
+            $requests = $jobSeeker->applications->where('status', 'ACCEPTED FOR INTERVIEW')->where('responded', 1)->where('viewed', 0);
+        }else{
+            $requests = $jobSeeker->applications->where('status', 'REJECTED')->where('responded', 1)->where('viewed', 0);
+        }
+
+        foreach($requests as $requested)
+        {
+            $requested->viewed = 1;
+            $requested->save();
         }
     }
 }

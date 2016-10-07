@@ -27,7 +27,7 @@ class EmployerRequest extends Request
             'business_name' => 'required',
             'business_category' => 'required',
             'business_contact' => 'required',
-            'company_intro' => 'required',
+            'company_intro' => 'max:500',
         ];
     }
 }
