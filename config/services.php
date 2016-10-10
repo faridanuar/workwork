@@ -54,6 +54,7 @@ return [
         'index' => env('ALGOLIA_INDEX'),
         'index_asc' => env('ALGOLIA_INDEX_ASC'),
         'index_desc' => env('ALGOLIA_INDEX_DESC'),
+        'site_url' => env('SITE_URL'),
 
     ],
 

@@ -4,7 +4,8 @@ $id = $config['app_id'];
 $api = $config['search_key'];
 $index = $config['index'];
 $index_asc = $config['index_asc'];
-$index_desc = $config['index_desc']; 
+$index_desc = $config['index_desc'];
+$url = $config['site_url'];  
 ?>
 
 <!-- this configuration uses algolia javascript plugin -->
@@ -14,6 +15,7 @@ var itsApiKey = '{{ $api }}';
 var itsIndex = '{{ $index }}';
 var salaryASC = '{{ $index_asc }}';
 var salaryDESC = '{{ $index_desc }}';
+var url = '{{ $url }}';
 
 //Initialise for autocomplete js
 var client = algoliasearch(itsAppID, itsApiKey)
@@ -35,7 +37,7 @@ autocomplete('#global-search', { hint: false }, [
       }
     }
   ]).on('autocomplete:selected', function(event, suggestion, dataset) {
-    window.location = 'http://workwork.app/adverts/' + suggestion.id + '/' + suggestion.job_title;
+    window.location = url + 'adverts/' + suggestion.id + '/' + suggestion.job_title;
     console.log(suggestion, dataset);
   });
 
