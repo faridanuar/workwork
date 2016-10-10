@@ -7,11 +7,13 @@
 </div>
 
 <section id="intro">
-	<article>
+	<div class="ww-banner">
+	</div>
+	<!-- <article>
 		<p class="lead">
 		@lang('messages.welcome')
 		</p>
-	</article>
+	</article> -->
 </section>
 
 <div class="row">

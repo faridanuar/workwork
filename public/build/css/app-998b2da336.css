@@ -6256,4 +6256,10 @@ Sign up and log in
   margin-top: -5px;
   font-size: 12px; }
 
+.ww-banner {
+  background-image: url(/images/banner-00.png);
+  height: 297px;
+  background-position: center;
+  background-repeat: no-repeat; }
+
 /*# sourceMappingURL=app.css.map */
