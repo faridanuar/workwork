@@ -20,7 +20,7 @@
 	<div class="ftu-arrow"></div>
     <div class="panel-heading panel-heading-ww">@lang('forms.ad_title')</div>
     <div class="panel-body">
-	    <form method="post" action="/" enctype="multipart/form-data">
+	    <form method="post" action="/" enctype="multipart/form-data" id="myForm">
 			@if (count($errors) > 0)
 			<div class="alert alert-danger">
 				<ul>

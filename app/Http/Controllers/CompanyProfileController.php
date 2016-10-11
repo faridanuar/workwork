@@ -79,36 +79,8 @@ class CompanyProfileController extends Controller
         // user proceed to create advert
         $user->ftu_level = 1;
 
-        // 
+        // set user ftu
         $user->save();
-
-        //set user_id in the Employer model using associate method
-        //$employer->user()->associate($user);
-
-        //save changes
-        //$employer->save();
-
-        // check if user storing procedure is a success
-        if($user){
-
-            // use send method form Mail facade to send email. ex: send('view', 'info / array of data', fucntion)
-            Mail::send('mail.welcomeEmployer', compact('user'), function ($m) use ($user) {
-
-                $config = config('services.mailgun');
-
-                $domain = $config['sender'];
-
-                $recipient = 'farid@pocketpixel.com';
-
-                $recipientName = $user->name;
-
-                // set email sender stmp url and sender name
-                $m->from($domain, 'WorkWork');
-
-                // set email recepient and subject
-                $m->to($recipient, $recipientName)->subject('Welcome to WorkWork!');
-            });
-        }
 
         // redirect to dashboard
         return redirect('/adverts/create');

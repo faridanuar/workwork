@@ -37,31 +37,16 @@ class HomeController extends Controller
      */
     public function dashboard(Request $request)
     {
-        // fetch log in user data
+        // get authorized user's data
         $user = $request->user();
 
-        // fetch user's type of role
+        $ftu_level = $user->ftu_level;
+
+        // get user's type of role
         $haveType = $user->type;
 
+        // get user's avatar
         $avatar = $user->avatar;
-
-        if($avatar != "" || $avatar != null){
-
-            // check if photo exist
-            $exist = true;
-        }else{
-            $exist = false;
-        }
-
-        if($exist != false)
-        {   
-            // avatar photo
-            $photo = $avatar;
-        }else{
-            // default avatar photo
-            $photo = "/images/defaults/default.jpg";
-        }
-
 
         // check if user has a role type, if not it redirect the user
         if(!$haveType || (!$user->employer && !$user->jobSeeker))
@@ -71,42 +56,112 @@ class HomeController extends Controller
             {
                 // redirect to create company profile page
                 return redirect('/company/create');
-
             }elseif($haveType === "job_seeker"){
-
                 // redirect to create profile page
                 return redirect('/profile/create');
-
             }else{
-
                 // redirect to choose type page
                 return redirect('/choose');
             }
         }
 
+        // check if user already have an avatar
+        if($avatar != "" || $avatar != null)
+        {
+            // user's avatar photo
+            $photo = $avatar;
+        }else{
+            // default avatar photo
+            $photo = "/images/defaults/default.jpg";
+        }
 
         // check if user profile record exist
         if($user->employer)
         {
-            // set user role in a variable
+            // get user's profile related info
             $role = $user->employer;
             $requests = $role->applications->where('status', 'PENDING');
             $requestTotal = count($requests);
 
-        }elseif($user->jobSeeker){
+            switch ($requestTotal)
+            {
+                case ($requestTotal > 0):
+                    $noticeInfos = $requests;
+                    $message = "You have a request from";
+                    break;
+                default:
+                    $noticeInfos = null;
+                    $message = "";
+            }
 
-            // set user role in a variable
+            switch ($ftu_level)
+            {
+                case 1:
+                    $message1 = "You have not yet created your first advert -";
+                    $message2 = "Continue";
+                    $link = '/adverts/create';
+                    break;
+                case 2:
+                    $advert = $role->adverts->first();
+                    $advertID = $advert->id;
+                    $advertJobTitle = $advert->job_title;
+                    if($advert->ready_to_publish != 0)
+                    {
+                        $message1 = "You have not yet publish your advert -";
+                        $message2 = "Continue";
+                        $link = '/choose/plan/'.$advertID;
+                    }else{
+                        $message1 = "You have not yet finish filling up your advert form -";
+                        $message2 = "Continue";
+                        $link = '/adverts/'.$advertID.'/'.$advertJobTitle.'/edit';
+                    }
+                    break;
+                case 3:
+                    $advert = $role->adverts->first();
+                    $advertID = $advert->id;
+                    $advertJobTitle = $advert->job_title;
+                    $message1 = "You have not yet publish your advert! -";
+                    $message2 = "Continue";
+                    $link = '/adverts/'.$advertID.'/'.$advertJobTitle;
+                    break;
+                default:
+                    $message1 = "";
+                    $message2 = "";
+                    $link = "";
+            }
+        }elseif($user->jobSeeker){
+            // get user's profile related info
             $role = $user->jobSeeker;
             $responses = $role->applications->where('responded', 1)->where('viewed', 0);
             $responseTotal = count($responses);
-        }else{
-            $role = "";
-            $requestTotal = 0;
-            $responseTotal = 0;
+            
+            switch ($responseTotal)
+            {
+                case ($responseTotal > 0):
+                    $noticeInfos = $responses;
+                    $message = "You have a response from your request for";
+                    break;
+                default:
+                    $noticeInfos = null;
+                    $message = "";
+            }
+
+            switch ($ftu_level)
+            {
+                case 1:
+                    $message1 = "You have not yet select your preferred job category -";
+                    $message2 = "Continue";
+                    $link = '/preferred-category';
+                    break;
+                default:
+                    $message1 = "";
+                    $message2 = "";
+                    $link = "";
+            }
         }
 
         // return user to home dashboard
-        return view('dashboard', compact('role','user','photo','requestTotal','responseTotal'));
+        return view('dashboard', compact('user','photo','noticeInfos','message','message1','message2','link','site'));
     }
 
 

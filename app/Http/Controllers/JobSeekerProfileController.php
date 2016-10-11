@@ -68,28 +68,6 @@ class JobSeekerProfileController extends Controller
         // save user's job seeker profile info
         $jobSeeker->save();
 
-        // check if user storing procedure is a success
-        if($user){
-
-            // use send method form Mail facade to send email. ex: send('view', 'info / array of data', fucntion)
-            Mail::send('mail.welcomeJobSeeker', compact('user'), function ($m) use ($user) {
-
-                $config = config('services.mailgun');
-
-                $domain = $config['sender'];
-
-                $recipient = 'farid@pocketpixel.com';
-
-                $recipientName = $user->name;
-
-                // set email sender stmp url and sender name
-                $m->from($domain, 'WorkWork');
-
-                // set email recepient and subject
-                $m->to($recipient, $recipientName)->subject('Welcome to WorkWork!');
-            });
-        }
-
         // redirect to home
         return redirect('/preferred-category');
     }
@@ -275,6 +253,11 @@ class JobSeekerProfileController extends Controller
     public function pendingList(Request $request)
     {
         $jobSeeker = $request->user()->jobSeeker;
+
+        if(!$jobSeeker)
+        {
+            return redirect('dashboard');
+        }
         
         $requestInfos = $jobSeeker->applications()->where('job_seeker_id', $jobSeeker->id)->where('status', 'PENDING')->paginate(5);
 

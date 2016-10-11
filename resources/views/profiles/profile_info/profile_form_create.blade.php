@@ -60,5 +60,7 @@
 <hr>
 
 <div class="form-group">
-	<button type="submit" class="btn btn-primary">Save Profile</button>
+	<button type="submit" class="btn btn-primary" id="submitBtn" onclick="restrict()">Save Profile</button>
 </div> 
+
+@include('js_plugins.submit_restrict')

@@ -82,10 +82,10 @@
                         <li>
                             <a href="/profile/{{ Auth::user()->jobSeeker->id }}" class="auth-nav-item" aria-selected="false" aria-selected="{{ set_active('profile/' . Auth::user()->jobSeeker->id) }}">@lang('navigation.your_profile')</a>
                         </li>
-                    @endif
                         <li>
                             <a href="/my/applications" class="auth-nav-item" aria-selected="{{set_active('my/applications')}}">@lang('navigation.my_applications')</a>
                         </li>
+                    @endif  
                 @endcan
                 {{--<li>
                     <a href="" class="auth-nav-item" aria-selected="{{set_active('')}}">@lang('navigation.account')</a>

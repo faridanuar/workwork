@@ -30,5 +30,8 @@
 </div>
 
 <div class="form-group">
-	<button type="submit" class="btn btn-primary">@lang('forms.business_save')</button>
+	<button type="submit" class="btn btn-primary" 
+	id="submitBtn" onclick="restrict()">@lang('forms.business_save')</button>
 </div>
+
+@include('js_plugins.submit_restrict')

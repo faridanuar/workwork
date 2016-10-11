@@ -118,9 +118,10 @@
 </div>
 <hr>
 <div class="form-group">
-	<button type="submit" class="btn btn-primary btn-lg btn-block btn-ww-lg">@lang('forms.ad_next') <span class="btn-arrow">&#8594;</span></button>
+	<button type="submit" class="btn btn-primary btn-lg btn-block btn-ww-lg" id="submitBtn" onclick="restrict()">@lang('forms.ad_next') <span class="btn-arrow">&#8594;</span></button>
 	<button type="submit" class="btn btn-link btn-block ftu-or" id="saveLater" name="saveLater" value=true>@lang('forms.or') <span class="btn-garis">@lang('forms.ad_save')</span></button>
 </div>
 
 @include('js_plugins.algolia_places')
 @include('js_plugins.tagging')
+@include('js_plugins.submit_restrict')
