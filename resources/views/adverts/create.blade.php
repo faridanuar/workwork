@@ -14,8 +14,11 @@
 
 <!-- <body onbeforeunload="return popUp()"> -->
 
-<div class="panel-ww-600 panel panel-default center-block">
-    <div class="panel-heading panel-heading-ww">New Part-time Ad</div>
+<h1 class="ftu-intro">@lang('ftu.new_ad')</h1>
+
+<div class="ftu-panel panel-ww-600 panel panel-default center-block">
+	<div class="ftu-arrow"></div>
+    <div class="panel-heading panel-heading-ww">@lang('forms.ad_title')</div>
     <div class="panel-body">
 	    <form method="post" action="/" enctype="multipart/form-data" id="myForm">
 			@if (count($errors) > 0)
