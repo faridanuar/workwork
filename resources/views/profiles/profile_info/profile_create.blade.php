@@ -12,7 +12,7 @@
 
 	<hr>
 
-		<form method="post" action="/profile/store" enctype="multipart/form-data" class="col-md-6">
+		<form method="post" action="/profile/store" enctype="multipart/form-data" class="col-md-6" id="myForm">
 			@if (count($errors) > 0)
 			<div class="alert alert-danger">
 				<ul>

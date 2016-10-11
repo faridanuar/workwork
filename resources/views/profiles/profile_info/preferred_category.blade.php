@@ -7,7 +7,7 @@
 @inject('categories', 'App\Http\Utilities\Category')
 
 <h2>Select Your Preferred Job Categories</h2>
-<form method="post" action="/selected-category">
+<form method="post" action="/selected-category" id="myForm">
     {!! csrf_field() !!}
 	<div class="btn-group" data-toggle="buttons" role="group" aria-label="...">
      @foreach ($categories::all() as $code => $name)
@@ -23,6 +23,8 @@
 		@endforeach
     </div>
 
-    <input type="submit" class="btn btn-primary" />
+    <input type="submit" class="btn btn-primary" id="submitBtn" onclick="restrict()" />
 </form>
+
+@include('js_plugins.submit_restrict')
 @stop

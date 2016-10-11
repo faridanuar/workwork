@@ -1,21 +1,21 @@
 <?php
 $config = config('services.algolia');
-$id = $config['app_id'];
-$api = $config['search_key'];
+$algoliaID = $config['app_id'];
+$searchAPI = $config['search_key'];
 $index = $config['index'];
 $index_asc = $config['index_asc'];
 $index_desc = $config['index_desc'];
-$url = $config['site_url'];  
+$siteURL = $config['site_url'];  
 ?>
 
 <!-- this configuration uses algolia javascript plugin -->
 <script>
-var itsAppID = '{{ $id }}';
-var itsApiKey = '{{ $api }}';
+var itsAppID = '{{ $algoliaID }}';
+var itsApiKey = '{{ $searchAPI }}';
 var itsIndex = '{{ $index }}';
 var salaryASC = '{{ $index_asc }}';
 var salaryDESC = '{{ $index_desc }}';
-var url = '{{ $url }}';
+var url = '{{ $siteURL }}';
 
 //Initialise for autocomplete js
 var client = algoliasearch(itsAppID, itsApiKey)

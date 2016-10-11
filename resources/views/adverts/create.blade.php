@@ -17,7 +17,7 @@
 <div class="panel-ww-600 panel panel-default center-block">
     <div class="panel-heading panel-heading-ww">New Part-time Ad</div>
     <div class="panel-body">
-	    <form method="post" action="/" enctype="multipart/form-data">
+	    <form method="post" action="/" enctype="multipart/form-data" id="myForm">
 			@if (count($errors) > 0)
 			<div class="alert alert-danger">
 				<ul>

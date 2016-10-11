@@ -145,7 +145,7 @@ class AdvertsController extends Controller
 	{
 		$saveLater = $request->saveLater;
 
-		if($saveLater != true){
+		if($saveLater != "true"){
 			$this->validate($request, [
 		        'job_title' => 'required|max:50',
 		        'salary' => 'required|integer',
@@ -218,6 +218,11 @@ class AdvertsController extends Controller
 			case "true":
 				$advert->ready_to_publish = 0;
 				$advert->save();
+				if($user->ftu_level < 4)
+				{
+					$user->ftu_level = 2;
+					$user->save();
+				}
 				flash('Your advert has been successfully saved but not yet published', 'info');
 				return redirect('/adverts');
 				break;

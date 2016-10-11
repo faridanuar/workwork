@@ -10,7 +10,7 @@
             <span class="h6 signup-or-separator--text">or sign up with your email</span>
             <hr>
         </div>
-        <form role="form" method="POST" action="{{ url('/register') }}">
+        <form role="form" method="POST" action="{{ url('/register') }}" id="myForm">
             {!! csrf_field() !!}
 
             <div class="form-group{{ $errors->has('name') ? ' has-error' : '' }}">
@@ -87,7 +87,8 @@
 
 
             <div class="form-group">
-                <button type="submit" class="btn btn-primary btn-lg btn-block btn-ww-md">
+                <button type="submit" class="btn btn-primary btn-lg btn-block btn-ww-md" 
+                id="submitBtn" onclick="restrict()">
                     Sign up
                 </button>
             </div>
@@ -98,5 +99,5 @@
     </div>
 </div>
 
-
+@include('js_plugins.submit_restrict')
 @endsection

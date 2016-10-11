@@ -11,34 +11,30 @@
         <a href="/avatar" class="btn btn-link btn-block btn-sm">Change your avatar</a>
     </div>
     <div class="col-sm-9 col-md-8">
-        <h3 class="hidden-xs">Hi, {{ Auth::user()->name }}</h3>
+        <h3 class="hidden-xs">Hi, {{ $user->name }}</h3>
         <div class="panel panel-default">
             <div class="panel-body">
                 Notifications
                 <div>
-                    @if($user->type === "employer")
-                        @if($requestTotal > 0)
-                            You have {{ $requestTotal }} request! - <a href="/adverts">View</a>
-                        @endif
-                        @if($user->ftu_level === 1)
-                            You haven't completed creating your first advert! - <a href="/adverts/create">Continue</a>
-                        @elseif($user->ftu_level === 2)
-                            You haven't completed creating your first advert! - <a href="/adverts">Continue</a>
-                        @elseif($user->ftu_level === 3)
-                            You haven't completed creating your first advert! - <a href="/adverts">Continue</a>
-                        @endif
-                    @else
-                        @if($responseTotal > 0)
-                            You have {{ $responseTotal }} response! - <a href="/my/applications">View</a>
-                        @endif
-                        @if($user->ftu_level === 1)
-                            You haven't complete selecting your preferred job category! - <a href="/preferred-category">Continue</a>
-                        @endif
-                    @endif
+                @can('edit_company')
+                    @forelse( $noticeInfos as $noticeInfo )
+                        {{ $message }} <b>{{ $noticeInfo->jobSeeker->user->name }}</b> for a job as <b>{{ $noticeInfo->advert->job_title }}</b> - 
+                        <a href="/advert/{{ $noticeInfo->advert->id }}/job/requests/pending">View</a><br>
+                    @empty
+                        {{ $message1 }} <a href="{{ $link }}">{{ $message2 }}</a>
+                    @endforelse
+                @endcan
+                @can('edit_info')
+                    @forelse( $noticeInfos as $noticeInfo )
+                        {{ $message }} <b>{{ $noticeInfo->advert->job_title }}</b> - 
+                        <a href="/my/applications/{{ $noticeInfo->id }}">View</a><br>
+                    @empty
+                        {{ $message1 }} <a href="{{ $link }}">{{ $message2 }}</a>
+                    @endforelse
+                @endcan
                 </div>
             </div>
         </div>
     </div>
 </div>
-
 @endsection

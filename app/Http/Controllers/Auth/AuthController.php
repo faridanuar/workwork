@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use Validator;
+use Mail;
 
 use App\User;
 use App\Employer;
@@ -80,10 +81,46 @@ class AuthController extends Controller
 
         if($user->type === 'employer')
         {
+            // use send method form Mail facade to send email. ex: send('view', 'info / array of data', fucntion)
+            Mail::send('mail.welcomeEmployer', compact('user'), function ($m) use ($user) {
+
+                $config = config('services.mailgun');
+
+                $domain = $config['sender'];
+
+                $recipient = 'farid@pocketpixel.com';
+
+                $recipientName = $user->name;
+
+                // set email sender stmp url and sender name
+                $m->from($domain, 'WorkWork');
+
+                // set email recepient and subject
+                $m->to($recipient, $recipientName)->subject('Welcome to WorkWork!');
+            });
+
             //assign user a roles with permissions using "assignRole" method from hasRoles trait
             $user->assignRole('employer');
 
         }elseif($user->type === 'job_seeker'){
+
+            // use send method form Mail facade to send email. ex: send('view', 'info / array of data', fucntion)
+            Mail::send('mail.welcomeJobSeeker', compact('user'), function ($m) use ($user) {
+
+                $config = config('services.mailgun');
+
+                $domain = $config['sender'];
+
+                $recipient = 'farid@pocketpixel.com';
+
+                $recipientName = $user->name;
+
+                // set email sender stmp url and sender name
+                $m->from($domain, 'WorkWork');
+
+                // set email recepient and subject
+                $m->to($recipient, $recipientName)->subject('Welcome to WorkWork!');
+            });
 
             //assign user a roles with permissions using "assignRole" method from hasRoles trait
             $user->assignRole('job_seeker');

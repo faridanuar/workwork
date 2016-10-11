@@ -25,22 +25,21 @@
 
 		<input type="hidden" name="plan" id="plan" value="{{ $plan }}">
 
-		<input type="submit" class="btn btn-primary" value="Next : Complete Checkout">
+		<input type="submit" class="btn btn-primary" value="Next : Complete Checkout" id="submitBtn" onclick="restrict()">
 
 	</form>
 </div>
 
-<script src="https://js.braintreegateway.com/js/braintree-2.27.0.min.js"></script>
-
 <script>
-
 var clientToken = "{{ Braintree_ClientToken::generate() }}";
 
 braintree.setup(clientToken, "dropin", {
   container: "payment-form"
 });
 
-
+function restrict() {
+    document.getElementById("submitBtn").disabled = true;
+    document.getElementById("checkout").submit();
+}
 </script>
-
 @stop

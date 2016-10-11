@@ -14,7 +14,7 @@
 	<div class="ftu-arrow"></div>
     <div class="panel-heading panel-heading-ww">@lang('forms.business_profile')</div>
     <div class="panel-body">
-		<form method="post" action="/company/store" enctype="multipart/form-data">
+		<form method="post" action="/company/store" enctype="multipart/form-data" id="myForm">
 			@if (count($errors) > 0)
 			<div class="alert alert-danger">
 				<ul>

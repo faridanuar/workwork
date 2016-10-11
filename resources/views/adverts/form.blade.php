@@ -117,9 +117,10 @@
 </div>
 <hr>
 <div class="form-group">
-	<button type="submit" class="btn btn-default" id="saveLater" name="saveLater" value=true>Save For Later</button>
-	<button type="submit" class="btn btn-primary">Next : Choose Plan</button>
+	<button type="submit" class="btn btn-default" name="saveLater" value="true" id="submitBtn">Save For Later</button>
+	<button type="submit" class="btn btn-primary" id="submitBtn" onclick="restrict()">Next : Choose Plan</button>
 </div>
 
 @include('js_plugins.algolia_places')
 @include('js_plugins.tagging')
+@include('js_plugins.submit_restrict')

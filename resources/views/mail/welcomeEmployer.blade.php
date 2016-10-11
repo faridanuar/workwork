@@ -4,7 +4,7 @@
 
 Welcome Employer!<br><br>
 
-Now you can start create your job advertisement: <br>
+Now you can start posting your job advertisement: <br>
 <a class="btn btn-primary" href="http://workwork.my/">Go to WorkWork</a> 
 </body>
 </html>
