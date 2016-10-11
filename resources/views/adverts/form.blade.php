@@ -117,7 +117,7 @@
 </div>
 <hr>
 <div class="form-group">
-	<button type="submit" class="btn btn-default" name="saveLater" value="true" id="submitBtn">Save For Later</button>
+	<button type="submit" class="btn btn-default" name="saveLater" value="true" id="saveLater">Save For Later</button>
 	<button type="submit" class="btn btn-primary" id="submitBtn" onclick="restrict()">Next : Choose Plan</button>
 </div>
 
