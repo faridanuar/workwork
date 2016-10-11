@@ -11,7 +11,7 @@ body { padding-top: 140px; background: #F1F1F1;
     @media (min-width: 768px) { padding-top: 90px; }
 }
 body.auth-body {
-    padding-top: 104px;
+    padding-top: 113px;
     @media (min-width: 768px) { padding-top: 134px; }
 }
 
@@ -64,7 +64,9 @@ body.auth-body {
 }
 
 // Nav - authenticated user
-.auth-nav { position: fixed; right: 0; left: 0; z-index: 1029; top: 50px; background-color: rgba(0,0,0,0.68);
+.auth-nav {
+    background-color: rgba(0,0,0,0.68); margin-bottom: 15px;
+    @media (min-width: 768px) { position: fixed; right: 0; left: 0; z-index: 1029; top: 50px; margin: 0;}
     ul {
         margin: 0;
         padding: 0;
@@ -430,6 +432,7 @@ tagsinput styling section
 FTU styling section
 **********************************/
 .levels {
+    margin: 20px 0;
     padding: 0;
     display: table;
     width: 100%;
@@ -530,6 +533,7 @@ Sign up and log in
         border-radius: 100px;
         font-size: 14px;
         color: #FFDC10;
+        position: relative;
     }
 
     &-fb {
@@ -610,10 +614,26 @@ Sign up and log in
     font-size: 12px;
 }
 
+.btn-garis {
+    text-decoration: underline;
+}
+
+.btn-arrow {
+    position: absolute;
+    right: 24px;
+}
+
+.ftu-or {
+    margin-top: 10px;
+    &:hover {
+        text-decoration: none;
+    }
+}
 // Banner
 .ww-banner {
     background-image: url(/images/banner-00.png);
     height: 297px;
     background-position: center;
     background-repeat: no-repeat;
+    background-size: cover;
 }
