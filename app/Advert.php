@@ -96,4 +96,14 @@ class Advert extends Model
         return $this->belongsToMany(Skill::class)->withTimestamps();
     }
 
+    /**
+    * Get tags assosicated with the given advert
+    *
+    *
+    */
+    public function specificSchedule()
+    {
+        return $this->hasOne(specificSchedule::class);
+    }
+
 }
