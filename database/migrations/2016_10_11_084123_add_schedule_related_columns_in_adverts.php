@@ -17,6 +17,7 @@ class AddScheduleRelatedColumnsInAdverts extends Migration
             $table->string('start_date', 50)->nullable();
             $table->string('end_date', 50)->nullable();
             $table->dropColumn('schedule_id');
+            $table->dropColumn('skill');
         });
     }
 
@@ -32,6 +33,7 @@ class AddScheduleRelatedColumnsInAdverts extends Migration
             $table->dropColumn('start_date');
             $table->dropColumn('end_date');
             $table->integer('schedule_id')->unsigned();
+            $table->string('skill')->nullable();
         });
     }
 }

@@ -8,6 +8,7 @@ use App\User;
 use App\Advert;
 use App\Skill;
 use App\Employer;
+use App\SpecificSchedule;
 
 use App\Contracts\Search;
 
