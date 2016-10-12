@@ -34,13 +34,6 @@
 	</select>
 </div>
 
-</div>
-
-<div class="form-group">
-	<label for="schedule">Work Schedule:</label>
-	<textarea type="text" name="schedule" id="schedule" class="form-control" rows="10">{{ $advert->schedule }}</textarea>
-</div>
-
 <div class="form-group">
 	<label for="description">Job Description:</label>
 	<textarea type="text" name="description" id="description" class="form-control" rows="10">{{ $advert->description }}</textarea>
@@ -56,8 +49,21 @@
 	    value="{{ $advert->location }}"
 	    placeholder="Work Location?" 
 	 />
-	<!-- <input type="text" name="location" id="location" class="form-control" value="{{ $advert->location }}"> -->
 </div> 
+
+<div class="form-group">
+	<div>Schedule</div>
+	<label class="radio-inline"><input type="radio" aria-label="..." name="scheduleType" id="scheduleType0" 
+	value="specific" checked> Specific</label>
+		<div for="specific">Start Date</div>
+			<input type='text' class="form-control" name="startDate" id='datetimepicker1' value="{{ $startDate }}" />
+		<div for="specific">End Date</div>
+			<input type='text' class="form-control" name="endDate" id='datetimepicker2' value="{{ $endDate }}" />
+		<div for="specific">Start Time</div>
+			<input type='text' class="form-control" name="startTime" id='datetimepicker3' value="{{ $startTime }}" />
+		<div for="specific">End Time</div>
+			<input type='text' class="form-control" name="endTime" id='datetimepicker4' value="{{ $endTime }}" />
+</div>
 
 <hr>
 
@@ -117,3 +123,8 @@
 
 @include('js_plugins.algolia_places')
 @include('js_plugins.tagging')
+@if($advert->schedule_type === 'specific')
+@include('js_plugins.datetime_edit_form')
+@else
+@include('js_plugins.datetime_picker')
+@endif
