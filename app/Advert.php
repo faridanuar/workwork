@@ -104,7 +104,7 @@ class Advert extends Model
     */
     public function specificSchedule()
     {
-        return $this->hasOne(specificSchedule::class);
+        return $this->hasOne(SpecificSchedule::class);
     }
 
 }
