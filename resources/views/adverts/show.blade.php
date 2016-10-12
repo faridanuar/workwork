@@ -71,6 +71,7 @@
                 <div class="schedule">
                     <h3>Work Schdule</h3>
                     @if($advert->schedule_type === 'specific')
+                    {{ $advert->schedule_type }}:<br>
                     {{ $advert->specificSchedule->start_date }} - {{ $advert->specificSchedule->end_date }}<br>
                     {{ $advert->specificSchedule->start_time }} - {{ $advert->specificSchedule->end_time }}<br>
                     @endif

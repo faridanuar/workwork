@@ -483,12 +483,22 @@ class AdvertsController extends Controller
 		]);
 		//$advert->save();
 
-		$advert->specificSchedule()->update([
-			'start_date' => $request->startDate,
-			'end_date' => $request->endDate,
-			'start_time' => $request->startTime,
-			'end_time' => $request->endTime,
-		]);
+		if($request->schedule_type != null)
+		{
+			$advert->specificSchedule()->update([
+				'start_date' => $request->startDate,
+				'end_date' => $request->endDate,
+				'start_time' => $request->startTime,
+				'end_time' => $request->endTime,
+			]);
+		}else{
+			$advert->specificSchedule()->create([
+				'start_date' => $request->startDate,
+				'end_date' => $request->endDate,
+				'start_time' => $request->startTime,
+				'end_time' => $request->endTime,
+			]);
+		}
 		$advert->save();
 
 		$arrayOfSkills = explode(",",$request->skills);
