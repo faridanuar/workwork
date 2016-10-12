@@ -149,11 +149,11 @@ class AdvertsController extends Controller
 			$this->validate($request, [
 		        'job_title' => 'required|max:50',
 		        'salary' => 'required|integer',
+		        'rate' => 'required',
 	            'description' => 'required',           
 	            'location' => 'required',
 	            'skills' => 'required',
 	            'category' => 'required',
-	            'rate' => 'required',
 	    	]);
 		}
 
@@ -193,6 +193,14 @@ class AdvertsController extends Controller
 	        'rate'  => $request->rate,
 	        'oku_friendly'  => $oku_friendly,
 	        'avatar'  => $avatar,
+	        'schedule_type' => $request->scheduleType,
+		]);
+
+		$advert->specificSchedule()->create([
+			'start_date' => $request->startDate,
+			'end_date' => $request->endDate,
+			'start_time' => $request->startTime,
+			'end_time' => $request->endTime,
 		]);
 
 		$arrayOfSkills = explode(",",$request->skills);

@@ -21,7 +21,7 @@ class CreateSpecificShedulesTable extends Migration
             $table->string('end_time',50)->nullable();
             $table->timestamps();
 
-            $table->foreign('advert_id')->references('id')->on('adverts');
+            $table->foreign('advert_id')->references('id')->on('adverts')->onDelete('cascade');
         });
     }
 

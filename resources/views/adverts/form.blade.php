@@ -75,13 +75,18 @@
 	</div>
 </div>
 
-{{--<!--
 <div class="form-group">
-	<label for="schedule">Schedule</label>
-	<p class="help-block">When do you need part-timers?</p>
-	<textarea type="text" name="schedule" id="schedule" class="form-control" rows="10">{{ old('schedule') }}</textarea>
+	<div>Schedule</div>
+	<label class="radio-inline"><input type="radio" aria-label="..." name="scheduleType" id="scheduleType" value="specific" checked> Specific</label>
+		<div for="specific">Start Date</div>
+			<input type='text' class="form-control" name="startDate" id='datetimepicker1'>{{ old('startDate') }}</input>
+		<div for="specific">End Date</div>
+			<input type='text' class="form-control" name="endDate" id='datetimepicker2'>{{ old('endDate') }}</input>
+		<div for="specific">Start Time</div>
+			<input type='text' class="form-control" name="startTime" id='datetimepicker3'>{{ old('startTime') }}</input>
+		<div for="specific">End Time</div>
+			<input type='text' class="form-control" name="endTime" id='datetimepicker4'>{{ old('endTime') }}</input>
 </div>
--->--}}
 
 <div class="form-group">
 	<label for="description">@lang('forms.ad_job_description_label')</label>
@@ -89,9 +94,6 @@
 </div>
 
 <div class="form-group">
-	{{--<!-- <label for="skill">@lang('forms.ad_job_skills_label')</label>
-	<p class="help-block">e.g.: Teamwork, Multitasking</p>
-	<input type="text" name="skill" id="skill" class="form-control" value="{{ old('skill') }}" maxlength="50" placeholder="e.g. Teamwork, Multitasking"> --> --}}
 	<div class="form-group">
 		<label for="skill">@lang('forms.ad_job_skills_label')</label>
 		<p class="help-block">@lang('forms.ad_job_skills_help')</p>
@@ -125,3 +127,4 @@
 @include('js_plugins.algolia_places')
 @include('js_plugins.tagging')
 @include('js_plugins.submit_restrict')
+@include('js_plugins.datetime_picker')
