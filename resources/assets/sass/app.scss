@@ -142,7 +142,7 @@ body.auth-body {
         .currency { top: -0.25em; margin-right: 0.2em; }
         .amount { border-bottom: 2px solid; border-bottom-color: rgba(0,0,0,0.1); display: inline-block; }
         .rate { font-size: 0.7em; opacity: 0.8; }
-        .description { line-height: 24px; }
+        .description { line-height: 24px; margin-bottom: 30px; }
         .location {}
         .street {}
         .skill {}
@@ -392,6 +392,11 @@ ul.plan {
    margin-top: 30px;
 }
 
+.plan-choices {
+    label { display: block; }
+    input { float: left; }
+    span { margin-left: 30px; }
+}
 
 /**********************************
 checkout styling section
