@@ -8,6 +8,7 @@ use App\User;
 use App\Advert;
 use App\Skill;
 use App\Employer;
+use App\SpecificSchedule;
 
 use App\Contracts\Search;
 
@@ -149,11 +150,11 @@ class AdvertsController extends Controller
 			$this->validate($request, [
 		        'job_title' => 'required|max:50',
 		        'salary' => 'required|integer',
+		        'rate' => 'required',
 	            'description' => 'required',           
 	            'location' => 'required',
 	            'skills' => 'required',
 	            'category' => 'required',
-	            'rate' => 'required',
 	    	]);
 		}
 
@@ -193,6 +194,14 @@ class AdvertsController extends Controller
 	        'rate'  => $request->rate,
 	        'oku_friendly'  => $oku_friendly,
 	        'avatar'  => $avatar,
+	        'schedule_type' => $request->scheduleType,
+		]);
+
+		$advert->specificSchedule()->create([
+			'start_date' => $request->startDate,
+			'end_date' => $request->endDate,
+			'start_time' => $request->startTime,
+			'end_time' => $request->endTime,
 		]);
 
 		$arrayOfSkills = explode(",",$request->skills);
@@ -412,8 +421,21 @@ class AdvertsController extends Controller
 			return $this->unauthorized($request);
 		}
 
+		if($advert->schedule_type === 'specific')
+		{
+			$startDate = $advert->specificSchedule->start_date;
+			$endDate = $advert->specificSchedule->end_date;
+			$startTime = $advert->specificSchedule->start_time;
+			$endTime = $advert->specificSchedule->end_date;
+		}else{
+			$startDate = null;
+			$endDate = null;
+			$startTime = null;
+			$endTime = null;
+		}
+
 		// display "edit" page
-		return view('adverts.edit', compact('advert'));
+		return view('adverts.edit', compact('advert','startDate','endDate','startTime','endTime'));
 	}
 
 
@@ -458,8 +480,26 @@ class AdvertsController extends Controller
 		    'category'  => $request->category,
 		    'rate'  => $request->rate,
 		    'oku_friendly'  => $request->oku_friendly,
-		    'schedule' => $request->schedule,
+		    'schedule_type' => $request->scheduleType,
 		]);
+		//$advert->save();
+
+		if($request->schedule_type != null)
+		{
+			$advert->specificSchedule()->update([
+				'start_date' => $request->startDate,
+				'end_date' => $request->endDate,
+				'start_time' => $request->startTime,
+				'end_time' => $request->endTime,
+			]);
+		}else{
+			$advert->specificSchedule()->create([
+				'start_date' => $request->startDate,
+				'end_date' => $request->endDate,
+				'start_time' => $request->startTime,
+				'end_time' => $request->endTime,
+			]);
+		}
 		$advert->save();
 
 		$arrayOfSkills = explode(",",$request->skills);
@@ -483,11 +523,11 @@ class AdvertsController extends Controller
 
 				$todaysDate = Carbon::now();
 
-		        $endDate = $advert->plan_ends_at;
+		        $planEndDate = $advert->plan_ends_at;
 
-		        $daysLeft =  $todaysDate->diffInDays($endDate, false);
+		        $daysLeft =  $todaysDate->diffInDays($planEndDate, false);
 
-		        if($endDate === null){
+		        if($planEndDate === null){
 
 		        	flash('You need to purchase a plan to published your job advert', 'info');
 
@@ -500,8 +540,6 @@ class AdvertsController extends Controller
 		            return redirect()->route('plan', [$advert->id]);
 		        }
 		}
-
-		if($advert->published != 0){
 
 			$advert->published = 1;
 			$advert->save();
@@ -527,16 +565,19 @@ class AdvertsController extends Controller
 		        'created_at' => $advert->created_at->toDateTimeString(),
 		        'updated_at' => $advert->updated_at->toDateTimeString(),
 		        'employer_id' => $advert->employer_id,
-		        //'skill' => $advert->skill,
 		        'group' => 'All',
 		        'category' => $advert->category,
 		        'rate' => $advert->rate,
 		        'oku_friendly' => $advert->oku_friendly,
 		        'published' => $advert->published,
-		        //'schedule_id' => $advert->schedule,
-		        //'schedule' => $advert->schedule,
 		        'avatar' => $advert->avatar,
-		        'objectID' => $advert->id,
+		        'schedule_type' => $advert->scheduleType,
+		        'start_date' => $advert->specificSchedule->start_date,
+				'end_date' => $advert->specificSchedule->end_date,
+				'start_time' => $advert->specificSchedule->start_time,
+				'end_time' => $advert->specificSchedule->end_time,
+				'skills' => $arrayOfSkills,
+				'objectID' => $advert->id,
 			]);
 
 			if($object)
@@ -551,10 +592,6 @@ class AdvertsController extends Controller
 
 				return redirect()->back();
 			}
-
-		}else{
-			return redirect()->route('plan', [$id]);
-		}
 	}
 
 

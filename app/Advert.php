@@ -31,6 +31,7 @@ class Advert extends Model
         'rate',
         'oku_friendly',
         'avatar',
+        'schedule_type',
     ];
 
     // identify the date to make carbon instance
@@ -94,6 +95,16 @@ class Advert extends Model
     public function skills()
     {
         return $this->belongsToMany(Skill::class)->withTimestamps();
+    }
+
+    /**
+    * Get tags assosicated with the given advert
+    *
+    *
+    */
+    public function specificSchedule()
+    {
+        return $this->hasOne(SpecificSchedule::class);
     }
 
 }
