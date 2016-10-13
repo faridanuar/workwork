@@ -101,7 +101,7 @@
 	<label for="skill">Type of skill required:</label>
 	<div class="form-group">
 		<label for="skill">(Example: Teamwork, Multitasking)</label>
-		<input type="text" name="skills" id="skills" value="@foreach($advert->skills as $skill) {{ $skill->skill }}, @endforeach" data-role="tagsinput" />
+		<input type="text" name="skills" id="skills" value="{{ $skills }}" data-role="tagsinput" />
 	</div>
 </div>
 

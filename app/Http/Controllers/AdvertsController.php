@@ -211,8 +211,9 @@ class AdvertsController extends Controller
 			$skill = strtolower($skill);
 
 			// check if skill already exist in list
-			if(count(Skill::where('skill',$skill)->first()) === 1)
-			{
+			if(count(Skill::where('skill',$skill)->get()) > 0)
+			{	
+				$skill = Skill::where('skill',$skill)->get();
 				$advert->skills()->attach($skill);
 			}else{
 				$newSkill = new Skill;
@@ -421,6 +422,8 @@ class AdvertsController extends Controller
 			return $this->unauthorized($request);
 		}
 
+		$skills = $advert->skills->implode('skill',',');
+
 		if($advert->schedule_type === 'specific')
 		{
 			$startDate = $advert->specificSchedule->start_date;
@@ -435,7 +438,7 @@ class AdvertsController extends Controller
 		}
 
 		// display "edit" page
-		return view('adverts.edit', compact('advert','startDate','endDate','startTime','endTime'));
+		return view('adverts.edit', compact('advert','skills','startDate','endDate','startTime','endTime'));
 	}
 
 
@@ -504,11 +507,26 @@ class AdvertsController extends Controller
 
 		$arrayOfSkills = explode(",",$request->skills);
 
+		if(count($advert->skills) > 0)
+		{
+			$advert->skills()->detach();
+		}
+
 		foreach($arrayOfSkills as $skill){
-			$newSkill = new Skill;
-			$newSkill->skill = $skill;
-			$newSkill->save();
-			$advert->skills()->attach($newSkill);
+			// convert string into lower case only
+			$skill = strtolower($skill);
+
+			// check if skill already exist in list
+			if(count(Skill::where('skill',$skill)->get()) > 0)
+			{	
+				$skill = Skill::where('skill',$skill)->get();
+				$advert->skills()->attach($skill);
+			}else{
+				$newSkill = new Skill;
+				$newSkill->skill = $skill;
+				$newSkill->save();
+				$advert->skills()->attach($newSkill);
+			}
 		}
 
 		switch ($saveLater)

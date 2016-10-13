@@ -97,6 +97,11 @@ class Advert extends Model
         return $this->belongsToMany(Skill::class)->withTimestamps();
     }
 
+    public function dailySchedules()
+    {
+        return $this->belongsToMany(DailySchedules::class)->withPivot('start_time','end_time')->withTimestamps();
+    }
+
     /**
     * Get tags assosicated with the given advert
     *

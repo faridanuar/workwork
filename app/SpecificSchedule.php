@@ -13,7 +13,7 @@ class SpecificSchedule extends Model
         'end_time',            
     ];
 
-	public function advert()
+	public function adverts()
     {
     	return $this->belongsTo(Advert::class);
     }
