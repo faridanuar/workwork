@@ -1,4 +1,5 @@
 <?php
+// Forms - ms
 
 return [
     'or' => 'Atau',
@@ -40,5 +41,18 @@ return [
     'ad_save' => 'simpan untuk kemudian',
     'ad_next' => 'Seterusnya: Pilih pakej',
 
+    // plan
+    'plan_title' => 'Pilih pelan',
+    'plan_next_pay' => 'Seterusnya: Pembayaran',
+    'plan_30day_a' => '30 Hari - RM29',
+    'plan_30day_a_feature_1' => 'Lihat semua permohonan',
+    'plan_7day_a' => '7 Hari - Percuma',
+    'plan_7day_a_feature_1' => 'Lihat sehingga 3 permohonan',
 
+    // payment
+    'payment_title' => 'Bayaran',
+    'payment_next' => 'Bayar',
+    '' => '',
+    '' => '',
+    '' => '',
 ];

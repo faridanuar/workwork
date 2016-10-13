@@ -11,23 +11,24 @@
 	@include('messages.advert_level')
 @endif
 
-<div class="info">
-	<h2>Use payment method with <u>Credit Card</u> or <u>PayPal</u></h2>
-</div>
+<h1 class="ftu-intro">@lang('ftu.payment')</h1>
+<div class="ftu-panel panel-ww-600 panel panel-default center-block">
+    <div class="ftu-arrow"></div>
+    <div class="panel-heading panel-heading-ww">@lang('forms.payment_title')</div>
+    <div class="panel-body">
+    	<form id="checkout" method="post" action="/process/{{$id}}">
+    	{!! csrf_field() !!}
 
-<div class="checkout">
-	<form id="checkout" method="post" action="/process/{{$id}}">
-	{!! csrf_field() !!}
+    		<div id="payment-form"></div>
 
-		<div id="payment-form"></div>
+    		<div id="plan"></div>
 
-		<div id="plan"></div>
+    		<input type="hidden" name="plan" id="plan" value="{{ $plan }}">
 
-		<input type="hidden" name="plan" id="plan" value="{{ $plan }}">
+    		<input type="submit" class="btn btn-primary btn-lg btn-block btn-ww-lg" value="@lang('forms.payment_next')" id="submitBtn" onclick="restrict()">
 
-		<input type="submit" class="btn btn-primary" value="Next : Complete Checkout" id="submitBtn" onclick="restrict()">
-
-	</form>
+    	</form>
+    </div>
 </div>
 
 <script>

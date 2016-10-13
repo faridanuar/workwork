@@ -128,7 +128,7 @@ Route::get('/adverts/{id}/{job_title}/apply', 'ApplyController@apply');
 Route::post('/adverts/{id}/{job_title}/apply/add', 'ApplyController@storeApply');
 
 /**
-* Subcription routes
+* Subscription routes
 */
 Route::get('/plans', 'SubscribeController@plans');
 

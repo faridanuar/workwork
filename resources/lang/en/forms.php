@@ -1,4 +1,5 @@
 <?php
+// Forms - en
 
 return [
     'or' => 'Or',
@@ -40,4 +41,17 @@ return [
     'ad_save' => 'save for later',
     'ad_next' => 'Next: Choose plan',
 
+    // plan
+    'plan_title' => 'Choose a plan',
+    'plan_next_pay' => 'Next: Payment',
+    'plan_30day_a' => '30 Days - RM29',
+    'plan_30day_a_feature_1' => 'See all applicants',
+    'plan_7day_a' => '7 Hari - Percuma',
+    'plan_7day_a_feature_1' => 'See upto 3 applicants',
+
+    // payment
+    'payment_title' => 'Payment',
+    'payment_next' => 'Pay',
+    '' => '',
+    '' => '',
 ];
