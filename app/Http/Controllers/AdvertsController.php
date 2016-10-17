@@ -636,9 +636,9 @@ class AdvertsController extends Controller
 		        }
 		}
 
-		$schedule = $advert->schedule_type;
+		$schedule = $advert->specificSchedule;
 
-		if($schedule === 'specific')
+		if($schedule)
 		{
 			$startDate = $advert->specificSchedule->start_date;
 			$endDate = $advert->specificSchedule->end_date;
