@@ -434,6 +434,26 @@ tagsinput styling section
 }
 
 /**********************************
+datetime picker styling section
+**********************************/
+
+.glyphicon-chevron-right:before{
+    content: ">";
+}
+
+.glyphicon-chevron-left:before{
+    content: "<"
+}
+
+.glyphicon-chevron-up:before{
+    content: "^";
+}
+
+.glyphicon-chevron-down:before{
+    content: "v";
+}
+
+/**********************************
 FTU styling section
 **********************************/
 .levels {
