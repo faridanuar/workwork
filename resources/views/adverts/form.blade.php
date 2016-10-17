@@ -82,12 +82,12 @@
 </div>
 
 <div class="form-group">
-	<label class="radio-inline"><input type="radio" aria-label="..." name="scheduleType" id="scheduleType0" value="none" checked> No Schedule</label>
+	<label class="radio-inline"><input type="radio" aria-label="..." name="scheduleType" id="scheduleType0" value="none" checked /> No Schedule</label>
 </div>
 
 <div class="form-group">
 	<label class="radio-inline">
-		<input type="radio" aria-label="..." name="scheduleType" id="scheduleType1" value="specific" checked /> Specific
+		<input type="radio" aria-label="..." name="scheduleType" id="scheduleType1" value="specific" /> Specific
 	</label>
 	<div>
 		<label for="specific">Start Date</label>

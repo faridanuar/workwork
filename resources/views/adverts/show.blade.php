@@ -71,9 +71,11 @@
                 <div class="schedule">
                     <h3>Work Schdule</h3>
                     @if($advert->schedule_type === 'specific')
-                    {{ $advert->schedule_type }}:<br>
-                    {{ $advert->specificSchedule->start_date }} - {{ $advert->specificSchedule->end_date }}<br>
-                    {{ $advert->specificSchedule->start_time }} - {{ $advert->specificSchedule->end_time }}<br>
+                        <div>Specific</div>
+                        <div>{{ $advert->specificSchedule->start_date }} - {{ $advert->specificSchedule->end_date }}</div>
+                        <div>{{ $advert->specificSchedule->start_time }} - {{ $advert->specificSchedule->end_time }}</div>
+                    @else
+                        <div>No Schedule</div>
                     @endif
                 </div>
 
@@ -133,12 +135,8 @@
                 </div>
                 <div class="skill">
                     <h3>Skills</h3>
-                    <!-- <span class="label label-default">{{ $advert->skill }}</span> -->
                     <div class="skill-description">
-                        {{ $advert->skill }}
-                        @foreach($advert->skills as $talent)
-                            {{$talent->skill}},
-                        @endforeach
+                        {{ $skills }}
                     </div>
                 </div>
                 <div class="location">

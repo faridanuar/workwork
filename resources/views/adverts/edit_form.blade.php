@@ -53,16 +53,36 @@
 
 <div class="form-group">
 	<div>Schedule</div>
-	<label class="radio-inline"><input type="radio" aria-label="..." name="scheduleType" id="scheduleType0" 
-	value="specific" checked> Specific</label>
-		<div for="specific">Start Date</div>
+</div>
+
+<div class="form-group">
+	<label class="radio-inline">
+		<input type="radio" aria-label="..." name="scheduleType" id="scheduleType0" value="none"
+			@if($scheduleType === 'none') 
+				checked 
+			@endif
+		/> No Schedule
+	</label>
+</div>
+
+<div class="form-group">
+	<label class="radio-inline">
+		<input type="radio" aria-label="..." name="scheduleType" id="scheduleType1" value="specific" 
+			@if($scheduleType === 'specific') 
+				checked 
+			@endif
+		/> Specific
+	</label>
+	<div>
+		<label for="specific">Start Date</label>
 			<input type='text' class="form-control" name="startDate" id='datetimepicker1' value="{{ $startDate }}" />
-		<div for="specific">End Date</div>
+		<label for="specific">End Date</label>
 			<input type='text' class="form-control" name="endDate" id='datetimepicker2' value="{{ $endDate }}" />
-		<div for="specific">Start Time</div>
+		<label for="specific">Start Time</label>
 			<input type='text' class="form-control" name="startTime" id='datetimepicker3' value="{{ $startTime }}" />
-		<div for="specific">End Time</div>
+		<label for="specific">End Time</label>
 			<input type='text' class="form-control" name="endTime" id='datetimepicker4' value="{{ $endTime }}" />
+	</div>
 </div>
 
 <hr>

@@ -66,17 +66,11 @@ class AdvertsController extends Controller
 	{
 		// fetch only the first retrieved
 		$advert = Advert::locatedAt($id, $job_title)->firstOrFail();
-
 		$status = $advert->open;
-
 		$advertEmployer = $advert->employer_id;
-
-		$user = $request->user();
-
 		$authorize = "";
-
 		$asEmployer = false;
-
+		$user = $request->user();
 
 		if($user)
 		{
@@ -91,23 +85,28 @@ class AdvertsController extends Controller
 
 			$thisEmployer = $user->employer;
 
-			if($thisEmployer){
-
+			if($thisEmployer)
+			{
 				$asEmployer = true;
 
 				if ($advertEmployer === $thisEmployer->id)
 				{
 					$authorize = true;
-
 				}else{
-
 					$authorize = false;
 				}
 			}
 		}
 
+		if($advert->skills)
+		{
+			$skills = $advert->skills->implode('skill',',');
+		}else{
+			$skills = "";
+		}
+
 		// display "show" page
-		return view('adverts.show', compact('advert','authorize','asEmployer','user','done','notDone'));
+		return view('adverts.show', compact('advert','skills','authorize','asEmployer','user','done','notDone'));
 	}
 
 
@@ -172,7 +171,6 @@ class AdvertsController extends Controller
 			    	break;
 			    default:
 			}
-
 		}
 
 		$user = $request->user();
@@ -215,7 +213,7 @@ class AdvertsController extends Controller
 
 		switch($scheduleType)
 		{
-			case 'specific':
+			case "specific":
 				$advert->specificSchedule()->create([
 					'start_date' => $request->startDate,
 					'end_date' => $request->endDate,
@@ -225,7 +223,7 @@ class AdvertsController extends Controller
 				break;
 
 			/* daily schedule
-			case 'daily':
+			case "daily":
 				$days = $request->day;
 				$start = $request->startDayTime;
 				$end = $request->endDayTime;
@@ -245,7 +243,6 @@ class AdvertsController extends Controller
 				}
 				break;
 			*/
-
 			default:
 		}
 
@@ -269,8 +266,6 @@ class AdvertsController extends Controller
 			}
 		}
 
-		$days = $request->day;
-
 		switch ($saveLater)
 		{
 			case "true":
@@ -284,6 +279,7 @@ class AdvertsController extends Controller
 				flash('Your advert has been successfully saved but not yet published', 'info');
 				return redirect('/adverts');
 				break;
+
 			default:
 				$advert->ready_to_publish = 1;
 				$advert->save();
@@ -310,7 +306,6 @@ class AdvertsController extends Controller
 	public function publish(Request $request, Search $search)
 	{
 		$advert = Advert::find($request->id);
-
 		$ready = $advert->ready_to_publish;
 
         switch ($ready)
@@ -319,13 +314,12 @@ class AdvertsController extends Controller
 	        	flash('You need to update your advert, then publish', 'info');
 	        	return redirect()->back();
 	        	break;
+
         	default:
         }
 
         $todaysDate = Carbon::now();
-
         $endDate = $advert->plan_ends_at;
-
         $daysLeft =  $todaysDate->diffInDays($endDate, false);
 
         if($endDate === null){
@@ -347,15 +341,26 @@ class AdvertsController extends Controller
 
 		if($advert)
 		{
+			$scheduleType = $advert->scheduleType;
 			$config = config('services.algolia');
-
 			$index = $config['index'];
-
 			$indexFromAlgolia = $search->index($index);
+			$objectID = $advert->id;
 
+			if($scheduleType === 'specific')
+			{
+				$startDate = $advert->specificSchedule->start_date;
+				$endDate = $advert->specificSchedule->end_date;
+				$startTime = $advert->specificSchedule->start_time;
+				$endTime = $advert->specificSchedule->end_time;
+			}else{
+				$startDate = null;
+				$endDate = null;
+				$startTime = null;
+				$endTime = null;
+			}
 			$object = $indexFromAlgolia->addObject(
-		
-			    [
+				[
 			    	'id' => $advert->id,
 			        'job_title' => $advert->job_title,
 			        'salary'  => (float)$advert->salary,
@@ -370,15 +375,20 @@ class AdvertsController extends Controller
 			        'created_at'  => $advert->created_at->toDateTimeString(),
 			        'updated_at'  => $advert->updated_at->toDateTimeString(),
 			        'employer_id'  => $advert->employer_id,
-			        'group' => 'All',
 			        'category'  => $advert->category,
 			        'rate'  => $advert->rate,
 			        'oku_friendly'  => $advert->oku_friendly,
 			        'published' => $advert->published,
 			        'avatar'  => $advert->avatar,
-			        //'schedule_id'  => $advert->schedule_id,
+			        'schedule_type' => $advert->scheduleType,
+			        'start_date' => $startDate,
+					'end_date' => $endDate,
+					'start_time' => $startTime,
+					'end_time' => $endTime,
+					'skills' => $advert->skills,
+			        'group' => 'All',
 			    ],
-			    $advert->id
+			    $objectID
 			);
 
 			if($object)
@@ -420,12 +430,10 @@ class AdvertsController extends Controller
 		if($advert)
 		{
 			$config = config('services.algolia');
-
 			$index = $config['index'];
-
 			$indexFromAlgolia = $search->index($index);
-
-			$object = $indexFromAlgolia->deleteObject($advert->id);
+			$objectID = $advert->id;
+			$object = $indexFromAlgolia->deleteObject($objectID);
 
 			if($object)
 			{
@@ -471,8 +479,9 @@ class AdvertsController extends Controller
 		}
 
 		$skills = $advert->skills->implode('skill',',');
+		$scheduleType = $advert->schedule_type;
 
-		if($advert->schedule_type === 'specific')
+		if($scheduleType === 'specific')
 		{
 			$startDate = $advert->specificSchedule->start_date;
 			$endDate = $advert->specificSchedule->end_date;
@@ -486,7 +495,7 @@ class AdvertsController extends Controller
 		}
 
 		// display "edit" page
-		return view('adverts.edit', compact('advert','skills','startDate','endDate','startTime','endTime'));
+		return view('adverts.edit', compact('advert','skills','scheduleType','startDate','endDate','startTime','endTime'));
 	}
 
 
@@ -499,8 +508,8 @@ class AdvertsController extends Controller
 	public function update(AdvertRequest $request, Search $search, $id, $job_title)
 	{
 		$advert = Advert::find($id);
-
 		$saveLater = $request->saveLater;
+		$scheduleType = $request->scheduleType;
 
 		if($saveLater != true){
 			$this->validate($request, [
@@ -513,6 +522,19 @@ class AdvertsController extends Controller
 	            'rate' => 'required',
 	            'oku_friendly' => 'required',
 	    	]);
+
+	    	switch($scheduleType)
+			{
+				case "specific":
+					$this->validate($request, [
+				        'startDate' => 'required|max:20',
+				        'endDate' => 'required|max:20',
+				        'startTime' => 'required|max:20',
+			            'endTime' => 'required|max:20',           
+			    	]);
+			    	break;
+			    default:
+			}
 		}
 
 		$business = $advert->employer->business_name;
@@ -533,23 +555,32 @@ class AdvertsController extends Controller
 		    'oku_friendly'  => $request->oku_friendly,
 		    'schedule_type' => $request->scheduleType,
 		]);
-		//$advert->save();
 
-		if($request->schedule_type != null)
+		if($scheduleType === 'specific')
 		{
-			$advert->specificSchedule()->update([
-				'start_date' => $request->startDate,
-				'end_date' => $request->endDate,
-				'start_time' => $request->startTime,
-				'end_time' => $request->endTime,
-			]);
-		}else{
-			$advert->specificSchedule()->create([
-				'start_date' => $request->startDate,
-				'end_date' => $request->endDate,
-				'start_time' => $request->startTime,
-				'end_time' => $request->endTime,
-			]);
+			if($advert->specificSchedule != null)
+			{
+				$advert->specificSchedule()->update([
+					'start_date' => $request->startDate,
+					'end_date' => $request->endDate,
+					'start_time' => $request->startTime,
+					'end_time' => $request->endTime,
+				]);
+			}else{
+				$advert->specificSchedule()->create([
+					'start_date' => $request->startDate,
+					'end_date' => $request->endDate,
+					'start_time' => $request->startTime,
+					'end_time' => $request->endTime,
+				]);
+			}
+
+		}elseif($scheduleType === 'none'){
+
+			if($advert->specificSchedule)
+			{
+				$advert->specificSchedule()->delete();
+			}
 		}
 		$advert->save();
 
@@ -631,18 +662,18 @@ class AdvertsController extends Controller
 		        'created_at' => $advert->created_at->toDateTimeString(),
 		        'updated_at' => $advert->updated_at->toDateTimeString(),
 		        'employer_id' => $advert->employer_id,
-		        'group' => 'All',
 		        'category' => $advert->category,
 		        'rate' => $advert->rate,
 		        'oku_friendly' => $advert->oku_friendly,
 		        'published' => $advert->published,
 		        'avatar' => $advert->avatar,
-		        'schedule_type' => $advert->scheduleType,
+		        'schedule_type' => $advert->schedule_type,
 		        'start_date' => $advert->specificSchedule->start_date,
 				'end_date' => $advert->specificSchedule->end_date,
 				'start_time' => $advert->specificSchedule->start_time,
 				'end_time' => $advert->specificSchedule->end_time,
 				'skills' => $arrayOfSkills,
+				'group' => 'All',
 				'objectID' => $advert->id,
 			]);
 
