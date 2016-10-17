@@ -558,7 +558,7 @@ class AdvertsController extends Controller
 
 		if($scheduleType === 'specific')
 		{
-			if($advert->specificSchedule != null)
+			if(!$advert->specificSchedule)
 			{
 				$advert->specificSchedule()->update([
 					'start_date' => $request->startDate,
