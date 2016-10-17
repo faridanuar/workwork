@@ -91,13 +91,13 @@
 	</label>
 	<div>
 		<label for="specific">Start Date</label>
-			<input type='text' class="form-control" name="startDate" id='datetimepicker1'>{{ old('startDate') }}</input>
+			<input type='text' class="form-control" name="startDate" id='datetimepicker1' value="{{ old('startDate') }}" />
 		<label for="specific">End Date</label>
-			<input type='text' class="form-control" name="endDate" id='datetimepicker2'>{{ old('endDate') }}</input>
+			<input type='text' class="form-control" name="endDate" id='datetimepicker2' value="{{ old('endDate') }}" />
 		<label for="specific">Start Time</label>
-			<input type='text' class="form-control" name="startTime" id='datetimepicker3'>{{ old('startTime') }}</input>
+			<input type='text' class="form-control" name="startTime" id='datetimepicker3' value="{{ old('startTime') }}" />
 		<label for="specific">End Time</label>
-			<input type='text' class="form-control" name="endTime" id='datetimepicker4'>{{ old('endTime') }}</input>
+			<input type='text' class="form-control" name="endTime" id='datetimepicker4' value="{{ old('endTime') }}" />
 	</div>
 </div>
 

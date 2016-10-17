@@ -433,6 +433,22 @@ tagsinput styling section
     width: 100%;
 }
 
+
+/**********************************
+datetime picker styling section
+**********************************/
+.glyphicon-chevron-right:before{
+    content: ">";
+}
+.glyphicon-chevron-left:before{
+    content: "<";
+}
+.glyphicon-chevron-down:before{
+    content: "\e114";
+}
+.glyphicon-chevron-up:before{
+    content: "\e113";
+}
 /**********************************
 FTU styling section
 **********************************/

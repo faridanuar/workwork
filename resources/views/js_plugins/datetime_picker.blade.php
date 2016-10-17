@@ -9,10 +9,10 @@
             minDate: Date(),
         });
         $('#datetimepicker3').datetimepicker({
-            format: 'LT'
+            format: 'LT',
         });
         $('#datetimepicker4').datetimepicker({
-            format: 'LT'
+            format: 'LT',
         });
     });
 </script>
