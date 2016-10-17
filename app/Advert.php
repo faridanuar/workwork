@@ -99,7 +99,7 @@ class Advert extends Model
 
     public function dailySchedules()
     {
-        return $this->belongsToMany(DailySchedules::class)->withPivot('start_time','end_time')->withTimestamps();
+        return $this->belongsToMany(DailySchedules::class)->withPivot('start_time','end_time');
     }
 
     /**

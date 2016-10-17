@@ -75,18 +75,79 @@
 	</div>
 </div>
 
+
+
 <div class="form-group">
 	<div>Schedule</div>
-	<label class="radio-inline"><input type="radio" aria-label="..." name="scheduleType" id="scheduleType" value="specific" checked> Specific</label>
-		<div for="specific">Start Date</div>
-			<input type='text' class="form-control" name="startDate" id='datetimepicker1'>{{ old('startDate') }}</input>
-		<div for="specific">End Date</div>
-			<input type='text' class="form-control" name="endDate" id='datetimepicker2'>{{ old('endDate') }}</input>
-		<div for="specific">Start Time</div>
-			<input type='text' class="form-control" name="startTime" id='datetimepicker3'>{{ old('startTime') }}</input>
-		<div for="specific">End Time</div>
-			<input type='text' class="form-control" name="endTime" id='datetimepicker4'>{{ old('endTime') }}</input>
 </div>
+
+<div class="form-group">
+	<label class="radio-inline"><input type="radio" aria-label="..." name="scheduleType" id="scheduleType0" value="none" checked> No Schedule</label>
+</div>
+
+<div class="form-group">
+	<label class="radio-inline">
+		<input type="radio" aria-label="..." name="scheduleType" id="scheduleType1" value="specific" checked /> Specific
+	</label>
+	<div>
+		<label for="specific">Start Date</label>
+			<input type='text' class="form-control" name="startDate" id='datetimepicker1'>{{ old('startDate') }}</input>
+		<label for="specific">End Date</label>
+			<input type='text' class="form-control" name="endDate" id='datetimepicker2'>{{ old('endDate') }}</input>
+		<label for="specific">Start Time</label>
+			<input type='text' class="form-control" name="startTime" id='datetimepicker3'>{{ old('startTime') }}</input>
+		<label for="specific">End Time</label>
+			<input type='text' class="form-control" name="endTime" id='datetimepicker4'>{{ old('endTime') }}</input>
+	</div>
+</div>
+
+{{--<!-- <div class="form-group">
+	<label class="radio-inline"><input type="radio" aria-label="..." name="scheduleType" id="scheduleType2" value="daily"> Daily</label>
+
+	<div>
+		<input type="checkbox" name="day[]" id="day0" value="1"> Monday
+			<div for="specific">Start Time</div>
+				<input type='text' class="form-control" name="startDayTime[]" id='datetimepicker10'>{{ old('startTime') }}</input>
+			<div for="specific">End Time</div>
+				<input type='text' class="form-control" name="endDayTime[]" id='datetimepicker11'>{{ old('endTime') }}</input>
+	</div>
+
+	<input type="checkbox" name="day[]" id="day1" value="2"> Tuesday
+		<div for="specific">Start Time</div>
+			<input type='text' class="form-control" name="startDayTime[]" id='datetimepicker12'>{{ old('startTime') }}</input>
+		<div for="specific">End Time</div>
+			<input type='text' class="form-control" name="endDayTime[]" id='datetimepicker13'>{{ old('endTime') }}</input>
+
+	<input type="checkbox" name="day[]" id="day2" value="3"> Wednesday
+		<div for="specific">Start Time</div>
+			<input type='text' class="form-control" name="startDayTime[]" id='datetimepicker14'>{{ old('startTime') }}</input>
+		<div for="specific">End Time</div>
+			<input type='text' class="form-control" name="endDayTime[]" id='datetimepicker15'>{{ old('endTime') }}</input>
+
+	<input type="checkbox" name="day[]" id="day3" value="4"> Thursday
+		<div for="specific">Start Time</div>
+			<input type='text' class="form-control" name="startDayTime[]" id='datetimepicker16'>{{ old('startTime') }}</input>
+		<div for="specific">End Time</div>
+			<input type='text' class="form-control" name="endDayTime[]" id='datetimepicker17'>{{ old('endTime') }}</input>
+
+	<input type="checkbox" name="day[]" id="day4" value="5"> Friday
+		<div for="specific">Start Time</div>
+			<input type='text' class="form-control" name="startDayTime[]" id='datetimepicker18'>{{ old('startTime') }}</input>
+		<div for="specific">End Time</div>
+			<input type='text' class="form-control" name="endDayTime[]" id='datetimepicker19'>{{ old('endTime') }}</input>
+
+	<input type="checkbox" name="day[]" id="day5" value="6"> Saturday
+		<div for="specific">Start Time</div>
+			<input type='text' class="form-control" name="startDayTime[]" id='datetimepicker20'>{{ old('startTime') }}</input>
+		<div for="specific">End Time</div>
+			<input type='text' class="form-control" name="endDayTime[]" id='datetimepicker21'>{{ old('endTime') }}</input>
+
+	<input type="checkbox" name="day[]" id="day6" value="7"> Sunday
+		<div for="specific">Start Time</div>
+			<input type='text' class="form-control" name="startDayTime[]" id='datetimepicker22'>{{ old('startTime') }}</input>
+		<div for="specific">End Time</div>
+			<input type='text' class="form-control" name="endDayTime[]" id='datetimepicker23'>{{ old('endTime') }}</input>
+</div> -->--}}
 
 <div class="form-group">
 	<label for="description">@lang('forms.ad_job_description_label')</label>

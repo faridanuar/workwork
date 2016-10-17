@@ -15,7 +15,6 @@ class CreateDailyTable extends Migration
         Schema::create('daily_schedules', function (Blueprint $table) {
             $table->increments('id');
             $table->string('day')->nullable();
-            $table->timestamps();
         });
 
         Schema::create('advert_daily', function (Blueprint $table) {
@@ -27,8 +26,6 @@ class CreateDailyTable extends Migration
 
             $table->string('start_time')->nullable();
             $table->string('end_time')->nullable();
-
-            $table->timestamps();
         });
     }
 

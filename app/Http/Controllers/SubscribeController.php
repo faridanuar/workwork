@@ -107,7 +107,9 @@ class SubscribeController extends Controller
 	        $notDone = 0;
     	}
 
-		return view('subscriptions.checkout', compact('id','plan','user','done','notDone'));
+    	$token = Braintree_ClientToken::generate();
+
+		return view('subscriptions.checkout', compact('id','plan','user','done','notDone','token'));
 	}
 
 
@@ -123,32 +125,35 @@ class SubscribeController extends Controller
         // fetched the card token that has been given and set as a nounce by braintree server and set the nounce as a variable.
 		$nonceFromTheClient = $request->payment_method_nonce;
 
-		//check if user has purchase a plan before
-		if($user->braintree_id === null){
+		if($nonceFromTheClient != "")
+		{
+			//check if user has purchase a plan before
+			if($user->braintree_id === null || $user->braintree_id === "")
+			{
 
-			$result = Braintree_Customer::create([
-			    'firstName' => $user->name,
-			    'company' => $user->employer->business_name,
-			    'email' => $user->email,
-			    'phone' => $user->contact,
-			    'paymentMethodNonce' => $nonceFromTheClient
-			]);
+				$result = Braintree_Customer::create([
+				    'firstName' => $user->name,
+				    'company' => $user->employer->business_name,
+				    'email' => $user->email,
+				    'phone' => $user->contact,
+				    'paymentMethodNonce' => $nonceFromTheClient
+				]);
 
-			$user->braintree_id = $result->customer->id;
-			$user->save();
+				$user->braintree_id = $result->customer->id;
+				$user->save();
 
-			if($result->success) { 
+				if(!$result->success) { 
 
-			}else{
+					flash('Checkout was unsuccessful, please try again later', 'error');
 
-				flash('Checkout was unsuccessful, please try again later', 'error');
+					return redirect('/subscribe');
 
-				return redirect('/subscribe');
+				    foreach($result->errors->deepAll() AS $error){
 
-			    foreach($result->errors->deepAll() AS $error){
+				        echo($error->code . ": " . $error->message . "\n");
+				    }
 
-			        echo($error->code . ": " . $error->message . "\n");
-			    }
+				}
 			}
 		}
 

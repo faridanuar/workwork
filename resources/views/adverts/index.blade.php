@@ -50,10 +50,10 @@
 		    <input type="text" class="form-control" id="search-box" />
 
 	    </div>
-		<div class="results">
+		<div class="results" id="results">
 
 		    <div id="hits-container"></div>
-		    <div id="pagination-container"></div>
+		    <center><div id="pagination-container"></div></center>
 
 		</div>
 	</div>

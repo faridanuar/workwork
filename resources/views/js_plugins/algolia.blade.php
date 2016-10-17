@@ -155,8 +155,11 @@ search.addWidget(
 	instantsearch.widgets.pagination({
 	  container: '#pagination-container',
 	  maxPages: 20,
-
-	  scrollTo: false
+	  scrollTo: '#results',
+    cssClasses: {
+      root: 'pagination',
+      active: 'active'
+    }
 	})
 );
 

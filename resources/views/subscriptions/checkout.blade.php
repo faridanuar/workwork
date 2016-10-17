@@ -25,22 +25,26 @@
 
     		<input type="hidden" name="plan" id="plan" value="{{ $plan }}">
 
-    		<input type="submit" class="btn btn-primary btn-lg btn-block btn-ww-lg" value="@lang('forms.payment_next')" id="submitBtn" onclick="restrict()">
-
+    		<input type="submit" class="btn btn-primary btn-lg btn-block btn-ww-lg" value="@lang('forms.payment_next')">
     	</form>
     </div>
 </div>
 
 <script>
-var clientToken = "{{ Braintree_ClientToken::generate() }}";
+var clientToken = "{{ $token }}";
 
 braintree.setup(clientToken, "dropin", {
   container: "payment-form"
 });
 
-function restrict() {
-    document.getElementById("submitBtn").disabled = true;
-    document.getElementById("checkout").submit();
-}
+$(function()
+{
+  $('#checkout').submit(function(){
+    $("input[type='submit']", this)
+      .val("Please Wait...")
+      .attr('disabled', 'disabled');
+    return true;
+  });
+});
 </script>
 @stop

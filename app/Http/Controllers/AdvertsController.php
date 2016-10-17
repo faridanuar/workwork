@@ -9,6 +9,7 @@ use App\Advert;
 use App\Skill;
 use App\Employer;
 use App\SpecificSchedule;
+use App\DailySchedule;
 
 use App\Contracts\Search;
 
@@ -145,8 +146,10 @@ class AdvertsController extends Controller
 	public function store(AdvertRequest $request)
 	{
 		$saveLater = $request->saveLater;
+		$scheduleType = $request->scheduleType;
 
-		if($saveLater != "true"){
+		if($saveLater != "true")
+		{
 			$this->validate($request, [
 		        'job_title' => 'required|max:50',
 		        'salary' => 'required|integer',
@@ -156,6 +159,20 @@ class AdvertsController extends Controller
 	            'skills' => 'required',
 	            'category' => 'required',
 	    	]);
+
+			switch($scheduleType)
+			{
+				case "specific":
+					$this->validate($request, [
+				        'startDate' => 'required|max:20',
+				        'endDate' => 'required|max:20',
+				        'startTime' => 'required|max:20',
+			            'endTime' => 'required|max:20',           
+			    	]);
+			    	break;
+			    default:
+			}
+
 		}
 
 		$user = $request->user();
@@ -174,7 +191,6 @@ class AdvertsController extends Controller
 		}
 
 		$employer = $user->employer;
-
 		// what do we need to do? if the request validates, the body below of this method will be hit
 		// validate the form - DONE		
 		// persist the advert - DONE
@@ -197,16 +213,46 @@ class AdvertsController extends Controller
 	        'schedule_type' => $request->scheduleType,
 		]);
 
-		$advert->specificSchedule()->create([
-			'start_date' => $request->startDate,
-			'end_date' => $request->endDate,
-			'start_time' => $request->startTime,
-			'end_time' => $request->endTime,
-		]);
+		switch($scheduleType)
+		{
+			case 'specific':
+				$advert->specificSchedule()->create([
+					'start_date' => $request->startDate,
+					'end_date' => $request->endDate,
+					'start_time' => $request->startTime,
+					'end_time' => $request->endTime,
+				]);
+				break;
+
+			/* daily schedule
+			case 'daily':
+				$days = $request->day;
+				$start = $request->startDayTime;
+				$end = $request->endDayTime;
+
+				foreach($days as $day)
+				{
+					if($day != "")
+					{
+						dd($day);
+						$dayName = DailySchedule::find($day);
+						$day = $day + 1;
+						$advert->dailySchedule()->attach($dayName,[
+								'start_time'=>$start[$day],
+								'end_time'=>$end[$day]
+							]);
+					}
+				}
+				break;
+			*/
+
+			default:
+		}
 
 		$arrayOfSkills = explode(",",$request->skills);
 
-		foreach($arrayOfSkills as $skill){
+		foreach($arrayOfSkills as $skill)
+		{
 			// convert string into lower case only
 			$skill = strtolower($skill);
 
@@ -222,6 +268,8 @@ class AdvertsController extends Controller
 				$advert->skills()->attach($newSkill);
 			}
 		}
+
+		$days = $request->day;
 
 		switch ($saveLater)
 		{
