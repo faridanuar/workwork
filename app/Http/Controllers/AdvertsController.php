@@ -619,9 +619,7 @@ class AdvertsController extends Controller
 				$advert->save();
 
 				$todaysDate = Carbon::now();
-
 		        $planEndDate = $advert->plan_ends_at;
-
 		        $daysLeft =  $todaysDate->diffInDays($planEndDate, false);
 
 		        if($planEndDate === null){
@@ -638,57 +636,72 @@ class AdvertsController extends Controller
 		        }
 		}
 
-			$advert->published = 1;
-			$advert->save();
+		$schedule = $advert->schedule_type;
 
-			$config = config('services.algolia');
+		if($schedule === 'specific')
+		{
+			$startDate = $advert->specificSchedule->start_date;
+			$endDate = $advert->specificSchedule->end_date;
+			$startTime = $advert->specificSchedule->start_time;
+			$endTime = $advert->specificSchedule->end_date;
+		}else{
+			$startDate = null;
+			$endDate = null;
+			$startTime = null;
+			$endTime = null;
+		}
 
-			$index = $config['index'];
-		
-			$indexFromAlgolia = $search->index($index);
+		$advert->published = 1;
+		$advert->save();
 
-			$object = $indexFromAlgolia->saveObject([
-		    	'id' => $advert->id,
-		        'job_title' => $advert->job_title,
-		        'salary' => (float)$advert->salary,
-		        'description' => $advert->description,
-		        'business_name' => $advert->business_name,
-		        'location' => $advert->location,
-		        'street' => $advert->street,
-		        'city' => $advert->city,
-		        'zip' => $advert->zip,
-		        'state' => $advert->state,
-		        'country' => $advert->country,
-		        'created_at' => $advert->created_at->toDateTimeString(),
-		        'updated_at' => $advert->updated_at->toDateTimeString(),
-		        'employer_id' => $advert->employer_id,
-		        'category' => $advert->category,
-		        'rate' => $advert->rate,
-		        'oku_friendly' => $advert->oku_friendly,
-		        'published' => $advert->published,
-		        'avatar' => $advert->avatar,
-		        'schedule_type' => $advert->schedule_type,
-		        'start_date' => $advert->specificSchedule->start_date,
-				'end_date' => $advert->specificSchedule->end_date,
-				'start_time' => $advert->specificSchedule->start_time,
-				'end_time' => $advert->specificSchedule->end_time,
-				'skills' => $arrayOfSkills,
-				'group' => 'All',
-				'objectID' => $advert->id,
-			]);
+		$config = config('services.algolia');
 
-			if($object)
-			{
-				flash('Your advert has been successfully published.', 'success');
+		$index = $config['index'];
+	
+		$indexFromAlgolia = $search->index($index);
 
-				return redirect()->route('show', [$id,$advert->job_title]);
+		$object = $indexFromAlgolia->saveObject([
+	    	'id' => $advert->id,
+	        'job_title' => $advert->job_title,
+	        'salary' => (float)$advert->salary,
+	        'description' => $advert->description,
+	        'business_name' => $advert->business_name,
+	        'location' => $advert->location,
+	        'street' => $advert->street,
+	        'city' => $advert->city,
+	        'zip' => $advert->zip,
+	        'state' => $advert->state,
+	        'country' => $advert->country,
+	        'created_at' => $advert->created_at->toDateTimeString(),
+	        'updated_at' => $advert->updated_at->toDateTimeString(),
+	        'employer_id' => $advert->employer_id,
+	        'category' => $advert->category,
+	        'rate' => $advert->rate,
+	        'oku_friendly' => $advert->oku_friendly,
+	        'published' => $advert->published,
+	        'avatar' => $advert->avatar,
+	        'schedule_type' => $advert->schedule_type,
+	        'start_date' => $startDate,
+			'end_date' => $endDate,
+			'start_time' => $startTime,
+			'end_time' => $endTime,
+			'skills' => $arrayOfSkills,
+			'group' => 'All',
+			'objectID' => $advert->id,
+		]);
 
-			}else{
+		if($object)
+		{
+			flash('Your advert has been successfully published.', 'success');
 
-				flash('There was something wrong when publishing your advert. Please try again.', 'error');
+			return redirect()->route('show', [$id,$advert->job_title]);
 
-				return redirect()->back();
-			}
+		}else{
+
+			flash('There was something wrong when publishing your advert. Please try again.', 'error');
+
+			return redirect()->back();
+		}
 	}
 
 
