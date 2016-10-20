@@ -135,14 +135,14 @@ class ApplyController extends Controller
 		    }
 
 			// use send method from Mail facade to send email. ex: send('view', 'info / array of data', fucntion)
-            Mail::send('mail.message', compact('websiteURL','user', 'thisJobSeeker', 'application', 'advert'), function ($m) use ($user) {
+            Mail::send('mail.message', compact('websiteURL','user', 'thisJobSeeker', 'application', 'advert'), function ($m) use ($user, $application) {
 
             	// set the required variables
             	$config = config('services.mailgun');
 	            $domain = $config['sender'];
 	            $recipient = $application->employer->user->email;
 	            //$recipient = "farid@pocketpixel.com";
-	            $recipientName = $application->employer->user->email;
+	            $recipientName = $application->employer->user->name;
 
 	            // provide sender domain and sender name
                 $m->from($domain, 'WorkWork');
