@@ -101,6 +101,7 @@ class ApplyController extends Controller
 			$job_title = $advert->job_title;
 			$contact = $advert->employer->user->contact;
 			$employerName = $advert->employer->user->name;
+			$applicantName = $user->name;
 
 		    // Step 3: instantiate a new Twilio Rest Client
 		    $client = new Services_Twilio($AccountSid, $AuthToken);
@@ -128,7 +129,7 @@ class ApplyController extends Controller
 		            $number,
 
 		            // the sms body
-		            "You have a job request for advert: $job_title. Applicant's Name: $name, full details here: $url ."
+		            "You have a job request for advert: $job_title. Applicant's Name: $applicantName, full details here: $url ."
 		        );
 		        // Display a confirmation message on the screen
 		        //echo "Sent message to $name";
