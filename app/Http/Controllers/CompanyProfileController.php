@@ -16,7 +16,7 @@ use \Braintree_Transaction;
 
 use App\Advert;
 use App\Employer;
-use App\jobSeeker;
+use App\JobSeeker;
 use App\JobSeekerRating;
 use App\EmployerRating;
 use App\Application;
@@ -367,22 +367,40 @@ class CompanyProfileController extends Controller
         return view('profiles.company.company_adverts', compact('myAdverts'));
     }
 
+
+
     public function allList($id)
     {
         $advert = Advert::find($id);
+        $currentPlan = $advert->current_plan;
 
-        $allInfos = Application::where('advert_id', $id)->paginate(5);
+        if($currentPlan === 'Trial')
+        {
+            $limitedRequest = Application::where('advert_id', $id)->take(3);
+            $allInfos = $limitedRequest->get();
+        }else{
+            $allInfos = Application::where('advert_id', $id)->paginate(5);
+        }
 
-        return view('profiles.company.all_job_requests', compact('allInfos', 'id', 'advert'));
+        return view('profiles.company.all_job_requests', compact('currentPlan','allInfos', 'id', 'advert'));
     }
+
+
 
     public function pendingList($id)
     {
         $advert = Advert::find($id);
+        $currentPlan = $advert->current_plan;
 
-        $requestInfos = Application::where('advert_id', $id)->where('status', 'PENDING')->paginate(5);
-
-        return view('profiles.company.pending_job_requests', compact('requestInfos', 'id', 'advert'));
+        if($currentPlan === 'Trial')
+        {
+            $limitedRequest = Application::where('advert_id', $id)->take(3);
+            $requestInfos = $limitedRequest->get();
+        }else{
+            $requestInfos = Application::where('advert_id', $id)->where('status', 'PENDING')->paginate(5);
+        }
+        
+        return view('profiles.company.pending_job_requests', compact('currentPlan','requestInfos', 'id', 'advert'));
     }
 
 
@@ -443,29 +461,16 @@ class CompanyProfileController extends Controller
 
         if($application->save())
         {
-            // use send method from Mail facade to send email. ex: send('view', 'info / array of data', fucntion)
-            Mail::send('mail.applicationNotification', compact('application'), function ($m) use ($application) {
-
-                // set the required variables
-                $config = config('services.mailgun');
-                $domain = $config['sender'];
-                $recipient = 'farid@pocketpixel.com';
-                $recipientName = $application->jobSeeker->user->name;
-                
-                // provide sender domain and sender name
-                $m->from($domain, 'WorkWork');
-
-                // provide recpient email, recepient name and email subject
-                $m->to($recipient, $recipientName)->subject('Application Notification');
-            });
-
             $config = config('services.twilio');
 
             // Step 2: set our AccountSid and AuthToken from www.twilio.com/user/account
             $AccountSid = $config['acc_id'];
             $AuthToken = $config['auth_token'];
-            $url = "http://workwork.my/my/applications/$id";
+            $websiteURL = $config['site_url'];
+            $url = $websiteURL."my/applications/$id";
             $job_title = $application->advert->job_title;
+            $contact = $application->jobSeeker->user->contact;
+            $JobSeekerName = $application->jobSeeker->user->name;
 
             // Step 3: instantiate a new Twilio Rest Client
             $client = new Services_Twilio($AccountSid, $AuthToken);
@@ -473,8 +478,8 @@ class CompanyProfileController extends Controller
             // Step 4: make an array of people we know, to send them a message. 
             // Feel free to change/add your own phone number and name here.
             $people = array(
-                "+60176613069" => $recipientName,
-                //"+6$contact" => $user->name,
+                //"+60176613069" => $recipientName,
+                "+6".$contact => $JobSeekerName,
                 //"+14158675310" => "Boots",
                 //"+14158675311" => "Virgil",
             );
@@ -493,11 +498,29 @@ class CompanyProfileController extends Controller
                     $number,
 
                     // the sms body
-                    "The employer has responded your request job for $job_title, check out the full details here: $url ."
+                    "Your request job for $job_title has been responded, full details here: $url ."
                 );
                 // Display a confirmation message on the screen
                 //echo "Sent message to $name";
             }
+
+            // use send method from Mail facade to send email. ex: send('view', 'info / array of data', fucntion)
+            Mail::send('mail.applicationNotification', compact('websiteURL', 'application'), function ($m) use ($application) {
+
+                // set the required variables
+                $config = config('services.mailgun');
+                $domain = $config['sender'];
+                $recipient = $application->jobSeeker->user->email;
+                //$recipient = "farid@pocketpixel.com";
+                $recipientName = $application->jobSeeker->user->name;
+                
+                // provide sender domain and sender name
+                $m->from($domain, 'WorkWork');
+
+                // provide recpient email, recepient name and email subject
+                $m->to($recipient, $recipientName)->subject('Application Notification');
+            });
+
             // set flash attribute and key. example --> flash('success message', 'flash_message_level')
             flash('Your response has been sent', 'success');
         }else{

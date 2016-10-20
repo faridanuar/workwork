@@ -75,9 +75,11 @@ class SubscribeController extends Controller
 
 			}else{
 
-				$days = 30;
+				$days = 7;
 
 				$advert->plan_ends_at = Carbon::now()->addDays($days);
+
+				$advert->current_plan = "Trial";
 
 				$advert->trial_used = 1;
 

@@ -97,9 +97,9 @@ class Advert extends Model
         return $this->belongsToMany(Skill::class)->withTimestamps();
     }
 
-    public function dailySchedules()
+    public function dailySchedule()
     {
-        return $this->belongsToMany(DailySchedules::class)->withPivot('start_time','end_time');
+        return $this->belongsToMany(DailySchedule::class, 'advert_daily', 'advert_id', 'daily_schedule_id')->withPivot('start_time','end_time');
     }
 
     /**

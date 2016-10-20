@@ -210,12 +210,6 @@ class HomeController extends Controller
             'photo' => 'required|mimes:jpg,jpeg,png,bmp' 
         ]);
 
-        //fetch data from config.php
-        $config = config('services.algolia');
-
-        // provide index
-        $index = $config['index'];
-
         // store the uploaded file in a variable and fetch by paramName
         $file = $request->file('photo');
 
@@ -244,6 +238,12 @@ class HomeController extends Controller
 
             // fetch the rows
             $rows = $adverts->get();
+
+            //fetch data from config.php
+            $config = config('services.algolia');
+
+            // provide index
+            $index = $config['index'];
 
             // select algolia index/indice name
             $indexFromAlgolia = $search->index($index);

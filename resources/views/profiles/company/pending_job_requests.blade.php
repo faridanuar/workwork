@@ -17,15 +17,18 @@
 		</div>
 		@endif
 		@forelse($requestInfos as $requestInfo)
+		<div class="form-group">
 			<a href="/advert/{{ $requestInfo->advert_id }}/job/requests/{{ $requestInfo->jobSeeker->id }}">
 				<h4>Status: {{ $requestInfo->status }}</h4>
 				<h4>Name: {{ $requestInfo->jobSeeker->user->name }}</h4>
 				<h4>Age: {{ $requestInfo->jobSeeker->age }}</h4>
 				<h4>Introduction: {{ $requestInfo->introduction }}</h4>
 			</a>
+			@if($requestInfo->responded != 1)
 				<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#reason-modal-1" >Reject</button>
 				<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#reason-modal-2" >Accept For Interview</button>
-
+			@endif
+		</div>
 				<!-- Modal 1-->
 				<div id="reason-modal-1" class="modal fade" role="dialog">
 				  <div class="modal-dialog">
@@ -82,7 +85,12 @@
 		@empty
 		<p>Looks like there's no job applications yet.</p>
 		@endforelse
-		{!! $requestInfos->render() !!}
+
+		@if($currentPlan != "Trial")
+			{!! $requestInfos->render() !!}
+		@else
+			If you want unlimited view for job requests, you purchase the premium advert plan
+		@endif
 	</div>
 </div>
 
