@@ -151,6 +151,7 @@ search.addWidget(
 
 
 //pagination widget
+/*
 search.addWidget(
 	instantsearch.widgets.pagination({
 	  container: '#pagination-container',
@@ -162,6 +163,27 @@ search.addWidget(
     }
 	})
 );
+*/
+var container = document.querySelector('#pagination-container');
+var paginationWidget = instantsearch.widgets.pagination({
+  container: container,
+  maxPages: 20,
+    scrollTo: '#results',
+    cssClasses: {
+      root: 'pagination',
+      active: 'active'
+    }
+});
+var oldRender = paginationWidget.render;
+paginationWidget.render = function(params) {
+  var currentState = params.results;
+  if(currentState.nbPages===0) container.style.display='none';
+  else container.style.display = 'block';
+  oldRender.call(this, arguments);
+}
+search.addWidget(paginationWidget);
+
+
 
 //Once all the widgets have been added to the instantsearch instance, start rendering by calling start() method
 search.start();
