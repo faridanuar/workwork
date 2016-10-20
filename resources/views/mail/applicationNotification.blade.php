@@ -2,5 +2,5 @@ You got a response from your JOB APPLICATION for <b>{{ $application->advert->job
 <b>Status:</b> {{ $application->status }} <br><br>
 <b>Message:</b> {{ $application->employer_comment }} <br><br>
 
-For more info: <a href="{{ websiteURL }}my/applications/{{ $application->id }}">click here</a>
+For more info: <a href="{{ $websiteURL }}my/applications/{{ $application->id }}">click here</a>
 <br><br>
