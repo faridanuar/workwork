@@ -81,6 +81,9 @@ class AuthController extends Controller
 
         if($user->type === 'employer')
         {
+            //assign user a roles with permissions using "assignRole" method from hasRoles trait
+            $user->assignRole('employer');
+
             // use send method form Mail facade to send email. ex: send('view', 'info / array of data', fucntion)
             Mail::send('mail.welcomeEmployer', compact('user'), function ($m) use ($user) {
 
@@ -100,10 +103,10 @@ class AuthController extends Controller
                 $m->to($recipient, $recipientName)->subject('Welcome to WorkWork!');
             });
 
-            //assign user a roles with permissions using "assignRole" method from hasRoles trait
-            $user->assignRole('employer');
-
         }elseif($user->type === 'job_seeker'){
+
+            //assign user a roles with permissions using "assignRole" method from hasRoles trait
+            $user->assignRole('job_seeker');
 
             // use send method form Mail facade to send email. ex: send('view', 'info / array of data', fucntion)
             Mail::send('mail.welcomeJobSeeker', compact('user'), function ($m) use ($user) {
@@ -123,9 +126,6 @@ class AuthController extends Controller
                 // set email recepient and subject
                 $m->to($recipient, $recipientName)->subject('Welcome to WorkWork!');
             });
-
-            //assign user a roles with permissions using "assignRole" method from hasRoles trait
-            $user->assignRole('job_seeker');
         }
 
         return $user;
