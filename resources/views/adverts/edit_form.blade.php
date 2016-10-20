@@ -58,7 +58,7 @@
 <div class="form-group">
 	<label class="radio-inline">
 		<input type="radio" aria-label="..." name="scheduleType" id="scheduleType0" value="none"
-			@if($scheduleType === 'none') 
+			@if($scheduleType === 'none' || $scheduleType === "") 
 				checked 
 			@endif
 		/> No Schedule
@@ -83,6 +83,41 @@
 		<label for="specific">End Time</label>
 			<input type='text' class="form-control" name="endTime" id='datetimepicker4' value="{{ $endTime }}" />
 	</div>
+</div>
+
+<div class="form-group">
+	<label class="radio-inline"><input type="radio" aria-label="..." name="scheduleType" id="scheduleType2" value="daily" 
+		@if($scheduleType === 'daily') 
+			checked 
+		@endif
+	/> Daily</label>
+	@for($i = 1; $i <= 7; $i++)
+		<div>
+			<input type="checkbox" name="day[{{ $i }}]" id="day{{ $i }}" value="{{ $dayName->find($i)->day }}" 
+			@if($days != null)
+				@if($days->find($i)) 
+					checked 
+				@endif
+			@endif 
+			/> {{ $dayName->find($i)->day }}
+				<div for="specific">Start At</div>
+					<input type='text' class="form-control" name="startDayTime[{{ $i }}]" id="datetimepicker{{ $i+10 }}"
+						@if($days != null)
+							@if($days->find($i)) 
+								value="{{ $days->find($i)->pivot->start_time }}"
+							@endif
+						@endif
+					/>
+				<div for="specific">Ends At</div>
+					<input type='text' class="form-control" name="endDayTime[{{ $i }}]" id="datetimepicker{{ $i+20}}"
+						@if($days != null)
+							@if($days->find($i)) 
+								value="{{ $days->find($i)->pivot->end_time }}"
+							@endif 
+						@endif
+					/>
+		</div>
+	@endfor
 </div>
 
 <hr>

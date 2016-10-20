@@ -18,5 +18,9 @@
 	@empty
 		<p>Looks like there's no job applications yet.</p>
 	@endforelse</p>
-	{!! $allInfos->render() !!}
+	@if($currentPlan != "Trial")
+		{!! $allInfos->render() !!}
+	@else
+		If you want unlimited view for job requests, you purchase the premium advert plan
+	@endif
 @stop

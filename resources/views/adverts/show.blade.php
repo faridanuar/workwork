@@ -74,6 +74,11 @@
                         <div>Specific</div>
                         <div>{{ $advert->specificSchedule->start_date }} - {{ $advert->specificSchedule->end_date }}</div>
                         <div>{{ $advert->specificSchedule->start_time }} - {{ $advert->specificSchedule->end_time }}</div>
+                    @elseif($advert->schedule_type === 'daily')
+                        <div>Daily</div>
+                        @foreach($advert->dailySchedule as $day)
+                            <div>{{ $day->day }} : {{ $day->pivot->start_time }} - {{ $day->pivot->end_time }}</div>
+                        @endforeach
                     @else
                         <div>No Schedule</div>
                     @endif

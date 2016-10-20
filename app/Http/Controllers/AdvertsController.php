@@ -125,6 +125,8 @@ class AdvertsController extends Controller
 			return redirect('/company/create');
 		}
 
+		$dayName = new DailySchedule;
+
 		if($user->ftu_level < 4)
 		{
 			// ftu level
@@ -137,7 +139,7 @@ class AdvertsController extends Controller
     	}
 		
 
-		return view('adverts.create', compact('user','done','notDone'));
+		return view('adverts.create', compact('user','dayName','done','notDone'));
 	}
 
 
@@ -146,6 +148,10 @@ class AdvertsController extends Controller
 	{
 		$saveLater = $request->saveLater;
 		$scheduleType = $request->scheduleType;
+		$days = $request->day;
+		$starts = $request->startDayTime;
+		$ends = $request->endDayTime;
+		//dd($days,$start,$end);
 
 		if($saveLater != "true")
 		{
@@ -169,6 +175,34 @@ class AdvertsController extends Controller
 			            'endTime' => 'required|max:20',           
 			    	]);
 			    	break;
+			    case "daily":
+				    if($days != ""){
+				    	// $key => $value 
+				    	// IS SAME AS 
+				    	// [0] => $value OR 0 => 1
+					    foreach($days as $key => $dayName)
+						{
+							$messages = [
+							    'startTime.'.$key.'.required' => 'The Start At Field for '.$dayName.' is required',
+							    'endTime.'.$key.'.required' => 'The Ends At Field for '.$dayName.' is required',
+							];
+
+							$this->validate($request, [
+						        'startDayTime.'.$key => 'required|max:20',
+					            'endDayTime.'.$key => 'required|max:20',           
+					    	], $messages);
+						}
+					}else{
+						$messages = [
+							'day.required' => 'You need to choose the selected day when setting the time',
+						];
+
+						$this->validate($request, [
+						    'day' => 'required|max:20',        
+					    ], $messages);
+					}
+			    	break;
+				
 			    default:
 			}
 		}
@@ -222,27 +256,17 @@ class AdvertsController extends Controller
 				]);
 				break;
 
-			/* daily schedule
 			case "daily":
-				$days = $request->day;
-				$start = $request->startDayTime;
-				$end = $request->endDayTime;
-
-				foreach($days as $day)
+				foreach($days as $key => $dayName)
 				{
-					if($day != "")
-					{
-						dd($day);
-						$dayName = DailySchedule::find($day);
-						$day = $day + 1;
-						$advert->dailySchedule()->attach($dayName,[
-								'start_time'=>$start[$day],
-								'end_time'=>$end[$day]
-							]);
-					}
+					$dayName = DailySchedule::find($key);
+					$advert->dailySchedule()->attach($dayName,[
+							'start_time'=>$starts[$key],
+							'end_time'=>$ends[$key]
+						]);
 				}
 				break;
-			*/
+
 			default:
 		}
 
@@ -347,18 +371,34 @@ class AdvertsController extends Controller
 			$indexFromAlgolia = $search->index($index);
 			$objectID = $advert->id;
 
-			if($scheduleType === 'specific')
+			$scheduleType = $advert->schedule_type;
+			$startDate = null;
+			$endDate = null;
+			$startTime = null;
+			$endTime = null;
+			$days = null;
+
+			switch($scheduleType)
 			{
-				$startDate = $advert->specificSchedule->start_date;
-				$endDate = $advert->specificSchedule->end_date;
-				$startTime = $advert->specificSchedule->start_time;
-				$endTime = $advert->specificSchedule->end_time;
-			}else{
-				$startDate = null;
-				$endDate = null;
-				$startTime = null;
-				$endTime = null;
+				case 'specific':
+					if($advert->specificSchedule)
+					{
+						$startDate = $advert->specificSchedule->start_date;
+						$endDate = $advert->specificSchedule->end_date;
+						$startTime = $advert->specificSchedule->start_time;
+						$endTime = $advert->specificSchedule->end_date;
+					}
+					break;
+
+				case 'daily':
+					if($advert->dailySchedule)
+					{
+						$days = $advert->dailySchedule;
+					}
+					break;
+				default:
 			}
+
 			$object = $indexFromAlgolia->addObject(
 				[
 			    	'id' => $advert->id,
@@ -380,11 +420,12 @@ class AdvertsController extends Controller
 			        'oku_friendly'  => $advert->oku_friendly,
 			        'published' => $advert->published,
 			        'avatar'  => $advert->avatar,
-			        'schedule_type' => $advert->scheduleType,
+			        'schedule_type' => $advert->schedule_type,
 			        'start_date' => $startDate,
 					'end_date' => $endDate,
 					'start_time' => $startTime,
 					'end_time' => $endTime,
+					'daily_schedule' => $days,
 					'skills' => $advert->skills,
 			        'group' => 'All',
 			    ],
@@ -480,22 +521,37 @@ class AdvertsController extends Controller
 
 		$skills = $advert->skills->implode('skill',',');
 		$scheduleType = $advert->schedule_type;
+		$dayName = new DailySchedule;
+		$startDate = null;
+		$endDate = null;
+		$startTime = null;
+		$endTime = null;
+		$days = null;
 
-		if($scheduleType === 'specific')
+		switch($scheduleType)
 		{
-			$startDate = $advert->specificSchedule->start_date;
-			$endDate = $advert->specificSchedule->end_date;
-			$startTime = $advert->specificSchedule->start_time;
-			$endTime = $advert->specificSchedule->end_date;
-		}else{
-			$startDate = null;
-			$endDate = null;
-			$startTime = null;
-			$endTime = null;
+			case 'specific':
+				if($advert->specificSchedule)
+				{
+					$startDate = $advert->specificSchedule->start_date;
+					$endDate = $advert->specificSchedule->end_date;
+					$startTime = $advert->specificSchedule->start_time;
+					$endTime = $advert->specificSchedule->end_date;
+				}
+				break;
+
+			case 'daily':
+				if($advert->dailySchedule)
+				{
+					$days = $advert->dailySchedule;
+				}
+				break;
+			default:
 		}
+		
 
 		// display "edit" page
-		return view('adverts.edit', compact('advert','skills','scheduleType','startDate','endDate','startTime','endTime'));
+		return view('adverts.edit', compact('advert','skills','scheduleType','dayName','startDate','endDate','startTime','endTime', 'days'));
 	}
 
 
@@ -510,6 +566,9 @@ class AdvertsController extends Controller
 		$advert = Advert::find($id);
 		$saveLater = $request->saveLater;
 		$scheduleType = $request->scheduleType;
+		$days = $request->day;
+		$starts = $request->startDayTime;
+		$ends = $request->endDayTime;
 
 		if($saveLater != true){
 			$this->validate($request, [
@@ -532,6 +591,33 @@ class AdvertsController extends Controller
 				        'startTime' => 'required|max:20',
 			            'endTime' => 'required|max:20',           
 			    	]);
+			    	break;
+			    case "daily":
+				    if($days != ""){
+				    	// $key => $value 
+				    	// IS SAME AS 
+				    	// [0] => $value OR 0 => 1
+					    foreach($days as $key => $dayName)
+						{
+							$messages = [
+							    'startTime.'.$key.'.required' => 'The Start At Field for '.$dayName.' is required',
+							    'endTime.'.$key.'.required' => 'The Ends At Field for '.$dayName.' is required',
+							];
+
+							$this->validate($request, [
+						        'startDayTime.'.$key => 'required|max:20',
+					            'endDayTime.'.$key => 'required|max:20',           
+					    	], $messages);
+						}
+					}else{
+						$messages = [
+							'day.required' => 'You need to choose the selected day when setting the time',
+						];
+
+						$this->validate($request, [
+						    'day' => 'required|max:20',        
+					    ], $messages);
+					}
 			    	break;
 			    default:
 			}
@@ -556,37 +642,62 @@ class AdvertsController extends Controller
 		    'schedule_type' => $request->scheduleType,
 		]);
 
-		if($scheduleType === 'specific')
+		switch($scheduleType)
 		{
-			if($advert->specificSchedule)
-			{
-				$advert->specificSchedule()->update([
-					'start_date' => $request->startDate,
-					'end_date' => $request->endDate,
-					'start_time' => $request->startTime,
-					'end_time' => $request->endTime,
-				]);
-			}else{
-				$advert->specificSchedule()->create([
-					'start_date' => $request->startDate,
-					'end_date' => $request->endDate,
-					'start_time' => $request->startTime,
-					'end_time' => $request->endTime,
-				]);
-			}
+			case "specific":
+				if($advert->specificSchedule)
+				{
+					$advert->specificSchedule()->update([
+						'start_date' => $request->startDate,
+						'end_date' => $request->endDate,
+						'start_time' => $request->startTime,
+						'end_time' => $request->endTime,
+					]);
+				}else{
+					$advert->specificSchedule()->create([
+						'start_date' => $request->startDate,
+						'end_date' => $request->endDate,
+						'start_time' => $request->startTime,
+						'end_time' => $request->endTime,
+					]);
+				}
+				break;
 
-		}elseif($scheduleType === 'none'){
+			case "daily":
+				if($advert->specificSchedule)
+				{
+					$advert->specificSchedule()->delete();
 
-			if($advert->specificSchedule)
-			{
-				$advert->specificSchedule()->delete();
-			}
+				}elseif($advert->dailySchedule){
+
+					$advert->dailySchedule()->detach();
+				}
+
+				foreach($days as $key => $dayName)
+				{
+					$dayName = DailySchedule::find($key);
+					$advert->dailySchedule()->attach($dayName,[
+							'start_time'=>$starts[$key],
+							'end_time'=>$ends[$key]
+						]);
+				}
+				break;
+
+			default:
+				if($advert->specificSchedule)
+				{
+					$advert->specificSchedule()->delete();
+
+				}elseif($advert->dailySchedule){
+
+					$advert->dailySchedule()->detach();
+				}
 		}
 		$advert->save();
 
 		$arrayOfSkills = explode(",",$request->skills);
 
-		if(count($advert->skills) > 0)
+		if($advert->skills)
 		{
 			$advert->skills()->detach();
 		}
@@ -608,11 +719,27 @@ class AdvertsController extends Controller
 			}
 		}
 
+		$config = config('services.algolia');
+		$index = $config['index'];
+		$indexFromAlgolia = $search->index($index);
+
 		switch ($saveLater)
 		{
 			case "true":
-				flash('Changes made from your advert has been successfully saved but not yet published', 'info');
-				return redirect('/my/adverts');
+				$advert->published = 0;
+				$advert->save();
+				$objectID = $advert->id;
+				$object = $indexFromAlgolia->deleteObject($objectID);
+
+				if($object)
+				{
+					flash('Changes made from your advert has been successfully saved but not yet published', 'info');
+					return redirect('/adverts');
+				}else{
+					flash('Woops, looks like somethings went wrong. Please try again', 'error');
+					return redirect()->back();
+				}
+				
 				break;
 			default:
 				$advert->ready_to_publish = 1;
@@ -637,28 +764,35 @@ class AdvertsController extends Controller
 		}
 
 		$schedule = $advert->specificSchedule;
+		$startDate = null;
+		$endDate = null;
+		$startTime = null;
+		$endTime = null;
+		$days = null;
 
-		if($schedule)
+		switch($scheduleType)
 		{
-			$startDate = $advert->specificSchedule->start_date;
-			$endDate = $advert->specificSchedule->end_date;
-			$startTime = $advert->specificSchedule->start_time;
-			$endTime = $advert->specificSchedule->end_date;
-		}else{
-			$startDate = null;
-			$endDate = null;
-			$startTime = null;
-			$endTime = null;
+			case 'specific':
+				if($advert->specificSchedule)
+				{
+					$startDate = $advert->specificSchedule->start_date;
+					$endDate = $advert->specificSchedule->end_date;
+					$startTime = $advert->specificSchedule->start_time;
+					$endTime = $advert->specificSchedule->end_date;
+				}
+				break;
+
+			case 'daily':
+				if($advert->dailySchedule)
+				{
+					$days = $advert->dailySchedule;
+				}
+				break;
+			default:
 		}
 
 		$advert->published = 1;
 		$advert->save();
-
-		$config = config('services.algolia');
-
-		$index = $config['index'];
-	
-		$indexFromAlgolia = $search->index($index);
 
 		$object = $indexFromAlgolia->saveObject([
 	    	'id' => $advert->id,
@@ -685,6 +819,7 @@ class AdvertsController extends Controller
 			'end_date' => $endDate,
 			'start_time' => $startTime,
 			'end_time' => $endTime,
+			'daily_schedule' => $days,
 			'skills' => $arrayOfSkills,
 			'group' => 'All',
 			'objectID' => $advert->id,

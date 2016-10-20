@@ -18,6 +18,7 @@ return [
         'domain' => env('MAILGUN_DOMAIN'),
         'secret' => env('MAILGUN_SECRET'),
         'sender' => env('MAIL_SENDER_SMTP'),
+        'site_url' => env('SITE_URL'),
     ],
 
     'ses' => [
@@ -60,7 +61,8 @@ return [
 
     'twilio' => [
         'acc_id' => env('TWILIO_ACC_ID'),
-        'auth_token' => env('TWILIO_AUTH_TOKEN')
+        'auth_token' => env('TWILIO_AUTH_TOKEN'),
+        'site_url' => env('SITE_URL'),
 
     ],
 
