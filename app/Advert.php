@@ -79,14 +79,14 @@ class Advert extends Model
     */
     public function ownedBy(User $user)
     {
-        $employer = $user->employer()->first();
+        $user = $user;
 
-        if(!$employer)
+        if(!$user)
         {
             return redirect('/');
         }
 
-        return $this->employer_id == $employer->id;
+        return $this->employer->user->id == $user->id;
     }
 
    /**
