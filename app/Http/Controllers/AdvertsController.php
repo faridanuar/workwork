@@ -183,8 +183,8 @@ class AdvertsController extends Controller
 					    foreach($days as $key => $dayName)
 						{
 							$messages = [
-							    'startTime.'.$key.'.required' => 'The Start At Field for '.$dayName.' is required',
-							    'endTime.'.$key.'.required' => 'The Ends At Field for '.$dayName.' is required',
+							    'startDayTime.'.$key.'.required' => 'The Start At Field for '.$dayName.' is required',
+							    'endDayTime.'.$key.'.required' => 'The Ends At Field for '.$dayName.' is required',
 							];
 
 							$this->validate($request, [
@@ -192,6 +192,10 @@ class AdvertsController extends Controller
 					            'endDayTime.'.$key => 'required|max:20',           
 					    	], $messages);
 						}
+						$this->validate($request, [
+						        'dailyStartDate' => 'required|max:20',
+					            'dailyEndDate' => 'required|max:20',           
+					    ]);
 					}else{
 						$messages = [
 							'day.required' => 'You need to choose the selected day when setting the time',
@@ -265,6 +269,11 @@ class AdvertsController extends Controller
 							'end_time'=>$ends[$key]
 						]);
 				}
+				$advert->update([
+					'daily_start_date' => $request->dailyStartDate,
+					'daily_end_date' => $request->dailyEndDate
+				]);
+				$advert->save();
 				break;
 
 			default:
@@ -323,184 +332,6 @@ class AdvertsController extends Controller
 
 
 	/**
-	 * Store a newly created resource in storage
-	 *
-	 * @param AdvertRequest $request
-	 */
-	public function publish(Request $request, Search $search)
-	{
-		$advert = Advert::find($request->id);
-		$ready = $advert->ready_to_publish;
-
-        switch ($ready)
-        {
-        	case 0:
-	        	flash('You need to update your advert, then publish', 'info');
-	        	return redirect()->back();
-	        	break;
-
-        	default:
-        }
-
-        $todaysDate = Carbon::now();
-        $endDate = $advert->plan_ends_at;
-        $daysLeft =  $todaysDate->diffInDays($endDate, false);
-
-        if($endDate === null){
-
-        	flash('You need to purchase a plan to published your job advert', 'info');
-
-            return redirect()->route('plan', [$advert->id]);
-
-        }elseif($daysLeft < 0){
-
-            flash('your package has been expired, please purchase a new plan', 'info');
-
-            return redirect()->route('plan', [$advert->id]);
-        }
-
-		$advert->published = 1;
-		$advert->advert_level = 3;
-		$advert->save();
-
-		if($advert)
-		{
-			$scheduleType = $advert->scheduleType;
-			$config = config('services.algolia');
-			$index = $config['index'];
-			$indexFromAlgolia = $search->index($index);
-			$objectID = $advert->id;
-
-			$scheduleType = $advert->schedule_type;
-			$startDate = null;
-			$endDate = null;
-			$startTime = null;
-			$endTime = null;
-			$days = null;
-
-			switch($scheduleType)
-			{
-				case 'specific':
-					if($advert->specificSchedule)
-					{
-						$startDate = $advert->specificSchedule->start_date;
-						$endDate = $advert->specificSchedule->end_date;
-						$startTime = $advert->specificSchedule->start_time;
-						$endTime = $advert->specificSchedule->end_date;
-					}
-					break;
-
-				case 'daily':
-					if($advert->dailySchedule)
-					{
-						$days = $advert->dailySchedule;
-					}
-					break;
-				default:
-			}
-
-			$object = $indexFromAlgolia->addObject(
-				[
-			    	'id' => $advert->id,
-			        'job_title' => $advert->job_title,
-			        'salary'  => (float)$advert->salary,
-			        'description'  => $advert->description,
-			        'business_name'  => $advert->business_name,
-			        'location'  => $advert->location,
-			        'street'  => $advert->street,
-			        'city'  => $advert->city,
-			        'zip'  => $advert->zip,
-			        'state'  => $advert->state,
-			        'country'  => $advert->country,
-			        'created_at'  => $advert->created_at->toDateTimeString(),
-			        'updated_at'  => $advert->updated_at->toDateTimeString(),
-			        'employer_id'  => $advert->employer_id,
-			        'category'  => $advert->category,
-			        'rate'  => $advert->rate,
-			        'oku_friendly'  => $advert->oku_friendly,
-			        'published' => $advert->published,
-			        'avatar'  => $advert->avatar,
-			        'schedule_type' => $advert->schedule_type,
-			        'start_date' => $startDate,
-					'end_date' => $endDate,
-					'start_time' => $startTime,
-					'end_time' => $endTime,
-					'daily_schedule' => $days,
-					'skills' => $advert->skills,
-			        'group' => 'All',
-			    ],
-			    $objectID
-			);
-
-			if($object)
-			{
-				$user = $request->user();
-				$user->ftu_level = 4;
-				$user->save();
-
-				// set flash attribute and key. example --> flash('success message', 'flash_message_level')
-				flash('Your advert has been successfully published.', 'success');
-
-				// redirect to a landing page, so that people can share to the world DONE, kinda
-				// next, flash messaging
-				return redirect()->back();
-				
-			}else{
-
-				flash('There was something wrong when publishing your advert. Please try again.', 'error');
-
-				return redirect()->back();
-			}
-
-		}else{
-
-			flash('There was something wrong when saving your advert. Please try again.', 'error');
-
-			return redirect()->back();
-		}
-	}
-
-
-
-	public function unpublish(Request $request, Search $search)
-	{
-		$advert = Advert::find($request->id);
-		$advert->published = 0;
-		$advert->save();
-
-		if($advert)
-		{
-			$config = config('services.algolia');
-			$index = $config['index'];
-			$indexFromAlgolia = $search->index($index);
-			$objectID = $advert->id;
-			$object = $indexFromAlgolia->deleteObject($objectID);
-
-			if($object)
-			{
-				// set flash attribute and key. example --> flash('success message', 'flash_message_level')
-				flash('Your advert has been unpublished.', 'info');
-
-				return redirect()->back();
-				
-			}else{
-
-				flash('There was something wrong when unpublishing your advert. Please try again.', 'error');
-
-				return redirect()->back();
-			}
-
-		}else{
-
-			flash('There was something wrong when changing your advert state. Please try again.', 'error');
-
-			return redirect()->back();
-		}
-	}
-
-
-
-	/**
 	 * Edit created resource in storage
 	 *
 	 * @param $request, $id, $job_title
@@ -527,6 +358,8 @@ class AdvertsController extends Controller
 		$startTime = null;
 		$endTime = null;
 		$days = null;
+		$dailyStart = null;
+		$dailyEnd = null; 
 
 		switch($scheduleType)
 		{
@@ -544,14 +377,26 @@ class AdvertsController extends Controller
 				if($advert->dailySchedule)
 				{
 					$days = $advert->dailySchedule;
+					$dailyStart = $advert->daily_start_date;
+					$dailyEnd = $advert->daily_end_date; 
 				}
 				break;
 			default:
 		}
 		
-
 		// display "edit" page
-		return view('adverts.edit', compact('advert','skills','scheduleType','dayName','startDate','endDate','startTime','endTime', 'days'));
+		return view('adverts.edit', compact(
+									'advert',
+									'skills',
+									'scheduleType',
+									'dayName',
+									'startDate',
+									'endDate',
+									'startTime',
+									'endTime',
+									'days',
+									'dailyStart',
+									'dailyEnd'));
 	}
 
 
@@ -563,7 +408,7 @@ class AdvertsController extends Controller
 	 */
 	public function update(AdvertRequest $request, Search $search, $id, $job_title)
 	{
-		$advert = Advert::find($id);
+		$advert = Advert::locatedAt($id, $job_title)->firstOrFail();
 		$saveLater = $request->saveLater;
 		$scheduleType = $request->scheduleType;
 		$days = $request->day;
@@ -645,8 +490,20 @@ class AdvertsController extends Controller
 		switch($scheduleType)
 		{
 			case "specific":
-				if($advert->specificSchedule)
+				if($advert->dailySchedule)
 				{
+					$advert->dailySchedule()->detach();
+
+					$advert->update([
+						'daily_start_date' => null,
+						'daily_end_date' => null
+					]);
+					$advert->save();
+
+				}
+
+				if($advert->specificSchedule){
+
 					$advert->specificSchedule()->update([
 						'start_date' => $request->startDate,
 						'end_date' => $request->endDate,
@@ -671,6 +528,12 @@ class AdvertsController extends Controller
 				}elseif($advert->dailySchedule){
 
 					$advert->dailySchedule()->detach();
+
+					$advert->update([
+						'daily_start_date' => null,
+						'daily_end_date' => null
+					]);
+					$advert->save();
 				}
 
 				foreach($days as $key => $dayName)
@@ -681,6 +544,11 @@ class AdvertsController extends Controller
 							'end_time'=>$ends[$key]
 						]);
 				}
+				$advert->update([
+					'daily_start_date' => $request->dailyStartDate,
+					'daily_end_date' => $request->dailyEndDate
+				]);
+				$advert->save();
 				break;
 
 			default:
@@ -691,6 +559,11 @@ class AdvertsController extends Controller
 				}elseif($advert->dailySchedule){
 
 					$advert->dailySchedule()->detach();
+
+					$advert->update([
+						'daily_start_date' => null,
+						'daily_end_date' => null
+					]);
 				}
 		}
 		$advert->save();
@@ -769,6 +642,9 @@ class AdvertsController extends Controller
 		$startTime = null;
 		$endTime = null;
 		$days = null;
+		$dailyStart = null;
+		$dailyEnd = null; 
+
 
 		switch($scheduleType)
 		{
@@ -786,6 +662,8 @@ class AdvertsController extends Controller
 				if($advert->dailySchedule)
 				{
 					$days = $advert->dailySchedule;
+					$dailyStart = $advert->daily_start_date;
+					$dailyEnd = $advert->daily_end_date; 
 				}
 				break;
 			default:
@@ -820,6 +698,8 @@ class AdvertsController extends Controller
 			'start_time' => $startTime,
 			'end_time' => $endTime,
 			'daily_schedule' => $days,
+			'daily_start_date' => $dailyStart,
+			'daily_end_date' => $dailyEnd,
 			'skills' => $arrayOfSkills,
 			'group' => 'All',
 			'objectID' => $advert->id,
@@ -834,6 +714,188 @@ class AdvertsController extends Controller
 		}else{
 
 			flash('There was something wrong when publishing your advert. Please try again.', 'error');
+
+			return redirect()->back();
+		}
+	}
+
+
+
+	/**
+	 * Store a newly created resource in storage
+	 *
+	 * @param AdvertRequest $request
+	 */
+	public function publish(Request $request, Search $search)
+	{
+		$advert = Advert::find($request->id);
+		$ready = $advert->ready_to_publish;
+
+        switch ($ready)
+        {
+        	case 0:
+	        	flash('You need to update your advert, then publish', 'info');
+	        	return redirect()->back();
+	        	break;
+
+        	default:
+        }
+
+        $todaysDate = Carbon::now();
+        $endDate = $advert->plan_ends_at;
+        $daysLeft =  $todaysDate->diffInDays($endDate, false);
+
+        if($endDate === null){
+
+        	flash('You need to purchase a plan to published your job advert', 'info');
+
+            return redirect()->route('plan', [$advert->id]);
+
+        }elseif($daysLeft < 0){
+
+            flash('your package has been expired, please purchase a new plan', 'info');
+
+            return redirect()->route('plan', [$advert->id]);
+        }
+
+		$advert->published = 1;
+		$advert->advert_level = 3;
+		$advert->save();
+
+		if($advert)
+		{
+			$scheduleType = $advert->scheduleType;
+			$config = config('services.algolia');
+			$index = $config['index'];
+			$indexFromAlgolia = $search->index($index);
+			$objectID = $advert->id;
+
+			$scheduleType = $advert->schedule_type;
+			$startDate = null;
+			$endDate = null;
+			$startTime = null;
+			$endTime = null;
+			$days = null;
+			$dailyStart = null;
+			$dailyEnd = null; 
+
+			switch($scheduleType)
+			{
+				case 'specific':
+					if($advert->specificSchedule)
+					{
+						$startDate = $advert->specificSchedule->start_date;
+						$endDate = $advert->specificSchedule->end_date;
+						$startTime = $advert->specificSchedule->start_time;
+						$endTime = $advert->specificSchedule->end_date;
+					}
+					break;
+
+				case 'daily':
+					if($advert->dailySchedule)
+					{
+						$days = $advert->dailySchedule;
+					}
+					break;
+				default:
+			}
+
+			$object = $indexFromAlgolia->addObject(
+				[
+			    	'id' => $advert->id,
+			        'job_title' => $advert->job_title,
+			        'salary'  => (float)$advert->salary,
+			        'description'  => $advert->description,
+			        'business_name'  => $advert->business_name,
+			        'location'  => $advert->location,
+			        'street'  => $advert->street,
+			        'city'  => $advert->city,
+			        'zip'  => $advert->zip,
+			        'state'  => $advert->state,
+			        'country'  => $advert->country,
+			        'created_at'  => $advert->created_at->toDateTimeString(),
+			        'updated_at'  => $advert->updated_at->toDateTimeString(),
+			        'employer_id'  => $advert->employer_id,
+			        'category'  => $advert->category,
+			        'rate'  => $advert->rate,
+			        'oku_friendly'  => $advert->oku_friendly,
+			        'published' => $advert->published,
+			        'avatar'  => $advert->avatar,
+			        'schedule_type' => $advert->schedule_type,
+			        'start_date' => $startDate,
+					'end_date' => $endDate,
+					'start_time' => $startTime,
+					'end_time' => $endTime,
+					'daily_schedule' => $days,
+					'daily_start_date' => $dailyStart,
+					'daily_end_date' => $dailyEnd,
+					'skills' => $advert->skills,
+			        'group' => 'All',
+			    ],
+			    $objectID
+			);
+
+			if($object)
+			{
+				$user = $request->user();
+				$user->ftu_level = 4;
+				$user->save();
+
+				// set flash attribute and key. example --> flash('success message', 'flash_message_level')
+				flash('Your advert has been successfully published.', 'success');
+
+				// redirect to a landing page, so that people can share to the world DONE, kinda
+				// next, flash messaging
+				return redirect()->back();
+				
+			}else{
+
+				flash('There was something wrong when publishing your advert. Please try again.', 'error');
+
+				return redirect()->back();
+			}
+
+		}else{
+
+			flash('There was something wrong when saving your advert. Please try again.', 'error');
+
+			return redirect()->back();
+		}
+	}
+
+
+
+	public function unpublish(Request $request, Search $search)
+	{
+		$advert = Advert::find($request->id);
+		$advert->published = 0;
+		$advert->save();
+
+		if($advert)
+		{
+			$config = config('services.algolia');
+			$index = $config['index'];
+			$indexFromAlgolia = $search->index($index);
+			$objectID = $advert->id;
+			$object = $indexFromAlgolia->deleteObject($objectID);
+
+			if($object)
+			{
+				// set flash attribute and key. example --> flash('success message', 'flash_message_level')
+				flash('Your advert has been unpublished.', 'info');
+
+				return redirect()->back();
+				
+			}else{
+
+				flash('There was something wrong when unpublishing your advert. Please try again.', 'error');
+
+				return redirect()->back();
+			}
+
+		}else{
+
+			flash('There was something wrong when changing your advert state. Please try again.', 'error');
 
 			return redirect()->back();
 		}

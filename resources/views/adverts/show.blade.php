@@ -79,6 +79,8 @@
                         @foreach($advert->dailySchedule as $day)
                             <div>{{ $day->day }} : {{ $day->pivot->start_time }} - {{ $day->pivot->end_time }}</div>
                         @endforeach
+                        <h4>Duration</h4>
+                        <div>Start: {{ $advert->daily_start_date }} - End: {{ $advert->daily_end_date }}</div>
                     @else
                         <div>No Schedule</div>
                     @endif

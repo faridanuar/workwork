@@ -32,6 +32,8 @@ class Advert extends Model
         'oku_friendly',
         'avatar',
         'schedule_type',
+        'daily_start_date',
+        'daily_end_date',
     ];
 
     // identify the date to make carbon instance

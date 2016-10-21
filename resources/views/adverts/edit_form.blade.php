@@ -120,6 +120,13 @@
 	@endfor
 </div>
 
+<div class="form-group">
+	<label for="specific">Date Start</label>
+		<input type='text' class="form-control" name="dailyStartDate" id='datetimepicker5' value="{{ $dailyStart }}" />
+	<label for="specific">Date Ends</label>
+		<input type='text' class="form-control" name="dailyEndDate" id='datetimepicker6' value="{{ $dailyEnd }}" />
+</div>
+
 <hr>
 
 <div class="form-group">
@@ -178,8 +185,4 @@
 
 @include('js_plugins.algolia_places')
 @include('js_plugins.tagging')
-@if($advert->schedule_type === 'specific')
-@include('js_plugins.datetime_edit_form')
-@else
 @include('js_plugins.datetime_picker')
-@endif
