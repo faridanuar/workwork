@@ -1,6 +1,8 @@
 <script type="text/javascript">
 var startDate = new Date('{{ $startDate }}');
 var endDate = new Date('{{ $endDate }}');
+var dailyStart = new Date('{{ $dailyStart }}');
+var dailyEnd = new Date('{{ $dailyEnd }}');
     $(function () {
     	$('#datetimepicker1').datetimepicker({
             format: 'L',
@@ -57,6 +59,14 @@ var endDate = new Date('{{ $endDate }}');
         });
         $('#datetimepicker27').datetimepicker({
             format: 'LT'
+        });
+        $('#datetimepicker5').datetimepicker({
+            format: 'L',
+            minDate: dailyStart,
+        });
+        $('#datetimepicker6').datetimepicker({
+            format: 'L',
+            minDate: dailyEnd,
         });
     });
 </script>

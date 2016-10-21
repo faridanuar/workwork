@@ -56,5 +56,13 @@
         $('#datetimepicker27').datetimepicker({
             format: 'LT'
         });
+        $('#datetimepicker5').datetimepicker({
+            format: 'L',
+            minDate: Date(),
+        });
+        $('#datetimepicker6').datetimepicker({
+            format: 'L',
+            minDate: Date(),
+        });
     });
 </script>

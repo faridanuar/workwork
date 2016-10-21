@@ -157,6 +157,13 @@
 </div>
 
 <div class="form-group">
+	<label for="specific">Daily Start Date</label>
+		<input type='text' class="form-control" name="dailyStartDate" id='datetimepicker5' value="{{ old('dailyStartDate') }}" />
+	<label for="specific">Daily End Date</label>
+		<input type='text' class="form-control" name="dailyEndDate" id='datetimepicker6' value="{{ old('dailyEndDate') }}" />
+</div>
+
+<div class="form-group">
 	<label for="description">@lang('forms.ad_job_description_label')</label>
 	<textarea type="text" name="description" id="description" class="form-control" rows="10">{{ old('description') }}</textarea>
 </div>

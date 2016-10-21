@@ -12,6 +12,11 @@
 				<div class="panel panel-default">
 					<div class="panel-body">
 						<a href="/adverts/{{ $myAdvert->id }}/{{ strtolower($myAdvert->job_title) }}">
+						@if($myAdvert->published != 0)
+								<span>(published)</span>
+							@else
+								<span>(Not Published)</span>
+							@endif
 						<h4>{{ $myAdvert->job_title }}</h4>
 						</a>
 						@can('view_request')
