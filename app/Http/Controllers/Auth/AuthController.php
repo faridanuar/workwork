@@ -91,8 +91,8 @@ class AuthController extends Controller
 
                 $domain = $config['sender'];
 
-                $recipient = $user->email;
-                //$recipient = "farid@pocketpixel.com";
+                //$recipient = $user->email;
+                $recipient = "farid@pocketpixel.com";
 
                 $recipientName = $user->name;
 
@@ -115,8 +115,8 @@ class AuthController extends Controller
 
                 $domain = $config['sender'];
 
-                $recipient = $user->email;
-                //$recipient = "farid@pocketpixel.com";
+                //$recipient = $user->email;
+                $recipient = "farid@pocketpixel.com";
 
                 $recipientName = $user->name;
 

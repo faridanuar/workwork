@@ -2,7 +2,7 @@
 
 <div>
 <a href="/my/applications" id="urlPending">Pending List</a> ||
-<a href="/my/applications/rejected" id="urlRejected" onclick="rejectedListViewed()">Rejected List
+<a href="/my/applications/rejected" id="urlRejected">Rejected List
 @if(count($jobSeeker->applications
 			->where('status', 'REJECTED')
 			->where('viewed', 0)) > 0)
@@ -12,8 +12,7 @@
 				->where('viewed', 0)) }} 
 	@endif
 </a> || 
-<a href="/my/applications/accepted" 
-	id="urlAccepted" onclick="acceptedListViewed()">Accepted List 
+<a href="/my/applications/accepted" id="urlAccepted">Accepted List 
 	@if(count($jobSeeker->applications
 			->where('status', 'ACCEPTED FOR INTERVIEW')
 			->where('viewed', 0)) > 0)
@@ -24,5 +23,3 @@
 	@endif
 </a>
 </div>
-
-@include('js_plugins.viewed_responses')

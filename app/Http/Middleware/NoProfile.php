@@ -6,7 +6,7 @@ use Closure;
 
 use App\User;
 
-class MustBeJobSeeker
+class NoProfile
 {
     /**
      * Handle an incoming request.
@@ -17,18 +17,19 @@ class MustBeJobSeeker
      */
     public function handle($request, Closure $next)
     {
-        //fetch user data with request from authentication
         $user = $request->user();
 
-        if (!$user)
+        if(!$user)
         {
             return redirect()->guest('login');
 
-        }elseif($user->type != "job_seeker" || !$user->hasRole('job_seeker') || !$user->jobSeeker){
-
-            flash('Sorry, you are not allowed to access unless you are a Job Seeker and have created a profile', 'info');
+        }elseif($user->type === 'employer' || $user->jobSeeker || $user->employer){
 
             return redirect('/');
+
+        }elseif(!$user->type){
+
+            return redirect('/choose');
         }
 
         return $next($request);

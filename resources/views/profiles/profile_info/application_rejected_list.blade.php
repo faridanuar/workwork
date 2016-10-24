@@ -4,6 +4,7 @@
 
 @include('profiles.profile_info.applications_category')
 
+<div>
 	<h3><u>Rejected List</u></h3>
 	@foreach($rejectedInfos as $rejectedInfo)
 
@@ -15,7 +16,22 @@
 		</div>
 
 	@endforeach
+</div>
 
-	{!! $rejectedInfos->render() !!}
+{!! $rejectedInfos->render() !!}
+
+<script type="text/javascript">
+$(document).ready(function(){
+    $.ajax({
+      type: "POST",
+      url: "/set-as-viewed",
+      context: document.body,
+      data: {
+            'viewed': 'rejected',
+            '_token': '{!! csrf_token() !!}'
+            }
+    });
+});
+</script>
 
 @stop

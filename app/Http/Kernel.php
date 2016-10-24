@@ -52,6 +52,8 @@ class Kernel extends HttpKernel
         'jobSeeker' => \App\Http\Middleware\MustBeJobSeeker::class,
         'employer' => \App\Http\Middleware\MustBeEmployer::class,
         'noRoleType' => \App\Http\Middleware\MustNotHaveRoleType::class,
-        'subscribed' => \App\Http\Middleware\MustBeSubscribed::class
+        'subscribed' => \App\Http\Middleware\MustBeSubscribed::class,
+        'noCompanyProfile' => \App\Http\Middleware\NoCompanyProfile::class,
+        'noProfile' => \App\Http\Middleware\NoProfile::class
     ];
 }
