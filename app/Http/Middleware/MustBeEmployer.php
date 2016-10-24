@@ -25,7 +25,7 @@ class MustBeEmployer
             // redirect if user is not authorized
             return redirect()->guest('login');
 
-        }elseif($user->type != "employer" || !$user->hasRole('employer')){
+        }elseif($user->type != "employer" || !$user->hasRole('employer') || !$user->employer){
 
             return redirect('/');
         }

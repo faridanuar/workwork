@@ -4,6 +4,7 @@
 
 @include('profiles.profile_info.applications_category')
 
+<div>
 	<h3><u>Accepted List</u></h3>
 	@foreach($acceptedInfos as $acceptedInfo)
 
@@ -15,7 +16,22 @@
 		</div>
 
 	@endforeach
+</div>
 
-	{!! $acceptedInfos->render() !!}
+{!! $acceptedInfos->render() !!}
+
+<script type="text/javascript">
+$(document).ready(function(){
+    $.ajax({
+      type: "POST",
+      url: "/set-as-viewed",
+      context: document.body,
+      data: {
+            'viewed': 'accepted',
+            '_token': '{!! csrf_token() !!}'
+            }
+    });
+});
+</script>
 
 @stop

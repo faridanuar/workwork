@@ -17,7 +17,12 @@
 	</p>
 	<hr>
 
-	<img id="business_logo" src="{{ $photo }}" height="100" width="100"/> <a href="/logo" class="btn btn-default btn-sm">Add Logo</a>
+	<img id="business_logo" src="{{ $photo }}" height="100" width="100"/> 
+	@can('edit_company')
+		@if($authorize === true)
+			<a href="/logo" class="btn btn-default btn-sm">Add Logo</a>
+		@endif
+	@endcan
 
 	<hr>
 
@@ -64,9 +69,11 @@
 	<a href="/company/{{ $company->id }}/{{ $company->business_name }}/review">Reviews ({{ $ratings }})</a>
 
 	@can('edit_company')
+		@if($authorize === true)
 			<div>
-			<a href="/company/edit" class="btn btn-primary">EDIT</a>
+				<a href="/company/edit" class="btn btn-primary">EDIT</a>
 			</div>
+		@endif
 	@endcan
 
 	@can('rate_company')

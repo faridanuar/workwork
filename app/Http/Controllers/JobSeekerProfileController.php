@@ -26,54 +26,6 @@ class JobSeekerProfileController extends Controller
 
 
 
-    public function create(Request $request)
-    {
-        $user = $request->user();
-
-        $done = 0;
-        $notDone = -1;
-
-        return view('profiles.profile_info.profile_create', compact('user','done','notDone'));
-    }
-
-
-
-    public function store(Request $request)
-    {
-        $user = $request->user();
-        $user->update([
-            // update user info
-            'name' => $request->name,
-            'contact' => $request->contact,
-        ]);
-        $user->ftu_level = 1;
-        $user->save();
-
-
-        // create a new user_id and fields and store it in jobseekers table
-        $jobSeeker = $user->jobSeeker()->create([
-            // 'column' => request->'field'
-            'age' => $request->age,
-            'location' => $request->location,
-            'street' => $request->street,
-            'city' => $request->city,
-            'zip' => $request->zip,
-            'state' => $request->state,
-            'country' => $request->country, 
-        ]);
-
-        // set user_id in the row created in the Job_Seeker model using associate method
-        $jobSeeker->user()->associate($user);
-
-        // save user's job seeker profile info
-        $jobSeeker->save();
-
-        // redirect to home
-        return redirect('/preferred-category');
-    }
-
-
-
     public function preferCategory(Request $request)
     {
         if(count($request->user()->jobSeeker->categories) != 0)
@@ -306,8 +258,12 @@ class JobSeekerProfileController extends Controller
         if($viewed === 'accepted')
         {
             $requests = $jobSeeker->applications->where('status', 'ACCEPTED FOR INTERVIEW')->where('responded', 1)->where('viewed', 0);
-        }else{
+
+        }elseif($viewed === 'rejected'){
+
             $requests = $jobSeeker->applications->where('status', 'REJECTED')->where('responded', 1)->where('viewed', 0);
+        }else{
+            
         }
 
         foreach($requests as $requested)

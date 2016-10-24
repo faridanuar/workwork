@@ -33,60 +33,6 @@ class CompanyProfileController extends Controller
         $this->middleware('employer', ['except' => ['profile', 'companyReview']]);
     }
 
-    public function create(Request $request)
-    {
-        if(!Auth::user())
-        {
-           return redirect()->guest('login');
-        }
-
-        $user = $request->user();
-
-        $done = 0;
-        $notDone = -3;
-
-        return view('profiles.company.company_create', compact('user','done','notDone'));
-    }
-
-
-
-    public function store(EmployerRequest $request)
-    {
-        if(!Auth::user())
-        {
-           return redirect()->guest('login');
-        }
-
-        // store user info in variable
-        $user = $request->user();
-
-        // create a new company profile and store it in employers table
-        $employer = $user->employer()->create([
-
-            // 'column' => request->'field'
-            'business_name' => $request->business_name,
-            'business_category' => $request->business_category,
-            'business_contact' => $request->business_contact,
-            //'business_website' => $request->business_website,
-            //'location' => $request->location,
-            //'street' => $request->street,
-            //'city' => $request->city,
-            //'zip' => $request->zip,
-            //'state' => $request->state,
-            'company_intro' => $request->company_intro,
-        ]);
-
-        // user proceed to create advert
-        $user->ftu_level = 1;
-
-        // set user ftu
-        $user->save();
-
-        // redirect to dashboard
-        return redirect('/adverts/create');
-    }
-
-
 
     public function profile(Request $request, $id, $business_name)
     {
