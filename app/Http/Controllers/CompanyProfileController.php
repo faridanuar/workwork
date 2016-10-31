@@ -455,9 +455,12 @@ class CompanyProfileController extends Controller
 
                 // set the required variables
                 $config = config('services.mailgun');
+
                 $domain = $config['sender'];
+
                 $recipient = $application->jobSeeker->user->email;
                 //$recipient = "farid@pocketpixel.com";
+                
                 $recipientName = $application->jobSeeker->user->name;
                 
                 // provide sender domain and sender name

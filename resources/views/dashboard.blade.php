@@ -16,6 +16,9 @@
             <div class="panel-body">
                 Notifications
                 <div>
+                @if($user->verified != 1)
+                   You have not verified your email. Click <a href="/send/link"><b>Here</b></a>
+                @endif
                 @can('edit_company')
                     @forelse( $noticeInfos as $noticeInfo )
                         {{ $message }} <b>{{ $noticeInfo->jobSeeker->user->name }}</b> for a job as <b>{{ $noticeInfo->advert->job_title }}</b> - 

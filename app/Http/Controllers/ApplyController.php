@@ -140,9 +140,12 @@ class ApplyController extends Controller
 
             	// set the required variables
             	$config = config('services.mailgun');
+
 	            $domain = $config['sender'];
+
 	            $recipient = $application->employer->user->email;
 	            //$recipient = "farid@pocketpixel.com";
+	            
 	            $recipientName = $application->employer->user->name;
 
 	            // provide sender domain and sender name

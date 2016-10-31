@@ -1,87 +1,63 @@
 <?php
 
-namespace App\Http\Controllers\Auth;
+namespace App\Http\Controllers;
 
-use Validator;
+use Illuminate\Http\Request;
+
 use Mail;
 
 use App\User;
 use App\Employer;
 use App\JobSeeker;
 
-use App\Http\Controllers\Controller;
-use Illuminate\Foundation\Auth\ThrottlesLogins;
-use Illuminate\Foundation\Auth\AuthenticatesAndRegistersUsers;
+use App\Http\Requests;
 
-class AuthController extends Controller
+class RegistrationController extends Controller
 {
-    /*
-    |--------------------------------------------------------------------------
-    | Registration & Login Controller
-    |--------------------------------------------------------------------------
-    |
-    | This controller handles the registration of new users, as well as the
-    | authentication of existing users. By default, this controller uses
-    | a simple trait to add these behaviors. Why don't you explore it?
-    |
-    */
-
-    use AuthenticatesAndRegistersUsers, ThrottlesLogins;
-
     /**
-     * Where to redirect users after login / registration.
-     *
-     * @var string
-     */
-    protected $redirectTo = '/dashboard';
-
-    /**
-     * Create a new authentication controller instance.
-     *
-     * @return void
+     * Create a new registration instance.
      */
     public function __construct()
     {
-        $this->middleware($this->guestMiddleware(), ['except' => 'logout']);
+        $this->middleware('guest', ['except' => ['verify', 'verifyStatus', 'getEmail']]);
     }
 
+
+
     /**
-     * Get a validator for an incoming registration request.
+     * Show the register page.
      *
-     * @param  array  $data
-     * @return \Illuminate\Contracts\Validation\Validator
+     * @return \Response
      */
-    protected function validator(array $data)
+    public function register()
     {
-        return Validator::make($data, [
-            'name' => 'required|max:255',
-            'email' => 'required|email|max:255|unique:users',
-            'password' => 'required|min:6|confirmed',
+        return view('auth.register');
+    }
+
+
+
+    /**
+     * Perform the registration.
+     *
+     * @param  Request   $request
+     * @param  AppMailer $mailer
+     * @return \Redirect
+     */
+    public function postRegister(Request $request)
+    {
+        $this->validate($request, [
+            'name' => 'required',
+            'email' => 'required|email|unique:users',
+            'password' => 'required',
             'contact' => 'required',
             'type' => 'required',
         ]);
-    }
+        $user = User::create($request->all());
 
-    /**
-     * Create a new user instance after a valid registration.
-     *
-     * @param  array  $data
-     * @return User
-     */
-    protected function create(array $data)
-    {
         // generate a random string to be used as a verifcation code
         $verification_code = str_random(30);
         $contact_verification_code = str_random(5);
 
-        // create and store a new row of record for newly registered user
-        $user = User::create([
-            'name' => $data['name'],
-            'email' => $data['email'],
-            'password' => bcrypt($data['password']),
-            'contact' => $data['contact'],
-            'type' => $data['type'],
-        ]);
         $user->verification_code = $verification_code;
         $user->contact_verification_code = $contact_verification_code;
         $user->save();
@@ -107,8 +83,8 @@ class AuthController extends Controller
                     // fetch mailgun provided domain
                     $domain = $config['sender'];
 
-                    $recipient = $user->email;
-                    //$recipient = "farid@pocketpixel.com";
+                    //recipient = $user->email;
+                    $recipient = "farid@pocketpixel.com";
 
                     $recipientName = $user->name;
 
@@ -133,8 +109,8 @@ class AuthController extends Controller
                     // fetch mailgun provided domain
                     $domain = $config['sender'];
 
-                    $recipient = $user->email;
-                    //$recipient = "farid@pocketpixel.com";
+                    //$recipient = $user->email;
+                    $recipient = "farid@pocketpixel.com";
 
                     $recipientName = $user->name;
 
@@ -149,6 +125,44 @@ class AuthController extends Controller
             default:
         }
 
-        return $user;
+        flash('We have sent you an email. Please verify your email first before logging in ');
+
+        return redirect('/login');
+    }
+
+
+
+    public function verify($verification_code)
+    {
+        if(!$verification_code)
+        {
+            abort(403,'Unauthorized action');
+        }
+
+        $user = User::where('verification_code',$verification_code)->first();
+
+        if(!$user)
+        {
+            return redirect('/verify/status');
+        }
+
+        $user->verified = 1;
+        $user->verification_code = null;
+        $user->save();
+
+        return redirect('/verify/status');
+    }
+
+
+
+    public function verifyStatus(Request $request)
+    {
+        return view('auth.verification_status');
+    }
+
+
+    public function getEmail(Request $request)
+    {
+        return view('auth.passwords.email');
     }
 }

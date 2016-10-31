@@ -3,6 +3,7 @@
 namespace App\Http\Middleware;
 
 use Closure;
+
 use App\User;
 
 class MustBeEmployer
@@ -27,6 +28,7 @@ class MustBeEmployer
 
         }elseif($user->type != "employer" || !$user->hasRole('employer') || !$user->employer){
 
+            // redirect to home
             return redirect('/');
         }
 

@@ -35,6 +35,17 @@ class User extends Authenticatable
 
 
     /**
+     * Set the password attribute.
+     *
+     * @param string $password
+     */
+    public function setPasswordAttribute($password)
+    {
+        $this->attributes['password'] = bcrypt($password);
+    }
+    
+
+    /**
      * defining "users" table relationship with "job_seekers" table
      */
     public function jobSeeker()
