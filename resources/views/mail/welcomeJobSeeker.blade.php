@@ -4,7 +4,9 @@
 
 Welcome Job Seeker!<br><br>
 
-Now you can start searching and find the perfect job for you: <br>
-<a class="btn btn-primary" href="http://workwork.my/">Find a job</a> 
+Now all you need to do is verify your email and then you can get started! <br>
+Click here to verify: <a class="btn btn-primary" href="{{ $website }}register/verify/{{ $verification_code }}">{{ $website }}register/verify/{{ $verification_code }}</a>
+
+<div>(If you did not perform this action then you do not have to do anything else)</div> 
 </body>
 </html>

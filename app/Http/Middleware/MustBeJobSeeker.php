@@ -20,17 +20,19 @@ class MustBeJobSeeker
         //fetch user data with request from authentication
         $user = $request->user();
 
+        //check if user is not authenticated and does not have job seeker role
         if (!$user)
         {
+            // redirect if user is not authorized
             return redirect()->guest('login');
 
         }elseif($user->type != "job_seeker" || !$user->hasRole('job_seeker') || !$user->jobSeeker){
 
-            flash('Sorry, you are not allowed to access unless you are a Job Seeker and have created a profile', 'info');
-
+            // redirect to home
             return redirect('/');
         }
 
+        // return to true if user is authorized
         return $next($request);
     }
 }

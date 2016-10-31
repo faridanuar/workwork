@@ -4,7 +4,32 @@
 
 // Route::get('/launch', 'PagesController@launch');
 
-Route::auth();
+// Route::get('/time', 'HomeController@time');
+
+//Route::auth();
+
+Route::get('/register/verify/{verification_code}', 'RegistrationController@verify');
+
+Route::get('/verify/status', 'RegistrationController@verifyStatus');
+
+Route::get('/send/link', 'HomeController@sendToken');
+
+Route::get('/link/sent', 'HomeController@sent');
+
+
+Route::get('/register', 'RegistrationController@register');
+
+Route::post('/register', 'RegistrationController@postRegister');
+
+Route::get('/password/reset', 'RegistrationController@getEmail');
+
+Route::get('/login', 'SessionsController@login');
+
+Route::post('/login', 'SessionsController@postLogin');
+
+Route::get('/logout', 'SessionsController@logout');
+
+
 
 Route::get('/dashboard', 'HomeController@dashboard');
 
@@ -13,8 +38,6 @@ Route::get('/avatar', 'HomeController@avatar');
 Route::post('/avatar/upload', 'HomeController@uploadAvatar');
 
 Route::delete('/avatar/{avatar_id}', 'HomeController@remove');
-
-// Route::get('/time', 'HomeController@time');
 
 /**
  * Social routes

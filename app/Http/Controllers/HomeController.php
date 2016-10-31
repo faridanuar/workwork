@@ -8,6 +8,7 @@ use \Braintree_ClientToken;
 use \Braintree_Transaction;
 
 use Image;
+use Mail;
 
 use Carbon\Carbon;
 
@@ -27,7 +28,7 @@ class HomeController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth');
+        $this->middleware('auth', ['except'=>'verify']);
     }
 
     /**
@@ -56,7 +57,9 @@ class HomeController extends Controller
             {
                 // redirect to create company profile page
                 return redirect('/company/create');
+
             }elseif($haveType === "job_seeker"){
+
                 // redirect to create profile page
                 return redirect('/profile/create');
             }else{
@@ -89,6 +92,7 @@ class HomeController extends Controller
                     $noticeInfos = $requests;
                     $message = "You have a request from";
                     break;
+
                 default:
                     $noticeInfos = null;
                     $message = "";
@@ -101,6 +105,7 @@ class HomeController extends Controller
                     $message2 = "Continue";
                     $link = '/adverts/create';
                     break;
+
                 case 2:
                     $advert = $role->adverts->first();
                     $advertID = $advert->id;
@@ -116,6 +121,7 @@ class HomeController extends Controller
                         $link = '/adverts/'.$advertID.'/'.$advertJobTitle.'/edit';
                     }
                     break;
+
                 case 3:
                     $advert = $role->adverts->first();
                     $advertID = $advert->id;
@@ -124,11 +130,13 @@ class HomeController extends Controller
                     $message2 = "Continue";
                     $link = '/adverts/'.$advertID.'/'.$advertJobTitle;
                     break;
+
                 default:
                     $message1 = "";
                     $message2 = "";
                     $link = "";
             }
+
         }elseif($user->jobSeeker){
             // get user's profile related info
             $role = $user->jobSeeker;
@@ -141,6 +149,7 @@ class HomeController extends Controller
                     $noticeInfos = $responses;
                     $message = "You have a response from your request for";
                     break;
+
                 default:
                     $noticeInfos = null;
                     $message = "";
@@ -153,6 +162,7 @@ class HomeController extends Controller
                     $message2 = "Continue";
                     $link = '/preferred-category';
                     break;
+
                 default:
                     $message1 = "";
                     $message2 = "";
@@ -350,6 +360,53 @@ class HomeController extends Controller
     }
 
 
+    public function sendToken(Request $request)
+    {
+        $verification_code = str_random(30);
+
+        $user = $request->user();
+
+        $user->verification_code = $verification_code;
+        $user->save();
+
+        // fetch mailgun attributes from SERVICES file
+        $config = config('services.mailgun');
+
+        // fetch website provided url
+        $website = $config['site_url'];
+
+        // use send method form Mail facade to send email. ex: send('view', 'info / array of data', fucntion)
+        Mail::send('auth.emails.verifyEmail', compact('website','verification_code'), function ($m) use ($user) {
+
+            // fetch mailgun attributes from SERVICES file
+            $config = config('services.mailgun');
+
+            // fetch mailgun provided domain
+            $domain = $config['sender'];
+
+            $recipient = $user->email;
+            //$recipient = "farid@pocketpixel.com";
+
+            $recipientName = $user->name;
+
+            // set email sender stmp url and sender name
+            $m->from($domain, 'WorkWork');
+
+            // set email recepient and subject
+            $m->to($recipient, $recipientName)->subject('Welcome to WorkWork!');
+        });
+
+        return redirect('/link/sent');
+    }
+
+
+
+    public function sent()
+    {
+        return view('auth.sentLink');
+    }
+
+
 
     protected function unauthorized(Request $request)
     {
@@ -360,6 +417,7 @@ class HomeController extends Controller
 
         abort(403, 'Unauthorized action.');
     }
+    
 
 
     /**

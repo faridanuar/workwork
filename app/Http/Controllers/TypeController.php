@@ -49,21 +49,28 @@ class TypeController extends Controller
         $user->update([
             'type' => $request->type,
         ]);
-
+        $user->verified = 1;
         $user->save();
+        // fetch mailgun attributes from SERVICES file
+        // $config = config('services.mailgun');
+
+        // fetch website provided url
+        // $website = $config['site_url'];
 
         if($user->type === 'employer')
         {
             //assign user a roles with permissions using "assignRole" method from hasRoles trait
             $user->assignRole('employer');
 
+            /**
             // use send method form Mail facade to send email. ex: send('view', 'info / array of data', fucntion)
-            Mail::send('mail.welcomeEmployer', compact('user'), function ($m) use ($user) {
+            Mail::send('mail.welcomeEmployer', compact('user', 'website'), function ($m) use ($user) {
 
                 $config = config('services.mailgun');
 
                 $domain = $config['sender'];
 
+                //recipient = $user->email;
                 $recipient = 'farid@pocketpixel.com';
 
                 $recipientName = $user->name;
@@ -74,19 +81,22 @@ class TypeController extends Controller
                 // set email recepient and subject
                 $m->to($recipient, $recipientName)->subject('Welcome to WorkWork!');
             });
+            */
 
         }elseif($user->type === 'job_seeker'){
 
             //assign user a roles with permissions using "assignRole" method from hasRoles trait
             $user->assignRole('job_seeker');
 
+            /**
             // use send method form Mail facade to send email. ex: send('view', 'info / array of data', fucntion)
-            Mail::send('mail.welcomeJobSeeker', compact('user'), function ($m) use ($user) {
+            Mail::send('mail.welcomeJobSeeker', compact('user','website'), function ($m) use ($user) {
 
                 $config = config('services.mailgun');
 
                 $domain = $config['sender'];
 
+                //recipient = $user->email;
                 $recipient = 'farid@pocketpixel.com';
 
                 $recipientName = $user->name;
@@ -97,6 +107,7 @@ class TypeController extends Controller
                 // set email recepient and subject
                 $m->to($recipient, $recipientName)->subject('Welcome to WorkWork!');
             });
+            */
         }
 
         // check if save is successful

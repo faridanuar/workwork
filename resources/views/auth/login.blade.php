@@ -11,6 +11,13 @@
             <span class="h6 signup-or-separator--text">or</span>
             <hr>
         </div>
+
+        @if (session()->has('flash_message'))
+            <div class="flash">
+                @include('messages.flash')
+            </div>
+        @endif
+
         <form role="form" method="POST" action="{{ url('/login') }}">
             {!! csrf_field() !!}
 
