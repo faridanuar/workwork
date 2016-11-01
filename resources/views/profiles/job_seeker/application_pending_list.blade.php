@@ -2,7 +2,7 @@
 
 @section('content')
 
-@include('profiles.profile_info.applications_category')
+@include('profiles.job_seeker.applications_category')
 
 	<h3><u>Pending List</u></h3>
 	@foreach($requestInfos as $requestInfo)

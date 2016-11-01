@@ -2,7 +2,7 @@
 
 @section('content')
 
-@include('profiles.profile_info.applications_category')
+@include('profiles.job_seeker.applications_category')
 
 <div>
 	<h3><u>Accepted List</u></h3>

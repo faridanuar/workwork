@@ -23,5 +23,5 @@
 			</div>
 			@endif
 			
-			@include('profiles.profile_info.profile_form_create')
+			@include('profiles.job_seeker.profile_form_create')
 @stop

@@ -454,6 +454,10 @@ class AdvertsController extends Controller
 					            'endDayTime.'.$key => 'required|max:20',           
 					    	], $messages);
 						}
+						$this->validate($request, [
+						        'dailyStartDate' => 'required|max:20',
+					            'dailyEndDate' => 'required|max:20',           
+					    ]);
 					}else{
 						$messages = [
 							'day.required' => 'You need to choose the selected day when setting the time',

@@ -360,53 +360,6 @@ class HomeController extends Controller
     }
 
 
-    public function sendToken(Request $request)
-    {
-        $verification_code = str_random(30);
-
-        $user = $request->user();
-
-        $user->verification_code = $verification_code;
-        $user->save();
-
-        // fetch mailgun attributes from SERVICES file
-        $config = config('services.mailgun');
-
-        // fetch website provided url
-        $website = $config['site_url'];
-
-        // use send method form Mail facade to send email. ex: send('view', 'info / array of data', fucntion)
-        Mail::send('auth.emails.verifyEmail', compact('website','verification_code'), function ($m) use ($user) {
-
-            // fetch mailgun attributes from SERVICES file
-            $config = config('services.mailgun');
-
-            // fetch mailgun provided domain
-            $domain = $config['sender'];
-
-            $recipient = $user->email;
-            //$recipient = "farid@pocketpixel.com";
-
-            $recipientName = $user->name;
-
-            // set email sender stmp url and sender name
-            $m->from($domain, 'WorkWork');
-
-            // set email recepient and subject
-            $m->to($recipient, $recipientName)->subject('Welcome to WorkWork!');
-        });
-
-        return redirect('/link/sent');
-    }
-
-
-
-    public function sent()
-    {
-        return view('auth.sentLink');
-    }
-
-
 
     public function terms()
     {

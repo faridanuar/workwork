@@ -19,7 +19,7 @@ class RegistrationController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('guest', ['except' => ['verify', 'verifyStatus', 'getEmail']]);
+        $this->middleware('guest', ['except' => ['sendToken', 'sent', 'verify', 'verifyStatus', 'getEmail']]);
     }
 
 
@@ -75,7 +75,7 @@ class RegistrationController extends Controller
                 $user->assignRole('employer');
 
                 // use send method form Mail facade to send email. ex: send('view', 'info / array of data', fucntion)
-                Mail::send('mail.welcomeEmployer', compact('user','website','verification_code'), function ($m) use ($user) {
+                Mail::send('mail.welcome_employer', compact('user','website','verification_code'), function ($m) use ($user) {
 
                     // fetch mailgun attributes from SERVICES file
                     $config = config('services.mailgun');
@@ -101,7 +101,7 @@ class RegistrationController extends Controller
                 $user->assignRole('job_seeker');
 
                 // use send method form Mail facade to send email. ex: send('view', 'info / array of data', fucntion)
-                Mail::send('mail.welcomeJobSeeker', compact('user','website','verification_code'), function ($m) use ($user) {
+                Mail::send('mail.welcome_job_seeker', compact('user','website','verification_code'), function ($m) use ($user) {
 
                     // fetch mailgun attributes from SERVICES file
                     $config = config('services.mailgun');
@@ -132,6 +132,61 @@ class RegistrationController extends Controller
 
 
 
+    public function requestToken()
+    {
+        return view('auth.ema');
+    }
+
+
+
+    public function sendToken(Request $request)
+    {
+        $verification_code = str_random(30);
+
+        $user = User::where('email', $request->email)->fisrt();
+
+        $user->verification_code = $verification_code;
+        $user->save();
+
+        // fetch mailgun attributes from SERVICES file
+        $config = config('services.mailgun');
+
+        // fetch website provided url
+        $website = $config['site_url'];
+
+        // use send method form Mail facade to send email. ex: send('view', 'info / array of data', fucntion)
+        Mail::send('auth.emails.verify_email', compact('website','verification_code'), function ($m) use ($user) {
+
+            // fetch mailgun attributes from SERVICES file
+            $config = config('services.mailgun');
+
+            // fetch mailgun provided domain
+            $domain = $config['sender'];
+
+            $recipient = $user->email;
+            //$recipient = "farid@pocketpixel.com";
+
+            $recipientName = $user->name;
+
+            // set email sender stmp url and sender name
+            $m->from($domain, 'WorkWork');
+
+            // set email recepient and subject
+            $m->to($recipient, $recipientName)->subject('Welcome to WorkWork!');
+        });
+
+        return redirect('/link/sent');
+    }
+
+
+
+    public function sent()
+    {
+        return view('auth.verifications.sent_link_message');
+    }
+
+
+
     public function verify($verification_code)
     {
         if(!$verification_code)
@@ -157,7 +212,7 @@ class RegistrationController extends Controller
 
     public function verifyStatus(Request $request)
     {
-        return view('auth.verification_status');
+        return view('auth.verification.verification_status');
     }
 
 
