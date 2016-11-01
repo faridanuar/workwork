@@ -16,6 +16,8 @@ Route::get('/send/link', 'HomeController@sendToken');
 
 Route::get('/link/sent', 'HomeController@sent');
 
+Route::get('/terms', 'HomeController@terms');
+
 
 Route::get('/register', 'RegistrationController@register');
 

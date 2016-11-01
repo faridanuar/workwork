@@ -88,6 +88,7 @@ class SessionsController extends Controller
         return [
             'email'    => $request->input('email'),
             'password' => $request->input('password'),
+            'verified' => 1,
         ];
     }
 }
