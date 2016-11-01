@@ -83,8 +83,8 @@ class RegistrationController extends Controller
                     // fetch mailgun provided domain
                     $domain = $config['sender'];
 
-                    //recipient = $user->email;
-                    $recipient = "farid@pocketpixel.com";
+                    $recipient = $user->email;
+                    //$recipient = "farid@pocketpixel.com";
 
                     $recipientName = $user->name;
 
@@ -109,8 +109,8 @@ class RegistrationController extends Controller
                     // fetch mailgun provided domain
                     $domain = $config['sender'];
 
-                    //$recipient = $user->email;
-                    $recipient = "farid@pocketpixel.com";
+                    $recipient = $user->email;
+                    //$recipient = "farid@pocketpixel.com";
 
                     $recipientName = $user->name;
 

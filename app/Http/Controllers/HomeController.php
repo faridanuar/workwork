@@ -406,6 +406,11 @@ class HomeController extends Controller
         return view('auth.sentLink');
     }
 
+    public function terms()
+    {
+        return view('pages.terms');
+    }
+
 
 
     protected function unauthorized(Request $request)
