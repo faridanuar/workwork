@@ -17,8 +17,17 @@
                 Notifications
                 <div>
                 @if($user->verified != 1)
+                   You have not verified your email. Click <a href="/request/link"><b>Here</b></a>
+                @endif
+
+                @if($user->contact_verified != 1)
+                   You have not verified your email. Click <a href="/contact/verification"><b>Here</b></a>
+                @endif
+
+                @if($user->verified != 1)
                    You have not verified your email. Click <a href="/send/link"><b>Here</b></a>
                 @endif
+
                 @can('edit_company')
                     @forelse( $noticeInfos as $noticeInfo )
                         {{ $message }} <b>{{ $noticeInfo->jobSeeker->user->name }}</b> for a job as <b>{{ $noticeInfo->advert->job_title }}</b> - 
@@ -27,6 +36,7 @@
                         {{ $message1 }} <a href="{{ $link }}">{{ $message2 }}</a>
                     @endforelse
                 @endcan
+
                 @can('edit_info')
                     @forelse( $noticeInfos as $noticeInfo )
                         {{ $message }} <b>{{ $noticeInfo->advert->job_title }}</b> - 

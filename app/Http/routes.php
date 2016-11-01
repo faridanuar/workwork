@@ -8,15 +8,9 @@
 
 //Route::auth();
 
-Route::get('/register/verify/{verification_code}', 'RegistrationController@verify');
-
-Route::get('/verify/status', 'RegistrationController@verifyStatus');
-
-Route::get('/send/link', 'HomeController@sendToken');
-
-Route::get('/link/sent', 'HomeController@sent');
 
 Route::get('/terms', 'HomeController@terms');
+
 
 
 Route::get('/register', 'RegistrationController@register');
@@ -33,13 +27,31 @@ Route::get('/logout', 'SessionsController@logout');
 
 
 
+Route::get('/request/link', 'RegistrationController@requestToken');
+
+Route::post('/send/link', 'RegistrationController@sendToken');
+
+Route::get('/sent/message', 'RegistrationController@sent');
+
+Route::get('/register/verify/{verification_code}', 'RegistrationController@verify');
+
+Route::get('/verify/status', 'RegistrationController@verifyStatus');
+
+
+
+Route::get('/contact/verification', 'HomeController@requestContactToken');
+
+Route::post('/send/contact/code', 'HomeController@sendContactToken');
+
+
+
 Route::get('/dashboard', 'HomeController@dashboard');
 
 Route::get('/avatar', 'HomeController@avatar');
 
 Route::post('/avatar/upload', 'HomeController@uploadAvatar');
 
-Route::delete('/avatar/{avatar_id}', 'HomeController@remove');
+Route::delete('/avatar/{avatar_id}/', 'HomeController@remove');
 
 /**
  * Social routes

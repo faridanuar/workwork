@@ -19,7 +19,7 @@
 			</div>
 			@endif
 			
-			@include('profiles.profile_info.profile_form_edit')
+			@include('profiles.job_seeker.profile_form_edit')
 
 		</form>
 	</div>

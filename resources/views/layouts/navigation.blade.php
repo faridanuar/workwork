@@ -66,12 +66,10 @@
                     <a href="/dashboard" class="auth-nav-item" aria-selected="{{ set_active('dashboard') }}">@lang('navigation.dashboard')</a>
                 </li>
                 @can('view_my_adverts')
-                    <li>
-                        <a href="/adverts" class="auth-nav-item" aria-selected="{{ set_active('adverts') }}">@lang('navigation.your_adverts')</a>
-                    </li>
-                @endcan
-                @can('edit_company')
-                        @if(Auth::user()->employer)
+                    @if(Auth::user()->employer)
+                        <li>
+                            <a href="/adverts" class="auth-nav-item" aria-selected="{{ set_active('adverts') }}">@lang('navigation.your_adverts')</a>
+                        </li>
                         <li>
                             <a href="/company/{{ Auth::user()->employer->id }}/{{ Auth::user()->employer->business_name }}" class="auth-nav-item" aria-selected="{{ set_active('company/' . Auth::user()->employer->id . '/' . Auth::user()->employer->business_name)}}">@lang('navigation.company_profile')</a>
                         </li>
@@ -90,6 +88,9 @@
                 {{--<li>
                     <a href="" class="auth-nav-item" aria-selected="{{set_active('')}}">@lang('navigation.account')</a>
                 </li>--}}
+                <li>
+                    <a href="/" class="auth-nav-item" aria-selected="{{set_active('/')}}">Home</a>
+                </li>
             </ul>
         </div>
     </nav>
