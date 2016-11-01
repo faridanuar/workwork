@@ -28,7 +28,7 @@ class HomeController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth', ['except'=>'verify']);
+        $this->middleware('auth', ['except' => 'terms']);
     }
 
     /**
@@ -405,6 +405,8 @@ class HomeController extends Controller
     {
         return view('auth.sentLink');
     }
+
+
 
     public function terms()
     {
