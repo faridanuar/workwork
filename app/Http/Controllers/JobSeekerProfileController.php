@@ -129,6 +129,11 @@ class JobSeekerProfileController extends Controller
 
     	$jobSeeker = $user->jobSeeker;
 
+        if($user->contact != $request->contact)
+        {
+            $user->contact_verified = 0;
+        }
+
     	$user->update([
     		'name' => $request->name,
     		'contact' => $request->contact,

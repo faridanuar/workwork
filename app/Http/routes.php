@@ -27,7 +27,7 @@ Route::get('/logout', 'SessionsController@logout');
 
 
 
-Route::get('/request/link', 'RegistrationController@requestToken');
+Route::get('/request/link', 'RegistrationController@getToken');
 
 Route::post('/send/link', 'RegistrationController@sendToken');
 
@@ -38,10 +38,14 @@ Route::get('/register/verify/{verification_code}', 'RegistrationController@verif
 Route::get('/verify/status', 'RegistrationController@verifyStatus');
 
 
+// verify contact page
+Route::get('/contact/verification', 'HomeController@contact');
 
-Route::get('/contact/verification', 'HomeController@requestContactToken');
+// ajax post request
+Route::post('/request/contact/code', 'HomeController@sendContactToken');
 
-Route::post('/send/contact/code', 'HomeController@sendContactToken');
+// verify contact
+Route::post('/verify/contact', 'HomeController@verifyContact');
 
 
 
