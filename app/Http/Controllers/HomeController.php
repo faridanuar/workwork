@@ -8,7 +8,7 @@ use \Braintree_ClientToken;
 use \Braintree_Transaction;
 
 use Image;
-use Mail;
+use Services_Twilio;
 
 use Carbon\Carbon;
 
@@ -364,6 +364,100 @@ class HomeController extends Controller
     public function terms()
     {
         return view('pages.terms');
+    }
+
+
+
+    public function contact(Request $request)
+    {
+        $user = $request->user();
+        $verified = $user->contact_verified;
+        $contact = $user->contact;
+
+        if($verified === 1)
+        {
+            return redirect('/dashboard');
+        }
+
+        return view('auth.verifications.contact_verification', compact('contact'));
+    }
+
+
+
+    public function sendContactToken(Request $request)
+    {
+        $contactCode = mt_rand(11111,99999);
+
+        $user = $request->user();
+        $user->contact_verification_code = $contactCode;
+        $user->save();
+
+        $contact = $user->contact;
+
+        $config = config('services.twilio');
+
+            // Step 2: set our AccountSid and AuthToken from www.twilio.com/user/account
+            $AccountSid = $config['acc_id'];
+            $AuthToken = $config['auth_token'];
+
+                // Step 3: instantiate a new Twilio Rest Client
+                $client = new Services_Twilio($AccountSid, $AuthToken);
+
+                // Step 4: make an array of people we know, to send them a message. 
+                // Feel free to change/add your own phone number and name here.
+                $people = array(
+                    //"+60176613069" => $user->name,
+                    "+6".$contact => $user->contact,
+                    //"+14158675310" => "Boots",
+                    //"+14158675311" => "Virgil",
+                );
+                
+                // Step 5: Loop over all our friends. $number is a phone number above, and 
+                // $name is the name next to it
+                foreach ($people as $number => $name) {
+
+                    $sms = $client->account->messages->sendMessage(
+
+                        // Step 6: Change the 'From' number below to be a valid Twilio number 
+                        // that you've purchased, or the (deprecated) Sandbox number
+                        "+12602184571", 
+
+                        // the number we are sending to - Any phone number
+                        $number,
+
+                        // the sms body
+                        "This is your verification code for WorkWork: $contactCode"
+                    );
+                    // Display a confirmation message on the screen
+                    //echo "Sent message to $name";
+                }
+    }
+
+
+
+    public function verifyContact(Request $request)
+    {
+        $this->validate($request, [
+                'code' => 'required|min:5|max:5',
+            ]);
+
+        $code = $request->code;
+        $user = $request->user();
+        $userCode = $user->contact_verification_code;
+
+        if($code === $userCode)
+        {
+            $user->contact_verified = 1;
+            $user->contact_verification_code = null;
+            $user->save();
+
+            flash('Your contact has been verified','success');
+
+            return redirect('/dashboard');
+        }
+
+        flash('Your code did not match!','error');
+        return redirect()->back();  
     }
 
 

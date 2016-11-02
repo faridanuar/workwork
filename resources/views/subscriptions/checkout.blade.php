@@ -25,26 +25,49 @@
 
     		<input type="hidden" name="plan" id="plan" value="{{ $plan }}">
 
-    		<input type="submit" class="btn btn-primary btn-lg btn-block btn-ww-lg" value="@lang('forms.payment_next')">
+    		<input type="submit" id="pay" class="btn btn-primary btn-lg btn-block btn-ww-lg" value="@lang('forms.payment_next')">
     	</form>
     </div>
 </div>
 
 <script>
-var clientToken = "{{ $token }}";
 
-braintree.setup(clientToken, "dropin", {
-  container: "payment-form"
-});
+$(document).ready(function(){
 
-$(function()
-{
-  $('#checkout').submit(function(){
-    $("input[type='submit']", this)
-      .val("Please Wait...")
-      .attr('disabled', 'disabled');
-    return true;
+    $("#pay")
+    .val("@lang('forms.payment_next')")
+    .attr('disabled', true);
+
+    setTimeout(function(){
+      $("#pay")
+      .val("@lang('forms.payment_next')")
+      .attr('disabled', false);
+      }, 
+      4000);
+
+  var clientToken = "{{ $token }}";
+
+  braintree.setup(clientToken, "dropin", {
+    container: "payment-form"
   });
+    
+
+  $('#checkout').submit(function(){
+
+    $("#pay")
+      .val("Please Wait...")
+      .attr('disabled', true);
+
+    setTimeout(function(){
+      $("#pay")
+      .val("@lang('forms.payment_next')")
+      .attr('disabled', false);
+      return true;
+      }, 
+      4000);
+  });
+
 });
+
 </script>
 @stop

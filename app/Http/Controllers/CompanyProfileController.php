@@ -123,6 +123,11 @@ class CompanyProfileController extends Controller
     {
         $user = $request->user();
 
+        if($user->contact != $request->contact)
+        {
+            $user->contact_verified = 0;
+        }
+
         // update user info
         $user->update([
 
@@ -131,7 +136,7 @@ class CompanyProfileController extends Controller
             'contact' => $request->contact,
         ]);
 
-        //save user's info
+        // save user's info
         $user->save();
 
         $employer = $user->employer()->first();

@@ -91,6 +91,7 @@ class ApplyController extends Controller
 			$advert = Advert::locatedAt($id, $job_title)->first();
 			$employer = $advert->employer;
 			$contact = $employer->user->contact;
+
 			$config = config('services.twilio');
 
 		    // Step 2: set our AccountSid and AuthToken from www.twilio.com/user/account
@@ -135,6 +136,11 @@ class ApplyController extends Controller
 			        );
 			        // Display a confirmation message on the screen
 			        //echo "Sent message to $name";
+
+			        if(!$sms)
+			        {
+			        	echo "Error";
+			        }
 			    }
 			}
 

@@ -19,7 +19,7 @@ class RegistrationController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('guest', ['except' => ['sendToken', 'sent', 'verify', 'verifyStatus', 'getEmail']]);
+        $this->middleware('guest', ['except' => ['getToken', 'sendToken', 'sent', 'verify', 'verifyStatus', 'getEmail']]);
     }
 
 
@@ -56,10 +56,9 @@ class RegistrationController extends Controller
 
         // generate a random string to be used as a verifcation code
         $verification_code = str_random(30);
-        $contact_verification_code = str_random(5);
+
 
         $user->verification_code = $verification_code;
-        $user->contact_verification_code = $contact_verification_code;
         $user->save();
 
         // fetch mailgun attributes from SERVICES file
@@ -132,9 +131,9 @@ class RegistrationController extends Controller
 
 
 
-    public function requestToken()
+    public function getToken()
     {
-        return view('auth.ema');
+        return view('auth.get_email');
     }
 
 
@@ -214,6 +213,7 @@ class RegistrationController extends Controller
     {
         return view('auth.verification.verification_status');
     }
+
 
 
     public function getEmail(Request $request)

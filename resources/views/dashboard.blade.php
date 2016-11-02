@@ -17,11 +17,11 @@
                 Notifications
                 <div>
                 @if($user->verified != 1)
-                   You have not verified your email. Click <a href="/request/link"><b>Here</b></a>
+                   You have not verified your email. Click <a href="/request/link"><b>Here</b></a><br>
                 @endif
 
                 @if($user->contact_verified != 1)
-                   You have not verified your email. Click <a href="/contact/verification"><b>Here</b></a>
+                   You have not verified your contact number. Click <a href="/contact/verification"><b>Here</b></a><br>
                 @endif
 
                 @if($user->verified != 1)
