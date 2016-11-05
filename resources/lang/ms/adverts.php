@@ -5,10 +5,11 @@ return [
     'filter' => 'Tapis',
     'salary' => 'Gaji',
     'category' => 'Kategori',
-    'all' => 'Semua',
-    'lowest' => 'Terendah',
-    'highest' => 'Tertinggi',
+    'all' => 'Semua gaji',
+    'lowest' => 'Gaji terendah',
+    'highest' => 'Gaji tertinggi',
     'no_results' => "Maaf, tak jumpa iklan. 🙈",
+    'clear_all' => "Buat semula",
 
     // Search
     'search_for' => 'Cari kerja',

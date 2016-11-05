@@ -5916,7 +5916,8 @@ body.auth-body {
   opacity: 0.8; }
 
 #advert .panel-body .description {
-  line-height: 24px; }
+  line-height: 24px;
+  margin-bottom: 30px; }
 
 .panel-ww-600 {
   max-width: 600px; }
@@ -6069,7 +6070,7 @@ search autocomplete styling section
   font-style: normal; }
 
 /**********************************
-category checkbox styling section
+algolia category styling section
 **********************************/
 .ais-refinement-list--label > input[type="checkbox"] {
   margin-right: 5px; }
@@ -6091,6 +6092,15 @@ subscribe plan styling section
 ul.plan {
   list-style-type: square;
   margin-top: 30px; }
+
+.plan-choices label {
+  display: block; }
+
+.plan-choices input {
+  float: left; }
+
+.plan-choices span {
+  margin-left: 30px; }
 
 /**********************************
 checkout styling section
@@ -6116,6 +6126,21 @@ tagsinput styling section
 **********************************/
 .bootstrap-tagsinput {
   width: 100%; }
+
+/**********************************
+datetime picker styling section
+**********************************/
+.glyphicon-chevron-right:before {
+  content: ">"; }
+
+.glyphicon-chevron-left:before {
+  content: "<"; }
+
+.glyphicon-chevron-up:before {
+  content: "^"; }
+
+.glyphicon-chevron-down:before {
+  content: "v"; }
 
 /**********************************
 FTU styling section
@@ -6280,5 +6305,32 @@ Sign up and log in
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover; }
+
+#filter-tool.panel .title {
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: #514F4F;
+  font-weight: bold;
+  margin-bottom: 14px; }
+
+#filter-tool.panel .heading {
+  font-size: 12px;
+  color: #231F20;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.15);
+  margin-bottom: 8px;
+  letter-spacing: 0.25px; }
+
+#filter-tool.panel .panel-section {
+  margin-bottom: 24px; }
+
+#filter-tool.panel .ais-refinement-list--label {
+  font-weight: normal;
+  font-size: 13px; }
+
+#filter-tool.panel .panel-bottom-action {
+  float: right;
+  font-size: 12px;
+  color: rgba(0, 0, 0, 0.7); }
 
 /*# sourceMappingURL=app.css.map */
