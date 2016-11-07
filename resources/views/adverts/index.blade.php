@@ -18,27 +18,12 @@
 
 <div class="row">
 	<div class="col-md-3 hidden-xs">
-		<div class="panel panel-default">
-			<!-- todo: Filter -->
+		<div id="filter-tool" class="panel panel-default">
 			<div class="panel-body">
-
-			<div class="form-group">
-				@lang('adverts.filter')
-			</div>
-
-			<div class="form-group">
-				<div id="clear-all"></div>
-			</div>
-
-			<div class="form-group">
-			<h3>@lang('adverts.salary')</h3>
-				<div id="sort-by-container"></div>
-			</div>
-
-			<div class="form-group">
-				<div id="categories"></div>
-			</div>
-
+				<div class="title">@lang('adverts.filter')</div>
+				<div id="sort-by-container" class="panel-section"></div>
+				<div id="categories" class="panel-section"></div>
+				<div id="clear-all" class="panel-bottom-action"></div>
 			</div>
 		</div>
 	</div>

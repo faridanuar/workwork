@@ -101,7 +101,7 @@ search.addWidget(
   instantsearch.widgets.clearAll({
     container: '#clear-all',
     templates: {
-      link: 'Clear All'
+      link: '@lang("adverts.clear_all")'
     },
     autoHideContainer: false
   })
@@ -130,7 +130,7 @@ search.addWidget(
       {name: itsIndex, label: '@lang("adverts.all")'},
       {name: salaryASC, label: '@lang("adverts.lowest")'},
       {name: salaryDESC, label: '@lang("adverts.highest")'}
-    ]
+    ],
   })
 );
 
@@ -143,7 +143,7 @@ search.addWidget(
     operator: 'or',
     limit: 10,
     templates: {
-      header: '<h3 class="category-header">@lang("adverts.category")</h3>'
+      header: '<div class="heading">@lang("adverts.category")</div>'
     }
   })
 );
