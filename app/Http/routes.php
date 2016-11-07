@@ -12,12 +12,19 @@
 Route::get('/terms', 'HomeController@terms');
 
 
-
 Route::get('/register', 'RegistrationController@register');
 
 Route::post('/register', 'RegistrationController@postRegister');
 
-Route::get('/password/reset', 'RegistrationController@getEmail');
+
+Route::get('/password/reset', 'PasswordResetController@getEmail');
+
+Route::post('/password/email/', 'PasswordResetController@sendResetLink');
+
+Route::get('/password/reset/{token}', 'PasswordResetController@getNewPassword');
+
+Route::post('/password/change', 'PasswordResetController@updatePassword');
+
 
 Route::get('/login', 'SessionsController@login');
 
