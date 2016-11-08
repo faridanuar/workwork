@@ -211,7 +211,7 @@ class RegistrationController extends Controller
 
     public function verifyStatus(Request $request)
     {
-        return view('auth.verification.verification_status');
+        return view('auth.verifications.verification_status');
     }
 
 
