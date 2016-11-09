@@ -24,7 +24,7 @@
 $(document).ready(function(){
     $.ajax({
       type: "POST",
-      url: "/set-as-viewed",
+      url: "/category-viewed",
       context: document.body,
       data: {
             'viewed': 'rejected',
@@ -33,5 +33,4 @@ $(document).ready(function(){
     });
 });
 </script>
-
 @stop

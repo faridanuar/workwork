@@ -2,6 +2,10 @@
 
 <!-- Main Content -->
 @section('content')
+<div class="flash">
+    @include('messages.flash')
+</div>
+
 <div class="container">
     <div class="row">
         <div class="col-md-8 col-md-offset-2">
@@ -14,7 +18,7 @@
                         </div>
                     @endif
 
-                    <form class="form-horizontal" role="form" method="POST" action="{{ url('/password/email') }}">
+                    <form class="form-horizontal" role="form" method="POST" action="{{ url('/password/send') }}">
                         {!! csrf_field() !!}
 
                         <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">

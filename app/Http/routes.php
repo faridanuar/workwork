@@ -9,31 +9,38 @@
 //Route::auth();
 
 
+/**
+ * Home-Dashboard routes
+ */
 Route::get('/terms', 'HomeController@terms');
 
+Route::get('/dashboard', 'HomeController@dashboard');
 
+Route::get('/avatar', 'HomeController@avatar');
+
+Route::post('/avatar/upload', 'HomeController@uploadAvatar');
+
+Route::delete('/avatar/{avatar_id}/', 'HomeController@remove');
+
+// contact verification page
+Route::get('/contact/verification', 'HomeController@contact');
+
+// ajax post request
+Route::post('/request/contact/code', 'HomeController@sendContactToken');
+
+// verify contact
+Route::post('/verify/contact', 'HomeController@verifyContact');
+
+/**
+ * Register routes
+ */
 Route::get('/register', 'RegistrationController@register');
 
 Route::post('/register', 'RegistrationController@postRegister');
 
-
-Route::get('/password/reset', 'PasswordResetController@getEmail');
-
-Route::post('/password/email/', 'PasswordResetController@sendResetLink');
-
-Route::get('/password/reset/{token}', 'PasswordResetController@getNewPassword');
-
-Route::post('/password/change', 'PasswordResetController@updatePassword');
-
-
-Route::get('/login', 'SessionsController@login');
-
-Route::post('/login', 'SessionsController@postLogin');
-
-Route::get('/logout', 'SessionsController@logout');
-
-
-
+/**
+ * Email Validation routes
+ */
 Route::get('/request/link', 'RegistrationController@getToken');
 
 Route::post('/send/link', 'RegistrationController@sendToken');
@@ -44,25 +51,25 @@ Route::get('/register/verify/{verification_code}', 'RegistrationController@verif
 
 Route::get('/verify/status', 'RegistrationController@verifyStatus');
 
+/**
+ * Password Reset routes
+ */
+Route::get('/password/reset', 'PasswordResetController@getEmail');
 
-// verify contact page
-Route::get('/contact/verification', 'HomeController@contact');
+Route::post('/password/send', 'PasswordResetController@sendResetLink');
 
-// ajax post request
-Route::post('/request/contact/code', 'HomeController@sendContactToken');
+Route::get('/password/reset/{reset_token}', 'PasswordResetController@getNewPassword');
 
-// verify contact
-Route::post('/verify/contact', 'HomeController@verifyContact');
+Route::post('/password/reset', 'PasswordResetController@updatePassword');
 
+/**
+ * Login Session routes
+ */
+Route::get('/login', 'SessionsController@login');
 
+Route::post('/login', 'SessionsController@postLogin');
 
-Route::get('/dashboard', 'HomeController@dashboard');
-
-Route::get('/avatar', 'HomeController@avatar');
-
-Route::post('/avatar/upload', 'HomeController@uploadAvatar');
-
-Route::delete('/avatar/{avatar_id}/', 'HomeController@remove');
+Route::get('/logout', 'SessionsController@logout');
 
 /**
  * Social routes
@@ -132,7 +139,9 @@ Route::get('/profile/{id}/review', 'JobSeekerProfileController@jobSeekerReview')
 
 Route::post('/company/{id}/{business_name}/rate', 'JobSeekerProfileController@rate');
 
-Route::get('/my/applications', 'JobSeekerProfileController@pendingList');
+Route::get('/my/applications', 'JobSeekerProfileController@allList');
+
+Route::get('/my/applications/pending', 'JobSeekerProfileController@pendingList');
 
 Route::get('/my/applications/rejected', 'JobSeekerProfileController@rejectList');
 
@@ -145,7 +154,8 @@ Route::get('/preferred-category', 'JobSeekerProfileController@preferCategory');
 Route::post('/selected-category', 'JobSeekerProfileController@getCategory');
 
 // ajax post url
-Route::post('/set-as-viewed', 'JobSeekerProfileController@setAsViewed');
+Route::post('/category-viewed', 'JobSeekerProfileController@setAsViewed');
+Route::post('/viewed', 'JobSeekerProfileController@requestViewed');
 
 /**
  * Adverts routes

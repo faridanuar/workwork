@@ -8,15 +8,7 @@ Status: {{$appInfo->status}}<br>
 Comment: {{$appInfo->employer_comment}}<br><br>
 
 <script type="text/javascript">
-
-var status = '{{ $appInfo->status }}';
-
-if(status === 'REJECTED')
-{
-  var request_status = 'rejected';
-}else{
-  var request_status = 'accepted';
-}
+var applicationID = '{{ $appInfo->id }}';
 
 $(document).ready(function(){
     $.ajax({
@@ -24,7 +16,7 @@ $(document).ready(function(){
       url: "/viewed",
       context: document.body,
       data: {
-            'viewed': request_status,
+            'applicationID': applicationID,
             '_token': '{!! csrf_token() !!}'
             }
     });

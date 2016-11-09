@@ -205,16 +205,19 @@ class JobSeekerProfileController extends Controller
         return view('profiles.job_seeker.profile_reviews', compact('userReviews'));
     }
 
+    public function allList(Request $request)
+    {
+        $jobSeeker = $request->user()->jobSeeker;
+        
+        $requestInfos = $jobSeeker->applications()->where('job_seeker_id', $jobSeeker->id)->paginate(5);
+
+        return view('profiles.job_seeker.application_all_list', compact('jobSeeker','requestInfos'));
+    }
 
 
     public function pendingList(Request $request)
     {
         $jobSeeker = $request->user()->jobSeeker;
-
-        if(!$jobSeeker)
-        {
-            return redirect('dashboard');
-        }
         
         $requestInfos = $jobSeeker->applications()->where('job_seeker_id', $jobSeeker->id)->where('status', 'PENDING')->paginate(5);
 
@@ -267,8 +270,10 @@ class JobSeekerProfileController extends Controller
         }elseif($viewed === 'rejected'){
 
             $requests = $jobSeeker->applications->where('status', 'REJECTED')->where('responded', 1)->where('viewed', 0);
+
         }else{
-            
+
+            $request = null;
         }
 
         foreach($requests as $requested)
@@ -276,5 +281,18 @@ class JobSeekerProfileController extends Controller
             $requested->viewed = 1;
             $requested->save();
         }
+    }
+
+
+
+    public function requestViewed(Request $request)
+    {
+        $jobSeeker = $request->user()->jobSeeker;
+
+        $id = $request->applicationID;
+
+        $requests = $jobSeeker->applications->find($id);
+        $requests->viewed = 1;
+        $requests->save();
     }
 }

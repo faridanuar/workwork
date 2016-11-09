@@ -3,7 +3,7 @@
 @section('content')
 
 @include('profiles.job_seeker.applications_category')
-<h3><u>Pending List</u></h3>
+<h3><u>All</u></h3>
 @foreach($requestInfos as $requestInfo)
 
 	<a href="/my/applications/{{ $requestInfo->id }}">
