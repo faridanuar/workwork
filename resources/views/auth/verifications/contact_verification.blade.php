@@ -7,8 +7,18 @@
 	    @include('messages.flash')
 	</div>
 
-	<div>Enter code here:</div>
+	<div><h3>
+	Your Contact Number: 
+	@if(!$contact)
+		None
+	@else
+		{{ $contact }}
+	@endif
+	 - 
+	<a href="/account/edit">Edit</a>
+	</h3></div>
 
+	<div>Enter code here:</div>
 	<form method="post" action="/verify/contact" name="myForm">
 		{!! csrf_field() !!}
 
@@ -61,5 +71,4 @@ $(document).ready(function(){
 
 });
 </script>
-
 @stop

@@ -19,6 +19,8 @@ class SocialAuthController extends Controller
     public function callback(SocialAccountService $service)
     {
         $user = $service->createOrGetUser(Socialite::driver('facebook')->user());
+        $user->verified = 1;
+        $user->save();
 
         auth()->login($user);
 

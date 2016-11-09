@@ -24,7 +24,7 @@ class CreateProfileController extends Controller
         $done = 0;
         $notDone = -1;
 
-        return view('profiles.profile_info.profile_create', compact('user','done','notDone'));
+        return view('profiles.job_seeker.profile_create', compact('user','done','notDone'));
     }
 
 

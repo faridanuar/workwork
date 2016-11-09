@@ -200,7 +200,7 @@ class HomeController extends Controller
         }
 
         // display the upload page
-        return view('auth.avatar', compact('user','photo','fileExist'));
+        return view('auth.account.avatar', compact('user','photo','fileExist'));
     }
 
 
@@ -458,6 +458,36 @@ class HomeController extends Controller
 
         flash('Your code did not match!','error');
         return redirect()->back();  
+    }
+
+
+
+    public function account(Request $request)
+    {
+        $user = $request->user();
+        return view('auth.account.account', compact('user'));
+    }
+
+
+
+    public function accountEdit(Request $request)
+    {
+        $user = $request->user();
+        return view('auth.account.account_edit', compact('user'));
+    }
+
+
+
+    public function accountUpdate(Request $request)
+    {
+        $user = $request->user();
+        $user->update([
+            'name' => $request->name,
+            'contact' => $request->contact,
+        ]);
+
+        flash('Your account detail has been updated', 'success');
+        return redirect('dashboard');
     }
 
 

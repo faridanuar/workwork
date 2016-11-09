@@ -16,6 +16,12 @@ Route::get('/terms', 'HomeController@terms');
 
 Route::get('/dashboard', 'HomeController@dashboard');
 
+Route::get('/account', 'HomeController@account');
+
+Route::get('/account/edit', 'HomeController@accountEdit');
+
+Route::post('/account/update', 'HomeController@accountUpdate');
+
 Route::get('/avatar', 'HomeController@avatar');
 
 Route::post('/avatar/upload', 'HomeController@uploadAvatar');
