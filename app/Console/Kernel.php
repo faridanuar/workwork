@@ -19,6 +19,7 @@ class Kernel extends ConsoleKernel
      */
     protected $commands = [
          \App\Console\Commands\AlgoliaIndexer::class,
+         \App\Console\Commands\CheckAdvertsExpiration::class,
     ];
 
     /**
@@ -32,35 +33,6 @@ class Kernel extends ConsoleKernel
         // $schedule->command('inspire')
         //          ->hourly();
 
-        $schedule->call(
-            function(Search $search)
-            {
-                $adverts = Advert::all();
-
-                foreach($adverts as $advert)
-                {
-                    $todaysDate = Carbon::now();
-
-                    $endDate = $advert->plan_ends_at;
-
-                    $daysLeft =  $todaysDate->diffInDays($endDate, false);
-
-                    if($daysLeft < 0){
-
-                        $advert->published = 0;
-
-                        $advert->save();
-
-                        $config = config('services.algolia');
-
-                        $index = $config['index'];
-
-                        $indexFromAlgolia = $search->index($index);
-
-                        $object = $indexFromAlgolia->deleteObject($advert->id);
-                    }
-                }
-            }
-        )->everyMinute();
+        $schedule->command('adverts:check')->everyMinute();
     }
 }

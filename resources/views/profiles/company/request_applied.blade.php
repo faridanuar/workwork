@@ -20,6 +20,74 @@
 
 	<h2>{{ $profileInfo->age }}</h2>
 
+		@if($application->responded != 1)
+			@if (count($errors) > 0)
+				<div class="alert alert-danger">
+					<ul>
+						@foreach ($errors->all() as $error)
+						<li>{{ $error }}</li>
+						@endforeach
+					</ul>
+				</div>
+			@endif
+			
+			<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#reason-modal-1" >Reject</button>
+			<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#reason-modal-2" >Accept For Interview</button>
+
+			<!-- Modal 1-->
+				<div id="reason-modal-1" class="modal fade" role="dialog">
+				  <div class="modal-dialog">
+
+				    <!-- reason Modal content-->
+				    <div class="modal-content">
+				      	<div class="modal-header">
+				        	<button type="button" class="close" data-dismiss="modal">&times;</button>
+				        	<h4 class="modal-title">Your Response</h4>
+				      	</div>
+				     	 	<div class="modal-body">
+								<div>
+									<form action="/advert/job/requests/{{ $application->id }}/response" method="post">
+										{{ csrf_field() }}
+										<h4>Send a Message</h4>
+							        	<textarea type="text" name="feedback" id="feedback" class="form-control" rows="10" placeholder="Give feedback for rejecting" required>{{ old('comment') }}</textarea>
+										<button type="submit" class="btn btn-primary" name="status" id="status" value="REJECTED">Submit</button>
+									</form>
+								</div>
+					   		</div>
+				     	<div class="modal-footer">
+				        	<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+				     	</div>
+				    </div>
+				  </div>
+				</div>
+
+				<!-- Modal 2-->
+				<div id="reason-modal-2" class="modal fade" role="dialog">
+				  <div class="modal-dialog">
+
+				    <!-- reason Modal content-->
+				    <div class="modal-content">
+				      	<div class="modal-header">
+				        	<button type="button" class="close" data-dismiss="modal">&times;</button>
+				        	<h4 class="modal-title">Your Response</h4>
+				      	</div>
+				     	 	<div class="modal-body">
+								<div>
+									<form action="/advert/job/requests/{{ $application->id }}/response" method="post">
+										{{ csrf_field() }}
+										<h4>Send a Message</h4>
+							        	<textarea type="text" name="arrangement" id="arrangement" class="form-control" rows="10" placeholder="Setup an interview" required>{{ old('comment') }}</textarea>
+										<button type="submit" class="btn btn-primary" name="status" id="status" value="ACCEPTED FOR INTERVIEW">Submit</button>
+									</form>
+								</div>
+					   		</div>
+				     	<div class="modal-footer">
+				        	<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+				     	</div>
+				    </div>
+				  </div>
+				</div>
+			@endif
 	<hr>
 
 	<div>
@@ -101,8 +169,6 @@
 							</ul>
 						</div>
 					@endif
-				@else
-
 				@endif
 			@endif
 		@endcan

@@ -21,6 +21,6 @@
 	@if($currentPlan != "Trial")
 		{!! $allInfos->render() !!}
 	@else
-		If you want unlimited view for job requests, you purchase the premium advert plan
+		If you want unlimited view for job requests, you must purchase the premium advert plan
 	@endif
 @stop

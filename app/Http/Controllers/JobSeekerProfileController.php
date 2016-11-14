@@ -43,6 +43,12 @@ class JobSeekerProfileController extends Controller
 
     public function getCategory(Request $request)
     {
+        $this->validate($request, [
+
+        'job_category' => 'required',
+
+        ]);
+
         $user = $request->user();
         $user->ftu_level = 2;
         $user->save();

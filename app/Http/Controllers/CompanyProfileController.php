@@ -270,7 +270,7 @@ class CompanyProfileController extends Controller
 
         $rating = new JobSeekerRating;
 
-        $rating->ratings = $request->star;
+        $rating->rating = $request->star;
 
         $rating->comment = $request->comment;
 
@@ -493,7 +493,7 @@ class CompanyProfileController extends Controller
 
 
 
-    public function appliedProfile(Request $request, $id, $role_id)
+    public function appliedProfile(Request $request, $id, $application_id)
     {
         $advert = Advert::find($id);
 
@@ -505,7 +505,9 @@ class CompanyProfileController extends Controller
             return $this->unauthorized($request);
         }
 
-        $profileInfo = JobSeeker::find($role_id);
+        $application = Application::find($application_id);
+
+        $profileInfo = JobSeeker::find($application->job_seeker_id);
 
         $avatar = $profileInfo->user->avatar;
 
@@ -518,7 +520,7 @@ class CompanyProfileController extends Controller
             $photo = "/images/defaults/default.jpg";
         }
 
-        $request = Application::where('advert_id', $id)->where('job_seeker_id', $role_id)->first();
+        $request = Application::where('advert_id', $id)->where('job_seeker_id', $profileInfo->id)->first();
 
         $ratings = $profileInfo->ownRatings->count();
 
@@ -538,7 +540,7 @@ class CompanyProfileController extends Controller
         {
             $employer = $user->employer;
 
-            $haveRating = JobSeekerRating::where('job_seeker_id', $role_id)->where('employer_id', $employer->id)->first();
+            $haveRating = JobSeekerRating::where('job_seeker_id', $profileInfo->id)->where('employer_id', $employer->id)->first();
 
             if($haveRating === null){
 
@@ -553,7 +555,7 @@ class CompanyProfileController extends Controller
             }    
         }
 
-        return view('profiles.company.request_applied', compact('id','photo','profileInfo','rated','average','ratings','request'));
+        return view('profiles.company.request_applied', compact('id','photo','profileInfo','rated','average','ratings','request','application'));
     }
 
     /**

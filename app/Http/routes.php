@@ -122,7 +122,7 @@ Route::get('/advert/{id}/job/requests/rejected', 'CompanyProfileController@rejec
 
 Route::get('/advert/{id}/job/requests/accepted', 'CompanyProfileController@acceptedList');
 
-Route::get('/advert/{id}/job/requests/{role_id}', 'CompanyProfileController@appliedProfile');
+Route::get('/advert/{id}/job/requests/{application_id}', 'CompanyProfileController@appliedProfile');
 
 Route::post('/advert/job/requests/{id}/response', 'CompanyProfileController@response');
 
