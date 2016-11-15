@@ -1,6 +1,9 @@
 @extends('layouts.app')
 
 @section('content')
+<div class="flash">
+    @include('messages.flash')
+</div>
 
 @if($user->ftu_level < 4)
 	@include('messages.ftu_level')

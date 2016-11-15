@@ -51,7 +51,6 @@ class SubscribeController extends Controller
 	        $notDone = 0;
     	}
 		
-
 		return view('subscriptions.choose_plan', compact('id','user','done','notDone'));
 	}
 
@@ -60,45 +59,52 @@ class SubscribeController extends Controller
 	public function checkout(Request $request, $id)
 	{
 		$user = $request->user();
-
 		$plan = $request->plan;
+		$customerID = "";
 
 		if($plan === "Trial")
 		{
 			$advert = Advert::find($id);
+			$trialUsed = $advert->trial_used;
 
-			if($advert->trial_used != 0){
+			switch ($plan)
+			{
+				case 0:
+					$days = 7;
+					$advert->plan_ends_at = Carbon::now()->addDays($days);
+					$advert->current_plan = "Trial";
+					$advert->trial_used = 1;
+					$saved = $advert->save();
 
-				flash('Sorry, the trial plan is not valid anymore');
+					if($user->ftu_level < 4)
+					{
+						$user->ftu_level = 3;
+						$user->save();
+					}elseif($advert->advert_level < 3){
+						$advert->advert_level = 2;
+						$advert->save();
+					}
+					break;
 
-				return redirect()->route('plan', [$id]);
+				default:
+					flash('Sorry, the trial plan is not valid anymore');
 
-			}else{
-
-				$days = 7;
-
-				$advert->plan_ends_at = Carbon::now()->addDays($days);
-
-				$advert->current_plan = "Trial";
-
-				$advert->trial_used = 1;
-
-				$saved = $advert->save();
-
-				if($user->ftu_level < 4)
-				{
-					$user->ftu_level = 3;
-					$user->save();
-				}elseif($advert->advert_level < 3){
-					$advert->advert_level = 2;
-					$advert->save();
-				}
+					return redirect()->route('plan', [$id]);
 			}
-
 			return redirect()->route('show', [$id,$advert->job_title]);
 		}
 
-		if($user->ftu_level < 4)
+    	if($user->braintree_id)
+    	{
+    		$customerID = $user->braintree_id;
+    	}
+
+    	$token = Braintree_ClientToken::generate([
+		    		"customerId" => $customerID
+		    	]);
+    	
+
+    	if($user->ftu_level < 4)
 		{
 			// ftu level
 			$done = 2;
@@ -108,8 +114,6 @@ class SubscribeController extends Controller
     		$done = 1;
 	        $notDone = 0;
     	}
-
-    	$token = Braintree_ClientToken::generate();
 
 		return view('subscriptions.checkout', compact('id','plan','user','done','notDone','token'));
 	}
@@ -123,74 +127,91 @@ class SubscribeController extends Controller
 
 		// fetch user selected plan
 		$plan = $request->plan;
+		$savePayment = $request->savePayment;
+		
+		// default ID value
+		$customerID = "";
 
-        // fetched the card token that has been given and set as a nounce by braintree server and set the nounce as a variable.
+		if($user->braintree_id)
+		{
+			// fetch user's customer ID
+			$customerID = $user->braintree_id;
+		}
+
+        // fetched the card token that has been given and set as a nounce by braintree server
 		$nonceFromTheClient = $request->payment_method_nonce;
 
-		if($nonceFromTheClient != "")
+		// RUN if PAYMENT NONCE is recieved.
+		if($nonceFromTheClient)
 		{
-			//check if user has purchase a plan before
-			if($user->braintree_id === null || $user->braintree_id === "")
+			//check if user already have a Customer ID
+			if($customerID)
 			{
-
+				$result = Braintree_Customer::update($customerID, 
+					[
+					    'firstName' => $user->name,
+					    'email' => $user->email,
+					    'phone' => $user->contact,
+					    'paymentMethodNonce' => $nonceFromTheClient
+					]
+				);
+			}else{
 				$result = Braintree_Customer::create([
 				    'firstName' => $user->name,
-				    'company' => $user->employer->business_name,
 				    'email' => $user->email,
 				    'phone' => $user->contact,
 				    'paymentMethodNonce' => $nonceFromTheClient
 				]);
-
-				$user->braintree_id = $result->customer->id;
-				$user->save();
-
-				if(!$result->success) { 
-
-					flash('Checkout was unsuccessful, please try again later', 'error');
-
-					return redirect('/subscribe');
-
-				    foreach($result->errors->deepAll() AS $error){
-
-				        echo($error->code . ": " . $error->message . "\n");
-				    }
-
-				}
 			}
-		}
 
-		$advert = Advert::find($id);
+			if(!$result->success)
+			{ 
+				flash('Checkout was unsuccessful, please try again', 'error');
+
+				return redirect('/subscribe');
+
+				/*
+			    foreach($result->errors->deepAll() AS $error){
+
+			        echo($error->code . ": " . $error->message . "\n");
+			    }
+			    */
+			}else{
+				flash('Checkout was unsuccessful, please try again', 'error');
+
+				return redirect()->back();
+			}
+
+			$user->braintree_id = $result->customer->id;
+			$user->save();
+		}
 
         switch ($plan)
 		{
 			case "Pioneer_Promo":
-
-				$singleCharge = $user->invoiceFor($plan, 7.50);
-
+				$price = 7.50;
 	        	$days = 30;
-
-	        	$advert->current_plan = $plan;
-
-	        	$advert->plan_ends_at = Carbon::now()->addDays($days);
 				break;
-
 			case "1_Month_Plan":
-
-				$singleCharge = $user->invoiceFor($plan, 7.50);
-
+				$price = 7.50;
 	        	$days = 30;
-
-	        	$advert->current_plan = $plan;
-
-	        	$advert->plan_ends_at = Carbon::now()->addDays($days);
 				break;
-
 			default:
-
-				flash('Your checkout was unsuccessful', 'error');
-				return redirect()->back();
+				$price = 0;
+	        	$days = 0;
 		}
-        $saved = $advert->save();
+
+		// Charging the user ONE TIME with INVOICE provided
+		$charge = $user->invoiceFor($plan, $price);
+
+
+		if($charge->success){
+			$advert = Advert::find($id);
+			$advert->current_plan = $plan;
+		    $advert->plan_ends_at = Carbon::now()->addDays($days);
+	        $saved = $advert->save();
+	    }
+
 
         if($user->ftu_level === 2)
 		{
@@ -201,53 +222,12 @@ class SubscribeController extends Controller
 			$advert->save();
 		}
 
-        /**
-        if($saved)
-        {
-	        $config = config('services.algolia');
-
-			$index = $config['index'];
-
-			$indexFromAlgolia = $search->index($index);
-
-			$object = $indexFromAlgolia->addObject(
-		
-			    [
-			    	'id' => $advert->id,
-			        'job_title' => $advert->job_title,
-			        'salary'  => (float)$advert->salary,
-			        'description'  => $advert->description,
-			        'business_name'  => $advert->business_name,
-			        'location'  => $advert->location,
-			        'street'  => $advert->street,
-			        'city'  => $advert->city,
-			        'zip'  => $advert->zip,
-			        'state'  => $advert->state,
-			        'country'  => $advert->country,
-			        'created_at'  => $advert->created_at->toDateTimeString(),
-			        'updated_at'  => $advert->updated_at->toDateTimeString(),
-			        'employer_id'  => $advert->employer_id,
-			        'skill'  => $advert->skill,
-			        'category'  => $advert->category,
-			        'rate'  => $advert->rate,
-			        'oku_friendly'  => $advert->oku_friendly,
-			        'open' => $advert->open,
-			        'avatar'  => $advert->avatar,
-			        'schedule_id'  => $advert->schedule_id,
-			    ],
-			    $advert->id
-			);
-		}
-		*/
-
         if($saved)
         {
         	flash('You have successfully purchased a new plan. check back your advert details before publishing', 'info');
 
         	return redirect()->route('show', [$id,$advert->job_title]);
-			
         }else{
-
         	flash('Checkout was unsuccessful, please check back your paymnent info and try again', 'error');
 
 			return redirect('/subscribe');

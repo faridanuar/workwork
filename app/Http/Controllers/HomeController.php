@@ -4,8 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-use \Braintree_ClientToken;
-use \Braintree_Transaction;
+use \Braintree_Customer;
 
 use Image;
 use Services_Twilio;
@@ -480,11 +479,28 @@ class HomeController extends Controller
 
     public function accountUpdate(Request $request)
     {
+        $this->validate($request, [
+                'name' => 'required|max:50',
+                'contact' => 'required|number',
+            ]);
+        
         $user = $request->user();
         $user->update([
             'name' => $request->name,
             'contact' => $request->contact,
         ]);
+
+        $customerID = $user->braintree_id;
+        if($customerID){
+            $result = Braintree_Customer::update($customerID, 
+                [
+                    'firstName' => $user->name,
+                    'email' => $user->email,
+                    'phone' => $user->contact,
+                    'paymentMethodNonce' => $nonceFromTheClient
+                ]
+            );
+        }
 
         flash('Your account detail has been updated', 'success');
         return redirect('dashboard');

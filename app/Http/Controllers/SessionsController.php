@@ -38,7 +38,7 @@ class SessionsController extends Controller
 
         if($this->signIn($request))
         {
-            flash('Welcome back!','success');
+            flash('Welcome back!','info');
 
             return redirect()->intended('/dashboard');
         }

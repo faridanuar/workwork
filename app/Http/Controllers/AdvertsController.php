@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 use App\User;
 use App\Advert;
@@ -66,11 +67,21 @@ class AdvertsController extends Controller
 	{
 		// fetch only the first retrieved
 		$advert = Advert::locatedAt($id, $job_title)->firstOrFail();
-		$status = $advert->open;
+		$status = $advert->published;
+		$user = $request->user();
+
+		if(Auth::guest() || $user->type === "job_seeker")
+		{
+			if($status != 1)
+			{
+				return redirect('/');
+			}
+		}
+		
 		$advertEmployer = $advert->employer_id;
 		$authorize = "";
 		$asEmployer = false;
-		$user = $request->user();
+		
 
 		if($user)
 		{
