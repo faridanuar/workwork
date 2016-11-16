@@ -4,19 +4,22 @@
 
 @include('profiles.job_seeker.applications_category')
 
-<div>
-	<h3><u>Rejected List</u></h3>
-	@foreach($rejectedInfos as $rejectedInfo)
+<div>Rejected List</div>
 
-		<div class="form-group">
-			<a href="/my/applications/{{ $rejectedInfo->id }}">
-			<div><h4>Status: {{ $rejectedInfo->status }}</h4></div>
-			<div><h4>Job Request For: {{ $rejectedInfo->advert->job_title }}</h4></div>
-			</a>
-		</div>
-
-	@endforeach
-</div>
+@foreach($rejectedInfos as $rejectedInfo)
+		<a href="/my/applications/{{ $rejectedInfo->id }}">
+			<div class="panel panel-default">
+				<div class="panel-body">
+					<div>
+						Status: {{ $rejectedInfo->status }}
+					</div>
+					<div>
+						Job Request For: {{ $rejectedInfo->advert->job_title }}
+					</div>
+				</div>
+			</div>
+		</a>
+@endforeach
 
 {!! $rejectedInfos->render() !!}
 

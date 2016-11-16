@@ -217,7 +217,7 @@ class JobSeekerProfileController extends Controller
         
         $requestInfos = $jobSeeker->applications()->where('job_seeker_id', $jobSeeker->id)->paginate(5);
 
-        return view('profiles.job_seeker.application_all_list', compact('jobSeeker','requestInfos'));
+        return view('profiles.job_seeker.all_applications', compact('jobSeeker','requestInfos'));
     }
 
 
@@ -227,7 +227,7 @@ class JobSeekerProfileController extends Controller
         
         $requestInfos = $jobSeeker->applications()->where('job_seeker_id', $jobSeeker->id)->where('status', 'PENDING')->paginate(5);
 
-        return view('profiles.job_seeker.application_pending_list', compact('jobSeeker','requestInfos'));
+        return view('profiles.job_seeker.pending_application_list', compact('jobSeeker','requestInfos'));
     }
 
 
@@ -238,7 +238,7 @@ class JobSeekerProfileController extends Controller
 
         $rejectedInfos = $jobSeeker->applications()->where('job_seeker_id', $jobSeeker->id)->where('status', 'REJECTED')->paginate(5);
 
-        return view('profiles.job_seeker.application_rejected_list', compact('jobSeeker','rejectedInfos'));
+        return view('profiles.job_seeker.rejected_application_list', compact('jobSeeker','rejectedInfos'));
     }
 
 
@@ -249,7 +249,7 @@ class JobSeekerProfileController extends Controller
         
         $acceptedInfos = $jobSeeker->applications()->where('job_seeker_id', $jobSeeker->id)->where('status', 'ACCEPTED FOR INTERVIEW')->paginate(5);
 
-        return view('profiles.job_seeker.application_accepted_list', compact('jobSeeker','acceptedInfos'));
+        return view('profiles.job_seeker.accepted_application_list', compact('jobSeeker','acceptedInfos'));
     }
 
 

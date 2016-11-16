@@ -2,10 +2,18 @@
 
 @section('content')
 
-<a href="/my/applications">Back</a>
-<h2>{{$appInfo->advert->job_title}}</h2>
-Status: {{$appInfo->status}}<br>
-Comment: {{$appInfo->employer_comment}}<br><br>
+<div class="form-group">
+	<a href="/my/applications" class="btn btn-default btn-sm">Back</a>
+</div>
+
+<div>{{$appInfo->advert->job_title}}</div>
+
+<div class="panel panel-default">
+	<div class="panel-body">
+		Status: {{$appInfo->status}}<br>
+		Comment: {{$appInfo->employer_comment}}
+	</div>
+</div>
 
 <script type="text/javascript">
 var applicationID = '{{ $appInfo->id }}';
