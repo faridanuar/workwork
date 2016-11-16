@@ -16,7 +16,7 @@
     <div class="ftu-arrow"></div>
     <div class="panel-heading panel-heading-ww">@lang('forms.plan_title')</div>
     <div class="panel-body">
-        <form action="/checkout/{{ $id }}" method="post">
+        <form action="/choose/plan/{{ $id }}" method="post">
 
         {!! csrf_field() !!}
 

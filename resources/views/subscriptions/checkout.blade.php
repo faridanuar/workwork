@@ -47,15 +47,18 @@ $(document).ready(function(){
       .attr('disabled', true);
     if( $( ":input" ).val() != "" ) {
       return true;
-    }
-
-    setTimeout(function(){
+    }else{
       $("#pay")
       .val("@lang('forms.payment_next')")
       .attr('disabled', false);
-      }, 
-      5000);
-    event.preventDefault();
+
+      event.preventDefault();
+    }
+
+    //setTimeout(function(){
+      
+      //}, 5000);
+    
   });
 
 });

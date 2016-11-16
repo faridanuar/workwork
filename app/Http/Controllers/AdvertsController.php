@@ -355,7 +355,7 @@ class AdvertsController extends Controller
 		// display only the first retrieved
 		$advert = Advert::locatedAt($id, $job_title)->first();
 
-		//check if job advert is own by user
+		//perform this if user does not own this advert
 		if(! $advert->ownedBy($user))
 		{
 			return $this->unauthorized($request);
@@ -919,7 +919,7 @@ class AdvertsController extends Controller
 
 
 	/**
-	 * Check if user is authorized
+	 * Perform this process if user is not authorized
 	 *
 	 * @param $request
 	 */

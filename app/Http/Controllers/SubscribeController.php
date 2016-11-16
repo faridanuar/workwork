@@ -39,6 +39,13 @@ class SubscribeController extends Controller
 	public function choosePlan(Request $request, $id)
 	{
 		$user = $request->user();
+		$advert = Advert::find($id);
+
+		//perform this if user does not own this advert
+		if(! $advert->ownedBy($user))
+		{
+			return $this->unauthorized($request);
+		}
 
 		if($user->ftu_level < 4)
 		{
@@ -54,17 +61,34 @@ class SubscribeController extends Controller
 		return view('subscriptions.choose_plan', compact('id','user','done','notDone'));
 	}
 
+
+
+	public function setPlan(Request $request, $id)
+	{
+		$advert = Advert::find($id);
+		$advert->current_plan = $request->plan;
+		$advert->save();
+
+		return redirect()->route('checkout', [$advert->id]);
+	}
+
 	
 
 	public function checkout(Request $request, $id)
 	{
+		$advert = Advert::find($id);
+		$plan = $advert->current_plan;
 		$user = $request->user();
-		$plan = $request->plan;
 		$customerID = "";
+
+		//perform this if user does not own this advert
+		if(! $advert->ownedBy($user))
+		{
+			return $this->unauthorized($request);
+		}
 
 		if($plan === "Trial")
 		{
-			$advert = Advert::find($id);
 			$trialUsed = $advert->trial_used;
 
 			switch ($plan)
@@ -126,7 +150,8 @@ class SubscribeController extends Controller
 		$user = $request->user();
 
 		// fetch user selected plan
-		$plan = $request->plan;
+		$advert = Advert::find($id);
+		$plan = $advert->current_plan;
 		$savePayment = $request->savePayment;
 		
 		// default ID value
@@ -176,14 +201,14 @@ class SubscribeController extends Controller
 			        echo($error->code . ": " . $error->message . "\n");
 			    }
 			    */
-			}else{
-				flash('Checkout was unsuccessful, please try again', 'error');
-
-				return redirect()->back();
 			}
 
 			$user->braintree_id = $result->customer->id;
 			$user->save();
+		}else{
+			flash('No nonce', 'error');
+
+			return redirect()->back();
 		}
 
         switch ($plan)
@@ -206,8 +231,6 @@ class SubscribeController extends Controller
 
 
 		if($charge->success){
-			$advert = Advert::find($id);
-			$advert->current_plan = $plan;
 		    $advert->plan_ends_at = Carbon::now()->addDays($days);
 	        $saved = $advert->save();
 	    }
@@ -230,7 +253,7 @@ class SubscribeController extends Controller
         }else{
         	flash('Checkout was unsuccessful, please check back your paymnent info and try again', 'error');
 
-			return redirect('/subscribe');
+			return redirect()->route('checkout', [$advert->id]);
         }
 	}
 
@@ -257,6 +280,25 @@ class SubscribeController extends Controller
         'vendor'  => 'WorkWork.my',
         'product' => 'WorkWork Subscription Plan',
         ]);
+	}
+
+
+
+	/**
+	 * Perform this process if user is not authorized
+	 *
+	 * @param $request
+	 */
+	protected function unauthorized(Request $request)
+	{
+		if($request->ajax())
+		{
+			return response(['message' => 'No!'], 403);
+		}
+
+		flash('Sorry, you are not the owner of that page');
+
+		return redirect('/');
 	}
 	
 
