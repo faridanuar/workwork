@@ -1,41 +1,54 @@
 @extends('layouts.app')
 @section('content')
 
+<div class="flash">
+    @include('messages.flash')
+</div>
+
 <div class="panel-ww-600 panel-default center-block">
+	<div class="panel panel-default">
+		<div class="panel-body">
 
-	<div class="flash">
-	    @include('messages.flash')
-	</div>
+			<div>
+				Your Contact Number: 
+					@if(!$contact)
+						None
+					@else
+						{{ $contact }}
+					@endif
+				<a href="/account/edit" class="btn btn-default btn-sm">Edit</a>
+			</div>
 
-	<div><h3>
-	Your Contact Number: 
-	@if(!$contact)
-		None
-	@else
-		{{ $contact }}
-	@endif
-	 - 
-	<a href="/account/edit">Edit</a>
-	</h3></div>
+			<hr>
 
-	<div>Enter code here:</div>
-	<form method="post" action="/verify/contact" name="myForm">
-		{!! csrf_field() !!}
+			<div>
+				Enter code here:
+			</div>
 
-		<div class="form-group md-6">
-			<input type="number" name="code" id="code" class="form-control" required />
-			@if ($errors->has('code'))
-                    <strong>{{ $errors->first('code') }}</strong>
-            @endif
-		</div>
-		<div class="form-group">
-			<input type="submit" class="btn btn-primary"  value="VERIFY" />
-			<input type="button" id="getCode" class="btn btn-primary"  value="GET CODE" />
-			<div class="message">
-            	<strong>Info: Your code has been sent to your phone. If you did not recieve any code please try again</strong>
+			<div class="message btn btn-info btn-xs">
+            	Info: Your code has been sent to your phone. If you did not recieve any code please try again
             </div>
+
+			<p></p>
+
+			<form method="post" action="/verify/contact" name="myForm">
+				{!! csrf_field() !!}
+
+				<div class="form-group md-6">
+					<input type="number" name="code" id="code" class="form-control" required />
+					@if ($errors->has('code'))
+						<div class="alert alert-danger">
+			                <strong>{{ $errors->first('code') }}</strong>
+			            </div>
+		            @endif
+				</div>
+				<div class="form-group">
+					<input type="submit" class="btn btn-primary"  value="VERIFY" />
+					<input type="button" id="getCode" class="btn btn-primary"  value="GET CODE" />
+				</div>
+			</form>
 		</div>
-	</form>
+	</div>
 </div>
 
 <script type="text/javascript">

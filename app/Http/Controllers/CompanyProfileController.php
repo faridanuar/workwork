@@ -493,7 +493,7 @@ class CompanyProfileController extends Controller
 
 
 
-    public function appliedProfile(Request $request, $id, $application_id)
+    public function appliedApplicantInfo(Request $request, $id, $application_id)
     {
         $advert = Advert::find($id);
 
@@ -555,7 +555,7 @@ class CompanyProfileController extends Controller
             }    
         }
 
-        return view('profiles.company.request_applied', compact('id','photo','profileInfo','rated','average','ratings','request','application'));
+        return view('profiles.company.applied_applicant_info', compact('id','photo','profileInfo','rated','average','ratings','request','application'));
     }
 
     /**

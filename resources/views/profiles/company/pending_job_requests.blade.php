@@ -5,8 +5,8 @@
 @include('profiles.company.requests_category')
 <div class="row">
 	<div class="col-md-12">
-		<h1>Job Seekers</h1>
-			<h3><u>Pending List</u></h3>
+		<div>Job Seekers:</div>
+
 		{{--
 		@if (count($errors) > 0)
 		<div class="alert alert-danger">
@@ -20,19 +20,32 @@
 		--}}
 
 		@forelse($requestInfos as $requestInfo)
-		<div class="form-group">
-			<a href="/advert/{{ $requestInfo->advert_id }}/job/requests/{{ $requestInfo->id }}">
-				ID: {{ $requestInfo->id }}
-				<h4>Status: {{ $requestInfo->status }}</h4>
-				<h4>Name: {{ $requestInfo->jobSeeker->user->name }}</h4>
-				<h4>Age: {{ $requestInfo->jobSeeker->age }}</h4>
-				<h4>Introduction: {{ $requestInfo->introduction }}</h4>
-			</a>
+		<a href="/advert/{{ $requestInfo->advert_id }}/job/requests/{{ $requestInfo->id }}">
+			<div class="panel panel-default">
+				<div class="panel-body">
+						<div>
+							Status: {{ $requestInfo->status }}
+						</div>
+
+						<hr>
+						
+						<div>
+							Name: {{ $requestInfo->jobSeeker->user->name }}
+						</div>
+						<div>
+							Age: {{ $requestInfo->jobSeeker->age }}
+						</div>
+						<div>
+							Introduction: {{ $requestInfo->introduction }}
+						</div>
+				</div>
+			</div>
+		</a>
 
 			{{--
 			@if($requestInfo->responded != 1)
-				<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#reason-modal-1" >Reject</button>
-				<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#reason-modal-2" >Accept For Interview</button>
+				<button type="button" class="btn btn-default" data-toggle="modal" data-target="#reason-modal-1" >Reject</button>
+				<button type="button" class="btn btn-default" data-toggle="modal" data-target="#reason-modal-2" >Accept For Interview</button>
 			@endif
 			--}}
 			

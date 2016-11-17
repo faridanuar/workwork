@@ -13,9 +13,9 @@
 					<div class="panel-body">
 						<a href="/adverts/{{ $myAdvert->id }}/{{ strtolower($myAdvert->job_title) }}">
 						@if($myAdvert->published != 0)
-								<span>(published)</span>
+								<span class="btn btn-success btn-xs">published</span>
 							@else
-								<span>(Not Published)</span>
+								<span class="btn btn-warning btn-xs">Not Published</span>
 							@endif
 						<h4>{{ $myAdvert->job_title }}</h4>
 						</a>
@@ -26,7 +26,9 @@
 							Preview</a>
 				            <a href="/advert/{{ $myAdvert->id }}/job/requests/pending" class="btn btn-default">View Job Requests</a>
 				            @if(count($myAdvert->applications->where('responded', 0)) > 0)
-				            	<span>{{ count($myAdvert->applications->where('responded', 0)) }} New Request!</span>
+			            		<a href="/advert/{{ $myAdvert->id }}/job/requests/pending" class="btn btn-info btn-sm">
+			            			{{ count($myAdvert->applications->where('responded', 0)) }} New Request!
+			            		</a>
 				            @endif
 				        @endcan
 					</div>

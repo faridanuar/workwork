@@ -4,20 +4,31 @@
 
 @include('profiles.company.requests_category')
 
-<h1>Job Seekers</h1>
-	<h3><u>Accepted List</u></h3>
-	@forelse($acceptedInfos as $acceptedInfo)
-		<div class="form-group">
-			<a href="/advert/{{ $acceptedInfo->advert_id }}/job/requests/{{ $acceptedInfo->jobSeeker->id }}">
-			<div><h4>Status: {{ $acceptedInfo->status }}</h4></div>
-			<div><h4>Name: {{ $acceptedInfo->jobSeeker->user->name }}</h4></div>
-			<div><h4>Age: {{ $acceptedInfo->jobSeeker->age }}</h4></div>
-			<div><h4>Introduction: {{ $acceptedInfo->introduction }}</h4></div>
-			</a>
+<div>Job Seekers:</div>
+@forelse($acceptedInfos as $acceptedInfo)
+	<a href="/advert/{{ $acceptedInfo->advert_id }}/job/requests/{{ $acceptedInfo->jobSeeker->id }}">
+		<div class="panel panel-default">
+			<div class="panel-body">
+				<div>
+					Status: {{ $acceptedInfo->status }}
+				</div>
+
+				<hr>
+				
+				<div>
+					Name: {{ $acceptedInfo->jobSeeker->user->name }}
+				</div>
+				<div>
+					Age: {{ $acceptedInfo->jobSeeker->age }}
+				</div>
+				<div>
+					Introduction: {{ $acceptedInfo->introduction }}
+				</div>
+			</div>
 		</div>
-	@empty
-		<p>Looks like there's no job applications yet.</p>
-	@endforelse</p>
-	{!! $acceptedInfos->render() !!}
-	</div>
+	</a>
+@empty
+	<p>Looks like there's no job applications yet.</p>
+@endforelse</p>
+{!! $acceptedInfos->render() !!}
 @stop

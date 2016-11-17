@@ -13,6 +13,9 @@
 					<div>
 						Status: {{ $rejectedInfo->status }}
 					</div>
+
+					<hr>
+					
 					<div>
 						Job Request For: {{ $rejectedInfo->advert->job_title }}
 					</div>

@@ -297,7 +297,7 @@ class HomeController extends Controller
         }
 
         // check IF avatar path url exist
-        if($thisPhoto->avatar != "" || $thisPhoto->avatar != null){
+        if($thisPhoto->avatar){
 
             $exist = true;
 
@@ -309,9 +309,8 @@ class HomeController extends Controller
         // run process IF photo path url exist/is true
         if($exist === true){
 
-            //UPDATE advert's "avatar" column to null then SAVE changes to database
-            $user->update([ 'avatar' => null ]);
-
+            //UPDATE user "avatar" column to null then SAVE changes to database
+            $user->avatar = null;
             $user->save();
 
             // run process IF user is an employer
@@ -320,16 +319,17 @@ class HomeController extends Controller
                 // determine which rows to fetch
                 $adverts = Advert::where('employer_id', '=',$user->employer->id);
 
-                // fetch the rows
-                $rows = $adverts->get();
-
-                // select algolia index/indice name
-                $indexFromAlgolia = $search->index($index);
-
                 // provide path URl for Database
                 $pathURL = "/images/defaults/default.jpg";
 
+                //MASS UPDATE existing advert's "avatar" column to database
+                $adverts->update([ 'avatar' => $pathURL ]);
+
+                // fetch published adverts only
                 $liveAds = $adverts->where('published', 1)->get();
+
+                // select algolia index/indice name
+                $indexFromAlgolia = $search->index($index);
 
                 // loop algolia object update for each row
                 foreach($liveAds as $liveAd)
@@ -340,9 +340,6 @@ class HomeController extends Controller
                         'objectID' => $liveAd->id,
                     ]);
                 }
-
-                //MASS UPDATE existing advert's "avatar" column to database
-                $adverts->update([ 'avatar' => $pathURL ]);
             }
 
             // flash message
@@ -481,14 +478,22 @@ class HomeController extends Controller
     {
         $this->validate($request, [
                 'name' => 'required|max:50',
-                'contact' => 'required|number',
+                'contact' => 'required',
             ]);
         
         $user = $request->user();
+
+        if($user->contact != $request->contact)
+        {
+            $user->contact_verified = 0;
+        }
+
         $user->update([
             'name' => $request->name,
             'contact' => $request->contact,
         ]);
+
+        $user->save();
 
         $customerID = $user->braintree_id;
         if($customerID){
@@ -497,13 +502,13 @@ class HomeController extends Controller
                     'firstName' => $user->name,
                     'email' => $user->email,
                     'phone' => $user->contact,
-                    'paymentMethodNonce' => $nonceFromTheClient
                 ]
             );
         }
 
         flash('Your account detail has been updated', 'success');
-        return redirect('dashboard');
+
+        return redirect('/account');
     }
 
 

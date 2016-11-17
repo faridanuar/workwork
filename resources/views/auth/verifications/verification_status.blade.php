@@ -1,10 +1,22 @@
 @extends('layouts.app')
 
 @section('content')
+<div class="panel-ww-600 panel-default center-block">
+	<div class="panel panel-default">
+		<div class="panel-body">
+			<div>
+				Email Status
+			</div>
 
-	<h1>Email Status</h1>
+			<hr>
 
-	This Email has already been verified<br>
-	<a href="/login">Continue to log in</a>
+			<div>
+				This Email has already been verified
+			</div>
+
+			<a href="/login">Continue to log in</a>
+		</div>
+	</div>
+</div>
 
 @stop

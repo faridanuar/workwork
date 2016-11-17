@@ -2,12 +2,19 @@
 	@include('messages.flash')
 </div>
 
-<a href="/adverts">Back to adverts</a>
-<h2>Job Requests for {{$advert->job_title}}</h2>
-<hr>
-<ul class="nav nav-pills">
-  <li role="presentation"><a href="/advert/{{ $id }}/job/requests/all">All</a></li>
-  <li role="presentation" class="active"><a href="/advert/{{ $id }}/job/requests/pending">New</a></li>
-  <li role="presentation"><a href="/advert/{{ $id }}/job/requests/rejected">Rejected</a></li>
-  <li role="presentation"><a href="/advert/{{ $id }}/job/requests/accepted">Accepted</a></li>
-</ul>
+<div class="form-group">
+	<a href="/adverts" class="btn btn-default btn-sm">Back</a>
+</div>
+
+<div>Job Requests for {{$advert->job_title}}:</div>
+
+<div class="panel panel-default">
+	<div class="panel-body">
+		<ul class="nav nav-pills">
+		  <li role="presentation"><a href="/advert/{{ $id }}/job/requests/all">All</a></li>
+		  <li role="presentation" class="active"><a href="/advert/{{ $id }}/job/requests/pending">New</a></li>
+		  <li role="presentation"><a href="/advert/{{ $id }}/job/requests/rejected">Rejected</a></li>
+		  <li role="presentation"><a href="/advert/{{ $id }}/job/requests/accepted">Accepted</a></li>
+		</ul>
+	</div>
+</div>

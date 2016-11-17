@@ -6,12 +6,21 @@
 	<a href="/my/applications" class="btn btn-default btn-sm">Back</a>
 </div>
 
-<div>{{$appInfo->advert->job_title}}</div>
+<div>
+  Job request for: {{$appInfo->advert->job_title}}
+</div>
 
 <div class="panel panel-default">
 	<div class="panel-body">
-		Status: {{$appInfo->status}}<br>
-		Comment: {{$appInfo->employer_comment}}
+		<div>
+      Status: {{$appInfo->status}}
+    <div>
+
+    <hr>
+
+		<div>
+      Comment: {{$appInfo->employer_comment}}
+    <div>
 	</div>
 </div>
 

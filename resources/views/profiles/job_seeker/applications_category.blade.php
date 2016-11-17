@@ -2,8 +2,8 @@
 	<a href="/dashboard" class="btn btn-default btn-sm">Back</a>
 </div>
 
-<div>
-	<div class="panel panel-default">
+<div class="panel panel-default">
+	<div class="panel-body">
 		<ul class="nav nav-pills">
 		  <li role="presentation" class="active"><a href="/my/applications" id="urlPending">All</a></li>
 		  <li role="presentation"><a href="/my/applications/pending" id="urlPending">Pending List</a></li>
