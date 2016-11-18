@@ -506,56 +506,35 @@ class CompanyProfileController extends Controller
         }
 
         $application = Application::find($application_id);
+        $jobSeeker = JobSeeker::find($application->job_seeker_id);
+        $employer = Employer::find($application->employer->id);
+        $avatar = $jobSeeker->user->avatar;
+        $ratings = $jobSeeker->ownRatings->count();
+        $rated = false;
+        $haveRating = JobSeekerRating::where('job_seeker_id', $jobSeeker->id)->where('employer_id', $employer->id )->first();
 
-        $profileInfo = JobSeeker::find($application->job_seeker_id);
 
-        $avatar = $profileInfo->user->avatar;
-
-        if($avatar != "" || $avatar != null){
-
-            $photo = $profileInfo->user->avatar;
-
+        if($avatar){
+            $photo = $jobSeeker->user->avatar;
         }else{
-
             $photo = "/images/defaults/default.jpg";
         }
-
-        $request = Application::where('advert_id', $id)->where('job_seeker_id', $profileInfo->id)->first();
-
-        $ratings = $profileInfo->ownRatings->count();
-
-        $rated = false;
-
+        
         if($ratings === 0)
         {
             $average = 0;
-
         }else{
-
-            $average = $profileInfo->ownRatings->avg('rating');
+            $average = $jobSeeker->ownRatings->avg('rating');
         }
 
-
-        if($user)
-        {
-            $employer = $user->employer;
-
-            $haveRating = JobSeekerRating::where('job_seeker_id', $profileInfo->id)->where('employer_id', $employer->id)->first();
-
-            if($haveRating === null){
-
-                $rated = false;
-
-            }else{
-
-                if($haveRating->employer_id === $employer->id)
-                {
-                    $rated = true;
-                } 
-            }    
+        if($haveRating){
+            if($haveRating->employer_id === $employer->id)
+            {
+                $rated = true;
+            } 
         }
 
-        return view('profiles.company.applied_applicant_info', compact('id','photo','profileInfo','rated','average','ratings','request','application'));
+        return view('profiles.company.applied_applicant_info', compact('id','photo','jobSeeker','rated','average','ratings','application'));
     }
 
     /**

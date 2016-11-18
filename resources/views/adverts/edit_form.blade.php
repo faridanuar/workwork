@@ -5,24 +5,38 @@
 
 <div class="form-group">
 	<label for="job_title">Job title:</label>
-	<input type="text" name="job_title" id="job_title" class="form-control" value="{{ $advert->job_title }}" required>
+	<input type="text" name="job_title" id="job_title" class="form-control" value="{{ $advert->job_title }}" maxlength="50" required>
 </div>
 
 <div class="form-group">
 	<label for="salary">Salary:</label>
-	<div class="input-group">
-		<span class="input-group-addon">RM</span>
+	<div class="input-group ww-salary-input">
+		<span class="input-group-addon ww-salary-input--currency">RM</span>
 		<input type="number" name="salary" id="salary" class="form-control" value="{{ $advert->salary }}">
-		<span class="input-group-addon">hourly</span>
-</div>
-
-<div class="form-group">
-	<label for="rate">Rate:</label>
-	<select name="rate" id="rate" class="form-control">
-			<option value="{{ $advert->rate }}">{{ $advert->rate}}</option>
-			<option value="hour">Per Hour</option>
-			<option value="month">Per Month</option>
-	</select>
+		<span class="input-group-addon ww-salary-input--rate">
+			<label class="radio-inline">
+				<input type="radio" aria-label="..." name="rate" id="rate0" value="hour" 
+					@if($advert->rate === 'hour')
+						checked
+					@endif
+				/> @lang('forms.ad_salary_hour')
+			</label>
+			<label class="radio-inline">
+				<input type="radio" aria-label="..." name="rate" id="rate1" value="day"
+					@if($advert->rate === 'day')
+						checked
+					@endif
+				/> @lang('forms.ad_salary_day')
+			</label>
+			<label class="radio-inline">
+				<input type="radio" aria-label="..." name="rate" id="rate2" value="month" 
+					@if($advert->rate === 'month')
+						checked
+					@endif
+				/> @lang('forms.ad_salary_month')
+			</label>
+		</span>
+	</div>
 </div>
 
 <div class="form-group">
@@ -49,13 +63,57 @@
 	    value="{{ $advert->location }}"
 	    placeholder="Work Location?" 
 	 />
-</div> 
+</div>
+
+<p class="ftu-or">@lang('forms.or') 
+	<a href="#collapseAddress" role="button" data-toggle="collapse" aria-expanded="false" aria-controls="collapseAddress">
+		<span class="btn-garis">@lang('forms.ad_location_manual_label')</span>
+	</a>
+</p>
+	<div id="collapseAddress"
+		@if($advert->street)
+			class="collapse in"
+		@else
+			class="collapse"
+		@endif
+	>
+		<div class="well">
+			<div class="form-group">
+				<label for="street">@lang('forms.ad_location_street_label')</label>
+				<input type="text" name="street" id="street" class="form-control" value="{{ $advert->street }}">
+			</div>
+
+			<div class="form-group">
+				<label for="city">@lang('forms.ad_location_city_label')</label>
+				<input type="text" name="city" id="city" class="form-control" value="{{ $advert->city }}">
+			</div>
+
+			<div class="form-group">
+				<label for="zip">@lang('forms.ad_location_zip_label')</label>
+				<input type="text" name="zip" id="zip" class="form-control" value="{{ $advert->zip }}">
+			</div>
+
+			<div class="form-group">
+				<label for="state">@lang('forms.ad_location_state_label')</label>
+				<input type="text" name="state" id="state" class="form-control" value="{{ $advert->state }}">
+			</div>
+
+			<div class="form-group">
+				<label for="country">Country:</label>
+				<select name="country" id="country" class="form-control">
+						<option value="{{ $advert->country }}">{{ $advert->country }}</option>
+					@foreach ($countries::all() as $code => $name)
+						<option value="{{ $code }}">{{ $name }}</option>
+					@endforeach
+				</select>
+			</div>
+		</div>
+	</div>
+
+<hr>
 
 <div class="form-group">
 	<div>Schedule</div>
-</div>
-
-<div class="form-group">
 	<label class="radio-inline">
 		<input type="radio" aria-label="..." name="scheduleType" id="scheduleType0" value="none"
 			@if($scheduleType === 'none' || $scheduleType === "") 
@@ -128,36 +186,6 @@
 </div>
 
 <hr>
-
-<div class="form-group">
-	<label for="street">Street:</label>
-	<input type="text" name="street" id="street" class="form-control" value="{{ $advert->street }}">
-</div> 
-
-<div class="form-group">
-	<label for="city">City:</label>
-	<input type="text" name="city" id="city" class="form-control" value="{{ $advert->city }}">
-</div>
-
-<div class="form-group">
-	<label for="zip">Zip:</label>
-	<input type="text" name="zip" id="zip" class="form-control" value="{{ $advert->zip }}">
-</div> 
-
-<div class="form-group">
-	<label for="state">State:</label>
-	<input type="text" name="state" id="state" class="form-control" value="{{ $advert->state }}">
-</div>	
-
-<div class="form-group">
-	<label for="country">Country:</label>
-	<select name="country" id="country" class="form-control">
-			<option value="{{ $advert->country }}">{{ $advert->country }}</option>
-		@foreach ($countries::all() as $code => $name)
-			<option value="{{ $code }}">{{ $name }}</option>
-		@endforeach
-	</select>
-</div>
 
 <div class="form-group">
 	<label for="skill">Type of skill required:</label>

@@ -5,15 +5,9 @@
 	@include('messages.flash')
 </div>
 
-<div class="panel-ww-600 panel-default center-block">
-	<div class="panel panel-default">
+<div class="ftu-panel panel-ww-600 panel panel-default center-block">
+    <div class="panel-heading panel-heading-ww">Your Account</div>
 		<div class="panel-body">
-			<div>
-				Your Account
-			</div>
-
-			<hr>
-
 			<div>
 				Email: {{ $user->email }}
 			</div>

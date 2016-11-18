@@ -5,7 +5,7 @@
 
 <div class="form-group">
 	<label for="job_title">@lang('forms.ad_job_title_label')</label>
-	<input type="text" name="job_title" id="job_title" class="form-control"  value="{{ old('job_title') }}" maxlength="50" required>
+	<input type="text" name="job_title" id="job_title" class="form-control" value="{{ old('job_title') }}" maxlength="50" required>
 </div>
 
 <div class="form-group">

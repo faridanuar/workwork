@@ -36,7 +36,7 @@
 							Age: {{ $requestInfo->jobSeeker->age }}
 						</div>
 						<div>
-							Introduction: {{ $requestInfo->introduction }}
+							Location: {{ $requestInfo->jobSeeker->location }}
 						</div>
 				</div>
 			</div>

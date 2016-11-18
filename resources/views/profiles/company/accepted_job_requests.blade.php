@@ -6,7 +6,7 @@
 
 <div>Job Seekers:</div>
 @forelse($acceptedInfos as $acceptedInfo)
-	<a href="/advert/{{ $acceptedInfo->advert_id }}/job/requests/{{ $acceptedInfo->jobSeeker->id }}">
+	<a href="/advert/{{ $acceptedInfo->advert_id }}/job/requests/{{ $acceptedInfo->id }}">
 		<div class="panel panel-default">
 			<div class="panel-body">
 				<div>
@@ -22,7 +22,7 @@
 					Age: {{ $acceptedInfo->jobSeeker->age }}
 				</div>
 				<div>
-					Introduction: {{ $acceptedInfo->introduction }}
+					Location: {{ $acceptedInfo->jobSeeker->location }}
 				</div>
 			</div>
 		</div>

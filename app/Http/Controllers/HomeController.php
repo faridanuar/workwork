@@ -82,57 +82,55 @@ class HomeController extends Controller
         {
             // get user's profile related info
             $role = $user->employer;
-            $requests = $role->applications->where('status', 'PENDING');
-            $requestTotal = count($requests);
+            $applications = $role->applications->where('status', 'PENDING');
+            $requestTotal = count($applications);
 
             switch ($requestTotal)
             {
                 case ($requestTotal > 0):
-                    $noticeInfos = $requests;
-                    $message = "You have a request from";
+                    $informations = $applications;
+                    //$message = "You have a request from";
+                    $text = "View";
                     break;
-
                 default:
-                    $noticeInfos = null;
-                    $message = "";
+                    $informations = null;
+                    //$message = "";
+                    $text = "";
             }
 
             switch ($ftu_level)
             {
                 case 1:
-                    $message1 = "You have not yet created your first advert -";
-                    $message2 = "Continue";
+                    $message1 = "You have not yet created your first advert.";
+                    $text1 = "Continue";
                     $link = '/adverts/create';
                     break;
-
                 case 2:
                     $advert = $role->adverts->first();
                     $advertID = $advert->id;
                     $advertJobTitle = $advert->job_title;
                     if($advert->ready_to_publish != 0)
                     {
-                        $message1 = "You have not yet publish your advert -";
-                        $message2 = "Continue";
+                        $message1 = "You have not yet publish your advert.";
+                        $text1 = "Continue";
                         $link = '/choose/plan/'.$advertID;
                     }else{
-                        $message1 = "You have not yet finish filling up your advert form -";
-                        $message2 = "Continue";
+                        $message1 = "You have not yet finish filling up your advert form.";
+                        $text1 = "Continue";
                         $link = '/adverts/'.$advertID.'/'.$advertJobTitle.'/edit';
                     }
                     break;
-
                 case 3:
                     $advert = $role->adverts->first();
                     $advertID = $advert->id;
                     $advertJobTitle = $advert->job_title;
-                    $message1 = "You have not yet publish your advert! -";
-                    $message2 = "Continue";
+                    $message1 = "You have not yet publish your advert!";
+                    $text1 = "Continue";
                     $link = '/adverts/'.$advertID.'/'.$advertJobTitle;
                     break;
-
                 default:
                     $message1 = "";
-                    $message2 = "";
+                    $text1 = "";
                     $link = "";
             }
 
@@ -145,32 +143,30 @@ class HomeController extends Controller
             switch ($responseTotal)
             {
                 case ($responseTotal > 0):
-                    $noticeInfos = $responses;
+                    $informations = $responses;
                     $message = "You have a response from your request for";
                     break;
-
                 default:
-                    $noticeInfos = null;
+                    $informations = null;
                     $message = "";
             }
 
             switch ($ftu_level)
             {
                 case 1:
-                    $message1 = "You have not yet select your preferred job category -";
-                    $message2 = "Continue";
+                    $message1 = "You have not yet select your preferred job category.";
+                    $text1 = "Continue";
                     $link = '/preferred-category';
                     break;
-
                 default:
                     $message1 = "";
-                    $message2 = "";
+                    $text1 = "";
                     $link = "";
             }
         }
 
         // return user to home dashboard
-        return view('dashboard', compact('user','photo','noticeInfos','message','message1','message2','link','site'));
+        return view('dashboard', compact('user','photo','informations','message','message1','text','text1','link','site'));
     }
 
 

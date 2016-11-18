@@ -1,26 +1,22 @@
 @extends('layouts.app')
-
 @section('content')
-<h1>Applying for a Job as </h1>
-
-<h2>"{{ $advert->job_title }}" ?</h2>
-
-<hr>
-
-<div class="row">
-	<form method="post" id="myForm" action="/adverts/{{ $advert->id }}/{{ $advert->job_title }}/apply/add" enctype="multipart/form-data" class="col-md-6">
-		@if (count($errors) > 0)
-		<div class="alert alert-danger">
-			<ul>
-				@foreach ($errors->all() as $error)
-				<li>{{ $error }}</li>
-				@endforeach
-			</ul>
+<div class="ftu-panel panel-ww-600 panel panel-default center-block">
+    <div class="panel-heading panel-heading-ww">Applying For A Job As: {{ $advert->job_title }}?</div>
+		<div class="panel-body">
+			<form method="post" id="myForm" action="/adverts/{{ $advert->id }}/{{ $advert->job_title }}/apply/add" enctype="multipart/form-data">
+				@if (count($errors) > 0)
+				<div class="alert alert-danger">
+					<ul>
+						@foreach ($errors->all() as $error)
+						<li>{{ $error }}</li>
+						@endforeach
+					</ul>
+				</div>
+				@endif
+				
+				@include('adverts.application_form')
+			</form>
 		</div>
-		@endif
-		
-		@include('adverts.application_form')
-
-	</form>
+	</div>
 </div>
 @stop
