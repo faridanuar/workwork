@@ -55,11 +55,14 @@ autocomplete('#global-search', { hint: false }, [
 search.addWidget(
 	instantsearch.widgets.searchBox({
 	  container: '#global-search',
-	  placeholder: '@lang("adverts.search_for")',
+	  // placeholder: '@lang("adverts.search_for")',
 	  searchOnEnterKeyPressOnly: false
 	})
 );
 
-//Once all the widgets have been added to the instantsearch instance, start rendering by calling start() method
-search.start();
+if($("#global-search").val() != "")
+{
+  //Once all the widgets have been added to the instantsearch instance, start rendering by calling start() method
+  search.start();
+}
 </script>

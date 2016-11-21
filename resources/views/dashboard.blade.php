@@ -64,8 +64,8 @@
                         <div class="panel panel-default">
                             <div class="panel-body">
                                 <span class="label label-info">INFO</span>
-                                {{ $message }} {{ $information->advert->job_title }}
-                                <a href="/my/applications/{{ $information->id }}">View</a>
+                                {{ $message }} {{ $information->advert->job_title }}.
+                                <a href="/my/applications/{{ $information->id }}"><b>View<b></a>
                             </div>
                         </div>
                     @empty
@@ -73,8 +73,8 @@
                             <div class="panel panel-default">
                                 <div class="panel-body">
                                     <span class="label label-warning">WARNING</span>
-                                    {{ $message1 }} 
-                                    <a href="{{ $link }}">{{ $text1 }}</a>
+                                    {{ $message1 }}. 
+                                    <a href="{{ $link }}"><b>{{ $text1 }}<b></a>
                                 </div>
                             </div>
                         @endif

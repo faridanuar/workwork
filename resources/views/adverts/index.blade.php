@@ -33,6 +33,14 @@
     	<div class="form-group">
 
 		    <input type="text" class="form-control" id="search-box" />
+		    <span>
+			    <div class="ais-search-box--powered-by">
+			      Search by
+			      <a class="ais-search-box--powered-by-link" href="https://www.algolia.com/?utm_source=instantsearch.js&amp;utm_medium=website&amp;utm_content=community.algolia.com&amp;utm_campaign=poweredby" target="_blank">
+			        Algolia
+			      </a>
+			    </div>
+			 </span>
 
 	    </div>
 		<div class="results" id="results">

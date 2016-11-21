@@ -53,17 +53,20 @@ class CheckAdvertsExpiration extends Command
 
             if($expDate < 0){
 
-                $advert->published = 0;
+                if($advert->published != 0)
+                {
+                    $advert->published = 0;
 
-                $advert->save();
+                    $advert->save();
 
-                $config = config('services.algolia');
+                    $config = config('services.algolia');
 
-                $index = $config['index'];
+                    $index = $config['index'];
 
-                $indexFromAlgolia = $search->index($index);
+                    $indexFromAlgolia = $search->index($index);
 
-                $object = $indexFromAlgolia->deleteObject($advert->id);
+                    $object = $indexFromAlgolia->deleteObject($advert->id);
+                }
 
             }
         }

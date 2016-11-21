@@ -20,7 +20,7 @@
             <!-- global searchbox -->
             <div class="navbar-form navbar-left">
                 <div class="form-group">
-                    <input type="text" class="form-control" id="global-search" />
+                    <input type="text" class="form-control" id="global-search" placeholder="@lang('adverts.search_for')" />
                 </div>
             </div>
             <div class="collapse navbar-collapse" id="app-navbar-collapse">
