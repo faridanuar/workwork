@@ -423,7 +423,7 @@ class CompanyProfileController extends Controller
             $contact = $application->jobSeeker->user->contact;
             $JobSeekerName = $application->jobSeeker->user->name;
 
-            if($application->employer->user->contact_verified != 0)
+            if($application->jobSeeker->user->contact_verified != 0)
             {
                 // Step 3: instantiate a new Twilio Rest Client
                 $client = new Services_Twilio($AccountSid, $AuthToken);
@@ -458,7 +458,7 @@ class CompanyProfileController extends Controller
                 }
             }
 
-            if($application->employer->user->verified != 0)
+            if($application->jobSeeker->user->verified != 0)
             {
                 // use send method from Mail facade to send email. ex: send('view', 'info / array of data', fucntion)
                 Mail::send('mail.application_notification', compact('websiteURL', 'application'), function ($m) use ($application) {

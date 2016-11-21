@@ -11,13 +11,19 @@
 		<div class="panel panel-default">
 			<div class="panel-body">
 				<div>
-					Status: {{ $acceptedInfo->status }}
+					Job: {{ $acceptedInfo->advert->job_title }}
 				</div>
 
 				<hr>
-				
+
 				<div>
-					Job Request For: {{ $acceptedInfo->advert->job_title }}
+					Company: {{ $acceptedInfo->employer->business_name }}
+				</div>
+
+				<hr>
+
+				<div>
+					Status: {{ $acceptedInfo->status }}
 				</div>
 			</div>
 		</div>

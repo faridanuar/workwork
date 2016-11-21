@@ -8,6 +8,7 @@ use App\User;
 use App\JobSeeker;
 
 use App\Http\Requests;
+use App\Http\Requests\JobSeekerRequest;
 
 class CreateProfileController extends Controller
 {
@@ -29,7 +30,7 @@ class CreateProfileController extends Controller
 
 
 
-    public function store(Request $request)
+    public function store(JobSeekerRequest $request)
     {
         $user = $request->user();
         $user->update([

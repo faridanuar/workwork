@@ -7,21 +7,27 @@
 <div>Rejected List</div>
 
 @foreach($rejectedInfos as $rejectedInfo)
-		<a href="/my/applications/{{ $rejectedInfo->id }}">
-			<div class="panel panel-default">
-				<div class="panel-body">
-					<div>
-						Status: {{ $rejectedInfo->status }}
-					</div>
+	<a href="/my/applications/{{ $rejectedInfo->id }}">
+		<div class="panel panel-default">
+			<div class="panel-body">
+				<div>
+					Job: {{ $rejectedInfo->advert->job_title }}
+				</div>
 
-					<hr>
-					
-					<div>
-						Job Request For: {{ $rejectedInfo->advert->job_title }}
-					</div>
+				<hr>
+
+				<div>
+					Company: {{ $rejectedInfo->employer->business_name }}
+				</div>
+
+				<hr>
+
+				<div>
+					Status: {{ $rejectedInfo->status }}
 				</div>
 			</div>
-		</a>
+		</div>
+	</a>
 @endforeach
 
 {!! $rejectedInfos->render() !!}

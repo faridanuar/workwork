@@ -1,5 +1,4 @@
 @extends('layouts.app')
-
 @section('content')
 <div class="ftu-panel panel-ww-600 panel panel-default center-block">
     <div class="panel-heading panel-heading-ww">Reviews:</div>

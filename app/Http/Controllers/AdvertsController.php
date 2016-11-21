@@ -614,6 +614,7 @@ class AdvertsController extends Controller
 		switch ($saveLater)
 		{
 			case "true":
+				$advert->ready_to_publish = 0;
 				$advert->published = 0;
 				$advert->save();
 				$objectID = $advert->id;

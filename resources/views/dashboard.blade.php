@@ -73,7 +73,7 @@
                             <div class="panel panel-default">
                                 <div class="panel-body">
                                     <span class="label label-warning">WARNING</span>
-                                    {{ $message1 }}. 
+                                    {{ $message1 }} 
                                     <a href="{{ $link }}"><b>{{ $text1 }}<b></a>
                                 </div>
                             </div>

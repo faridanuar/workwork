@@ -33,20 +33,30 @@ class ApplyController extends Controller
 	{
 		$user = $request->user();
 
-		if(!$user->jobSeeker){
-
+		if(!$user->jobSeeker)
+		{
 			flash("Sorry, you need to create your profile before applying", 'info');
 
 			return redirect('profile/create');
-
 		}else{
-
 			// display only the first retrieved
-			$jobSeeker = $user->jobSeeker()->first();
+			$jobSeeker = $user->jobSeeker;
 		}
 
 		// display only the first retrieved
 		$advert = Advert::locatedAt($id, $job_title)->first();
+
+		$application = Application::where('advert_id', $advert->id)
+						->where('job_seeker_id', $jobSeeker->id)
+						->where('employer_id', $advert->employer->id)
+						->where('responded', 0)->first();
+
+		if($application)
+		{
+			flash('Please wait until the employer has responded to your previous request', 'info');
+
+			return redirect()->back();
+		}
 
 		return view('adverts.application_create', compact('advert','user', 'jobSeeker'));
 	}

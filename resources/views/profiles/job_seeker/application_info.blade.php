@@ -9,9 +9,16 @@
           <a href="/my/applications" class="btn btn-default btn-sm">Back</a>
         </div>
         <div>
-          Status: {{$appInfo->status}}
+          Company: 
+          <a href="/company/{{$appInfo->employer->id}}/{{$appInfo->employer->business_name}}">{{$appInfo->employer->business_name}}</a>
         </div>
 
+        <hr>
+
+        <div>
+          Status: {{$appInfo->status}}
+        </div>
+        
         <hr>
 
     		<div>
