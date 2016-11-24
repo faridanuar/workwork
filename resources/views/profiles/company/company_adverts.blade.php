@@ -9,12 +9,12 @@
 		@forelse($myAdverts as $myAdvert)
 			<div class="panel panel-default">
 				<div class="panel-body">
-					<a href="/adverts/{{ $myAdvert->id }}/{{ strtolower($myAdvert->job_title) }}">
 					@if($myAdvert->published != 0)
-							<h5><span class="label label-success label">PUBLISHED</span></h5>
-						@else
-							<h5><span class="label label-warning">UNPUBLISHED</span></h5>
-						@endif
+						<h5><span class="label label-success label">PUBLISHED</span></h5>
+					@else
+						<h5><span class="label label-warning">UNPUBLISHED</span></h5>
+					@endif
+					<a href="/adverts/{{ $myAdvert->id }}/{{ strtolower($myAdvert->job_title) }}">
 					<h4>{{ $myAdvert->job_title }}</h4>
 					</a>
 					@can('view_request')
