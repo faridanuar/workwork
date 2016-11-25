@@ -45,6 +45,7 @@ class RegistrationController extends Controller
      */
     public function postRegister(Request $request)
     {
+        //validate fields
         $this->validate($request, [
             'name' => 'required',
             'email' => 'required|email|unique:users',
@@ -52,79 +53,67 @@ class RegistrationController extends Controller
             'contact' => 'required',
             'type' => 'required',
         ]);
+
+        // create a new user with the given field
         $user = User::create($request->all());
 
-        // generate a random string to be used as a verifcation code
+        // generate a random string
         $verification_code = str_random(30);
 
-
+        // store the generated token/verification code to the selected user
         $user->verification_code = $verification_code;
         $user->save();
 
         // fetch mailgun attributes from SERVICES file
         $config = config('services.mailgun');
-
+        // applications domain
+        $domain = $config['sender'];
         // fetch website provided url
         $website = $config['site_url'];
 
+        // set the values in array
+        $data = ['user' => $user, 'website' => $website, 'verification_code' => $verification_code];
+        $parameter = ['user' => $user, 'domain' => $domain];
+
+        // check what user registered as
         switch($user->type)
         {
             case 'employer':
-                //assign user a roles with permissions using "assignRole" method from hasRoles trait
+                // assign user a roles with permissions using "assignRole" method from hasRoles trait
                 $user->assignRole('employer');
 
-                // use send method form Mail facade to send email. ex: send('view', 'info / array of data', fucntion)
-                Mail::send('mail.welcome_employer', compact('user','website','verification_code'), function ($m) use ($user) {
-
-                    // fetch mailgun attributes from SERVICES file
-                    $config = config('services.mailgun');
-
-                    // fetch mailgun provided domain
-                    $domain = $config['sender'];
-
-                    $recipient = $user->email;
-                    //$recipient = "farid@pocketpixel.com";
-
-                    $recipientName = $user->name;
-
-                    // set email sender stmp url and sender name
-                    $m->from($domain, 'WorkWork');
-
-                    // set email recepient and subject
-                    $m->to($recipient, $recipientName)->subject('Welcome to WorkWork!');
-                });
-            break;
-
+                // set the email view
+                $emailView = 'mail.welcome_employer';
+                break;
             case 'job_seeker':
-                //assign user a roles with permissions using "assignRole" method from hasRoles trait
+                // assign user a roles with permissions using "assignRole" method from hasRoles trait
                 $user->assignRole('job_seeker');
 
-                // use send method form Mail facade to send email. ex: send('view', 'info / array of data', fucntion)
-                Mail::send('mail.welcome_job_seeker', compact('user','website','verification_code'), function ($m) use ($user) {
-
-                    // fetch mailgun attributes from SERVICES file
-                    $config = config('services.mailgun');
-
-                    // fetch mailgun provided domain
-                    $domain = $config['sender'];
-
-                    $recipient = $user->email;
-                    //$recipient = "farid@pocketpixel.com";
-
-                    $recipientName = $user->name;
-
-                    // set email sender stmp url and sender name
-                    $m->from($domain, 'WorkWork');
-
-                    // set email recepient and subject
-                    $m->to($recipient, $recipientName)->subject('Welcome to WorkWork!');
-                });
-            break;
-
+                // set the email view
+                $emailView = 'mail.welcome_job_seeker';
+                break;
             default:
         }
 
-        flash('We have sent you an email. Please verify your email first before logging in ');
+        // use send method form Mail facade to send email. ex: send('view', 'info / array of data', fucntion)
+        Mail::send($emailView, $data, function ($message) use ($parameter) {
+
+            // Recipient Test Email => $recipient = "farid@pocketpixel.com";
+
+            // get the necessary required values for mailgun
+            $appDomain = $parameter['domain'];
+            $recipient = $parameter['user']->email;
+            $recipientName = $parameter['user']->name;
+
+            // set email sender stmp url and sender name
+            $message->from($appDomain, 'WorkWork');
+
+            // set email recepient and subject
+            $message->to($recipient, $recipientName)->subject('Welcome to WorkWork!');
+        });
+
+        // flash info message after registered
+        flash('We have sent you an email. Please verify your email first before logging in', 'info');
 
         return redirect('/login');
     }
@@ -140,10 +129,13 @@ class RegistrationController extends Controller
 
     public function sendToken(Request $request)
     {
+        // generate a random string
         $verification_code = str_random(30);
 
+        // find the user with the given email
         $user = User::where('email', $request->email)->fisrt();
 
+        // store the generated token/verification code to the selected user
         $user->verification_code = $verification_code;
         $user->save();
 
@@ -153,25 +145,25 @@ class RegistrationController extends Controller
         // fetch website provided url
         $website = $config['site_url'];
 
+        // set the values in array
+        $data = ['website' => $website, 'verification_code' => $verification_code];
+        $parameter = ['user' => $user, 'domain' => $domain];
+
         // use send method form Mail facade to send email. ex: send('view', 'info / array of data', fucntion)
-        Mail::send('auth.emails.verify_email', compact('website','verification_code'), function ($m) use ($user) {
+        Mail::send('auth.emails.verify_email', compact('website','verification_code'), function ($message) use ($parameter) {
 
-            // fetch mailgun attributes from SERVICES file
-            $config = config('services.mailgun');
+            // Recipient Test Email => $recipient = "farid@pocketpixel.com";
 
-            // fetch mailgun provided domain
-            $domain = $config['sender'];
-
-            $recipient = $user->email;
-            //$recipient = "farid@pocketpixel.com";
-
-            $recipientName = $user->name;
+            // get the necessary required values for mailgun
+            $appDomain = $parameter['domain'];
+            $recipient = $parameter['user']->email;
+            $recipientName = $parameter['user']->name;
 
             // set email sender stmp url and sender name
-            $m->from($domain, 'WorkWork');
+            $message->from($appDomain, 'WorkWork');
 
             // set email recepient and subject
-            $m->to($recipient, $recipientName)->subject('Welcome to WorkWork!');
+            $message->to($recipient, $recipientName)->subject('Welcome to WorkWork!');
         });
 
         return redirect('/link/sent');

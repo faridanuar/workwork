@@ -30,7 +30,7 @@
 			<hr>
 
 			<div>
-				{{ $company->company_intro }}
+				<p>{!! nl2br(e($company->company_intro)) !!}</p>
 			</div>
 
 			<hr>
