@@ -97,22 +97,23 @@ class ApplyController extends Controller
 		$application->employer()->associate($advert->employer_id);
 
 		if($application->save())
-		{
+		{   
 			$advert = Advert::locatedAt($id, $job_title)->first();
 			$employer = $advert->employer;
-			$contact = $employer->user->contact;
-
-			$config = config('services.twilio');
 
 		    // Step 2: set our AccountSid and AuthToken from www.twilio.com/user/account
+		    $config = config('services.twilio');
 		    $AccountSid = $config['acc_id'];
 			$AuthToken = $config['auth_token'];
 			$websiteURL = $config['site_url'];
+
 			$url = $websiteURL."$id/job/requests/pending";
 			$job_title = $advert->job_title;
-			$contact = $advert->employer->user->contact;
-			$employerName = $advert->employer->user->name;
+			$contact = $employer->user->contact;
+			$employerName = $employer->user->name;
 			$applicantName = $user->name;
+
+			/*
 
 			if($application->employer->user->contact_verified != 0)
 		    {
@@ -154,26 +155,44 @@ class ApplyController extends Controller
 			    }
 			}
 
+			*/
+
 		    if($application->employer->user->verified != 0)
 		    {
+		    	$emailView = 'mail.job_request';
+
+		    	$data = [
+		    				'websiteURL' => $websiteURL, 
+		    				'user' => $user, 
+		    				'thisJobSeeker' => $thisJobSeeker, 
+		    				'application' => $application, 
+		    				'advert' => $advert
+		    			];
+
+            	// set the required variables
+            	$config = config('services.mailgun');
+	            $domain = $config['sender'];
+
+	            // testing email => $recipient = "farid@pocketpixel.com";
+	            $recipient = $application->employer->user->email;
+	            $recipientName = $application->employer->user->name;
+
+		    	$parameter = [
+		    					'application' => $application, 
+		    					'user' => $user,
+		    					'domain' => $domain, 
+		    					'recipient' => $recipient,
+		    					'recipientName' => $recipientName, 
+		    				];
+
 				// use send method from Mail facade to send email. ex: send('view', 'info / array of data', fucntion)
-	            Mail::send('mail.job_request', compact('websiteURL','user', 'thisJobSeeker', 'application', 'advert'), function ($m) use ($user, $application) {
-
-	            	// set the required variables
-	            	$config = config('services.mailgun');
-
-		            $domain = $config['sender'];
-
-		            $recipient = $application->employer->user->email;
-		            //$recipient = "farid@pocketpixel.com";
-		            
-		            $recipientName = $application->employer->user->name;
+	            Mail::send($emailView, $data, function ($message) use ($parameter) {
 
 		            // provide sender domain and sender name
-	                $m->from($domain, 'WorkWork');
+	                $message->from($parameter['domain'], 'WorkWork');
 
 	                // provide recipient email, name and email subject
-	                $m->to($recipient, $recipientName)->subject('Job Request!');
+	                $message->to($parameter['recipient'], $parameter['recipientName'])->subject('Job Request!');
 	            });
 	        }
 
