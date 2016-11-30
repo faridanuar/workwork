@@ -423,6 +423,8 @@ class CompanyProfileController extends Controller
             $contact = $application->jobSeeker->user->contact;
             $JobSeekerName = $application->jobSeeker->user->name;
 
+        /*
+
             if($application->jobSeeker->user->contact_verified != 0)
             {
                 // Step 3: instantiate a new Twilio Rest Client
@@ -457,6 +459,8 @@ class CompanyProfileController extends Controller
                     //echo "Sent message to $name";
                 }
             }
+
+        */
 
             if($application->jobSeeker->user->verified != 0)
             {

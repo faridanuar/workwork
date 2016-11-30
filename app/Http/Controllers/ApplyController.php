@@ -113,7 +113,7 @@ class ApplyController extends Controller
 			$employerName = $employer->user->name;
 			$applicantName = $user->name;
 
-			/*
+		/*
 
 			if($application->employer->user->contact_verified != 0)
 		    {
@@ -155,7 +155,7 @@ class ApplyController extends Controller
 			    }
 			}
 
-			*/
+		*/
 
 		    if($application->employer->user->verified != 0)
 		    {
@@ -178,8 +178,6 @@ class ApplyController extends Controller
 	            $recipientName = $application->employer->user->name;
 
 		    	$parameter = [
-		    					'application' => $application, 
-		    					'user' => $user,
 		    					'domain' => $domain, 
 		    					'recipient' => $recipient,
 		    					'recipientName' => $recipientName, 

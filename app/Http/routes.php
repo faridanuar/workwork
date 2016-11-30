@@ -10,6 +10,22 @@
 
 
 /**
+ * Events routes
+ */
+
+use App\Events\SomeEvent;
+use App\User;
+
+//test event
+Route::get('/banned', function() {
+
+	$user = User::find(39);
+
+	event(new SomeEvent($user));
+});
+
+
+/**
  * Home-Dashboard routes
  */
 Route::get('/terms', 'HomeController@terms');
