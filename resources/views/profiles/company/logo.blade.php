@@ -1,7 +1,6 @@
 @extends('layouts.app')
 
 @section('content')
-
 <div class="flash">
 	@include('messages.flash')
 </div>
@@ -44,6 +43,8 @@
 		</div>
 	</div>
 </div>
-		
-@include('js_plugins.dropzone')
+@stop
+
+@section('js_plugins')
+	@include('js_plugins.dropzone')
 @stop

@@ -19,7 +19,6 @@
 		@endif
 		
 		@include('adverts.application_preview_form')
-
 	</form>
 </div>
 @stop

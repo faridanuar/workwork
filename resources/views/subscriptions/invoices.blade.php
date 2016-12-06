@@ -1,7 +1,6 @@
 @extends('layouts.app')
 
 @section('content')
-
 <style>
 
 .table-invoice td{
@@ -40,5 +39,4 @@
         </div>
     </div>
 </div>
-
 @stop

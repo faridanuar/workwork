@@ -1,7 +1,6 @@
 @extends('layouts.app')
 @section('body-id', 'advert-view')
 @section('content')
-
 <div class="row" id="advert">
     <div class="col-sm-8">
         <div class="flash">
@@ -165,26 +164,23 @@
                 <div class="actions">
                     @if ($authorize === true)
                         @can('edit_advert')
-                            <a href="/adverts/{{ $advert->id }}/{{ strtolower($advert->job_title) }}/edit" class="btn btn-default">Edit</a>
+                            <a href="/adverts/{{ $advert->id }}/{{ strtolower($advert->job_title) }}/edit" class="btn btn-link">Edit</a>
                             @if($advert->published === 0)
                                 <form method="post" action="/adverts/publish">
                                     {{ csrf_field() }}
                                     <input type="hidden" id="id" name="id" value="{{ $advert->id }}" />
-                                    <button type="submit" class="btn btn-primary">Publish</button>
+                                    <button type="submit" class="btn btn-default">Publish</button>
                                 </form>
                             @else
                                 <form method="post" action="/adverts/unpublish">
                                     {{ csrf_field() }}
                                     <input type="hidden" id="id" name="id" value="{{ $advert->id }}" />
-                                    <button type="submit" class="btn btn-primary">Unpublish</button>
+                                    <button type="submit" class="btn btn-default">Unpublish</button>
                                 </form>
                             @endif
                         @endcan
-
                     @elseif ( $asEmployer === false )
-
                         <a href="/adverts/{{ $advert->id }}/{{ strtolower($advert->job_title) }}/apply" class="btn btn-primary btn-lg btn-block btn-ww-lg">Apply</a>
-
                     @endif
                 </div>
             </div>

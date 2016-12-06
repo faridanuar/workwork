@@ -31,18 +31,20 @@
 @endforeach
 
 {!! $acceptedInfos->render() !!}
+@stop
 
-<script type="text/javascript">
-$(document).ready(function(){
-    $.ajax({
-      type: "POST",
-      url: "/category-viewed",
-      context: document.body,
-      data: {
-            'viewed': 'accepted',
-            '_token': '{!! csrf_token() !!}'
-            }
-    });
-});
-</script>
+@section('js_plugins')
+	<script type="text/javascript">
+	$(document).ready(function(){
+	    $.ajax({
+	      type: "POST",
+	      url: "/category-viewed",
+	      context: document.body,
+	      data: {
+	            'viewed': 'accepted',
+	            '_token': '{!! csrf_token() !!}'
+	            }
+	    });
+	});
+	</script>
 @stop

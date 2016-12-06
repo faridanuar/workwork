@@ -1,7 +1,5 @@
 @extends('layouts.app')
-
 @section('content')
-
 <div class="flash">
 	@include('messages.flash')
 </div>
@@ -30,6 +28,7 @@
 		</form>
 	</div>
 </div>
-
-
+@stop
+@section('js_plugins')
+	@include('js_plugins.submit_restrict')
 @stop

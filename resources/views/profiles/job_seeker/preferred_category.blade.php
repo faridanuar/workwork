@@ -25,6 +25,8 @@
 
     <input type="submit" class="btn btn-primary" id="submitBtn" onclick="restrict()" />
 </form>
+@stop
 
-@include('js_plugins.submit_restrict')
+@section('js_plugins')
+    @include('js_plugins.submit_restrict')
 @stop

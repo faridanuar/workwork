@@ -11,7 +11,9 @@
 			    </div>
 			</div>
 		@empty
-			No ratings yet
+			<div class="form-group">
+				No ratings yet
+			</div>
 		@endforelse
 	</div>
 </div>

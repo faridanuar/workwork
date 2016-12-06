@@ -1,7 +1,5 @@
 @extends('layouts.app')
-
 @section('content')
-
 <div class="panel-ww-login panel panel-default center-block">
     <div class="panel-heading panel-heading-ww">Login</div>
     <div class="panel-body">
@@ -62,5 +60,4 @@
         <div class="sign-in__no-account">No account? <a class="btn btn-default pull-right" href="{{ url('/register') }}">Sign up</a></div>
     </div>
 </div>
-
 @endsection

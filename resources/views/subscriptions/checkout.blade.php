@@ -31,36 +31,37 @@
     	</form>
     </div>
 </div>
+@stop
 
-<script>
-$(document).ready(function(){
+@section('js_plugins')
+  <script>
+  $(document).ready(function(){
 
-  var clientToken = "{{ $token }}";
+    var clientToken = "{{ $token }}";
 
-  braintree.setup(clientToken, "dropin", {
-    container: "payment-form"
-  });
-    
-  $( "#checkout" ).submit(function( event ) {
-    $("#pay")
-      .val("Please Wait...")
-      .attr('disabled', true);
-    if( $( ":input" ).val() != "" ) {
-      return true;
-    }else{
-      $("#pay")
-      .val("@lang('forms.payment_next')")
-      .attr('disabled', false);
-
-      event.preventDefault();
-    }
-
-    //setTimeout(function(){
+    braintree.setup(clientToken, "dropin", {
+      container: "payment-form"
+    });
       
-      //}, 5000);
-    
-  });
+    $( "#checkout" ).submit(function( event ) {
+      $("#pay")
+        .val("Please Wait...")
+        .attr('disabled', true);
+      if( $( ":input" ).val() != "" ) {
+        return true;
+      }else{
+        $("#pay")
+        .val("@lang('forms.payment_next')")
+        .attr('disabled', false);
 
-});
-</script>
+        event.preventDefault();
+      }
+
+      //setTimeout(function(){
+        
+        //}, 5000);
+    });
+
+  });
+  </script>
 @stop

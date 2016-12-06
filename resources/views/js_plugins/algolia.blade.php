@@ -18,6 +18,23 @@ autocomplete('#search-box', { hint: false }, [
           );
         }
       }
+    },
+    {
+      source: autocomplete.sources.hits(index, { hitsPerPage: 1 }),
+      templates: {
+        suggestion: function(suggestion) {
+          return (
+            '<span>' +
+              '<div class="ais-search-box--powered-by">' +
+                'Search by' +
+                '<a class="ais-search-box--powered-by-link" href="https://www.algolia.com/?utm_source=instantsearch.js&amp;utm_medium=website&amp;utm_content=community.algolia.com&amp;utm_campaign=poweredby" target="_blank">' +
+                  'Algolia' +
+                '</a>' +
+              '</div>' +
+           '</span>'
+          );
+        }
+      }
     }
   ]).on('autocomplete:selected', function(event, suggestion, dataset) {
     console.log(suggestion, dataset);

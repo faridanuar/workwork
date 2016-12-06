@@ -210,7 +210,3 @@
 	<button type="submit" class="btn btn-primary" id="saveLater" name="saveLater" value=true>Save For Later</button>
 	<button type="submit" class="btn btn-primary">Update And Publish Advertisement</button>
 </div>
-
-@include('js_plugins.algolia_places')
-@include('js_plugins.tagging')
-@include('js_plugins.datetime_picker')

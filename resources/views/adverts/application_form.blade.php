@@ -28,5 +28,3 @@
 <div class="form-group">
 	<button type="submit" id="submitBtn" class="btn btn-primary" onclick="restrict()">Submit</button>
 </div> 
-
-@include('js_plugins.submit_restrict')

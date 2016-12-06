@@ -25,26 +25,6 @@
     <!-- plugins -->
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
 
-    <!-- Algolia plugins -->
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/algoliasearch/3/algoliasearch.min.js"></script>
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/autocomplete.js/0/autocomplete.min.js"></script>
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/instantsearch.js/1/instantsearch.min.js"></script>
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/places.js/1/places.min.js"></script>
-
-    <!-- Dropzone plugins -->
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/4.3.0/dropzone.js"></script>
-
-    <!-- Braintree plugins -->
-    <script type="text/javascript" src="https://js.braintreegateway.com/js/braintree-2.29.0.min.js"></script>
-
-    <!-- Bootstrap-tagsinput plugins -->
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tagsinput/0.8.0/bootstrap-tagsinput.min.js"></script>
-
-    <!-- Bootstrap datetimepicker plugins -->
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.15.1/moment.min.js"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.43/js/bootstrap-datetimepicker.min.js"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.15.1/moment.min.js"></script>
-
     <!-- Styles -->
     <link rel="stylesheet" href="{{ elixir('css/app.css') }}" media="screen" charset="utf-8">
     <link rel="shortcut icon" href="/images/favicon.png" type="image/png">
@@ -68,8 +48,8 @@
 @else
 <body id="@yield('body-id')">
 @endif
+
     @include('layouts.navigation')
-    @include('js_plugins.algolia_global')
 
     <div class="container">
         @yield('content')
@@ -98,8 +78,12 @@
        }(document, 'script', 'facebook-jssdk'));
     </script>
 
-    @include('scripts')
-
     <script src="{{ elixir('js/app.js') }}"></script>
+
+    @include('scripts')
+    @include('js_plugins.algolia_global')
+    <div class="container">
+        @yield('js_plugins')
+    </div>
 </body>
 </html>

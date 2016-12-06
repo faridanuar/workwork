@@ -33,5 +33,3 @@
 	<button type="submit" class="btn btn-primary" 
 	id="submitBtn" onclick="restrict()">@lang('forms.business_save')</button>
 </div>
-
-@include('js_plugins.submit_restrict')

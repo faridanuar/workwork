@@ -119,7 +119,7 @@ class CompanyProfileController extends Controller
 
 
 
-    public function update(EmployerRequest $request)
+    public function update(EmployerRequest $request, Search $search)
     {
         $user = $request->user();
 
@@ -128,9 +128,45 @@ class CompanyProfileController extends Controller
             $user->contact_verified = 0;
         }
 
+        // get new company name
+        $newCompanyName = $request->business_name;
+        // get current company name
+        $currentCompanyName = $user->employer->business_name;
+
+        // continue if new name is not the same as old name
+        if($newCompanyName != $currentCompanyName)
+        {
+            // determine which rows to fetch
+            $adverts = Advert::where('employer_id', '=', $user->employer->id);
+
+            //MASS UPDATE existing advert's "avatar" column to database
+            $adverts->update([ 'business_name' => $newCompanyName ]);
+
+            // fetch published adverts only
+            $liveAds = $adverts->where('published', 1)->get();
+
+            //fetch data from config.php
+            $config = config('services.algolia');
+
+            // provide index
+            $index = $config['index'];
+
+            // select algolia index/indice name
+            $indexFromAlgolia = $search->index($index);
+
+            // loop algolia object update for each row
+            foreach($liveAds as $liveAd)
+            {
+                // update algolia existing object. Determine which by row id
+                $object = $indexFromAlgolia->partialUpdateObject([
+                    'business_name' => $newCompanyName,
+                    'objectID' => $liveAd->id,
+                ]);
+            }
+        }
+
         // update user info
         $user->update([
-
             //update user info
             'name' => $request->name,
             'contact' => $request->contact,
@@ -312,8 +348,10 @@ class CompanyProfileController extends Controller
 
         $employerID = $user->employer->id;
 
-        $myAdverts = Advert::where('employer_id', $employerID)->orderBy('published', 'desc')->orderBy('created_at', 'desc')
-                ->get();
+        $myAdverts = Advert::where('employer_id', $employerID)
+                        ->orderBy('published', 'desc')
+                        ->orderBy('created_at', 'desc')
+                        ->paginate(10);
 
         return view('profiles.company.company_adverts', compact('myAdverts'));
     }

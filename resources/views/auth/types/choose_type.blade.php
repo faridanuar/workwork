@@ -1,7 +1,6 @@
 @extends('layouts.app')
 
 @section('content')
-
 <div class="panel-ww-login panel panel-default center-block">
     <div class="panel-heading panel-heading-ww">Yeay, You're In!</div>
     <div class="panel-body">

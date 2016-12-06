@@ -20,3 +20,6 @@
 	</div>
 </div>
 @stop
+@section('js_plugins')
+	@include('js_plugins.submit_restrict')
+@stop

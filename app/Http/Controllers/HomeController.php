@@ -280,12 +280,6 @@ class HomeController extends Controller
         // find photo's row data using the "avatar_id"
         $thisPhoto = User::findOrFail($avatar_id);
 
-        //fetch data from config.php
-        $config = config('services.algolia');
-
-        // provide index
-        $index = $config['index'];
-
         //check IF job advert is own by user
         if(!$thisPhoto->avatarBy($user))
         {
@@ -323,6 +317,12 @@ class HomeController extends Controller
 
                 // fetch published adverts only
                 $liveAds = $adverts->where('published', 1)->get();
+
+                //fetch data from config.php
+                $config = config('services.algolia');
+
+                // provide index
+                $index = $config['index'];
 
                 // select algolia index/indice name
                 $indexFromAlgolia = $search->index($index);

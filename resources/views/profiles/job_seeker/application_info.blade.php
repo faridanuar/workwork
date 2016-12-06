@@ -27,25 +27,26 @@
       </div>
 	</div>
 </div>
+@stop
 
-<script type="text/javascript">
-var applicationID = '{{ $appInfo->id }}';
-var applicationStatus = '{{ $appInfo->responded }}';
+@section('js_plugins')
+  <script type="text/javascript">
+  var applicationID = '{{ $appInfo->id }}';
+  var applicationStatus = '{{ $appInfo->responded }}';
 
-$(document).ready(function(){
-  if(applicationStatus != 0)
-  {
-    $.ajax({
-      type: "POST",
-      url: "/viewed",
-      context: document.body,
-      data: {
-            'applicationID': applicationID,
-            '_token': '{!! csrf_token() !!}'
-            }
-    });
-  }
-});
-</script>
-
+  $(document).ready(function(){
+    if(applicationStatus != 0)
+    {
+      $.ajax({
+        type: "POST",
+        url: "/viewed",
+        context: document.body,
+        data: {
+              'applicationID': applicationID,
+              '_token': '{!! csrf_token() !!}'
+              }
+      });
+    }
+  });
+  </script>
 @stop

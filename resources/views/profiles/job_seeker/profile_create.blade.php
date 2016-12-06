@@ -2,26 +2,31 @@
 
 @section('content')
 
-	<div class="flash">
-		@include('messages.flash')
+<div class="flash">
+	@include('messages.flash')
+</div>
+
+@include('messages.ftu_level')
+
+<h1>Create Your Profile</h1>
+
+<hr>
+
+<form method="post" action="/profile/store" enctype="multipart/form-data" class="col-md-6" id="myForm">
+	@if (count($errors) > 0)
+	<div class="alert alert-danger">
+		<ul>
+			@foreach ($errors->all() as $error)
+			<li>{{ $error }}</li>
+			@endforeach
+		</ul>
 	</div>
+	@endif
+	
+	@include('profiles.job_seeker.profile_form_create')
+</form>
+@stop
 
-	@include('messages.ftu_level')
-
-	<h1>Create Your Profile</h1>
-
-	<hr>
-
-		<form method="post" action="/profile/store" enctype="multipart/form-data" class="col-md-6" id="myForm">
-			@if (count($errors) > 0)
-			<div class="alert alert-danger">
-				<ul>
-					@foreach ($errors->all() as $error)
-					<li>{{ $error }}</li>
-					@endforeach
-				</ul>
-			</div>
-			@endif
-			
-			@include('profiles.job_seeker.profile_form_create')
+@section('js_plugins')
+	@include('js_plugins.submit_restrict')
 @stop

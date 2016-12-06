@@ -31,6 +31,7 @@
 			        @endcan
 				</div>
 			</div>
+			{!! $myAdverts->render() !!}
 		@empty
 			<p>You have no part-time advertisements yet, lets create one...
 			@can('edit_advert')
@@ -38,7 +39,7 @@
             @endcan
 		@endforelse</p>
 	</div>
-	@if (count($myAdverts) > 0)
+	@if(count($myAdverts) > 0)
 		<div class="col-sm-4">
 			<div class="panel panel-default">
 				<div class="panel-body">
@@ -53,19 +54,4 @@
 		</div>
 	@endif
 </div>
-
-<!-- 	<div class="row">
-	@foreach($myAdverts as $myAdvert)
-	<a href="/adverts/{{ $myAdvert->id }}/{{ $myAdvert->job_title }}">
-	<div class="form-group">
-	<div><h4>Job-Title: {{ $myAdvert->job_title }}</h4></div>
-	</div>
-	</a>
-	<div>
-		@can('view_request')
-            <a href="/advert/{{ $myAdvert->id }}/job/requests" class="btn btn-primary">View Job Requests</a>
-        @endcan
-	@endforeach
-	</div>
-</div> -->
 @stop
