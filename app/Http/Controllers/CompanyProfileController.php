@@ -500,26 +500,34 @@ class CompanyProfileController extends Controller
 
         */
 
+            // testing recipient email => $recipient = "farid@pocketpixel.com";
+            $config = config('services.mailgun');
+            $domain = $config['sender'];
+            $recipient = $application->jobSeeker->user->email;
+            $recipientName = $application->jobSeeker->user->name;
+            $emailView = 'mail.application_notification';
+
+            $data = [
+                        'websiteURL' => $websiteURL,
+                        'application' => $application
+                    ];
+
+            $parameter = [
+                            'domain' => $domain,
+                            'recipient' => $recipient,
+                            'recipientName' => $recipientName
+                        ];
+
             if($application->jobSeeker->user->verified != 0)
             {
                 // use send method from Mail facade to send email. ex: send('view', 'info / array of data', fucntion)
-                Mail::send('mail.application_notification', compact('websiteURL', 'application'), function ($m) use ($application) {
+                Mail::send($emailView, $data, function ($message) use ($parameter) {
 
-                    // set the required variables
-                    $config = config('services.mailgun');
-
-                    $domain = $config['sender'];
-
-                    $recipient = $application->jobSeeker->user->email;
-                    //$recipient = "farid@pocketpixel.com";
-                    
-                    $recipientName = $application->jobSeeker->user->name;
-                    
                     // provide sender domain and sender name
-                    $m->from($domain, 'WorkWork');
+                    $message->from($parameter['domain'], 'WorkWork');
 
-                    // provide recpient email, recepient name and email subject
-                    $m->to($recipient, $recipientName)->subject('Application Notification');
+                    // provide recipient email, recipient name and email subject
+                    $message->to($parameter['recipient'], $parameter['recipientName'])->subject('Application Notification');
                 });
             }
 
