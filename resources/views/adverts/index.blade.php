@@ -45,6 +45,7 @@
 
 
 	<div class="col-md-3">
+	@if(Auth::guest())
 		<div class="well focus-box focus-box-yellow">
 			<!-- todo Sidebar -->
 			@lang('marketing.welcome')
@@ -55,6 +56,7 @@
 			@lang('marketing.employer_welcome')
 			<a href="/register" class="btn btn-primary btn-lg btn-block btn-ww-md">Create your ad now </a>
 		</div>
+	@endif
 		<div class="well focus-box focus-box-black">
 			<!-- todo Sidebar -->
 			@lang('marketing.tips')
