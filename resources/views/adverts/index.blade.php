@@ -45,9 +45,19 @@
 
 
 	<div class="col-md-3">
-		<div class="well">
-			<!-- todo Jumpbar -->
+		<div class="well focus-box focus-box-yellow">
+			<!-- todo Sidebar -->
 			@lang('marketing.welcome')
+			<a href="/register" class="btn btn-primary btn-lg btn-block btn-ww-md">Sign up now </a>
+		</div>
+		<div class="well focus-box focus-box-white">
+			<!-- todo Sidebar -->
+			@lang('marketing.employer_welcome')
+			<a href="/register" class="btn btn-primary btn-lg btn-block btn-ww-md">Create your ad now </a>
+		</div>
+		<div class="well focus-box focus-box-black">
+			<!-- todo Sidebar -->
+			@lang('marketing.tips')
 		</div>
 	</div>
 </div>

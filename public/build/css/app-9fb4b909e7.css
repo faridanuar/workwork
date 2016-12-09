@@ -5736,7 +5736,7 @@ button.close {
 
 body {
   padding-top: 140px;
-  background: #F1F1F1; }
+  background: #ffffff; }
   @media (min-width: 768px) {
     body {
       padding-top: 90px; } }
@@ -5768,13 +5768,16 @@ body.auth-body {
   .ww-navbar .navbar-btn.navbar-btn-ww {
     padding: 7px 18px;
     background-color: transparent;
-    border-radius: 100px;
+    border-radius: 4px;
     border: 2px solid transparent; }
     .ww-navbar .navbar-btn.navbar-btn-ww.navbar-btn-ww--cta {
-      border: 2px solid rgba(0, 0, 0, 0.2); }
+      border: 2px solid rgba(0, 0, 0, 0.2);
+      background-color: black;
+      color: #FFDC10; }
     .ww-navbar .navbar-btn.navbar-btn-ww:hover {
       border: 2px solid transparent;
-      background-color: white; }
+      background-color: white;
+      color: black; }
   .ww-navbar .navbar-right {
     margin-right: 0; }
   @media (max-width: 767px) {
@@ -6136,6 +6139,21 @@ datetime picker styling section
 .glyphicon-chevron-left:before {
   content: "<"; }
 
+.glyphicon-chevron-down:before {
+  content: "\e114"; }
+
+.glyphicon-chevron-up:before {
+  content: "\e113"; }
+
+/**********************************
+datetime picker styling section
+**********************************/
+.glyphicon-chevron-right:before {
+  content: ">"; }
+
+.glyphicon-chevron-left:before {
+  content: "<"; }
+
 .glyphicon-chevron-up:before {
   content: "^"; }
 
@@ -6300,8 +6318,8 @@ Sign up and log in
     text-decoration: none; }
 
 .ww-banner {
-  background-image: url(/images/banner-00.png);
-  height: 297px;
+  background-image: url(/images/banner-00-slim.png);
+  height: 186px;
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover; }
@@ -6332,5 +6350,25 @@ Sign up and log in
   float: right;
   font-size: 12px;
   color: rgba(0, 0, 0, 0.7); }
+
+.focus-box {
+  font-size: 12px; }
+  .focus-box h3 {
+    font-size: 14px;
+    margin: 5px 0 18px 0;
+    text-transform: uppercase;
+    text-align: center; }
+
+.focus-box-black {
+  background-color: black;
+  color: white; }
+
+.focus-box-yellow {
+  background-color: #FFDC10;
+  color: black; }
+
+.focus-box-white {
+  background-color: white;
+  color: black; }
 
 /*# sourceMappingURL=app.css.map */

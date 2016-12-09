@@ -7,7 +7,7 @@ $advert-label-color: #A36500;
 $fancy-font: 'Josefin Slab', serif;
 
 // App Styles
-body { padding-top: 140px; background: #F1F1F1;
+body { padding-top: 140px; background: #ffffff;
     @media (min-width: 768px) { padding-top: 90px; }
 }
 body.auth-body {
@@ -41,16 +41,19 @@ body.auth-body {
     .navbar-btn.navbar-btn-ww {
         padding: 7px 18px;
         background-color: transparent;
-        border-radius: 100px;
+        border-radius: 4px;
         border: 2px solid rgba(0, 0, 0, 0);
 
         &.navbar-btn-ww--cta {
             border: 2px solid rgba(0, 0, 0, 0.2);
+            background-color: black;
+            color: $brand-color;
         }
 
         &:hover {
             border: 2px solid rgba(0, 0, 0, 0);
             background-color: white;
+            color: black;
         }
     }
 
@@ -672,8 +675,8 @@ Sign up and log in
 }
 // Banner
 .ww-banner {
-    background-image: url(/images/banner-00.png);
-    height: 297px;
+    background-image: url(/images/banner-00-slim.png);
+    height: 186px;
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
@@ -710,5 +713,31 @@ Sign up and log in
             font-size: 12px;
             color: rgba(0,0,0,0.7);
         }
+    }
+}
+
+// sidebar
+.focus-box {
+    font-size: 12px;
+    h3 {
+        font-size: 14px;
+        margin: 5px 0 18px 0;
+        text-transform: uppercase;
+        text-align: center;
+     }
+}
+
+.focus-box {
+    &-black {
+        background-color: black;
+        color: white;
+    }
+    &-yellow {
+        background-color: $brand-color;
+        color: black;
+    }
+    &-white {
+        background-color: white;
+        color: black;
     }
 }
