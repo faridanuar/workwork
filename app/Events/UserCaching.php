@@ -8,7 +8,7 @@ use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 
 use App\User;
 
-class SomeEvent extends Event
+class UserCaching extends Event
 {
     use SerializesModels;
 

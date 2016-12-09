@@ -67,7 +67,7 @@ if( '{{ $categories }}' != false )
   });
 
 }else{
-  //initialise instant search
+  // initialise instant search
   var search = instantsearch({
     appId: itsAppID,
     apiKey: itsApiKey,
@@ -78,18 +78,18 @@ if( '{{ $categories }}' != false )
 
 
 
-//search widgets
+// search widgets
 search.addWidget(
 	instantsearch.widgets.searchBox({
 	  container: '#search-box',
 	  placeholder: '@lang("adverts.search_for")',
-	  searchOnEnterKeyPressOnly: false
+	  searchOnEnterKeyPressOnly: true
 	})
 );
 
 
 
-//hits templates
+// hits templates
 var resultsTemplate =
 	'<a class="panel-job-links" href="/adverts/@{{ id }}/@{{ job_title }}">' +
 		'<div class="panel panel-default">' +
@@ -106,7 +106,7 @@ var resultsTemplate =
 		'</div>' +
 	'</a>';
 
-//no hits template
+// no hits template
 var noResultsTemplate =
 	'<div class"noResults">'+
 		'@lang("adverts.no_results")' +
@@ -126,7 +126,7 @@ search.addWidget(
 
 
 
-//display hits widget
+// display hits widget
 search.addWidget(
 	instantsearch.widgets.hits({
 	  container: '#hits-container',
@@ -167,8 +167,7 @@ search.addWidget(
 
 
 
-//pagination widget
-/*
+// pagination widget
 search.addWidget(
 	instantsearch.widgets.pagination({
 	  container: '#pagination-container',
@@ -180,7 +179,8 @@ search.addWidget(
     }
 	})
 );
-*/
+
+/*
 var container = document.querySelector('#pagination-container');
 var paginationWidget = instantsearch.widgets.pagination({
   container: container,
@@ -191,6 +191,7 @@ var paginationWidget = instantsearch.widgets.pagination({
       active: 'active'
     }
 });
+
 var oldRender = paginationWidget.render;
 paginationWidget.render = function(params) {
   var currentState = params.results;
@@ -199,9 +200,10 @@ paginationWidget.render = function(params) {
   oldRender.call(this, arguments);
 }
 search.addWidget(paginationWidget);
+*/
 
 
 
-//Once all the widgets have been added to the instantsearch instance, start rendering by calling start() method
+// Once all the widgets have been added to the instantsearch instance, start rendering by calling start() method
 search.start();
 </script>

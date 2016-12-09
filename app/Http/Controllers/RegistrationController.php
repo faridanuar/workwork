@@ -57,6 +57,8 @@ class RegistrationController extends Controller
         // create a new user with the given field
         $user = User::create($request->all());
 
+        $user->avatar = "/images/defaults/default.jpg";
+
         // generate a random string
         $verification_code = str_random(30);
 

@@ -4,7 +4,7 @@
 
 @include('profiles.company.requests_category')
 
-<div>Job Seekers:</div>
+<div>Rejected Job Seekers:</div>
 
 @forelse($rejectedInfos as $rejectedInfo)
 	<a href="/advert/{{ $rejectedInfo->advert_id }}/job/requests/{{ $rejectedInfo->id }}">
@@ -31,5 +31,5 @@
 @empty
 	<p>Looks like there's no job applications yet.</p>
 @endforelse</p>
-{!! $rejectedInfos->render() !!}
+	{!! $rejectedInfos->render() !!}
 @stop

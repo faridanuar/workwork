@@ -4,7 +4,7 @@
 
 @include('profiles.company.requests_category')
 
-<div>Job Seekers:</div>
+<div>All Job Seekers:</div>
 
 @forelse($allInfos as $allInfo)
 	<a href="/advert/{{ $allInfo->advert_id }}/job/requests/{{ $allInfo->id }}">
@@ -30,8 +30,8 @@
 	</a>
 @empty
 	<p>Looks like there's no job applications yet.</p>
-@endforelse</p>
-@if($currentPlan != "Trial")
+@endforelse
+@if($currentPlan != "Trial" && $currentPlan != "Free")
 	{!! $allInfos->render() !!}
 @else
 	If you want unlimited view for job requests, you must purchase the premium advert plan

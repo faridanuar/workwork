@@ -8,6 +8,11 @@ $index_desc = $config['index_desc'];
 $siteURL = $config['site_url'];  
 ?>
 
+<!-- Algolia plugins -->
+<script type="text/javascript" src="https://cdn.jsdelivr.net/algoliasearch/3/algoliasearch.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/autocomplete.js/0/autocomplete.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/instantsearch.js/1/instantsearch.min.js"></script>
+
 <!-- this configuration uses algolia javascript plugin -->
 <script>
 var itsAppID = '{{ $algoliaID }}';

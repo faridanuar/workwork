@@ -36,7 +36,7 @@ class CompanyProfileController extends Controller
 
     public function profile(Request $request, $id, $business_name)
     {
-        $company = Employer::findEmployer($id, $business_name)->first();
+        $company = Employer::findEmployer($id, $business_name)->firstOrFail();
 
         $user = $request->user();
 
@@ -140,7 +140,7 @@ class CompanyProfileController extends Controller
             $adverts = Advert::where('employer_id', '=', $user->employer->id);
 
             //MASS UPDATE existing advert's "avatar" column to database
-            $adverts->update([ 'business_name' => $newCompanyName ]);
+            //$adverts->update([ 'business_name' => $newCompanyName ]);
 
             // fetch published adverts only
             $liveAds = $adverts->where('published', 1)->get();
@@ -237,7 +237,7 @@ class CompanyProfileController extends Controller
 
     	$name = time(). '-' .$file->getClientOriginalName();
 
-    	$path = "images/profile_images/logo/logo";
+    	$path = "images/profile_images/logo";
 
         Image::make($file)->fit(200, 200)->save($path."/".$name);
 
@@ -273,8 +273,7 @@ class CompanyProfileController extends Controller
 
         if($exist === true){
 
-                $employer->update([ 'business_logo' => null ]);
-
+                $employer->business_logo = "/images/defaults/default.jpg";
                 $employer->save();
 
                 flash('Your photo has been successfully removed', 'success');
@@ -363,9 +362,20 @@ class CompanyProfileController extends Controller
         $advert = Advert::find($id);
         $currentPlan = $advert->current_plan;
 
-        if($currentPlan === 'Trial')
+        switch ($currentPlan)
         {
-            $limitedRequest = Application::where('advert_id', $id)->take(3);
+            case "Free":
+                $count = 3;
+                break;
+            case "Trial":
+                $count = 10;    
+                break;
+            default: 
+        }
+
+        if($currentPlan != '1_Month_Plan' && $currentPlan != '2_Month_Plan')
+        {
+            $limitedRequest = Application::where('advert_id', $id)->take($count);
             $allInfos = $limitedRequest->get();
         }else{
             $allInfos = Application::where('advert_id', $id)->paginate(5);
@@ -381,9 +391,20 @@ class CompanyProfileController extends Controller
         $advert = Advert::find($id);
         $currentPlan = $advert->current_plan;
 
-        if($currentPlan === 'Trial')
+        switch ($currentPlan)
         {
-            $limitedRequest = Application::where('advert_id', $id)->take(3);
+            case "Free":
+                $count = 3;
+                break;
+            case "Trial":
+                $count = 10;    
+                break;
+            default: 
+        }
+
+        if($currentPlan != '1_Month_Plan' && $currentPlan != '2_Month_Plan')
+        {
+            $limitedRequest = Application::where('advert_id', $id)->take($count);
             $requestInfos = $limitedRequest->get();
         }else{
             $requestInfos = Application::where('advert_id', $id)->where('status', 'PENDING')->paginate(5);
@@ -461,8 +482,6 @@ class CompanyProfileController extends Controller
             $contact = $application->jobSeeker->user->contact;
             $JobSeekerName = $application->jobSeeker->user->name;
 
-        /*
-
             if($application->jobSeeker->user->contact_verified != 0)
             {
                 // Step 3: instantiate a new Twilio Rest Client
@@ -497,8 +516,6 @@ class CompanyProfileController extends Controller
                     //echo "Sent message to $name";
                 }
             }
-
-        */
 
             // testing recipient email => $recipient = "farid@pocketpixel.com";
             $config = config('services.mailgun');
@@ -550,9 +567,47 @@ class CompanyProfileController extends Controller
         $user = $request->user();
 
         //check if job advert is own by user
+        /*
         if(!$advert->ownedBy($user))
         {
             return $this->unauthorized($request);
+        }
+        */
+
+        if($advert->employer->user->id != $user->id)
+        {
+            if($request->ajax())
+            {
+                return response(['message' => 'No!'], 403);
+            }
+            flash('not the owner','error');
+            return redirect('/');
+        }
+
+        $allAdverts = $user->employer->adverts->where('id', '<=', $advert->id);
+
+        if($advert->current_plan === "Free")
+        {
+            $allowedCount = 3;
+            $advertCount = count($allAdverts);
+
+            if($advertCount > $allowedCount)
+            {
+                flash('Sorry, You are only limited to view the first'.$allowedCount.'request only', 'info');
+                return redirect('/adverts');
+            }
+
+        }elseif($advert->current_plan === "Trial"){
+
+            $allowedCount = 10;
+            $advertCount = count($allAdverts);
+
+            if($advertCount > $allowedCount)
+            {
+                flash('Sorry, You are only limited to view the first'.$allowedCount.'request only', 'info');
+                return redirect('/adverts');
+            }
+
         }
 
         $application = Application::find($application_id);
@@ -591,7 +646,7 @@ class CompanyProfileController extends Controller
      * Check if user is authorized
      *
      * @param $request
-     */
+    
     protected function unauthorized(Request $request)
     {
         if($request->ajax())
@@ -601,4 +656,5 @@ class CompanyProfileController extends Controller
 
         abort(403, 'Unauthorized action.');
     }
+     */
 }

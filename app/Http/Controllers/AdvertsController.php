@@ -5,12 +5,17 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
+use Event;
+use Cache;
+
 use App\User;
 use App\Advert;
 use App\Skill;
 use App\Employer;
 use App\SpecificSchedule;
 use App\DailySchedule;
+
+use App\Events\AdvertCaching;
 
 use App\Contracts\Search;
 
@@ -38,6 +43,8 @@ class AdvertsController extends Controller
 	 */
 	public function index(Request $request)
 	{
+		$categories = false;
+
 		if($request->user())
 		{
 			if($request->user()->jobSeeker){
@@ -45,12 +52,9 @@ class AdvertsController extends Controller
 				$categories = $plucked->all();
 				$categories = implode(",", $categories);
 				//dd($categories);
-			}else{
-				$categories = false;
 			}
-		}else{
-			$categories = false;
 		}
+
 		return view('adverts.index', compact('categories'));
 	}
 
@@ -66,13 +70,17 @@ class AdvertsController extends Controller
 	public function show(Request $request, $id, $job_title)
 	{
 		// fetch only the first retrieved
-		$advert = Advert::locatedAt($id, $job_title)->firstOrFail();
-		$status = $advert->published;
-		$user = $request->user();
+		//$advert = Advert::locatedAt($id, $job_title)->firstOrFail();
+		$advert = Cache::remember('advert_'.$id.'', 1440, function() use ($id, $job_title){
 
+			return Advert::locatedAt($id, $job_title)->firstOrFail();
+		});
+
+		$user = $request->user();
+		
 		if(Auth::guest() || $user->type === "job_seeker")
 		{
-			if($status != 1)
+			if($advert->published != 1)
 			{
 				return redirect('/');
 			}
@@ -81,8 +89,8 @@ class AdvertsController extends Controller
 		$advertEmployer = $advert->employer_id;
 		$authorize = "";
 		$asEmployer = false;
+		$skills = "";
 		
-
 		if($user)
 		{
 			if($user->ftu_level < 4)
@@ -94,17 +102,16 @@ class AdvertsController extends Controller
 		        $notDone = 2;
 	    	}
 
-			$thisEmployer = $user->employer;
+			$currentEmployer = $user->employer;
 
-			if($thisEmployer)
+			if($currentEmployer)
 			{
 				$asEmployer = true;
+				$authorize = false;
 
-				if ($advertEmployer === $thisEmployer->id)
+				if($advertEmployer === $currentEmployer->id)
 				{
 					$authorize = true;
-				}else{
-					$authorize = false;
 				}
 			}
 		}
@@ -112,8 +119,6 @@ class AdvertsController extends Controller
 		if($advert->skills)
 		{
 			$skills = $advert->skills->implode('skill',',');
-		}else{
-			$skills = "";
 		}
 
 		// display "show" page
@@ -129,13 +134,7 @@ class AdvertsController extends Controller
 	{
 		$user = $request->user();
 
-		if(!$user->employer)
-		{
-			flash('You need a profile to create an advert', 'info');
-
-			return redirect('/company/create');
-		}
-
+		// declare a new DailySchedule for comparison
 		$dayName = new DailySchedule;
 
 		if($user->ftu_level < 4)
@@ -187,7 +186,8 @@ class AdvertsController extends Controller
 			    	]);
 			    	break;
 			    case "daily":
-				    if($days != ""){
+				    if($days != "")
+				    {
 				    	// $key => $value 
 				    	// IS SAME AS 
 				    	// [0] => $value OR 0 => 1
@@ -203,6 +203,7 @@ class AdvertsController extends Controller
 					            'endDayTime.'.$key => 'required|max:20',           
 					    	], $messages);
 						}
+
 						$this->validate($request, [
 						        'dailyStartDate' => 'required|max:20',
 					            'dailyEndDate' => 'required|max:20',           
@@ -217,7 +218,6 @@ class AdvertsController extends Controller
 					    ], $messages);
 					}
 			    	break;
-				
 			    default:
 			}
 		}
@@ -245,7 +245,6 @@ class AdvertsController extends Controller
 	        'job_title' => $request->job_title,
 	        'salary'  => (float)$request->salary,
 	        'description'  => $request->description,
-	        'business_name'  => $employer->business_name,
 	        'location'  => $request->location,
 	        'street'  => $request->street,
 	        'city'  => $request->city,
@@ -256,7 +255,6 @@ class AdvertsController extends Controller
 	        'category'  => $request->category,
 	        'rate'  => $request->rate,
 	        'oku_friendly'  => $oku_friendly,
-	        'avatar'  => $avatar,
 	        'schedule_type' => $request->scheduleType,
 		]);
 
@@ -353,12 +351,24 @@ class AdvertsController extends Controller
 		$user = $request->user();
 
 		// display only the first retrieved
-		$advert = Advert::locatedAt($id, $job_title)->first();
+		$advert = Advert::locatedAt($id, $job_title)->firstOrFail();
 
 		//perform this if user does not own this advert
-		if(! $advert->ownedBy($user))
+		/*
+		if(!$advert->ownedBy($user))
 		{
 			return $this->unauthorized($request);
+		}
+		*/
+
+		if($advert->employer->user->id != $user->id)
+		{
+			if($request->ajax())
+			{
+				return response(['message' => 'No!'], 403);
+			}
+			flash('not the owner','error');
+			return redirect('/');
 		}
 
 		$skills = $advert->skills->implode('skill',',');
@@ -483,13 +493,10 @@ class AdvertsController extends Controller
 			}
 		}
 
-		$business = $advert->employer->business_name;
-
 		$advert->update([
 			'job_title' => $request->job_title,
 			'salary' => (float)$request->salary,
 			'description' => $request->description,
-			'business_name' => $business,
 			'location' => $request->location,
 			'street' => $request->street,
 			'city' => $request->city,
@@ -687,13 +694,14 @@ class AdvertsController extends Controller
 
 		$advert->published = 1;
 		$advert->save();
+		$businessName = $user->employer->business_name;
 
 		$object = $indexFromAlgolia->saveObject([
 	    	'id' => $advert->id,
 	        'job_title' => $advert->job_title,
 	        'salary' => (float)$advert->salary,
 	        'description' => $advert->description,
-	        'business_name' => $advert->business_name,
+	        'business_name' => $businessName,
 	        'location' => $advert->location,
 	        'street' => $advert->street,
 	        'city' => $advert->city,
@@ -707,7 +715,7 @@ class AdvertsController extends Controller
 	        'rate' => $advert->rate,
 	        'oku_friendly' => $advert->oku_friendly,
 	        'published' => $advert->published,
-	        'avatar' => $advert->avatar,
+	        'avatar' => $user->avatar,
 	        'schedule_type' => $advert->schedule_type,
 	        'start_date' => $startDate,
 			'end_date' => $endDate,
@@ -723,6 +731,8 @@ class AdvertsController extends Controller
 
 		if($object)
 		{
+			Event::fire(new AdvertCaching($advert));
+
 			flash('Your advert has been successfully published.', 'success');
 
 			return redirect()->route('show', [$id,$advert->job_title]);
@@ -744,6 +754,7 @@ class AdvertsController extends Controller
 	 */
 	public function publish(Request $request, Search $search)
 	{
+		$user = $request->user();
 		$advert = Advert::find($request->id);
 		$ready = $advert->ready_to_publish;
 
@@ -822,7 +833,7 @@ class AdvertsController extends Controller
 			        'job_title' => $advert->job_title,
 			        'salary'  => (float)$advert->salary,
 			        'description'  => $advert->description,
-			        'business_name'  => $advert->business_name,
+			        'business_name'  => $user->employer->business_name,
 			        'location'  => $advert->location,
 			        'street'  => $advert->street,
 			        'city'  => $advert->city,
@@ -836,7 +847,7 @@ class AdvertsController extends Controller
 			        'rate'  => $advert->rate,
 			        'oku_friendly'  => $advert->oku_friendly,
 			        'published' => $advert->published,
-			        'avatar'  => $advert->avatar,
+			        'avatar'  => $user->avatar,
 			        'schedule_type' => $advert->schedule_type,
 			        'start_date' => $startDate,
 					'end_date' => $endDate,
@@ -850,6 +861,8 @@ class AdvertsController extends Controller
 			    ],
 			    $objectID
 			);
+
+			Event::fire(new AdvertCaching($advert));
 
 			if($object)
 			{
@@ -895,6 +908,8 @@ class AdvertsController extends Controller
 			$objectID = $advert->id;
 			$object = $indexFromAlgolia->deleteObject($objectID);
 
+			Event::fire(new AdvertCaching($advert));
+
 			if($object)
 			{
 				// set flash attribute and key. example --> flash('success message', 'flash_message_level')
@@ -923,7 +938,7 @@ class AdvertsController extends Controller
 	 * Perform this process if user is not authorized
 	 *
 	 * @param $request
-	 */
+	
 	protected function unauthorized(Request $request)
 	{
 		if($request->ajax())
@@ -935,4 +950,5 @@ class AdvertsController extends Controller
 
 		return redirect('/');
 	}
+	*/
 }

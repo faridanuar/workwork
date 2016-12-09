@@ -5,7 +5,7 @@
 @include('profiles.company.requests_category')
 <div class="row">
 	<div class="col-md-12">
-		<div>Job Seekers:</div>
+		<div>New Job Seekers:</div>
 
 		{{--
 		@if (count($errors) > 0)
@@ -53,7 +53,7 @@
 			<p>Looks like there's no job applications yet.</p>
 		@endforelse
 
-			@if($currentPlan != "Trial")
+			@if($currentPlan != "Trial" && $currentPlan != "Free")
 				{!! $requestInfos->render() !!}
 			@else
 				If you want unlimited view for job requests, you must purchase the premium advert plan

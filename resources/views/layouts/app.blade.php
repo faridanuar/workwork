@@ -32,15 +32,7 @@
     <!-- Algolia Stylesheet -->
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/instantsearch.js/1/instantsearch.min.css">
 
-    <!-- Dropzone Stylesheet -->
-    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/4.3.0/dropzone.css">
-
-    <!-- Bootstrap-tagsinput Stylesheet -->
-    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tagsinput/0.8.0/bootstrap-tagsinput.css">
-
-    <!-- Bootstrap datetimepicker Stylesheet -->
-    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.43/css/bootstrap-datetimepicker.min.css">
-
+    @yield('js_stylesheets')
 </head>
 
 @if (Auth::user())
@@ -59,31 +51,10 @@
         <!-- @include('footer') -->
     </div>
 
-    <!-- JavaScripts -->
-    <script>
-      window.fbAsyncInit = function() {
-        FB.init({
-          appId      : '1578992975731734',
-          xfbml      : true,
-          version    : 'v2.6'
-        });
-      };
-
-      (function(d, s, id){
-         var js, fjs = d.getElementsByTagName(s)[0];
-         if (d.getElementById(id)) {return;}
-         js = d.createElement(s); js.id = id;
-         js.src = "//connect.facebook.net/en_US/sdk.js";
-         fjs.parentNode.insertBefore(js, fjs);
-       }(document, 'script', 'facebook-jssdk'));
-    </script>
-
     <script src="{{ elixir('js/app.js') }}"></script>
 
     @include('scripts')
     @include('js_plugins.algolia_global')
-    <div class="container">
-        @yield('js_plugins')
-    </div>
+    @yield('js_plugins')
 </body>
 </html>
