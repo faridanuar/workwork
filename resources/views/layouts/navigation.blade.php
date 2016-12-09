@@ -37,7 +37,7 @@
 
                     <!-- Authentication Links -->
                     @if (Auth::guest())
-                        <li><a class="btn btn-default navbar-btn navbar-btn-ww" href="{{ url('/plans') }}">@lang('navigation.price')</a></li>
+                        {{-- <!-- <li><a class="btn btn-default navbar-btn navbar-btn-ww" href="{{ url('/plans') }}">@lang('navigation.price')</a></li> --> --}}
                         <li><a class="btn btn-default navbar-btn navbar-btn-ww" href="{{ url('/login') }}">@lang('navigation.login')</a></li>
                         <li><a class="btn btn-default navbar-btn navbar-btn-ww" href="{{ url('/register') }}">@lang('navigation.signup')</a></li>
                         <li><a class="btn btn-default navbar-btn navbar-btn-ww navbar-btn-ww--cta" href="{{ url('/register') }}">@lang('navigation.create')</a></li>
