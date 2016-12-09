@@ -237,7 +237,7 @@ class CompanyProfileController extends Controller
 
     	$name = time(). '-' .$file->getClientOriginalName();
 
-    	$path = "images/profile_images/logo/logo";
+    	$path = "images/profile_images/logo";
 
         Image::make($file)->fit(200, 200)->save($path."/".$name);
 
@@ -273,8 +273,7 @@ class CompanyProfileController extends Controller
 
         if($exist === true){
 
-                $employer->update([ 'business_logo' => null ]);
-
+                $employer->business_logo = "/images/defaults/default.jpg";
                 $employer->save();
 
                 flash('Your photo has been successfully removed', 'success');

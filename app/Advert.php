@@ -79,11 +79,6 @@ class Advert extends Model
     {
         $user = $user;
 
-        if(!$user)
-        {
-            return redirect('/');
-        }
-
         return $this->employer->user->id == $user->id;
     }
 

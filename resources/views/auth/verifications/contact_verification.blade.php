@@ -44,7 +44,7 @@
 				</div>
 				<div class="form-group">
 					<input type="submit" class="btn btn-primary"  value="VERIFY" />
-					<input type="button" id="getCode" class="btn btn-primary"  value="GET CODE" />
+					<input type="button" id="getCode" class="btn btn-link"  value="GET CODE" />
 				</div>
 			</form>
 		</div>

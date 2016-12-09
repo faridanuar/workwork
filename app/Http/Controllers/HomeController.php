@@ -224,7 +224,7 @@ class HomeController extends Controller
         $name = time(). '-' .$file->getClientOriginalName();
 
         // provide a path
-        $path = "images/profile_images/avatars/avatars";
+        $path = "images/profile_images/avatars";
 
         // provide path URl for Database
         $pathURL = "/".$path."/".$name;
@@ -316,6 +316,8 @@ class HomeController extends Controller
 
                 //MASS UPDATE existing advert's "avatar" column to database
                 //$adverts->update([ 'avatar' => $pathURL ]);
+                $user->avatar = $pathURL;
+                $user->save();
 
                 // fetch published adverts only
                 $liveAds = $adverts->where('published', 1)->get();
