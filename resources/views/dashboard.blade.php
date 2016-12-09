@@ -59,15 +59,27 @@
                     @endforelse
 
                     @forelse( $adverts as $advert )
-                        <div class="panel panel-default">
-                            <div class="panel-body">
-                                <span class="label label-info">INFO</span>
-                                    Your post for <b>{{ $advert->job_title }}</b> expires at {{ date_format($advert->plan_ends_at, "d/m/Y")}}
-                                    <a href="/choose/plan/{{ $advert->id }}">.
+                        @if(Carbon\Carbon::now()->diffInDays($advert->plan_ends_at, false) > 0)
+                            <div class="panel panel-default">
+                                <div class="panel-body">
+                                    <span class="label label-info">INFO</span>
+                                    Your post for <b>{{ $advert->job_title }}</b> will expires in {{ Carbon\Carbon::now()->diffInDays($advert->plan_ends_at, false) }} days.
+                                    <a href="/choose/plan/{{ $advert->id }}">
                                      <b>Extends</b>
                                     </a>
+                                </div>
                             </div>
-                        </div>
+                        @else
+                            <div class="panel panel-default">
+                                <div class="panel-body">
+                                    <span class="label label-info">INFO</span>
+                                    Your post for <b>{{ $advert->job_title }}</b> has expired.
+                                    <a href="/choose/plan/{{ $advert->id }}">
+                                     <b>Extends</b>
+                                    </a>
+                                </div>
+                            </div>
+                        @endif
                     @empty
                     @endforelse
                 @endcan
