@@ -42,10 +42,12 @@ class SubscribeController extends Controller
 		$advert = Advert::find($id)->firstOrFail();
 
 		//perform this if user does not own this advert
+		/*
 		if(! $advert->ownedBy($user))
 		{
 			return $this->unauthorized($request);
 		}
+		*/
 
 		if($user->ftu_level < 4)
 		{
@@ -82,10 +84,22 @@ class SubscribeController extends Controller
 		$customerID = "";
 
 		//perform this if user does not own this advert
+		/*
 		if(! $advert->ownedBy($user))
 		{
 			return $this->unauthorized($request);
 		}
+		*/
+
+		if($advert->employer->user->id != $user->id)
+        {
+            if($request->ajax())
+            {
+                return response(['message' => 'No!'], 403);
+            }
+            flash('not the owner','error');
+            return redirect('/');
+        }
 
 		if($plan != "1_Month_Plan" && $plan != "2_Month_Plan")
 		{

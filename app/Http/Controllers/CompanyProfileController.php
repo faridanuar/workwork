@@ -567,9 +567,21 @@ class CompanyProfileController extends Controller
         $user = $request->user();
 
         //check if job advert is own by user
+        /*
         if(!$advert->ownedBy($user))
         {
             return $this->unauthorized($request);
+        }
+        */
+
+        if($advert->employer->user->id != $user->id)
+        {
+            if($request->ajax())
+            {
+                return response(['message' => 'No!'], 403);
+            }
+            flash('not the owner','error');
+            return redirect('/');
         }
 
         $allAdverts = $user->employer->adverts->where('id', '<=', $advert->id);
@@ -634,7 +646,7 @@ class CompanyProfileController extends Controller
      * Check if user is authorized
      *
      * @param $request
-     */
+    
     protected function unauthorized(Request $request)
     {
         if($request->ajax())
@@ -644,4 +656,5 @@ class CompanyProfileController extends Controller
 
         abort(403, 'Unauthorized action.');
     }
+     */
 }

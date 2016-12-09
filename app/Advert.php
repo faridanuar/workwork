@@ -74,13 +74,15 @@ class Advert extends Model
     * Get the logged in user id and compare with the given advert's employer id
     *
     *
-    */
+
     public function ownedBy(User $user)
     {
         $user = $user;
 
         return $this->employer->user->id == $user->id;
     }
+    
+    */
 
    /**
     * Get tags assosicated with the given advert

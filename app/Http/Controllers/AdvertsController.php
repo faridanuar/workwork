@@ -77,14 +77,11 @@ class AdvertsController extends Controller
 		});
 
 		$user = $request->user();
-
-		$status = $advert->published;
 		
 		if(Auth::guest() || $user->type === "job_seeker")
 		{
-			if($status != 1)
+			if($advert->published != 1)
 			{
-				flash('wut just happened?','info');
 				return redirect('/');
 			}
 		}
@@ -357,9 +354,21 @@ class AdvertsController extends Controller
 		$advert = Advert::locatedAt($id, $job_title)->firstOrFail();
 
 		//perform this if user does not own this advert
+		/*
 		if(!$advert->ownedBy($user))
 		{
 			return $this->unauthorized($request);
+		}
+		*/
+
+		if($advert->employer->user->id != $user->id)
+		{
+			if($request->ajax())
+			{
+				return response(['message' => 'No!'], 403);
+			}
+			flash('not the owner','error');
+			return redirect('/');
 		}
 
 		$skills = $advert->skills->implode('skill',',');
@@ -929,7 +938,7 @@ class AdvertsController extends Controller
 	 * Perform this process if user is not authorized
 	 *
 	 * @param $request
-	 */
+	
 	protected function unauthorized(Request $request)
 	{
 		if($request->ajax())
@@ -941,4 +950,5 @@ class AdvertsController extends Controller
 
 		return redirect('/');
 	}
+	*/
 }
