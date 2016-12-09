@@ -5,7 +5,7 @@
 @include('profiles.company.requests_category')
 <div class="row">
 	<div class="col-md-12">
-		<div>Job Seekers:</div>
+		<div>New Job Seekers:</div>
 
 		{{--
 		@if (count($errors) > 0)

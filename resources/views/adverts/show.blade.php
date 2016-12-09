@@ -26,14 +26,14 @@
                 <div class="media">
                     <div class="media-left">
                         <a href="#">
-                            <img src="{{ $advert->avatar }}" class="media-object avatar-tn img-circle" height="30" width="30" />
+                            <img src="{{ $advert->employer->user->avatar }}" class="media-object avatar-tn img-circle" height="30" width="30" />
                         </a>
                     </div>
                     <div class="media-body">
                         <h4 class="media-heading">
                         <div class="business-name">
                             <small>Posted by:</small>
-                            <a href="/company/{{ $advert->employer_id }}/{{ $advert->business_name }}">{{ $advert->business_name }}</a>
+                            <a href="/company/{{ $advert->employer_id }}/{{ $advert->business_name }}">{{ $advert->employer->business_name }}</a>
                         </div>
                         </h4>
                     </div>
@@ -92,7 +92,7 @@
 
                 <div class="business-name visible-xs-block">
                     <hr>
-                    <a href="/company/{{ $advert->employer_id }}/{{ $advert->business_name }}">{{ $advert->business_name }}</a>
+                    <a href="/company/{{ $advert->employer_id }}/{{ $advert->employer->business_name }}">{{ $advert->employer->business_name }}</a>
                 </div>
                 <!-- <div class="location">{{ $advert->location }}</div> -->
                 <div class="address visible-xs-block">
@@ -152,7 +152,7 @@
                 <hr>
                 <div>
                     <h3>Company</h3>
-                    <a href="/company/{{ $advert->employer_id }}/{{ $advert->business_name }}">{{ $advert->business_name }}</a>
+                    <a href="/company/{{ $advert->employer_id }}/{{ $advert->employer->business_name }}">{{ $advert->employer->business_name }}</a>
                 </div>
                 <div class="address">
                     <div class="street">{{ $advert->street }}</div>

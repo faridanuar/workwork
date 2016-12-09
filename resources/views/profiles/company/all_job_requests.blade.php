@@ -4,7 +4,7 @@
 
 @include('profiles.company.requests_category')
 
-<div>Job Seekers:</div>
+<div>All Job Seekers:</div>
 
 @forelse($allInfos as $allInfo)
 	<a href="/advert/{{ $allInfo->advert_id }}/job/requests/{{ $allInfo->id }}">
@@ -30,7 +30,7 @@
 	</a>
 @empty
 	<p>Looks like there's no job applications yet.</p>
-@endforelse</p>
+@endforelse
 @if($currentPlan != "Trial")
 	{!! $allInfos->render() !!}
 @else

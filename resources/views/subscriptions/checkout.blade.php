@@ -34,6 +34,8 @@
 @stop
 
 @section('js_plugins')
+  <!-- Braintree plugins -->
+  <script type="text/javascript" src="https://js.braintreegateway.com/js/braintree-2.29.0.min.js"></script>
   <script>
   $(document).ready(function(){
 

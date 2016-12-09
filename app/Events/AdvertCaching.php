@@ -6,22 +6,22 @@ use App\Events\Event;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 
-use App\User;
+use App\Advert;
 
-class SomeEvent extends Event
+class AdvertCaching extends Event
 {
     use SerializesModels;
 
-    public $user;
+    public $advert;
 
     /**
      * Create a new event instance.
      *
      * @return void
      */
-    public function __construct(User $user)
+    public function __construct(Advert $advert)
     {
-        $this->user = $user;
+        $this->advert = $advert;
     }
 
     /**

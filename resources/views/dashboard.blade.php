@@ -57,6 +57,19 @@
                             </div>
                         @endif
                     @endforelse
+
+                    @forelse( $adverts as $advert )
+                        <div class="panel panel-default">
+                            <div class="panel-body">
+                                <span class="label label-info">INFO</span>
+                                    Your post for <b>{{ $advert->job_title }}</b> expires at {{ date_format($advert->plan_ends_at, "d/m/Y")}}
+                                    <a href="/choose/plan/{{ $advert->id }}">.
+                                     <b>Extends</b>
+                                    </a>
+                            </div>
+                        </div>
+                    @empty
+                    @endforelse
                 @endcan
 
                 @can('edit_info')

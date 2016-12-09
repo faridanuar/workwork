@@ -15,12 +15,13 @@ class EventServiceProvider extends ServiceProvider
     protected $listen = [
         'App\Events\SomeEvent' => [
             'App\Listeners\EventListener',
-        ]
-        /*
-        'App\Events\TestEvent' => [
-            'App\Listeners\TestEventListerner',
         ],
-        */
+        'App\Events\UserCaching' => [
+            'App\Listeners\ForgetUser',
+        ],
+        'App\Events\AdvertCaching' => [
+            'App\Listeners\ForgetAdvert',
+        ]
     ];
 
     /**

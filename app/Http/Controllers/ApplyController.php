@@ -113,49 +113,78 @@ class ApplyController extends Controller
 			$employerName = $employer->user->name;
 			$applicantName = $user->name;
 
-		/*
-
 			if($application->employer->user->contact_verified != 0)
 		    {
-			    // Step 3: instantiate a new Twilio Rest Client
-			    $client = new Services_Twilio($AccountSid, $AuthToken);
+		    	$currentPlan = $advert->current_plan;
+		    	$proceed = "false";
 
-			    // Step 4: make an array of people we know, to send them a message. 
-			    // Feel free to change/add your own phone number and name here.
-			    $people = array(
-			    	//"+60176613069" => $user->name,
-			       	"+6".$contact => $employerName,
-			        //"+14158675310" => "Boots",
-			        //"+14158675311" => "Virgil",
-			    );
-			    
-			    // Step 5: Loop over all our friends. $number is a phone number above, and 
-			    // $name is the name next to it
-			    foreach ($people as $number => $name) {
+		    	switch ($currentPlan)
+		        {
+		            case "Free":
+		                if($advert->sms_count > 0)
+		                {
+		                	$proceed = "true";
+		                }
+		                break;
+		            case "Trial":
+		                if($advert->sms_count > 0)
+		                {
+		                	$proceed = "true";
+		                }    
+		                break;
+	                case "1_Month_Plan":
+	                	$proceed = "true";    
+		                break;
+	                case "2_Month_Plan":
+	                	$proceed = "true";    
+		                break;
+		            default: 
+		        }
 
-			        $sms = $client->account->messages->sendMessage(
+		    	if($proceed === "true")
+		    	{
+				    // Step 3: instantiate a new Twilio Rest Client
+				    $client = new Services_Twilio($AccountSid, $AuthToken);
 
-			        	// Step 6: Change the 'From' number below to be a valid Twilio number 
-			        	// that you've purchased, or the (deprecated) Sandbox number
-			            "+12602184571", 
+				    // Step 4: make an array of people we know, to send them a message. 
+				    // Feel free to change/add your own phone number and name here.
+				    $people = array(
+				    	//"+60176613069" => $user->name,
+				       	"+6".$contact => $employerName,
+				        //"+14158675310" => "Boots",
+				        //"+14158675311" => "Virgil",
+				    );
+				    
+				    // Step 5: Loop over all our friends. $number is a phone number above, and 
+				    // $name is the name next to it
+				    foreach ($people as $number => $name) {
 
-			            // the number we are sending to - Any phone number
-			            $number,
+				        $sms = $client->account->messages->sendMessage(
 
-			            // the sms body
-			            "You have a job request for advert: $job_title. Applicant's Name: $applicantName, full details here: $url ."
-			        );
-			        // Display a confirmation message on the screen
-			        //echo "Sent message to $name";
+				        	// Step 6: Change the 'From' number below to be a valid Twilio number 
+				        	// that you've purchased, or the (deprecated) Sandbox number
+				            "+12602184571", 
 
-			        if(!$sms)
-			        {
-			        	echo "Error";
-			        }
+				            // the number we are sending to - Any phone number
+				            $number,
+
+				            // the sms body
+				            "You have a job request for advert: $job_title. Applicant's Name: $applicantName, full details here: $url ."
+				        );
+				        // Display a confirmation message on the screen
+				        //echo "Sent message to $name";
+
+				        if(!$sms)
+				        {
+				        	echo "Error";
+				        }
+				    }
+
+				    $subtract = $advert->sms_count - 1;
+				    $advert->sms_count = $subtract;
+				    $advert->save();
 			    }
 			}
-
-		*/
 
 		    if($application->employer->user->verified != 0)
 		    {

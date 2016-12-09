@@ -1,3 +1,6 @@
+<!-- Bootstrap datetimepicker plugins -->
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.15.1/moment.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.43/js/bootstrap-datetimepicker.min.js"></script>
 <script type="text/javascript">
 var startDate = new Date('{{ $startDate }}');
 var endDate = new Date('{{ $endDate }}');

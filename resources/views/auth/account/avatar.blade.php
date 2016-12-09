@@ -1,4 +1,9 @@
 @extends('layouts.app')
+
+@section('js_stylesheets')
+	@include('js_plugins.js_stylesheets.dropzone_css')
+@stop
+
 @section('content')
 <div class="flash">
 	@include('messages.flash')
@@ -43,6 +48,7 @@
 	</div>
 </div>
 @stop
+
 @section('js_plugins')
 	@include('js_plugins.dropzone')
 @stop

@@ -12,7 +12,7 @@
 	<div class="panel-body">
 		<ul class="nav nav-pills">
 		  <li role="presentation"><a href="/advert/{{ $id }}/job/requests/all">All</a></li>
-		  <li role="presentation" class="active"><a href="/advert/{{ $id }}/job/requests/pending">New</a></li>
+		  <li role="presentation"><a href="/advert/{{ $id }}/job/requests/pending">New</a></li>
 		  <li role="presentation"><a href="/advert/{{ $id }}/job/requests/rejected">Rejected</a></li>
 		  <li role="presentation"><a href="/advert/{{ $id }}/job/requests/accepted">Accepted</a></li>
 		</ul>

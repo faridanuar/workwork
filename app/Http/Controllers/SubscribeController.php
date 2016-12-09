@@ -39,7 +39,7 @@ class SubscribeController extends Controller
 	public function choosePlan(Request $request, $id)
 	{
 		$user = $request->user();
-		$advert = Advert::find($id);
+		$advert = Advert::find($id)->firstOrFail();
 
 		//perform this if user does not own this advert
 		if(! $advert->ownedBy($user))
@@ -87,34 +87,53 @@ class SubscribeController extends Controller
 			return $this->unauthorized($request);
 		}
 
-		if($plan === "Trial")
+		if($plan != "1_Month_Plan" && $plan != "2_Month_Plan")
 		{
-			$trialUsed = $advert->trial_used;
-
 			switch ($plan)
 			{
-				case 0:
-					$days = 7;
-					$advert->plan_ends_at = Carbon::now()->addDays($days);
-					$advert->current_plan = "Trial";
-					$advert->trial_used = 1;
-					$saved = $advert->save();
-
-					if($user->ftu_level < 4)
+				case "Trial":
+					if($user->trial_used != 1)
 					{
-						$user->ftu_level = 3;
-						$user->save();
-					}elseif($advert->advert_level < 3){
-						$advert->advert_level = 2;
-						$advert->save();
+						$days = 14;
+						$advert->plan_ends_at = Carbon::now()->addDays($days);
+						$advert->current_plan = "Trial";
+						$advert->sms_count = 5;
+						$user->trial_used = 1;	
+					}else{
+						flash('Sorry, the trial plan is not valid anymore');
+						return redirect()->route('plan', [$id]);
 					}
 					break;
-
+				case "Free":
+					if($advert->free_plan_used != 1)
+					{
+						$days = 7;
+						$advert->plan_ends_at = Carbon::now()->addDays($days);
+						$advert->current_plan = "Free";
+						$advert->free_plan_used = 1;
+					}else{
+						flash('Sorry, the free plan is not valid anymore');
+						return redirect()->route('plan', [$id]);
+					}
+					break;
 				default:
-					flash('Sorry, the trial plan is not valid anymore');
-
-					return redirect()->route('plan', [$id]);
 			}
+
+			$saved = $advert->save();
+			$user->save();
+
+			if($saved)
+			{
+				if($user->ftu_level < 4)
+				{
+					$user->ftu_level = 3;
+					$user->save();
+				}elseif($advert->advert_level < 3){
+					$advert->advert_level = 2;
+					$advert->save();
+				}
+			}
+
 			return redirect()->route('show', [$id,$advert->job_title]);
 		}
 
@@ -124,8 +143,8 @@ class SubscribeController extends Controller
     	}
 
     	$token = Braintree_ClientToken::generate([
-		    		"customerId" => $customerID
-		    	]);
+		    "customerId" => $customerID
+		]);
     	
 
     	if($user->ftu_level < 4)
@@ -189,72 +208,69 @@ class SubscribeController extends Controller
 				]);
 			}
 
-			if(!$result->success)
+			if($result->success)
 			{ 
-				flash('Checkout was unsuccessful, please try again', 'error');
+				$user->braintree_id = $result->customer->id;
+				$user->save();
 
-				return redirect('/subscribe');
+				switch ($plan)
+				{
+					case "2_Month_Plan":
+						$price = 11.10;
+			        	$days = 60;
+						break;
+					case "1_Month_Plan":
+						$price = 6.57;
+			        	$days = 30;
+						break;
+					default:
+						$price = 0;
+			        	$days = 0;
+				}
 
-				/*
-			    foreach($result->errors->deepAll() AS $error){
+				// Charging the user ONE TIME with INVOICE provided
+				$charge = $user->invoiceFor($plan, $price);
 
-			        echo($error->code . ": " . $error->message . "\n");
-			    }
-			    */
+				if($charge->success)
+				{
+				    $advert->plan_ends_at = Carbon::now()->addDays($days);
+			        $saved = $advert->save();
+
+			        if($user->ftu_level === 2)
+					{
+						$user->ftu_level = 3;
+						$user->save();
+					}elseif($advert->advert_level < 3){
+						$advert->advert_level = 2;
+						$advert->save();
+					}
+
+					flash('You have successfully purchased a new plan. check back your advert details before publishing', 'info');
+
+		        	return redirect()->route('show', [$id,$advert->job_title]);
+			    }else{
+			    	flash('Checkout was unsuccessful, please check back your paymnent info and try again', 'error');
+
+					return redirect()->route('checkout', [$advert->id]);
+			    }				
 			}
 
-			$user->braintree_id = $result->customer->id;
-			$user->save();
+			flash('Checkout was unsuccessful, please try again', 'error');
+
+			return redirect()->route('checkout', [$advert->id]);
+
+			/*
+		    foreach($result->errors->deepAll() AS $error){
+
+		        echo($error->code . ": " . $error->message . "\n");
+		    }
+		    */
+
 		}else{
-			flash('No nonce', 'error');
+			flash('There is something wrong when processing your payment info. Please check your info again', 'error');
 
 			return redirect()->back();
 		}
-
-        switch ($plan)
-		{
-			case "Pioneer_Promo":
-				$price = 7.50;
-	        	$days = 30;
-				break;
-			case "1_Month_Plan":
-				$price = 7.50;
-	        	$days = 30;
-				break;
-			default:
-				$price = 0;
-	        	$days = 0;
-		}
-
-		// Charging the user ONE TIME with INVOICE provided
-		$charge = $user->invoiceFor($plan, $price);
-
-
-		if($charge->success){
-		    $advert->plan_ends_at = Carbon::now()->addDays($days);
-	        $saved = $advert->save();
-	    }
-
-
-        if($user->ftu_level === 2)
-		{
-			$user->ftu_level = 3;
-			$user->save();
-		}elseif($advert->advert_level < 3){
-			$advert->advert_level = 2;
-			$advert->save();
-		}
-
-        if($saved)
-        {
-        	flash('You have successfully purchased a new plan. check back your advert details before publishing', 'info');
-
-        	return redirect()->route('show', [$id,$advert->job_title]);
-        }else{
-        	flash('Checkout was unsuccessful, please check back your paymnent info and try again', 'error');
-
-			return redirect()->route('checkout', [$advert->id]);
-        }
 	}
 
 

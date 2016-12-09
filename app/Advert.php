@@ -18,8 +18,7 @@ class Advert extends Model
     protected $fillable = [
     	'job_title',
         'salary',
-        'description',
-        'business_name',            
+        'description',          
         'location',
         'street',
         'city',
@@ -30,7 +29,6 @@ class Advert extends Model
         'category',
         'rate',
         'oku_friendly',
-        'avatar',
         'schedule_type',
         'daily_start_date',
         'daily_end_date',

@@ -4,10 +4,11 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-use \Braintree_Customer;
-
 use Image;
+use Event;
+use Cache;
 use Services_Twilio;
+use \Braintree_Customer;
 
 use Carbon\Carbon;
 
@@ -84,6 +85,7 @@ class HomeController extends Controller
             $role = $user->employer;
             $applications = $role->applications->where('status', 'PENDING');
             $requestTotal = count($applications);
+            $adverts = $role->adverts->where('about_to_expire', 1);
 
             switch ($requestTotal)
             {
@@ -166,7 +168,7 @@ class HomeController extends Controller
         }
 
         // return user to home dashboard
-        return view('dashboard', compact('user','photo','informations','message','message1','text','text1','link','site'));
+        return view('dashboard', compact('user', 'photo', 'informations', 'message', 'message1', 'text', 'text1', 'link', 'site', 'adverts'));
     }
 
 
@@ -241,6 +243,9 @@ class HomeController extends Controller
             // determine which rows to fetch
             $adverts = Advert::where('employer_id', '=',$user->employer->id);
 
+            //MASS UPDATE existing advert's "avatar" column to database
+            //$adverts->update([ 'avatar' => $pathURL ]);
+
             // fetch the rows
             $rows = $adverts->get();
 
@@ -264,9 +269,6 @@ class HomeController extends Controller
                     'objectID' => $liveAd->id,
                 ]);
             }
-
-            //MASS UPDATE existing advert's "avatar" column to database
-            $adverts->update([ 'avatar' => $pathURL ]);
         }
 }
 
@@ -313,7 +315,7 @@ class HomeController extends Controller
                 $pathURL = "/images/defaults/default.jpg";
 
                 //MASS UPDATE existing advert's "avatar" column to database
-                $adverts->update([ 'avatar' => $pathURL ]);
+                //$adverts->update([ 'avatar' => $pathURL ]);
 
                 // fetch published adverts only
                 $liveAds = $adverts->where('published', 1)->get();

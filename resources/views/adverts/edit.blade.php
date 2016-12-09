@@ -1,4 +1,10 @@
 @extends('layouts.app')
+
+@section('js_stylesheets')
+	@include('js_plugins.js_stylesheets.datetime_css')
+	@include('js_plugins.js_stylesheets.tagging_css')
+@stop
+
 @section('content')
 <div class="ftu-panel panel-ww-600 panel panel-default center-block">
     <div class="panel-heading panel-heading-ww">Edit {{ $advert->job_title }}</div>
@@ -21,6 +27,7 @@
 	</div>
 </div>
 @stop
+
 @section('js_plugins')
 	@include('js_plugins.algolia_places')
 	@include('js_plugins.tagging')

@@ -21,16 +21,18 @@
         {!! csrf_field() !!}
 
         <div class="plan-choices row">
-            <div class="col-sm-6">
-
+           {{-- <!-- <div class="col-sm-6">
+            
                 <label>
                     <div class="panel panel-default">
                         <div class="panel-body">
-                            <input type="radio" name="plan" id="plan1" value="1_Month_Plan" autocomplete="off" checked>
-                                <span>@lang('forms.plan_30day_a')</span>
+                            <input type="radio" name="plan" id="plan0" value="2_Month_Plan" autocomplete="off" checked>
+                                <span>60 Days - RM 49</span>
                                 <hr>
                                 <ul>
                                     <li>@lang('forms.plan_30day_a_feature_1')</li>
+                                    <li>Unlimited SMS Notification</li>
+                                    <li>Unlimited Email Notification</li>
                                 </ul>
                             </input>
                         </div>
@@ -44,11 +46,53 @@
                 <label>
                     <div class="panel panel-default">
                         <div class="panel-body">
-                            <input type="radio" name="plan" id="plan0" value="Trial" autocomplete="off">
-                                <span>@lang('forms.plan_7day_a')</span>
+                            <input type="radio" name="plan" id="plan1" value="1_Month_Plan" autocomplete="off">
+                                <span>@lang('forms.plan_30day_a')</span>
+                                <hr>
+                                <ul>
+                                    <li>@lang('forms.plan_30day_a_feature_1')</li>
+                                    <li>Unlimited SMS Notification</li>
+                                    <li>Unlimited Email Notification</li>
+                                </ul>
+                            </input>
+                        </div>
+                    </div>
+                </label>
+
+            </div>
+            --> --}}
+
+            <div class="col-sm-6">
+
+                <label>
+                    <div class="panel panel-default">
+                        <div class="panel-body">
+                            <input type="radio" name="plan" id="plan2" value="Trial" autocomplete="off">
+                                <span>14 Days Trials - Free</span>
+                                <hr>
+                                <ul>
+                                    <li>View 10 Requests</li>
+                                    <li>5 SMS Notification</li>
+                                    <li>Unlimited Email Notification</li>
+                                </ul>
+                            </input>
+                        </div>
+                    </div>
+                </label>
+
+            </div>
+
+            <div class="col-sm-6">
+
+                <label>
+                    <div class="panel panel-default">
+                        <div class="panel-body">
+                            <input type="radio" name="plan" id="plan3" value="Free" autocomplete="off">
+                                <span>7 days - Free</span>
                                 <hr>
                                 <ul>
                                     <li>@lang('forms.plan_7day_a_feature_1')</li>
+                                    <li>Unlimited Email Notification</li>
                                 </ul>
                             </input>
                         </div>
