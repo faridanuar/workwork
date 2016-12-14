@@ -347,7 +347,6 @@ class AdvertsController extends Controller
 	 */
 	public function edit(Request $request, $id, $job_title)
 	{
-		//get log in user data
 		$user = $request->user();
 
 		// display only the first retrieved
@@ -429,6 +428,7 @@ class AdvertsController extends Controller
 	 */
 	public function update(AdvertRequest $request, Search $search, $id, $job_title)
 	{
+		$user = $request->user();
 		$advert = Advert::locatedAt($id, $job_title)->firstOrFail();
 		$saveLater = $request->saveLater;
 		$scheduleType = $request->scheduleType;
