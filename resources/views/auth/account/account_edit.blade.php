@@ -38,8 +38,8 @@
 		              	{{ $errors->first('contact') }}
 		            </div>
 	            @endif
-	            <input type="submit" class="btn btn-primary" id="submitBtn" name="submitBtn" value="Save & Update" />
-				<a href="/account" class="btn btn-link">CANCEL</a>
+	            <a href="/account" class="btn btn-link">Cancel</a>
+	            <input type="submit" class="btn btn-default btn-sm" id="submitBtn" name="submitBtn" value="Save & Update" />
 			</form>
 		</div>
 	</div>

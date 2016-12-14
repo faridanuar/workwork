@@ -40,15 +40,6 @@
 </div>
 
 <div class="form-group">
-	<label for="oku_friendly">Is this job also suitable for OKU citizen?:</label>
-	<select name="oku_friendly" id="oku_friendly" class="form-control">
-			<option value="{{ $advert->oku_friendly }}">{{ $advert->oku_friendly }}</option>
-			<option value="yes">Yes</option>
-			<option value="no">No</option>
-	</select>
-</div>
-
-<div class="form-group">
 	<label for="description">Job Description:</label>
 	<textarea type="text" name="description" id="description" class="form-control" rows="10">{{ $advert->description }}</textarea>
 </div>
@@ -203,10 +194,23 @@
 			<option value="{{ $code }}">{{ $name }}</option>
 		@endforeach
 	</select>
-</div>	
+</div>
 
 <div class="form-group">
-	<a href="/dashboard" class="btn btn-primary">Cancel</a>
-	<button type="submit" class="btn btn-primary" id="saveLater" name="saveLater" value=true>Save For Later</button>
-	<button type="submit" class="btn btn-primary">Update And Publish Advertisement</button>
+	<label for="oku_friendly">@lang('forms.ad_disabled_label')</label>
+	<p class="help-block">@lang('forms.ad_disabled_help')</p>
+	<label class="checkbox-inline">
+		<input type="checkbox" id="oku_friendly" name="oku_friendly" value="yes" 
+		@if($advert->oku_friendly === "yes")
+		 checked 
+		@endif > 
+		@lang('forms.ad_disabled_yes')
+	</label>
+</div>
+
+<hr>
+<div class="form-group">
+	<a href="/dashboard" class="btn btn-link">Cancel</a>
+	<button type="submit" class="btn btn-default" id="saveLater" name="saveLater" value=true>Save For Later</button>
+	<button type="submit" class="btn btn-default">Update And Publish Advertisement</button>
 </div>

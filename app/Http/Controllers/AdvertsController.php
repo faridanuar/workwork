@@ -232,9 +232,9 @@ class AdvertsController extends Controller
 		}
 
 		if($request->oku_friendly != null){
-			$oku_friendly = "Yes";
+			$oku_friendly = "yes";
 		}else{
-			$oku_friendly = "No";
+			$oku_friendly = "no";
 		}
 
 		$employer = $user->employer;
@@ -445,7 +445,6 @@ class AdvertsController extends Controller
 	            'country' => 'required',
 	            'category' => 'required',
 	            'rate' => 'required',
-	            'oku_friendly' => 'required',
 	    	]);
 
 	    	switch($scheduleType)
@@ -493,6 +492,12 @@ class AdvertsController extends Controller
 			}
 		}
 
+		if($request->oku_friendly != null){
+			$oku_friendly = "yes";
+		}else{
+			$oku_friendly = "no";
+		}
+
 		$advert->update([
 			'job_title' => $request->job_title,
 			'salary' => (float)$request->salary,
@@ -505,7 +510,7 @@ class AdvertsController extends Controller
 			'country' => $request->country,
 		    'category'  => $request->category,
 		    'rate'  => $request->rate,
-		    'oku_friendly'  => $request->oku_friendly,
+		    'oku_friendly'  => $oku_friendly,
 		    'schedule_type' => $request->scheduleType,
 		]);
 
