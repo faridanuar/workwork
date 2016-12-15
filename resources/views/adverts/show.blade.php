@@ -46,7 +46,6 @@
                 </div>
                 <div class="skill visible-xs-block">
                     <h3>Skills</h3>
-                    <!-- <span class="label label-default">{{ $advert->skill }}</span> -->
                     <div class="skill-description">
                         {{ $advert->skill }}
                     </div>

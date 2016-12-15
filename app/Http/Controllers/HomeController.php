@@ -86,6 +86,7 @@ class HomeController extends Controller
             $applications = $role->applications->where('status', 'PENDING');
             $requestTotal = count($applications);
             $adverts = $role->adverts->where('about_to_expire', 1);
+            $level3Adverts = $role->adverts->where('advert_level', 3);
 
             switch ($requestTotal)
             {
@@ -117,12 +118,20 @@ class HomeController extends Controller
                         $text1 = "Continue";
                         $link = '/choose/plan/'.$advertID;
                     }else{
-                        $message1 = "You have not yet finish filling up your advert form.";
+                        $message1 = "You have not yet complete filling up your advert form.";
                         $text1 = "Continue";
                         $link = '/adverts/'.$advertID.'/'.$advertJobTitle.'/edit';
                     }
                     break;
                 case 3:
+                    $advert = $role->adverts->first();
+                    $advertID = $advert->id;
+                    $advertJobTitle = $advert->job_title;
+                    $message1 = "You have not complete your checkout for your advert";
+                    $text1 = "Continue";
+                    $link = '/checkout/'.$advertID;
+                    break;
+                case 4:
                     $advert = $role->adverts->first();
                     $advertID = $advert->id;
                     $advertJobTitle = $advert->job_title;
@@ -168,7 +177,7 @@ class HomeController extends Controller
         }
 
         // return user to home dashboard
-        return view('dashboard', compact('user', 'photo', 'informations', 'message', 'message1', 'text', 'text1', 'link', 'site', 'adverts'));
+        return view('dashboard', compact('user', 'photo', 'informations', 'message', 'message1', 'text', 'text1', 'link', 'site', 'adverts', 'level3Adverts'));
     }
 
 
@@ -522,28 +531,4 @@ class HomeController extends Controller
 
         abort(403, 'Unauthorized action.');
     }
-    
-
-
-    /**
-    public function time()
-    {
-        $todaysDate = Carbon::now();
-        $endDate = Carbon::createFromDate(2016, 9, 2);
-        $expDate =  $todaysDate->diffInDays($endDate, false);
-
-        if($expDate < 0){
-
-            echo "expiration has passed:";
-            echo " ";
-            echo $expDate;
-
-        }else{
-
-            echo "expiration has not passed:";
-            echo " ";
-            echo $expDate;
-        }
-    }
-    */
 }

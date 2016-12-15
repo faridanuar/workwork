@@ -40,7 +40,7 @@
                         <div class="panel panel-default">
                             <div class="panel-body">
                                 <span class="label label-info">INFO</span>
-                                You have a request from {{ $information->jobSeeker->user->name }} for a job as {{ $information->advert->job_title }}. 
+                                You have a request from {{ $information->jobSeeker->user->name }} for a job as "{{ $information->advert->job_title }}". 
                                 <a href="/advert/{{ $information->advert->id }}/job/requests/{{ $information->id }}">
                                     <b>{{ $text }}</b>
                                 </a>
@@ -58,12 +58,25 @@
                         @endif
                     @endforelse
 
+                    @forelse( $level3Adverts as $level3Advert )
+                        <div class="panel panel-default">
+                            <div class="panel-body">
+                                <span class="label label-warning">WARNING</span>
+                                You have not complete your checkout for your advert "{{ $level3Advert->job_title }}".
+                                <a href="/choose/plan/{{ $level3Advert->id }}">
+                                 <b>Continue</b>
+                                </a>
+                            </div>
+                        </div>
+                    @empty
+                    @endforelse
+
                     @forelse( $adverts as $advert )
                         @if(Carbon\Carbon::now()->diffInDays($advert->plan_ends_at, false) > 0)
                             <div class="panel panel-default">
                                 <div class="panel-body">
-                                    <span class="label label-info">INFO</span>
-                                    Your post for <b>{{ $advert->job_title }}</b> will expires in {{ Carbon\Carbon::now()->diffInDays($advert->plan_ends_at, false) }} days.
+                                    <span class="label label-warning">WARNING</span>
+                                    Your post for "{{ $advert->job_title }}" will expires in {{ Carbon\Carbon::now()->diffInDays($advert->plan_ends_at, false) }} days.
                                     <a href="/choose/plan/{{ $advert->id }}">
                                      <b>Extends</b>
                                     </a>
@@ -73,7 +86,7 @@
                             <div class="panel panel-default">
                                 <div class="panel-body">
                                     <span class="label label-info">INFO</span>
-                                    Your post for <b>{{ $advert->job_title }}</b> has expired.
+                                    Your post for "{{ $advert->job_title }}" has expired.
                                     <a href="/choose/plan/{{ $advert->id }}">
                                      <b>Extends</b>
                                     </a>
@@ -89,7 +102,7 @@
                         <div class="panel panel-default">
                             <div class="panel-body">
                                 <span class="label label-info">INFO</span>
-                                {{ $message }} {{ $information->advert->job_title }}.
+                                {{ $message }} "{{ $information->advert->job_title }}".
                                 <a href="/my/applications/{{ $information->id }}"><b>View<b></a>
                             </div>
                         </div>

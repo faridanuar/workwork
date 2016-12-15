@@ -69,6 +69,17 @@ class SubscribeController extends Controller
 	{
 		$advert = Advert::find($id);
 		$advert->current_plan = $request->plan;
+		$user = $request->user();
+		
+		if($user->ftu_level < 4)
+		{
+			$user->ftu_level = 3;
+			$user->save();
+		}elseif($advert->advert_level < 3){
+			$advert->advert_level = 2;
+			$advert->save();
+		}
+
 		$advert->save();
 
 		return redirect()->route('checkout', [$advert->id]);
@@ -78,7 +89,7 @@ class SubscribeController extends Controller
 
 	public function checkout(Request $request, $id)
 	{
-		$advert = Advert::find($id);
+		$advert = Advert::findOrFail($id);
 		$plan = $advert->current_plan;
 		$user = $request->user();
 		$customerID = "";
@@ -103,16 +114,29 @@ class SubscribeController extends Controller
 
 		if($plan != "1_Month_Plan" && $plan != "2_Month_Plan")
 		{
+
 			switch ($plan)
 			{
 				case "Trial":
 					if($user->trial_used != 1)
 					{
 						$days = 14;
-						$advert->plan_ends_at = Carbon::now()->addDays($days);
 						$advert->current_plan = "Trial";
 						$advert->sms_count = 5;
-						$user->trial_used = 1;	
+
+						$user->trial_used = 1;
+						$advert->about_to_expire = 0;
+						
+						$todaysDate = Carbon::now();
+				        $endDate = $advert->plan_ends_at;
+				        $expDate = $todaysDate->diffInDays($endDate, false);
+
+				        if($expDate < 0){
+				            $advert->plan_ends_at = Carbon::now()->addDays($days);
+				        }else{
+				        	$advert->plan_ends_at = $endDate->addDays($days);
+				        }
+
 					}else{
 						flash('Sorry, the trial plan is not valid anymore');
 						return redirect()->route('plan', [$id]);
@@ -122,9 +146,21 @@ class SubscribeController extends Controller
 					if($advert->free_plan_used != 1)
 					{
 						$days = 7;
-						$advert->plan_ends_at = Carbon::now()->addDays($days);
 						$advert->current_plan = "Free";
+						
 						$advert->free_plan_used = 1;
+						$advert->about_to_expire = 0;
+
+						$todaysDate = Carbon::now();
+				        $endDate = $advert->plan_ends_at;
+				        $expDate = $todaysDate->diffInDays($endDate, false);
+
+				        if($expDate < 0){
+				            $advert->plan_ends_at = Carbon::now()->addDays($days);
+				        }else{
+				        	$advert->plan_ends_at = $endDate->addDays($days);
+				        }
+
 					}else{
 						flash('Sorry, the free plan is not valid anymore');
 						return redirect()->route('plan', [$id]);
@@ -133,19 +169,16 @@ class SubscribeController extends Controller
 				default:
 			}
 
-			$saved = $advert->save();
+			$advert->save();
 			$user->save();
 
-			if($saved)
+			if($user->ftu_level < 5)
 			{
-				if($user->ftu_level < 4)
-				{
-					$user->ftu_level = 3;
-					$user->save();
-				}elseif($advert->advert_level < 3){
-					$advert->advert_level = 2;
-					$advert->save();
-				}
+				$user->ftu_level = 4;
+				$user->save();
+			}elseif($advert->advert_level < 4){
+				$advert->advert_level = 3;
+				$advert->save();
 			}
 
 			return redirect()->route('show', [$id,$advert->job_title]);
@@ -247,15 +280,26 @@ class SubscribeController extends Controller
 
 				if($charge->success)
 				{
-				    $advert->plan_ends_at = Carbon::now()->addDays($days);
-			        $saved = $advert->save();
+					$todaysDate = Carbon::now();
+			        $endDate = $advert->plan_ends_at;
+			        $expDate = $todaysDate->diffInDays($endDate, false);
 
-			        if($user->ftu_level === 2)
+			        if($expDate < 0){
+			            $advert->plan_ends_at = Carbon::now()->addDays($days);
+			        }else{
+			        	$advert->plan_ends_at = $endDate->addDays($days);
+			        }
+
+			        $advert->about_to_expire = 0;
+
+			        $advert->save();
+
+			        if($user->ftu_level < 5)
 					{
-						$user->ftu_level = 3;
+						$user->ftu_level = 4;
 						$user->save();
-					}elseif($advert->advert_level < 3){
-						$advert->advert_level = 2;
+					}elseif($advert->advert_level < 4){
+						$advert->advert_level = 3;
 						$advert->save();
 					}
 

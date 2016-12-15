@@ -22,13 +22,9 @@
 
     <title>WorkWork - portal pencarian kerja part-time</title>
 
-    <!-- plugins -->
-    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
-
     <!-- Styles -->
     <link rel="stylesheet" href="{{ elixir('css/app.css') }}" media="screen" charset="utf-8">
     <link rel="shortcut icon" href="/images/favicon.png" type="image/png">
-
     <!-- Algolia Stylesheet -->
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/instantsearch.js/1/instantsearch.min.css">
 
@@ -51,9 +47,8 @@
         <!-- @include('footer') -->
     </div>
 
-    <script src="{{ elixir('js/app.js') }}"></script>
-
     @include('scripts')
+    <script src="{{ elixir('js/app.js') }}"></script>
     @include('js_plugins.algolia_global')
     @yield('js_plugins')
 </body>

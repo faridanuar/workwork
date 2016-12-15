@@ -9,26 +9,25 @@
 		@forelse($myAdverts as $myAdvert)
 			<div class="panel panel-default">
 				<div class="panel-body">
+					@if($myAdvert->plan_ends_at != null)
+	                    <a href="/choose/plan/{{ $myAdvert->id }}" class="btn btn-default btn-xs">Extend Post</a>
+	                @endif
 					@if($myAdvert->published != 0)
 						<h5><span class="label label-success label">PUBLISHED</span></h5>
 					@else
 						<h5><span class="label label-warning">UNPUBLISHED</span></h5>
 					@endif
 					<a href="/adverts/{{ $myAdvert->id }}/{{ strtolower($myAdvert->job_title) }}">
-					<h4>{{ $myAdvert->job_title }}</h4>
+						<h4>{{ $myAdvert->job_title }}</h4>
 					</a>
-					@can('view_request')
-						<a href="/adverts/{{ $myAdvert->id }}/{{ strtolower($myAdvert->job_title) }}/edit" class="btn btn-default">
-						Edit</a>
-						<a href="/adverts/{{ $myAdvert->id }}/{{ strtolower($myAdvert->job_title) }}" class="btn btn-default">
-						Preview</a>
-			            <a href="/advert/{{ $myAdvert->id }}/job/requests/pending" class="btn btn-default">View Job Requests</a>
-			            @if(count($myAdvert->applications->where('responded', 0)) > 0)
-		            		<span class="label label-default">
-		            			{{ count($myAdvert->applications->where('responded', 0)) }} NEW REQUEST!
-		            		</span>
-			            @endif
-			        @endcan
+					<a href="/adverts/{{ $myAdvert->id }}/{{ strtolower($myAdvert->job_title) }}/edit" class="btn btn-default">Edit</a>
+					<a href="/adverts/{{ $myAdvert->id }}/{{ strtolower($myAdvert->job_title) }}" class="btn btn-default">Preview</a>
+		            <a href="/advert/{{ $myAdvert->id }}/job/requests/pending" class="btn btn-default">View Job Requests </a>
+		            @if(count($myAdvert->applications->where('responded', 0)) > 0)
+	            		<span class="badge">
+	            			{{ count($myAdvert->applications->where('responded', 0)) }} New!
+	            		</span>
+		            @endif
 				</div>
 			</div>
 			{!! $myAdverts->render() !!}

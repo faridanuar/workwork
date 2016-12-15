@@ -43,7 +43,7 @@ class SessionsController extends Controller
             return redirect()->intended('/dashboard');
         }
 
-        flash('The credentials did not match our records. Is your email verified?','error');
+        flash('The credentials did not match our records. Is this email registered & verified?','error');
 
         return redirect()->back();
     }

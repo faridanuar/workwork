@@ -313,7 +313,7 @@ class AdvertsController extends Controller
 			case "true":
 				$advert->ready_to_publish = 0;
 				$advert->save();
-				if($user->ftu_level < 4)
+				if($user->ftu_level < 5)
 				{
 					$user->ftu_level = 2;
 					$user->save();
@@ -325,11 +325,11 @@ class AdvertsController extends Controller
 			default:
 				$advert->ready_to_publish = 1;
 				$advert->save();
-				if($user->ftu_level < 4)
+				if($user->ftu_level < 5)
 				{
 					$user->ftu_level = 2;
 					$user->save();
-				}elseif($advert->advert_level < 3){
+				}elseif($advert->advert_level < 4){
 					$advert->advert_level = 1;
 					$advert->save();
 				}
@@ -698,6 +698,7 @@ class AdvertsController extends Controller
 		}
 
 		$advert->published = 1;
+		$advert->advert_level = 4;
 		$advert->save();
 		$businessName = $user->employer->business_name;
 
@@ -736,6 +737,12 @@ class AdvertsController extends Controller
 
 		if($object)
 		{
+			if($user->ftu_level < 5)
+			{
+				$user->ftu_level = 5;
+				$user->save();
+			}
+			
 			Event::fire(new AdvertCaching($advert));
 
 			flash('Your advert has been successfully published.', 'success');
@@ -791,7 +798,7 @@ class AdvertsController extends Controller
         }
 
 		$advert->published = 1;
-		$advert->advert_level = 3;
+		$advert->advert_level = 4;
 		$advert->save();
 
 		if($advert)
@@ -872,7 +879,7 @@ class AdvertsController extends Controller
 			if($object)
 			{
 				$user = $request->user();
-				$user->ftu_level = 4;
+				$user->ftu_level = 5;
 				$user->save();
 
 				// set flash attribute and key. example --> flash('success message', 'flash_message_level')
