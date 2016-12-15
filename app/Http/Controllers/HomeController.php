@@ -69,7 +69,7 @@ class HomeController extends Controller
         }
 
         // check if user already have an avatar
-        if($avatar != "" || $avatar != null)
+        if($avatar != "" && $avatar != null && $avatar != "/images/defaults/default.jpg")
         {
             // user's avatar photo
             $photo = $avatar;
@@ -183,7 +183,7 @@ class HomeController extends Controller
 
         $avatar = $user->avatar;
 
-        if($avatar != "" || $avatar != null){
+        if($avatar != "" && $avatar != null && $avatar != "/images/defaults/default.jpg"){
 
             $fileExist = true;
 

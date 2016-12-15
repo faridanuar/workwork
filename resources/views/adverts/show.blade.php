@@ -33,7 +33,7 @@
                         <h4 class="media-heading">
                         <div class="business-name">
                             <small>Posted by:</small>
-                            <a href="/company/{{ $advert->employer_id }}/{{ $advert->business_name }}">{{ $advert->employer->business_name }}</a>
+                            <a href="/company/{{ $advert->employer_id }}/{{ $advert->employer->business_name }}">{{ $advert->employer->business_name }}</a>
                         </div>
                         </h4>
                     </div>
@@ -74,11 +74,12 @@
                         <div>{{ $advert->specificSchedule->start_date }} - {{ $advert->specificSchedule->end_date }}</div>
                         <div>{{ $advert->specificSchedule->start_time }} - {{ $advert->specificSchedule->end_time }}</div>
                     @elseif($advert->schedule_type === 'daily')
-                        <div>Daily</div>
+                        <div><u>Daily</u></div>
                         @foreach($advert->dailySchedule as $day)
                             <div>{{ $day->day }} : {{ $day->pivot->start_time }} - {{ $day->pivot->end_time }}</div>
                         @endforeach
-                        <h4>Duration</h4>
+                        <p />
+                        <div><u>Duration</u></div>
                         <div>Start: {{ $advert->daily_start_date }} - End: {{ $advert->daily_end_date }}</div>
                     @else
                         <div>No Schedule</div>

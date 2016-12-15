@@ -39,9 +39,9 @@
 					<input type="hidden" name="_method" value="DELETE">
 
 					@if($fileExist === true)
-						<button type="submit" class="btn btn-primary">Remove</button>
+						<button type="submit" class="btn btn-default">Remove</button>
 					@endif
-						<a href="/dashboard" class="btn btn-primary">Done</a>
+						<a href="/dashboard" class="btn btn-link">Done</a>
 				</form>
 			</div>
 		</div>

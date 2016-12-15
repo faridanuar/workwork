@@ -98,7 +98,7 @@
 
 
 <div class="form-group">
-	<div>Schedule</div>
+	<span>Schedule:</span>
 </div>
 
 <div class="form-group">
@@ -112,57 +112,82 @@
 </div>
 
 <div class="form-group">
-	<label class="radio-inline">
-		<input type="radio" aria-label="..." name="scheduleType" id="scheduleType1" value="specific" 
-			@if(old('scheduleType') === 'specific')
-				checked
-			@endif
-		/> Specific
-	</label>
-	<div>
-		<label for="specific">Start Date</label>
-			<input type='text' class="form-control" name="startDate" id='datetimepicker1' value="{{ old('startDate') }}" />
-		<label for="specific">End Date</label>
-			<input type='text' class="form-control" name="endDate" id='datetimepicker2' value="{{ old('endDate') }}" />
+	<div class="form-group">
+		<label class="radio-inline">
+			<input type="radio" aria-label="..." name="scheduleType" id="scheduleType1" value="specific" 
+				@if(old('scheduleType') === 'specific')
+					checked
+				@endif
+			/> Specific
+		</label>
+	</div>
+	<div class="input-group">
+		<input type='text' class="form-control" name="startDate" id='datetimepicker1' value="{{ old('startDate') }}" placeholder="Starting Date" />
 
-		<label for="specific">Start At</label>
-			<input type='text' class="form-control" name="startTime" id='datetimepicker3' value="{{ old('startTime') }}" />
-		<label for="specific">Ends At</label>
-			<input type='text' class="form-control" name="endTime" id='datetimepicker4' value="{{ old('endTime') }}" />
+		<span class="input-group-addon">-</span>
+
+		<input type='text' class="form-control" name="endDate" id='datetimepicker2' value="{{ old('endDate') }}" placeholder="Ending Date" />
+	</div>
+	<div class="input-group">
+		<input type='text' class="form-control" name="startTime" id='datetimepicker3' value="{{ old('startTime') }}" placeholder="Starts At" />
+
+		<span class="input-group-addon">-</span>
+
+		<input type='text' class="form-control" name="endTime" id='datetimepicker4' value="{{ old('endTime') }}" placeholder="Ends At" />
 	</div>
 </div>
 
 <div class="form-group">
-	<label class="radio-inline">
-		<input type="radio" aria-label="..." name="scheduleType" id="scheduleType2" value="daily"
-			@if(old('scheduleType') === 'daily')
-				checked
-			@endif
-		/> Daily
-	</label>
+	<div class="form-group">
+		<label class="radio-inline">
+			<input type="radio" aria-label="..." name="scheduleType" id="scheduleType2" value="daily"
+				@if(old('scheduleType') === 'daily')
+					checked
+				@endif
+			/> Daily
+		</label>
+	</div>
 	@for($i = 1; $i <= 7; $i++)
-		<div>
+		<div class="form-group">
 			<input type="checkbox" name="day[{{ $i }}]" id="day{{ $i }}" value="{{ $dayName->find($i)->day }}" 
 				@if(old('day.'.$i) === $dayName->find($i)->day)
 					checked
 				@endif
 			/> {{ $dayName->find($i)->day }}
-				<div for="specific">Start At</div>
-					<input type='text' class="form-control" name="startDayTime[{{ $i }}]" id="datetimepicker{{ $i+10 }}" 
-					value="{{ old('startDayTime.'.$i) }}" />
-				<div for="specific">Ends At</div>
-					<input type='text' class="form-control" name="endDayTime[{{ $i }}]" id="datetimepicker{{ $i+20}}" 
-					value="{{ old('endDayTime.'.$i) }}" />
+				<div class="input-group">
+					<input type='text' class="form-control col-sm-6" name="startDayTime[{{ $i }}]" id="datetimepicker{{ $i+10 }}" 
+					value="{{ old('startDayTime.'.$i) }}" placeholder="Starts At" />
+
+					<span class="input-group-addon">-</span>
+
+					<input type='text' class="form-control col-sm-6" name="endDayTime[{{ $i }}]" id="datetimepicker{{ $i+20}}" 
+					value="{{ old('endDayTime.'.$i) }}" placeholder="Ends At" />
+				</div>
 		</div>
 	@endfor
+	<div class="form-group">
+		<span>Duration for Daily Schedule:</span>
+		<div class="input-group">
+				<input type='text' 
+						class="form-control" 
+						name="dailyStartDate" 
+						id='datetimepicker5' 
+						value="{{ old('dailyStartDate') }}" 
+						placeholder="Starting Date" />
+
+			<span class="input-group-addon">-</span>
+
+				<input type='text' 
+						class="form-control" 
+						name="dailyEndDate" 
+						id='datetimepicker6' 
+						value="{{ old('dailyEndDate') }}" 
+						placeholder="Ending Date" />
+		</div>
+	</div>
 </div>
 
-<div class="form-group">
-	<label for="specific">Daily Start Date</label>
-		<input type='text' class="form-control" name="dailyStartDate" id='datetimepicker5' value="{{ old('dailyStartDate') }}" />
-	<label for="specific">Daily End Date</label>
-		<input type='text' class="form-control" name="dailyEndDate" id='datetimepicker6' value="{{ old('dailyEndDate') }}" />
-</div>
+
 
 <div class="form-group">
 	<label for="description">@lang('forms.ad_job_description_label')</label>

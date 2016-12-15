@@ -11,7 +11,7 @@
 			<hr>
 
 			<div>
-				This Email has already been verified
+				This Email has been verified
 			</div>
 
 			<a href="/login">Continue to log in</a>

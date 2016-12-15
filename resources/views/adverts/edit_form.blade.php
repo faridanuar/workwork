@@ -40,11 +40,6 @@
 </div>
 
 <div class="form-group">
-	<label for="description">Job Description:</label>
-	<textarea type="text" name="description" id="description" class="form-control" rows="10">{{ $advert->description }}</textarea>
-</div>
-
-<div class="form-group">
 	<label for="location">Location of employment: (example Bangsar Shopping Center, KLCC Convention Center)</label>
 	<input 
 		type="search"
@@ -104,7 +99,10 @@
 <hr>
 
 <div class="form-group">
-	<div>Schedule</div>
+	<span>Schedule:</span>
+</div>
+
+<div class="form-group">
 	<label class="radio-inline">
 		<input type="radio" aria-label="..." name="scheduleType" id="scheduleType0" value="none"
 			@if($scheduleType === 'none' || $scheduleType === "") 
@@ -115,33 +113,40 @@
 </div>
 
 <div class="form-group">
-	<label class="radio-inline">
-		<input type="radio" aria-label="..." name="scheduleType" id="scheduleType1" value="specific" 
-			@if($scheduleType === 'specific') 
-				checked 
-			@endif
-		/> Specific
-	</label>
-	<div>
-		<label for="specific">Start Date</label>
-			<input type='text' class="form-control" name="startDate" id='datetimepicker1' value="{{ $startDate }}" />
-		<label for="specific">End Date</label>
-			<input type='text' class="form-control" name="endDate" id='datetimepicker2' value="{{ $endDate }}" />
-		<label for="specific">Start Time</label>
-			<input type='text' class="form-control" name="startTime" id='datetimepicker3' value="{{ $startTime }}" />
-		<label for="specific">End Time</label>
-			<input type='text' class="form-control" name="endTime" id='datetimepicker4' value="{{ $endTime }}" />
+	<div class="form-group">
+		<label class="radio-inline">
+			<input type="radio" aria-label="..." name="scheduleType" id="scheduleType1" value="specific" 
+				@if($scheduleType === 'specific') 
+					checked 
+				@endif
+			/> Specific
+		</label>
+	</div>
+	<div class="input-group">
+		<input type='text' class="form-control" name="startDate" id='datetimepicker1' value="{{ $startDate }}" placeholder="Starting Date" />
+		<span class="input-group-addon">-</span>
+		<input type='text' class="form-control" name="endDate" id='datetimepicker2' value="{{ $endDate }}" placeholder="Ending Date" />
+	</div>
+	<div class="input-group">
+		<input type='text' class="form-control" name="startTime" id='datetimepicker3' value="{{ $startTime }}" placeholder="Starts At" />
+		<span class="input-group-addon">-</span>
+		<input type='text' class="form-control" name="endTime" id='datetimepicker4' value="{{ $endTime }}" placeholder="Ends At" />
 	</div>
 </div>
 
 <div class="form-group">
-	<label class="radio-inline"><input type="radio" aria-label="..." name="scheduleType" id="scheduleType2" value="daily" 
-		@if($scheduleType === 'daily') 
-			checked 
-		@endif
-	/> Daily</label>
+	<div class="form-group">
+		<label class="radio-inline">
+			<input type="radio" aria-label="..." name="scheduleType" id="scheduleType2" value="daily" 
+				@if($scheduleType === 'daily') 
+					checked 
+				@endif
+			/> Daily
+		</label>
+	</div>
+	
 	@for($i = 1; $i <= 7; $i++)
-		<div>
+		<div class="form-group">
 			<input type="checkbox" name="day[{{ $i }}]" id="day{{ $i }}" value="{{ $dayName->find($i)->day }}" 
 			@if($days != null)
 				@if($days->find($i)) 
@@ -149,34 +154,55 @@
 				@endif
 			@endif 
 			/> {{ $dayName->find($i)->day }}
-				<div for="specific">Start At</div>
-					<input type='text' class="form-control" name="startDayTime[{{ $i }}]" id="datetimepicker{{ $i+10 }}"
-						@if($days != null)
-							@if($days->find($i)) 
-								value="{{ $days->find($i)->pivot->start_time }}"
-							@endif
+
+			<div class="input-group">
+				<input type='text' class="form-control" name="startDayTime[{{ $i }}]" id="datetimepicker{{ $i+10 }}" placeholder="Starts At" 
+					@if($days != null)
+						@if($days->find($i)) 
+							value="{{ $days->find($i)->pivot->start_time }}"
 						@endif
-					/>
-				<div for="specific">Ends At</div>
-					<input type='text' class="form-control" name="endDayTime[{{ $i }}]" id="datetimepicker{{ $i+20}}"
-						@if($days != null)
-							@if($days->find($i)) 
-								value="{{ $days->find($i)->pivot->end_time }}"
-							@endif 
-						@endif
-					/>
+					@endif
+				/>
+
+				<span class="input-group-addon">-</span>
+
+				<input type='text' class="form-control" name="endDayTime[{{ $i }}]" id="datetimepicker{{ $i+20}}" placeholder="Ends At" 
+					@if($days != null)
+						@if($days->find($i)) 
+							value="{{ $days->find($i)->pivot->end_time }}"
+						@endif 
+					@endif
+				/>
+			</div>
 		</div>
 	@endfor
+	
+	<div class="form-group">
+		<span>Duration for Daily Schedule:</span>
+		<div class="input-group">
+			<input type='text' 
+					class="form-control" 
+					name="dailyStartDate" 
+					id='datetimepicker5' 
+					value="{{ $dailyStart }}" 
+					placeholder="Starting Date" />
+
+			<span class="input-group-addon">-</span>
+
+			<input type='text' 
+					class="form-control" 
+					name="dailyEndDate" 
+					id='datetimepicker6' 
+					value="{{ $dailyEnd }}" 
+					placeholder="Ending Date" />
+		</div>
+	</div>
 </div>
 
 <div class="form-group">
-	<label for="specific">Date Start</label>
-		<input type='text' class="form-control" name="dailyStartDate" id='datetimepicker5' value="{{ $dailyStart }}" />
-	<label for="specific">Date Ends</label>
-		<input type='text' class="form-control" name="dailyEndDate" id='datetimepicker6' value="{{ $dailyEnd }}" />
+	<label for="description">Job Description:</label>
+	<textarea type="text" name="description" id="description" class="form-control" rows="10">{{ $advert->description }}</textarea>
 </div>
-
-<hr>
 
 <div class="form-group">
 	<label for="skill">Type of skill required:</label>
@@ -210,7 +236,7 @@
 
 <hr>
 <div class="form-group">
-	<a href="/dashboard" class="btn btn-link">Cancel</a>
 	<button type="submit" class="btn btn-default" id="saveLater" name="saveLater" value=true>Save For Later</button>
 	<button type="submit" class="btn btn-default">Update And Publish Advertisement</button>
+	<a href="/dashboard" class="btn btn-link">Cancel</a>
 </div>

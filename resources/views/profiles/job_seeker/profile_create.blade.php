@@ -1,30 +1,33 @@
 @extends('layouts.app')
 
 @section('content')
-
 <div class="flash">
 	@include('messages.flash')
 </div>
 
-@include('messages.ftu_level')
+<div>
+	@include('messages.ftu_level')
+</div>
 
-<h1>Create Your Profile</h1>
-
-<hr>
-
-<form method="post" action="/profile/store" enctype="multipart/form-data" class="col-md-6" id="myForm">
-	@if (count($errors) > 0)
-	<div class="alert alert-danger">
-		<ul>
-			@foreach ($errors->all() as $error)
-			<li>{{ $error }}</li>
-			@endforeach
-		</ul>
+<div class="ftu-panel panel-ww-600 panel panel-default center-block">
+    <div class="panel-heading panel-heading-ww">Create Your Profile</div>
+		<div class="panel-body">
+			<form method="post" action="/profile/store" enctype="multipart/form-data" id="myForm">
+				@if (count($errors) > 0)
+				<div class="alert alert-danger">
+					<ul>
+						@foreach ($errors->all() as $error)
+						<li>{{ $error }}</li>
+						@endforeach
+					</ul>
+				</div>
+				@endif
+				
+				@include('profiles.job_seeker.profile_form_create')
+			</form>
+		</div>
 	</div>
-	@endif
-	
-	@include('profiles.job_seeker.profile_form_create')
-</form>
+</div>
 @stop
 
 @section('js_plugins')

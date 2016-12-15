@@ -40,7 +40,9 @@ class CompanyProfileController extends Controller
 
         $user = $request->user();
 
-        if($company->business_logo != "" OR $company->business_logo != null)
+        $logo = $company->business_logo;
+
+        if($logo != "" && $logo != null && $logo != "/images/defaults/default.jpg")
         {
             $photo = $company->business_logo;
 
@@ -123,15 +125,12 @@ class CompanyProfileController extends Controller
     {
         $user = $request->user();
 
-        if($user->contact != $request->contact)
-        {
-            $user->contact_verified = 0;
-        }
+        $employer = $user->employer;
 
         // get new company name
         $newCompanyName = $request->business_name;
         // get current company name
-        $currentCompanyName = $user->employer->business_name;
+        $currentCompanyName = $employer->business_name;
 
         // continue if new name is not the same as old name
         if($newCompanyName != $currentCompanyName)
@@ -165,18 +164,6 @@ class CompanyProfileController extends Controller
             }
         }
 
-        // update user info
-        $user->update([
-            //update user info
-            'name' => $request->name,
-            'contact' => $request->contact,
-        ]);
-
-        // save user's info
-        $user->save();
-
-        $employer = $user->employer()->first();
-
         $employer->update([
 
                 'business_name' => $request->business_name,
@@ -207,7 +194,8 @@ class CompanyProfileController extends Controller
         $logo = $employer->business_logo;
 
         //check if photo path exist
-        if($logo != "" || $logo != null){
+        if($logo != "" && $logo != null && $logo != "/images/defaults/default.jpg")
+        {
 
             $fileExist = true;
             $photo = $logo;
@@ -262,7 +250,8 @@ class CompanyProfileController extends Controller
             return $this->unauthorized($request);
         }
 
-        if($logo != "" || $logo != null){
+        if($logo != "" && $logo != null && $logo != "/images/defaults/default.jpg")
+        {
 
             $exist = true;
 

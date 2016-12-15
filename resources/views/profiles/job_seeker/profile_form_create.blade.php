@@ -60,5 +60,5 @@
 <hr>
 
 <div class="form-group">
-	<button type="submit" class="btn btn-primary" id="submitBtn" onclick="restrict()">Save Profile</button>
+	<button type="submit" class="btn btn-default" id="submitBtn" onclick="restrict()">Save Profile</button>
 </div>

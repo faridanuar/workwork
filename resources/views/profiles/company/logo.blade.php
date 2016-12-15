@@ -41,7 +41,7 @@
 					@if($fileExist === true)
 						<button type="submit" class="btn btn-primary">Remove</button>
 					@endif
-						<a href="/company/{{ $employer->id }}/{{ $employer->business_name }}" class="btn btn-primary">Done</a>
+						<a href="/company/{{ $employer->id }}/{{ $employer->business_name }}" class="btn btn-link">Done</a>
 				</form>
 			</div>
 		</div>

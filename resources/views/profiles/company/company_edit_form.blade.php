@@ -1,18 +1,6 @@
 {{ csrf_field() }}
 
 <div class="form-group">
-	<label for="business_name">Name:</label>
-	<input type="text" name="name" id="name" class="form-control" value="{{ $user->name }}" required>
-</div>
-
-<div class="form-group">
-	<label for="contact">Contact:</label>
-	<input type="text" name="contact" id="contact" class="form-control" value="{{ $user->contact }}" required>
-</div>
-
-<hr>
-
-<div class="form-group">
 	<label for="business_name">Business Name:</label>
 	<input type="text" name="business_name" id="business_name" class="form-control" value="{{ $employer->business_name }}" required>
 </div>
@@ -70,5 +58,5 @@
 </div>
 
 <div class="form-group">
-	<button type="submit" class="btn btn-primary">Save Profile</button>
+	<button type="submit" class="btn btn-default">Save Profile</button>
 </div> 
