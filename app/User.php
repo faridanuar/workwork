@@ -69,4 +69,16 @@ class User extends Authenticatable
 
         return $this->id == $userID;
     }
+
+    public function currentAvatar()
+    {
+        if($this->avatar != null || $this->avatar != "" || $this->avatar != "/images/defaults/default.jpg")
+        {
+            $givenAvatar = $this->avatar;
+        }else{
+            $givenAvatar = "/images/defaults/default.jpg";
+        }
+
+        return $givenAvatar;
+    }
 }

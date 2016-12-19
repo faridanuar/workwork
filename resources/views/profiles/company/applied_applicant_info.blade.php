@@ -203,3 +203,20 @@
 	</div>
 </div>
 @stop
+
+@section('js_plugins')
+	<script type="text/javascript">
+	$(document).ready(function(){
+	    $.ajax({
+	      type: "POST",
+	      url: "/viewed/applicant",
+	      context: document.body,
+	      data: {
+	      		'status': '{{ $application->status }}',
+	            'applicationID': '{{ $application->id }}',
+	            '_token': '{!! csrf_token() !!}'
+	            }
+	    });
+	});
+	</script>
+@stop

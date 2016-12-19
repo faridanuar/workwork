@@ -21,6 +21,9 @@ class EventServiceProvider extends ServiceProvider
         ],
         'App\Events\AdvertCaching' => [
             'App\Listeners\ForgetAdvert',
+        ],
+        'App\Events\PostingAdvert' => [
+            'App\Listeners\PublishAdvert',
         ]
     ];
 

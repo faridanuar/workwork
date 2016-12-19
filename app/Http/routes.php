@@ -26,7 +26,7 @@ Route::get('/avatar', 'HomeController@avatar');
 
 Route::post('/avatar/upload', 'HomeController@uploadAvatar');
 
-Route::delete('/avatar/{avatar_id}/', 'HomeController@remove');
+Route::delete('/avatar/remove', 'HomeController@remove');
 
 // contact verification page
 Route::get('/contact/verification', 'HomeController@contact');
@@ -128,6 +128,10 @@ Route::post('/advert/job/requests/{id}/response', 'CompanyProfileController@resp
 
 Route::post('/profile/{id}/rate', 'CompanyProfileController@rate');
 
+// ajax post url (Employer side)
+Route::post('/viewed/applicant', 'CompanyProfileController@setAsReceived');
+
+
 /**
  * Job Seeker Profile routes
  */
@@ -159,9 +163,9 @@ Route::get('/preferred-category', 'JobSeekerProfileController@preferCategory');
 
 Route::post('/selected-category', 'JobSeekerProfileController@getCategory');
 
-// ajax post url
-Route::post('/category-viewed', 'JobSeekerProfileController@setAsViewed');
+// ajax post url (Job Seeker side)
 Route::post('/viewed', 'JobSeekerProfileController@requestViewed');
+Route::post('/viewed/category', 'JobSeekerProfileController@setAsViewed');
 
 /**
  * Adverts routes

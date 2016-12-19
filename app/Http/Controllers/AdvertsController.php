@@ -224,13 +224,6 @@ class AdvertsController extends Controller
 
 		$user = $request->user();
 
-		if($user->avatar != null || $user->avatar != "")
-		{
-			$avatar = $user->avatar;
-		}else{
-			$avatar = "/images/defaults/default.jpg";
-		}
-
 		if($request->oku_friendly != null){
 			$oku_friendly = "yes";
 		}else{

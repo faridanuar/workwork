@@ -155,7 +155,8 @@ class SubscribeController extends Controller
 				        $endDate = $advert->plan_ends_at;
 				        $expDate = $todaysDate->diffInDays($endDate, false);
 
-				        if($expDate < 0){
+				        if($expDate <= 0)
+				        {
 				            $advert->plan_ends_at = Carbon::now()->addDays($days);
 				        }else{
 				        	$advert->plan_ends_at = $endDate->addDays($days);

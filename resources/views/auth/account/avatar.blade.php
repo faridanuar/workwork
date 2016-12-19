@@ -33,7 +33,7 @@
 			<p></p>
 
 			<div class="form-group">
-				<form method="post" action="/avatar/{{ $user->id }}">
+				<form method="post" action="/avatar/remove">
 					{!! csrf_field() !!}
 
 					<input type="hidden" name="_method" value="DELETE">

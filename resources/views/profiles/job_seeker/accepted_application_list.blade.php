@@ -38,7 +38,7 @@
 	$(document).ready(function(){
 	    $.ajax({
 	      type: "POST",
-	      url: "/category-viewed",
+	      url: "/viewed/category",
 	      context: document.body,
 	      data: {
 	            'viewed': 'accepted',

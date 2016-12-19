@@ -44,42 +44,16 @@ class HomeController extends Controller
         $ftu_level = $user->ftu_level;
 
         // get user's type of role
-        $haveType = $user->type;
+        $userType = $user->type;
 
         // get user's avatar
         $avatar = $user->avatar;
 
-        // check if user has a role type, if not it redirect the user
-        if(!$haveType || (!$user->employer && !$user->jobSeeker))
-        {
-            // check which type does the user have
-            if($haveType  === "employer")
-            {
-                // redirect to create company profile page
-                return redirect('/company/create');
+        // check if user's avatar exist & get the provided avatar
+        $photo = $user->currentAvatar();
 
-            }elseif($haveType === "job_seeker"){
-
-                // redirect to create profile page
-                return redirect('/profile/create');
-            }else{
-                // redirect to choose type page
-                return redirect('/choose');
-            }
-        }
-
-        // check if user already have an avatar
-        if($avatar != "" && $avatar != null && $avatar != "/images/defaults/default.jpg")
-        {
-            // user's avatar photo
-            $photo = $avatar;
-        }else{
-            // default avatar photo
-            $photo = "/images/defaults/default.jpg";
-        }
-
-        // check if user profile record exist
-        if($user->employer)
+        // check user's acc type
+        if($user->type === "employer")
         {
             // get user's profile related info
             $role = $user->employer;
@@ -145,7 +119,8 @@ class HomeController extends Controller
                     $link = "";
             }
 
-        }elseif($user->jobSeeker){
+        }elseif($user->type === "job_seeker"){
+
             // get user's profile related info
             $role = $user->jobSeeker;
             $responses = $role->applications->where('responded', 1)->where('viewed', 0);
@@ -187,31 +162,22 @@ class HomeController extends Controller
      */
     public function avatar(Request $request)
     {
-        // store user info in variable
         $user = $request->user();
+        $photo = $user->currentAvatar();
 
-        $avatar = $user->avatar;
-
-        if($avatar != "" && $avatar != null && $avatar != "/images/defaults/default.jpg"){
-
+        if($photo != "/images/defaults/default.jpg")
+        {
             $fileExist = true;
-
-            $photo = $avatar;
-
         }else{
-
             $fileExist = false;
-
-            $photo = "/images/defaults/default.jpg";
         }
 
-        // display the upload page
         return view('auth.account.avatar', compact('user','photo','fileExist'));
     }
 
 
     /**
-     * Store the uploaded image.
+     * Store the uploaded avatar image.
      *
      */
     protected function uploadAvatar(Request $request, Search $search)
@@ -282,86 +248,52 @@ class HomeController extends Controller
 }
 
 
-
-    public function remove(Request $request, $avatar_id, Search $search)
+    /**
+     * remove the uploaded avatar image.
+     *
+     */
+    public function remove(Request $request, Search $search)
     {
-        // fetch user's info
         $user = $request->user();
+        $user->avatar = "/images/defaults/default.jpg";
+        $user->save();
 
-        // find photo's row data using the "avatar_id"
-        $thisPhoto = User::findOrFail($avatar_id);
-
-        //check IF job advert is own by user
-        if(!$thisPhoto->avatarBy($user))
+        // run process IF user is an employer
+        if($user->type === "employer")
         {
-            return $this->unauthorized($request);
-        }
+            // determine which rows to fetch
+            $adverts = Advert::where('employer_id', '=',$user->employer->id);
 
-        // check IF avatar path url exist
-        if($thisPhoto->avatar){
+            // provide path URl for Database
+            $pathURL = "/images/defaults/default.jpg";
 
-            $exist = true;
+            // fetch published adverts only
+            $liveAdverts = $adverts->where('published', 1)->get();
 
-        }else{
+            //fetch data from config.php
+            $config = config('services.algolia');
 
-            $exist = false;
-        }
+            // provide index
+            $index = $config['index'];
 
-        // run process IF photo path url exist/is true
-        if($exist === true){
+            // select algolia index/indice name
+            $indexFromAlgolia = $search->index($index);
 
-            //UPDATE user "avatar" column to null then SAVE changes to database
-            $user->avatar = null;
-            $user->save();
-
-            // run process IF user is an employer
-            if($user->employer)
+            // loop algolia object update for each row
+            foreach($liveAdverts as $liveAdvert)
             {
-                // determine which rows to fetch
-                $adverts = Advert::where('employer_id', '=',$user->employer->id);
-
-                // provide path URl for Database
-                $pathURL = "/images/defaults/default.jpg";
-
-                //MASS UPDATE existing advert's "avatar" column to database
-                //$adverts->update([ 'avatar' => $pathURL ]);
-                $user->avatar = $pathURL;
-                $user->save();
-
-                // fetch published adverts only
-                $liveAds = $adverts->where('published', 1)->get();
-
-                //fetch data from config.php
-                $config = config('services.algolia');
-
-                // provide index
-                $index = $config['index'];
-
-                // select algolia index/indice name
-                $indexFromAlgolia = $search->index($index);
-
-                // loop algolia object update for each row
-                foreach($liveAds as $liveAd)
-                {
-                    // update algolia existing object. Determine which by row id
-                    $object = $indexFromAlgolia->partialUpdateObject([
-                        'avatar' => $pathURL,
-                        'objectID' => $liveAd->id,
-                    ]);
-                }
+                // update algolia existing object. Determine which by row id
+                $object = $indexFromAlgolia->partialUpdateObject([
+                    'avatar' => $pathURL,
+                    'objectID' => $liveAdvert->id,
+                ]);
             }
-
-            // flash message
-            flash('Your photo has been successfully removed', 'success');
-
-            return redirect()->back();
-
-        }else{
-
-            flash('Error, please try again', 'error');
-
-            return redirect()->back();
         }
+
+        // flash message
+        flash('Your photo has been successfully removed', 'success');
+
+        return redirect()->back();
     }
 
 

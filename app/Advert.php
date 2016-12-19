@@ -4,6 +4,8 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
+use App\Employer;
+
 class Advert extends Model
 {
 
@@ -77,9 +79,7 @@ class Advert extends Model
 
     public function ownedBy(User $user)
     {
-        $user = $user;
-
-        return $this->employer->user->id == $user->id;
+        return $this->employer_id == $user->employer->id;
     }
     
     */

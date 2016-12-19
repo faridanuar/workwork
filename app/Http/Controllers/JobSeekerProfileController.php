@@ -215,7 +215,7 @@ class JobSeekerProfileController extends Controller
     {
         $jobSeeker = $request->user()->jobSeeker;
         
-        $requestInfos = $jobSeeker->applications()->where('job_seeker_id', $jobSeeker->id)->paginate(5);
+        $requestInfos = $jobSeeker->applications()->where('job_seeker_id', $jobSeeker->id)->orderBy('created_at', 'desc')->orderBy('responded', 'asc')->paginate(5);
 
         return view('profiles.job_seeker.all_applications', compact('jobSeeker','requestInfos'));
     }

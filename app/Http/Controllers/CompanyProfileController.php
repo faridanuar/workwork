@@ -631,6 +631,21 @@ class CompanyProfileController extends Controller
         return view('profiles.company.applied_applicant_info', compact('id','photo','jobSeeker','rated','average','ratings','application'));
     }
 
+
+
+    public function setAsReceived(Request $request)
+    {
+        $status = $request->status;
+        $applicationID = $request->applicationID;
+
+        if($status === 'PENDING')
+        {
+            $application = Application::findOrFail($applicationID);
+            $application->status = "RECEIVED";
+            $application->save();
+        }
+    }
+
     /**
      * Check if user is authorized
      *
