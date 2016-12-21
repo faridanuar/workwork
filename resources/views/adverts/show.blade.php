@@ -79,7 +79,7 @@
                         @endforeach
                         <p />
                         <div><u>Duration</u></div>
-                        <div>Start: {{ $advert->daily_start_date }} - End: {{ $advert->daily_end_date }}</div>
+                        <div>Starts: {{ $advert->daily_start_date }} - Ends: {{ $advert->daily_end_date }}</div>
                     @else
                         <div>No Schedule</div>
                     @endif

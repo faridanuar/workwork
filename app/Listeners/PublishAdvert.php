@@ -6,8 +6,6 @@ use App\Events\PostingAdvert;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
-use App\Contracts\Search;
-
 class PublishAdvert
 {
     /**
@@ -17,7 +15,7 @@ class PublishAdvert
      */
     public function __construct()
     {
-        //
+
     }
 
     /**
@@ -26,9 +24,13 @@ class PublishAdvert
      * @param  PostingAdvert  $event
      * @return void
      */
-    public function handle(PostingAdvert $event, Search $search)
+    public function handle(PostingAdvert $event)
     {
-        $advert = $event;
+        $advert = $event->advert;
+
+        $avatar = $advert->employer->user->avatar;
+        $businessName = $advert->employer->business_name;
+
         $scheduleType = $advert->schedule_type;
         $startDate = null;
         $endDate = null;
@@ -36,15 +38,7 @@ class PublishAdvert
         $endTime = null;
         $days = null;
         $dailyStart = null;
-        $dailyEnd = null; 
-        $scheduleType = $advert->scheduleType;
-        $businessName = $advert->employer->business_name;
-        $avatar = $advert->employer->user->avatar;
-        
-        $config = config('services.algolia');
-        $index = $config['index'];
-        $indexFromAlgolia = $search->index($index);
-        $objectID = $advert->id;
+        $dailyEnd = null;
 
         switch($scheduleType)
         {
@@ -57,7 +51,6 @@ class PublishAdvert
                     $endTime = $advert->specificSchedule->end_date;
                 }
                 break;
-
             case 'daily':
                 if($advert->dailySchedule)
                 {
@@ -66,6 +59,10 @@ class PublishAdvert
                 break;
             default:
         }
+
+        $config = config('services.algolia');
+        $index = $config['index'];
+        $indexFromAlgolia = $event->search->index($index);
 
         $indexFromAlgolia->saveObject([
             'id' => $advert->id,
@@ -92,7 +89,7 @@ class PublishAdvert
             'end_date' => $endDate,
             'start_time' => $startTime,
             'end_time' => $endTime,
-            'daily_schedule' => $days,
+            'selected_days' => $days,
             'daily_start_date' => $dailyStart,
             'daily_end_date' => $dailyEnd,
             'skills' => $advert->skills,

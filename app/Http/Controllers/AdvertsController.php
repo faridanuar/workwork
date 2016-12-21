@@ -8,6 +8,8 @@ use Illuminate\Support\Facades\Auth;
 use Event;
 use Cache;
 
+use Carbon\Carbon;
+
 use App\User;
 use App\Advert;
 use App\Skill;
@@ -15,14 +17,14 @@ use App\Employer;
 use App\SpecificSchedule;
 use App\DailySchedule;
 
+use App\Events\PostingAdvert;
 use App\Events\AdvertCaching;
 
-use App\Contracts\Search;
-
 use App\Http\Requests;
+
 use App\Http\Requests\AdvertRequest;
 
-use Carbon\Carbon;
+use App\Contracts\Search;
 
 
 
@@ -38,9 +40,9 @@ class AdvertsController extends Controller
 
 
 
-	/**
-	 * Index - list of adverts
-	 */
+   /**
+	* Index - list of adverts
+	*/
 	public function index(Request $request)
 	{
 		$categories = false;
@@ -60,7 +62,7 @@ class AdvertsController extends Controller
 
 
 
-	/**
+   /**
 	*show existing data in storage
 	*
 	*calling locatedAt function from Advert MODEL
@@ -127,9 +129,11 @@ class AdvertsController extends Controller
 
 
 
-	/**
-	 * Create a new advert
-	 */
+   /**
+	* Create a new advert page
+	*
+	*
+	*/
 	public function create(Request $request)
 	{
 		$user = $request->user();
@@ -153,15 +157,16 @@ class AdvertsController extends Controller
 	}
 
 
-
+   /**
+	* Create a new advert
+	*
+	*
+	*/ 
 	public function store(AdvertRequest $request)
 	{
 		$saveLater = $request->saveLater;
 		$scheduleType = $request->scheduleType;
 		$days = $request->day;
-		$starts = $request->startDayTime;
-		$ends = $request->endDayTime;
-		//dd($days,$start,$end);
 
 		if($saveLater != "true")
 		{
@@ -230,11 +235,10 @@ class AdvertsController extends Controller
 			$oku_friendly = "no";
 		}
 
-		$employer = $user->employer;
 		// what do we need to do? if the request validates, the body below of this method will be hit
 		// validate the form - DONE		
 		// persist the advert - DONE
-		$advert = $employer->adverts()->create([
+		$advert = $user->employer()->adverts()->create([
 	        'job_title' => $request->job_title,
 	        'salary'  => (float)$request->salary,
 	        'description'  => $request->description,
@@ -261,8 +265,10 @@ class AdvertsController extends Controller
 					'end_time' => $request->endTime,
 				]);
 				break;
-
 			case "daily":
+				$starts = $request->startDayTime;
+				$ends = $request->endDayTime;
+
 				foreach($days as $key => $dayName)
 				{
 					$dayName = DailySchedule::find($key);
@@ -277,7 +283,6 @@ class AdvertsController extends Controller
 				]);
 				$advert->save();
 				break;
-
 			default:
 		}
 
@@ -305,27 +310,34 @@ class AdvertsController extends Controller
 		{
 			case "true":
 				$advert->ready_to_publish = 0;
-				$advert->save();
+				
 				if($user->ftu_level < 5)
 				{
 					$user->ftu_level = 2;
-					$user->save();
 				}
+
+				$advert->save();
+				$user->save();
+
 				flash('Your advert has been successfully saved but not yet published', 'info');
+
 				return redirect('/adverts');
 				break;
 
 			default:
 				$advert->ready_to_publish = 1;
-				$advert->save();
+
 				if($user->ftu_level < 5)
 				{
 					$user->ftu_level = 2;
-					$user->save();
+
 				}elseif($advert->advert_level < 4){
+
 					$advert->advert_level = 1;
-					$advert->save();
 				}
+
+				$user->save();
+				$advert->save();
 		}
 
 		return redirect()->route('plan', [$advert->id]);
@@ -333,11 +345,11 @@ class AdvertsController extends Controller
 
 
 
-	/**
-	 * Edit created resource in storage
-	 *
-	 * @param $request, $id, $job_title
-	 */
+   /**
+    * Edit created resource in storage
+    *
+    * @param $request, $id, $job_title
+    */
 	public function edit(Request $request, $id, $job_title)
 	{
 		$user = $request->user();
@@ -398,38 +410,27 @@ class AdvertsController extends Controller
 		}
 		
 		// display "edit" page
-		return view('adverts.edit', compact(
-									'advert',
-									'skills',
-									'scheduleType',
-									'dayName',
-									'startDate',
-									'endDate',
-									'startTime',
-									'endTime',
-									'days',
-									'dailyStart',
-									'dailyEnd'));
+		return view('adverts.edit', compact('advert', 'skills', 'scheduleType', 'dayName', 'startDate', 'endDate', 'startTime', 'endTime', 'days', 'dailyStart', 'dailyEnd'));
 	}
 
 
 
-	/**
-	 * Update existing advert
-	 *
-	 * @param $request, $id, $job_title
-	 */
+   /**
+    * Update existing advert
+    *
+    * @param $request, $id, $job_title
+    */
 	public function update(AdvertRequest $request, Search $search, $id, $job_title)
 	{
 		$user = $request->user();
 		$advert = Advert::locatedAt($id, $job_title)->firstOrFail();
 		$saveLater = $request->saveLater;
+
 		$scheduleType = $request->scheduleType;
 		$days = $request->day;
-		$starts = $request->startDayTime;
-		$ends = $request->endDayTime;
 
-		if($saveLater != true){
+		if($saveLater != true)
+		{
 			$this->validate($request, [
 		        'job_title' => 'required|max:50',
 		        'salary' => 'required|integer',
@@ -451,7 +452,8 @@ class AdvertsController extends Controller
 			    	]);
 			    	break;
 			    case "daily":
-				    if($days != ""){
+				    if($days != "")
+				    {
 				    	// $key => $value 
 				    	// IS SAME AS 
 				    	// [0] => $value OR 0 => 1
@@ -539,7 +541,6 @@ class AdvertsController extends Controller
 					]);
 				}
 				break;
-
 			case "daily":
 				if($advert->specificSchedule)
 				{
@@ -556,6 +557,9 @@ class AdvertsController extends Controller
 					$advert->save();
 				}
 
+				$starts = $request->startDayTime;
+				$ends = $request->endDayTime;
+
 				foreach($days as $key => $dayName)
 				{
 					$dayName = DailySchedule::find($key);
@@ -570,7 +574,6 @@ class AdvertsController extends Controller
 				]);
 				$advert->save();
 				break;
-
 			default:
 				if($advert->specificSchedule)
 				{
@@ -588,14 +591,15 @@ class AdvertsController extends Controller
 		}
 		$advert->save();
 
-		$arrayOfSkills = explode(",",$request->skills);
-
 		if($advert->skills)
 		{
 			$advert->skills()->detach();
 		}
 
-		foreach($arrayOfSkills as $skill){
+		$arrayOfSkills = explode(",",$request->skills);
+
+		foreach($arrayOfSkills as $skill)
+		{
 			// convert string into lower case only
 			$skill = strtolower($skill);
 
@@ -628,12 +632,13 @@ class AdvertsController extends Controller
 				if($object)
 				{
 					flash('Changes made from your advert has been successfully saved but not yet published', 'info');
+
 					return redirect('/adverts');
 				}else{
 					flash('Woops, looks like somethings went wrong. Please try again', 'error');
+					
 					return redirect()->back();
 				}
-				
 				break;
 			default:
 				$advert->ready_to_publish = 1;
@@ -643,8 +648,8 @@ class AdvertsController extends Controller
 		        $planEndDate = $advert->plan_ends_at;
 		        $daysLeft =  $todaysDate->diffInDays($planEndDate, false);
 
-		        if($planEndDate === null){
-
+		        if($planEndDate === null)
+		        {
 		        	flash('You need to purchase a plan to published your job advert', 'info');
 
 		            return redirect()->route('plan', [$advert->id]);
@@ -654,109 +659,37 @@ class AdvertsController extends Controller
 		            flash('your package has been expired, please purchase a new plan', 'info');
 
 		            return redirect()->route('plan', [$advert->id]);
+
+		        }else{
+
+		        	$advert->published = 1;
+					$advert->advert_level = 4;
+					$advert->save();
+
+					Event::fire(new PostingAdvert($advert, $search));
+
+					if($user->ftu_level < 5)
+					{
+						$user->ftu_level = 5;
+						$user->save();
+					}
+					
+					Event::fire(new AdvertCaching($advert));
+
+					flash('Your advert has been successfully published.', 'success');
+
+					return redirect()->route('show', [$id,$advert->job_title]);
 		        }
-		}
-
-		$schedule = $advert->specificSchedule;
-		$startDate = null;
-		$endDate = null;
-		$startTime = null;
-		$endTime = null;
-		$days = null;
-		$dailyStart = null;
-		$dailyEnd = null; 
-
-
-		switch($scheduleType)
-		{
-			case 'specific':
-				if($advert->specificSchedule)
-				{
-					$startDate = $advert->specificSchedule->start_date;
-					$endDate = $advert->specificSchedule->end_date;
-					$startTime = $advert->specificSchedule->start_time;
-					$endTime = $advert->specificSchedule->end_date;
-				}
-				break;
-
-			case 'daily':
-				if($advert->dailySchedule)
-				{
-					$days = $advert->dailySchedule;
-					$dailyStart = $advert->daily_start_date;
-					$dailyEnd = $advert->daily_end_date; 
-				}
-				break;
-			default:
-		}
-
-		$advert->published = 1;
-		$advert->advert_level = 4;
-		$advert->save();
-		$businessName = $user->employer->business_name;
-
-		$object = $indexFromAlgolia->saveObject([
-	    	'id' => $advert->id,
-	        'job_title' => $advert->job_title,
-	        'salary' => (float)$advert->salary,
-	        'description' => $advert->description,
-	        'business_name' => $businessName,
-	        'location' => $advert->location,
-	        'street' => $advert->street,
-	        'city' => $advert->city,
-	        'zip' => $advert->zip,
-	        'state' => $advert->state,
-	        'country' => $advert->country,
-	        'created_at' => $advert->created_at->toDateTimeString(),
-	        'updated_at' => $advert->updated_at->toDateTimeString(),
-	        'employer_id' => $advert->employer_id,
-	        'category' => $advert->category,
-	        'rate' => $advert->rate,
-	        'oku_friendly' => $advert->oku_friendly,
-	        'published' => $advert->published,
-	        'avatar' => $user->avatar,
-	        'schedule_type' => $advert->schedule_type,
-	        'start_date' => $startDate,
-			'end_date' => $endDate,
-			'start_time' => $startTime,
-			'end_time' => $endTime,
-			'daily_schedule' => $days,
-			'daily_start_date' => $dailyStart,
-			'daily_end_date' => $dailyEnd,
-			'skills' => $arrayOfSkills,
-			'group' => 'All',
-			'objectID' => $advert->id,
-		]);
-
-		if($object)
-		{
-			if($user->ftu_level < 5)
-			{
-				$user->ftu_level = 5;
-				$user->save();
-			}
-			
-			Event::fire(new AdvertCaching($advert));
-
-			flash('Your advert has been successfully published.', 'success');
-
-			return redirect()->route('show', [$id,$advert->job_title]);
-
-		}else{
-
-			flash('There was something wrong when publishing your advert. Please try again.', 'error');
-
-			return redirect()->back();
 		}
 	}
 
 
 
-	/**
-	 * Store a newly created resource in storage
-	 *
-	 * @param AdvertRequest $request
-	 */
+   /**
+    * Store a newly created resource in storage
+    *
+    * @param AdvertRequest $request
+    */
 	public function publish(Request $request, Search $search)
 	{
 		$user = $request->user();
@@ -898,7 +831,11 @@ class AdvertsController extends Controller
 	}
 
 
-
+   /**
+	* Unpublish advert
+	*
+	*
+	*/
 	public function unpublish(Request $request, Search $search)
 	{
 		$advert = Advert::find($request->id);
@@ -939,11 +876,11 @@ class AdvertsController extends Controller
 
 
 
-	/**
-	 * Perform this process if user is not authorized
-	 *
-	 * @param $request
-	
+   /**
+	* Perform this process if user is not authorized
+	*
+	* @param $request
+
 	protected function unauthorized(Request $request)
 	{
 		if($request->ajax())
