@@ -238,7 +238,7 @@ class AdvertsController extends Controller
 		// what do we need to do? if the request validates, the body below of this method will be hit
 		// validate the form - DONE		
 		// persist the advert - DONE
-		$advert = $user->employer()->adverts()->create([
+		$advert = $user->employer->adverts()->create([
 	        'job_title' => $request->job_title,
 	        'salary'  => (float)$request->salary,
 	        'description'  => $request->description,

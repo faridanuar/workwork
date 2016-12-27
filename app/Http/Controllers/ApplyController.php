@@ -188,39 +188,42 @@ class ApplyController extends Controller
 
 		    if($application->employer->user->verified != 0)
 		    {
-		    	$emailView = 'mail.job_request';
+		    	if($application->employer->user->email)
+		    	{
+			    	$emailView = 'mail.job_request';
 
-		    	$data = [
-		    				'websiteURL' => $websiteURL, 
-		    				'user' => $user, 
-		    				'thisJobSeeker' => $thisJobSeeker, 
-		    				'application' => $application, 
-		    				'advert' => $advert
-		    			];
+			    	$data = [
+			    				'websiteURL' => $websiteURL, 
+			    				'user' => $user, 
+			    				'thisJobSeeker' => $thisJobSeeker, 
+			    				'application' => $application, 
+			    				'advert' => $advert
+			    			];
 
-            	// set the required variables
-            	$config = config('services.mailgun');
-	            $domain = $config['sender'];
+	            	// set the required variables
+	            	$config = config('services.mailgun');
+		            $domain = $config['sender'];
 
-	            // testing email => $recipient = "farid@pocketpixel.com";
-	            $recipient = $application->employer->user->email;
-	            $recipientName = $application->employer->user->name;
+		            // testing email => $recipient = "farid@pocketpixel.com";
+		            $recipient = $application->employer->user->email;
+		            $recipientName = $application->employer->user->name;
 
-		    	$parameter = [
-		    					'domain' => $domain, 
-		    					'recipient' => $recipient,
-		    					'recipientName' => $recipientName, 
-		    				];
+			    	$parameter = [
+			    					'domain' => $domain, 
+			    					'recipient' => $recipient,
+			    					'recipientName' => $recipientName, 
+			    				];
 
-				// use send method from Mail facade to send email. ex: send('view', 'info / array of data', fucntion)
-	            Mail::send($emailView, $data, function ($message) use ($parameter) {
+					// use send method from Mail facade to send email. ex: send('view', 'info / array of data', fucntion)
+		            Mail::send($emailView, $data, function ($message) use ($parameter) {
 
-		            // provide sender domain and sender name
-	                $message->from($parameter['domain'], 'WorkWork');
+			            // provide sender domain and sender name
+		                $message->from($parameter['domain'], 'WorkWork');
 
-	                // provide recipient email, name and email subject
-	                $message->to($parameter['recipient'], $parameter['recipientName'])->subject('Job Request!');
-	            });
+		                // provide recipient email, name and email subject
+		                $message->to($parameter['recipient'], $parameter['recipientName'])->subject('Job Request!');
+		            });
+		        }
 	        }
 
 			// set flash attribute and key. example --> flash('success message', 'flash_message_level')
