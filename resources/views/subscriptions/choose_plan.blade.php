@@ -21,7 +21,7 @@
         {!! csrf_field() !!}
 
         <div class="plan-choices row">
-            <div class="col-sm-6">
+        {{-- <!--    <div class="col-sm-6">
             
                 <label>
                     <div class="panel panel-default">
@@ -59,7 +59,7 @@
                     </div>
                 </label>
 
-            </div>
+            </div> --> --}}
 
             <div class="col-sm-6">
 

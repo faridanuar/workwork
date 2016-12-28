@@ -272,11 +272,11 @@ class SubscribeController extends Controller
 				switch ($plan)
 				{
 					case "2_Month_Plan":
-						$price = 1;
+						$price = 49;
 			        	$days = 60;
 						break;
 					case "1_Month_Plan":
-						$price = 1;
+						$price = 29;
 			        	$days = 30;
 						break;
 					default:
@@ -298,7 +298,7 @@ class SubscribeController extends Controller
 			        $endDate = $advert->plan_ends_at;
 			        $expDate = $todaysDate->diffInDays($endDate, false);
 
-			        if($expDate < 0){
+			        if($expDate == 0){
 			            $advert->plan_ends_at = Carbon::now()->addDays($days);
 			        }else{
 			        	$advert->plan_ends_at = $endDate->addDays($days);

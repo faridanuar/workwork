@@ -17,6 +17,8 @@
 						{{ $contact }}
 					@endif
 				<a href="/account/edit" class="btn btn-default btn-sm">Edit</a>
+				<p></p>
+				<div>- Example: 017123456 -</div>
 			</div>
 
 			<hr>
