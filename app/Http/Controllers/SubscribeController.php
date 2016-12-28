@@ -220,7 +220,7 @@ class SubscribeController extends Controller
 		$user = $request->user();
 
 		// fetch user selected plan
-		$advert = Advert::find($id);
+		$advert = Advert::findOrFail($id);
 		$plan = $advert->current_plan;
 		$savePayment = $request->savePayment;
 		
