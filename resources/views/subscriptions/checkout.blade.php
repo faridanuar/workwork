@@ -24,6 +24,7 @@
     		<div id="plan"></div>
 
     		<input type="hidden" name="plan" id="plan" value="{{ $plan }}">
+        <input type="hidden" name="device_data" id="device_data">
 
         <div class="form-group">
     		  <input type="submit" id="pay" class="btn btn-primary btn-lg btn-block btn-ww-lg" value="@lang('forms.payment_next')">
@@ -41,9 +42,27 @@
 
     var clientToken = "{{ $token }}";
 
+
     braintree.setup(clientToken, "dropin", {
+      dataCollector: {
+      kount: {environment: '{{ $environment }}'}
+    },
+    onReady: function (braintreeInstance) {
+      var form = document.getElementById('checkout');
+      var deviceDataInput = form['device_data'];
+
+      if (deviceDataInput == null) {
+        deviceDataInput = document.createElement('input');
+        deviceDataInput.name = 'device_data';
+        deviceDataInput.type = 'hidden';
+        form.appendChild(deviceDataInput);
+      }
+
+      deviceData = braintreeInstance.deviceData;
+    },
       container: "payment-form"
     });
+
       
     $( "#checkout" ).submit(function( event ) {
       $("#pay")

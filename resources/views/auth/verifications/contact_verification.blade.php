@@ -20,14 +20,17 @@
 			</div>
 
 			<hr>
+			
+			<p>
+				<div id="message" class="hidden">
+	            	Info: Your code has been sent to your phone. If you did not recieve any code please try again
+	            </div>
+            </p>
+
 
 			<div>
 				Enter code here:
 			</div>
-
-			<div class="message btn btn-info btn-xs">
-            	Info: Your code has been sent to your phone. If you did not recieve any code please try again
-            </div>
 
 			<p></p>
 
@@ -50,15 +53,15 @@
 		</div>
 	</div>
 </div>
+@stop
 
+@section('js_plugins')
 <script type="text/javascript">
 $(document).ready(function(){
 
-	$(".message").hide();
-
 	$("#getCode").click(function(){
 
-		$(".message").hide();
+		$("#message").addClass('hidden');
 
 	    $.ajax({
 	      type: "POST",
@@ -77,7 +80,7 @@ $(document).ready(function(){
 	    	.val("GET CODE")
 	    	.attr('disabled', false); 
 
-	    	$(".message").show();
+	    	$("#message").removeClass('hidden');
 	    }, 
 	    4000);
 	});

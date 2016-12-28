@@ -193,6 +193,9 @@ class SubscribeController extends Controller
     	$token = Braintree_ClientToken::generate([
 		    "customerId" => $customerID
 		]);
+
+		$config = config('services.braintree');
+		$environment = $config['environment'];
     	
 
     	if($user->ftu_level < 4)
@@ -206,7 +209,7 @@ class SubscribeController extends Controller
 	        $notDone = 0;
     	}
 
-		return view('subscriptions.checkout', compact('id','plan','user','done','notDone','token'));
+		return view('subscriptions.checkout', compact('id','plan','user','done','notDone','token', 'environment'));
 	}
 
 
@@ -244,7 +247,8 @@ class SubscribeController extends Controller
 					    'firstName' => $user->name,
 					    'email' => $user->email,
 					    'phone' => $user->contact,
-					    'paymentMethodNonce' => $nonceFromTheClient
+						'paymentMethodNonce' => $nonceFromTheClient,
+					    'deviceData' => $request->device_data
 					]
 				);
 			}else{
@@ -252,7 +256,11 @@ class SubscribeController extends Controller
 				    'firstName' => $user->name,
 				    'email' => $user->email,
 				    'phone' => $user->contact,
-				    'paymentMethodNonce' => $nonceFromTheClient
+				    'creditCard' =>[
+					    'paymentMethodNonce' => $nonceFromTheClient,
+					    'options' => [ 'verifyCard' => true ]
+				    ],
+				    'deviceData' => $request->device_data
 				]);
 			}
 
@@ -277,7 +285,12 @@ class SubscribeController extends Controller
 				}
 
 				// Charging the user ONE TIME with INVOICE provided
-				$charge = $user->invoiceFor($plan, $price);
+				$charge = $user->invoiceFor($plan, $price, [
+							"options" => [
+							    "submitForSettlement" => true
+							],
+							"deviceData" => $request->device_data
+				]);
 
 				if($charge->success)
 				{
