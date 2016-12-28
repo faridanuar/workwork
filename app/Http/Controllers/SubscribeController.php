@@ -264,11 +264,11 @@ class SubscribeController extends Controller
 				switch ($plan)
 				{
 					case "2_Month_Plan":
-						$price = 0.10;
+						$price = 1;
 			        	$days = 60;
 						break;
 					case "1_Month_Plan":
-						$price = 0.10;
+						$price = 1;
 			        	$days = 30;
 						break;
 					default:
