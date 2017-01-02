@@ -29,6 +29,7 @@
     <!-- Algolia Stylesheet -->
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/instantsearch.js/1/instantsearch.min.css">
 
+    @include('js_plugins.zendesk')
     @yield('js_stylesheets')
 </head>
 

@@ -321,6 +321,15 @@ class HomeController extends Controller
 
 
 
+    public function updateContact(Request $request)
+    {
+        $user = $request->user();
+        $user->contact = $request->contact;
+        $user->save();
+    }
+
+
+
     public function sendContactToken(Request $request)
     {
         $contactCode = mt_rand(11111,99999);
@@ -449,7 +458,7 @@ class HomeController extends Controller
 
         flash('Your account detail has been updated', 'success');
 
-        return redirect('/account');
+        return redirect('account');
     }
 
 

@@ -180,27 +180,28 @@ search.addWidget(
 	})
 );
 
+
 /*
 var container = document.querySelector('#pagination-container');
 var paginationWidget = instantsearch.widgets.pagination({
   container: container,
   maxPages: 20,
-    scrollTo: '#results',
-    cssClasses: {
-      root: 'pagination',
-      active: 'active'
-    }
+  scrollTo: '#results',
+  cssClasses: {
+    root: 'pagination',
+    active: 'active'
+  }
 });
-
-var oldRender = paginationWidget.render;
-paginationWidget.render = function(params) {
-  var currentState = params.results;
-  if(currentState.nbPages===0) container.style.display='none';
-  else container.style.display = 'block';
-  oldRender.call(this, arguments);
-}
-search.addWidget(paginationWidget);
 */
+
+// var oldRender = paginationWidget.render;
+// paginationWidget.render = function(params) {
+//   var currentState = params.results;
+//   if(currentState.nbPages===0) container.style.display='none';
+//   else container.style.display = 'block';
+//   oldRender.call(this, arguments);
+// }
+// search.addWidget(paginationWidget);
 
 
 
