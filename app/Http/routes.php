@@ -33,6 +33,7 @@ Route::get('/contact/verification', 'HomeController@contact');
 
 // ajax post request
 Route::post('/request/contact/code', 'HomeController@sendContactToken');
+Route::post('/update/contact', 'HomeController@updateContact');
 
 // verify contact
 Route::post('/verify/contact', 'HomeController@verifyContact');

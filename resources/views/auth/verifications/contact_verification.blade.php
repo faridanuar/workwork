@@ -10,13 +10,22 @@
 		<div class="panel-body">
 
 			<div>
-				Your Contact Number: 
-					@if(!$contact)
-						None
-					@else
-						{{ $contact }}
-					@endif
-				<a href="/account/edit" class="btn btn-default btn-sm">Edit</a>
+				<form id="contactForm">
+					Your Contact Number: 
+					<input 
+						type="number" 
+						id="contact" 
+						name="contact"
+						class=""
+						@if(!$contact)
+							value = ""
+						@else
+							value = "{{ $contact }}"
+						@endif
+						disabled
+					/>
+					<input type="button" id="editContact" class="btn btn-link"  value="Edit" />
+				</form>
 				<p></p>
 				<div>- Example: 017123456 -</div>
 			</div>
@@ -85,6 +94,37 @@ $(document).ready(function(){
 	    	$("#message").removeClass('hidden');
 	    }, 
 	    4000);
+	});
+
+	$("#editContact").click(function(){
+
+		if($("#editContact").val() == "Save")
+		{
+			var contact = $("#contact").val();
+			
+			$.ajax({
+		      type: "POST",
+		      url: "/update/contact",
+		      data: {
+		            	'_token': '{!! csrf_token() !!}',
+		            	'contact': contact
+		            }
+		    });
+
+		    $("#editContact")
+			.val("Edit");
+
+			$("#contact")
+			.attr('disabled', true);
+
+		}else{
+
+			$("#editContact")
+			.val("Save");
+			
+			$("#contact")
+			.attr('disabled', false);
+		}
 	});
 
 });
