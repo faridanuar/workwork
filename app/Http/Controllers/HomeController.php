@@ -324,6 +324,12 @@ class HomeController extends Controller
     public function updateContact(Request $request)
     {
         $user = $request->user();
+
+        if($user->contact != $request->contact)
+        {
+            $user->contact_verified = 0;
+        }
+        
         $user->contact = $request->contact;
         $user->save();
     }
