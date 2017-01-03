@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
+use Auth;
 use Mail;
 
 use App\User;
@@ -19,7 +20,7 @@ class RegistrationController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('guest', ['except' => ['getToken', 'sendToken', 'sent', 'verify', 'verifyStatus', 'getEmail']]);
+        $this->middleware('guest', ['except' => ['getToken', 'sendToken', 'verify', 'verifyStatus', 'getEmail']]);
     }
 
 
@@ -122,9 +123,10 @@ class RegistrationController extends Controller
 
 
 
-    public function getToken()
+    public function getToken(Request $request)
     {
-        return view('auth.get_email');
+        $user = $request->user();
+        return view('auth.verifications.get_email', compact('user'));
     }
 
 
@@ -135,7 +137,7 @@ class RegistrationController extends Controller
         $verification_code = str_random(30);
 
         // find the user with the given email
-        $user = User::where('email', $request->email)->fisrt();
+        $user = User::where('email', $request->email)->first();
 
         // store the generated token/verification code to the selected user
         $user->verification_code = $verification_code;
@@ -143,6 +145,9 @@ class RegistrationController extends Controller
 
         // fetch mailgun attributes from SERVICES file
         $config = config('services.mailgun');
+
+        // applications domain
+        $domain = $config['sender'];
 
         // fetch website provided url
         $website = $config['site_url'];
@@ -168,7 +173,9 @@ class RegistrationController extends Controller
             $message->to($recipient, $recipientName)->subject('Welcome to WorkWork!');
         });
 
-        return redirect('/link/sent');
+        Auth::logout();
+
+        return redirect('/sent/message');
     }
 
 

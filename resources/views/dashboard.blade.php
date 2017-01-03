@@ -18,7 +18,7 @@
                 @if($user->verified != 1)
                     <div class="panel panel-default">
                         <div class="panel-body">
-                            <span class="label label-warning">WARNING</span>
+                            <span class="label label-info">INFO</span>
                             You have not verified your email. 
                             <a href="/request/link">Click Here</a>
                         </div>
@@ -28,9 +28,19 @@
                 @if($user->contact_verified != 1)
                     <div class="panel panel-default">
                         <div class="panel-body">
-                            <span class="label label-warning">WARNING</span>
+                            <span class="label label-info">INFO</span>
                             You have not verified your contact number. 
                             <a href="/contact/verification"><b>Click Here</b></a>
+                        </div>
+                    </div>
+                @endif
+
+                @if(!$user->email)
+                    <div class="panel panel-default">
+                        <div class="panel-body">
+                            <span class="label label-info">INFO</span>
+                            It looks like you haven't added your email. 
+                            <a href="/account/edit"><b>Add now</b></a>
                         </div>
                     </div>
                 @endif
@@ -50,7 +60,7 @@
                         @if($user->ftu_level < 4)
                             <div class="panel panel-default">
                                 <div class="panel-body">
-                                    <span class="label label-warning">WARNING</span>
+                                    <span class="label label-info">INFO</span>
                                     {{ $message1 }} 
                                     <a href="{{ $link }}">{{ $text1 }}</a>
                                 </div>
@@ -61,7 +71,7 @@
                     @forelse( $level3Adverts as $level3Advert )
                         <div class="panel panel-default">
                             <div class="panel-body">
-                                <span class="label label-warning">WARNING</span>
+                                <span class="label label-info">INFO</span>
                                 You have not complete your checkout for your advert "{{ $level3Advert->job_title }}".
                                 <a href="/choose/plan/{{ $level3Advert->id }}">
                                  <b>Continue</b>
@@ -110,7 +120,7 @@
                         @if($user->ftu_level < 2)
                             <div class="panel panel-default">
                                 <div class="panel-body">
-                                    <span class="label label-warning">WARNING</span>
+                                    <span class="label label-info">INFO</span>
                                     {{ $message1 }} 
                                     <a href="{{ $link }}"><b>{{ $text1 }}<b></a>
                                 </div>

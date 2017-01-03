@@ -17,6 +17,7 @@
 						id="contact" 
 						name="contact"
 						class=""
+						placeholder="Example: 017123456" 
 						@if(!$contact)
 							value = ""
 						@else
@@ -28,7 +29,7 @@
 					<input type="button" id="saveStatus" class="hidden" value="" disabled />
 				</form>
 				<p></p>
-				<div>- Example: 017123456 -</div>
+				<div>(Avoid adding special characters such as "+6" or "-")</div>
 			</div>
 
 			<hr>
