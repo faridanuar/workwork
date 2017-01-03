@@ -17,7 +17,8 @@
 			<form method="post" action="/account/update" name="myForm">
 				{!! csrf_field() !!}
 				<div class="form-group">
-					Email: {{ $user->email }}
+					Email:
+					<input type="email" class="form-control" name="email" value="{{ $user->email }}" />
 				</div>
 				
 				<div class="form-group">
