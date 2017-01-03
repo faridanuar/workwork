@@ -25,6 +25,7 @@
 						disabled
 					/>
 					<input type="button" id="editContact" class="btn btn-link"  value="Edit" />
+					<span id="saveStatus" class="hidden">Success!</span>
 				</form>
 				<p></p>
 				<div>- Example: 017123456 -</div>
@@ -112,10 +113,28 @@ $(document).ready(function(){
 		    });
 
 		    $("#editContact")
-			.val("Edit");
+			.val("Saving...")
+			.attr('disabled', true);
 
 			$("#contact")
 			.attr('disabled', true);
+
+			setTimeout(function(){
+	    	$("#editContact")
+	    	.val("Edit")
+	    	.attr('disabled', false)
+
+	    	$("#saveStatus").removeClass('hidden')
+
+		    	setTimeout(function(){
+		    	$("#saveStatus")
+		    	.addClass('hidden')
+		    	}, 
+		    	3000);
+		    }, 
+		    4000);
+
+		    
 
 		}else{
 
