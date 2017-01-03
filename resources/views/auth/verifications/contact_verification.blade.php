@@ -25,7 +25,7 @@
 						disabled
 					/>
 					<input type="button" id="editContact" class="btn btn-link"  value="Edit" />
-					<span id="saveStatus" class="hidden">Success!</span>
+					<input type="button" id="saveStatus" class="hidden" value="" disabled />
 				</form>
 				<p></p>
 				<div>- Example: 017123456 -</div>
@@ -99,42 +99,59 @@ $(document).ready(function(){
 
 	$("#editContact").click(function(){
 
+		$("#saveStatus")
+		.removeClass('btn btn-link')
+		.addClass('hidden')
+		.val("")
+
 		if($("#editContact").val() == "Save")
 		{
 			var contact = $("#contact").val();
-			
-			$.ajax({
-		      type: "POST",
-		      url: "/update/contact",
-		      data: {
-		            	'_token': '{!! csrf_token() !!}',
-		            	'contact': contact
-		            }
-		    });
 
-		    $("#editContact")
-			.val("Saving...")
-			.attr('disabled', true);
+			if(contact != "")
+			{
+				$.ajax({
+			      type: "POST",
+			      url: "/update/contact",
+			      data: {
+			            	'_token': '{!! csrf_token() !!}',
+			            	'contact': contact
+			            }
+			    });
 
-			$("#contact")
-			.attr('disabled', true);
+			    $("#editContact")
+				.val("Saving...")
+				.attr('disabled', true);
 
-			setTimeout(function(){
-	    	$("#editContact")
-	    	.val("Edit")
-	    	.attr('disabled', false)
+				$("#contact")
+				.attr('disabled', true);
 
-	    	$("#saveStatus").removeClass('hidden')
+				setTimeout(function(){
+			    	$("#editContact")
+			    	.val("Edit")
+			    	.attr('disabled', false)
 
-		    	setTimeout(function(){
-		    	$("#saveStatus")
-		    	.addClass('hidden')
-		    	}, 
-		    	3000);
-		    }, 
-		    4000);
+		    		$("#saveStatus")
+		    		.removeClass('hidden')
+		    		.addClass('btn btn-link')
+		    		.val("Success!")
 
-		    
+			    	setTimeout(function(){
+			    	$("#saveStatus")
+			    	.addClass('hidden')
+			    	.val("")
+			    	}, 
+			    	3000);
+			    }, 
+			    4000);
+
+			}else{
+
+				$("#saveStatus")
+				.removeClass('hidden')
+	    		.addClass('btn btn-link')
+	    		.val("Please fill in your Contact Number!");
+			}
 
 		}else{
 
