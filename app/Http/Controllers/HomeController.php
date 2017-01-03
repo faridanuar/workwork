@@ -434,14 +434,12 @@ class HomeController extends Controller
 
 
     public function accountUpdate(Request $request)
-    {
-        $this->validate($request, [
-                'email' => 'required|email|unique:users',
-                'name' => 'required|max:50',
-                'contact' => 'required',
-            ]);
-        
+    {   
         $user = $request->user();
+
+        $this->validate($request, [
+                'name' => 'required|max:50',
+            ]);
 
         if($user->contact != $request->contact)
         {
@@ -450,7 +448,16 @@ class HomeController extends Controller
 
         if($user->email != $request->email)
         {
+            $this->validate($request, [
+                'email' => 'required|email|unique:users',
+            ]);
             $user->verified = 0;
+
+        }else{
+
+            $this->validate($request, [
+                'email' => 'required|email',
+            ]);
         }
 
         $user->update([
