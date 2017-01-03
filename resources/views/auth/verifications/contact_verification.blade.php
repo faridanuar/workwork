@@ -59,8 +59,8 @@
 		            @endif
 				</div>
 				<div class="form-group">
-					<input type="submit" class="btn btn-primary"  value="VERIFY" />
-					<input type="button" id="getCode" class="btn btn-link"  value="GET CODE" />
+					<input type="submit" id="verify" class="btn btn-primary"  value="VERIFY" disabled />
+					<input type="button" id="getCode" class="btn btn-link"  value="GET CODE" disabled />
 				</div>
 			</form>
 		</div>
@@ -72,33 +72,71 @@
 <script type="text/javascript">
 $(document).ready(function(){
 
+	var contact = $("#contact").val();
+
+	if(contact != "")
+	{
+		$("#getCode")
+    	.val("GET CODE")
+    	.attr('disabled', false); 
+
+    	$("#verify")
+		.attr('disabled', false);
+	}
+
 	$("#getCode").click(function(){
+
+		var contact = $("#contact").val();
 
 		$("#message").addClass('hidden');
 
-	    $.ajax({
-	      type: "POST",
-	      url: "/request/contact/code",
-	      data: {
-	            	'_token': '{!! csrf_token() !!}'
-	            }
-	    });
+		if(contact != "")
+		{
+		    $.ajax({
+		      type: "POST",
+		      url: "/request/contact/code",
+		      data: {
+		            	'_token': '{!! csrf_token() !!}'
+		            }
+		    });
 
-		$("#getCode")
-		.val("SENDING...")
-		.attr('disabled', true); 
+			$("#getCode")
+			.val("SENDING...")
+			.attr('disabled', true);
 
-	    setTimeout(function(){
-	    	$("#getCode")
-	    	.val("GET CODE")
-	    	.attr('disabled', false); 
+			$("#verify")
+			.attr('disabled', true);
 
-	    	$("#message").removeClass('hidden');
-	    }, 
-	    4000);
+			$("#editContact")
+			.attr('disabled', true);
+
+		    setTimeout(function(){
+		    	$("#getCode")
+		    	.val("GET CODE")
+		    	.attr('disabled', false); 
+
+		    	$("#verify")
+				.attr('disabled', false);
+
+				$("#editContact")
+				.attr('disabled', false);
+
+		    	$("#message").removeClass('hidden');
+		    }, 
+		    4000);
+
+		}else{
+
+			$("#saveStatus")
+			.removeClass('hidden')
+    		.addClass('btn btn-link')
+    		.val("Please fill in your Contact Number!");
+		}
 	});
 
 	$("#editContact").click(function(){
+
+		var contact = $("#contact").val();
 
 		$("#saveStatus")
 		.removeClass('btn btn-link')
@@ -107,8 +145,6 @@ $(document).ready(function(){
 
 		if($("#editContact").val() == "Save")
 		{
-			var contact = $("#contact").val();
-
 			if(contact != "")
 			{
 				$.ajax({
@@ -127,6 +163,12 @@ $(document).ready(function(){
 				$("#contact")
 				.attr('disabled', true);
 
+				$("#getCode")
+				.attr('disabled', true);
+
+				$("#verify")
+				.attr('disabled', true);
+
 				setTimeout(function(){
 			    	$("#editContact")
 			    	.val("Edit")
@@ -143,6 +185,12 @@ $(document).ready(function(){
 			    	.val("")
 			    	}, 
 			    	3000);
+
+			    	$("#getCode")
+					.attr('disabled', false);
+
+					$("#verify")
+					.attr('disabled', false);
 			    }, 
 			    4000);
 

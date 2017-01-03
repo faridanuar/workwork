@@ -1,13 +1,16 @@
 @extends('layouts.app')
 
 @section('content')
+<div class="flash">
+    @include('messages.flash')
+</div>
 
 <div class="panel-ww-600 panel-default center-block">
 	<div class="panel panel-default">
 		<div class="panel-body">
 	
 			<div class="form-group">
-				Edit Account
+				Request email verification code
 			</div>
 
 			<hr>
@@ -16,7 +19,7 @@
 				{!! csrf_field() !!}
 				<div class="form-group">
 					Email:
-					<input type="email" class="form-control" name="email" value="{{ $user->email }}" />
+					<input type="email" class="form-control" name="email" value="" />
 				</div>
 				@if ($errors->has('email'))
 					<div class="alert alert-danger">
