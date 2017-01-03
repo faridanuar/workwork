@@ -15,24 +15,28 @@
         <!-- <div class="panel panel-default"> -->
             <!-- <div class="panel-body"> -->
                 Notifications
-                @if($user->verified != 1)
-                    <div class="panel panel-default">
-                        <div class="panel-body">
-                            <span class="label label-info">INFO</span>
-                            You have not verified your email. 
-                            <a href="/request/link">Click Here</a>
+                @if($user->email)
+                    @if($user->verified != 1)
+                        <div class="panel panel-default">
+                            <div class="panel-body">
+                                <span class="label label-info">INFO</span>
+                                You have not verified your email. 
+                                <a href="/request/verification"><b>Click Here</b></a>
+                            </div>
                         </div>
-                    </div>
+                    @endif
                 @endif
 
-                @if($user->contact_verified != 1)
-                    <div class="panel panel-default">
-                        <div class="panel-body">
-                            <span class="label label-info">INFO</span>
-                            You have not verified your contact number. 
-                            <a href="/contact/verification"><b>Click Here</b></a>
+                @if($user->contact)
+                    @if($user->contact_verified != 1)
+                        <div class="panel panel-default">
+                            <div class="panel-body">
+                                <span class="label label-info">INFO</span>
+                                You have not verified your contact number. 
+                                <a href="/contact/verification"><b>Click Here</b></a>
+                            </div>
                         </div>
-                    </div>
+                    @endif
                 @endif
 
                 @if(!$user->email)
@@ -62,7 +66,7 @@
                                 <div class="panel-body">
                                     <span class="label label-info">INFO</span>
                                     {{ $message1 }} 
-                                    <a href="{{ $link }}">{{ $text1 }}</a>
+                                    <a href="{{ $link }}"><b>{{ $text1 }}</b></a>
                                 </div>
                             </div>
                         @endif

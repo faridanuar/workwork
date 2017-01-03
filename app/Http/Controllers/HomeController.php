@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
+use Auth;
+use Mail;
 use Image;
 use Event;
 use Cache;
@@ -328,6 +330,7 @@ class HomeController extends Controller
         if($user->contact != $request->contact)
         {
             $user->contact_verified = 0;
+            $user->contact_verification_code = null;
         }
         
         $user->contact = $request->contact;
@@ -469,9 +472,70 @@ class HomeController extends Controller
             );
         }
 
+        if($user->verified == 0)
+        {
+            flash('a verification email has been sent to your new added email. Please verify before logging back in', 'info');
+
+            return redirect('/request/verification');
+        }
+
         flash('Your account detail has been updated', 'success');
 
         return redirect('account');
+    }
+
+    public function requestToken(Request $request)
+    {
+        $user = $request->user();
+
+        return view('auth.verifications.request_token', compact('user'));
+    }
+
+    public function sendRequestedToken(Request $request)
+    {
+        // generate a random string
+        $verification_code = str_random(30);
+
+        // find the user with the given email
+        $user = $request->user();
+
+        // store the generated token/verification code to the selected user
+        $user->verification_code = $verification_code;
+        $user->save();
+
+        // fetch mailgun attributes from SERVICES file
+        $config = config('services.mailgun');
+
+        // applications domain
+        $domain = $config['sender'];
+
+        // fetch website provided url
+        $website = $config['site_url'];
+
+        // set the values in array
+        $data = ['website' => $website, 'verification_code' => $verification_code];
+        $parameter = ['user' => $user, 'domain' => $domain];
+
+        // use send method form Mail facade to send email. ex: send('view', 'info / array of data', fucntion)
+        Mail::send('auth.emails.verify_email', compact('website','verification_code'), function ($message) use ($parameter) {
+
+            // Recipient Test Email => $recipient = "farid@pocketpixel.com";
+
+            // get the necessary required values for mailgun
+            $appDomain = $parameter['domain'];
+            $recipient = $parameter['user']->email;
+            $recipientName = $parameter['user']->name;
+
+            // set email sender stmp url and sender name
+            $message->from($appDomain, 'WorkWork');
+
+            // set email recepient and subject
+            $message->to($recipient, $recipientName)->subject('Welcome to WorkWork!');
+        });
+
+        flash('a verification email has been sent to your email address. Please check your inbox for further instruction', 'info');
+
+        return redirect('/dashboard');
     }
 
 

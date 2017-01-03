@@ -38,7 +38,8 @@
 @else
 <body id="@yield('body-id')">
 @endif
-
+    
+    @include('js_plugins.google_analytics')
     @include('layouts.navigation')
 
     <div class="container">

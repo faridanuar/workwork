@@ -28,6 +28,11 @@ Route::post('/avatar/upload', 'HomeController@uploadAvatar');
 
 Route::delete('/avatar/remove', 'HomeController@remove');
 
+// email verification page
+Route::get('/request/verification', 'HomeController@requestToken');
+
+Route::get('/send/verification', 'HomeController@sendRequestedToken');
+
 // contact verification page
 Route::get('/contact/verification', 'HomeController@contact');
 

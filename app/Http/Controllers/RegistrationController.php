@@ -20,7 +20,7 @@ class RegistrationController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('guest', ['except' => ['getToken', 'sendToken', 'verify', 'verifyStatus', 'getEmail']]);
+        $this->middleware('guest', ['except' => ['verify', 'verifyStatus']]);
     }
 
 
@@ -121,23 +121,24 @@ class RegistrationController extends Controller
         return redirect('/login');
     }
 
-
-
-    public function getToken(Request $request)
+    public function getToken()
     {
-        $user = $request->user();
-        return view('auth.verifications.get_email', compact('user'));
+        return view('auth.verifications.get_email');
     }
-
-
 
     public function sendToken(Request $request)
     {
+
         // generate a random string
         $verification_code = str_random(30);
 
+        //validate fields
+        $this->validate($request, [
+            'email' => 'required|email',
+        ]);
+
         // find the user with the given email
-        $user = User::where('email', $request->email)->first();
+        $user = User::where('email', $request->email)->firstOrFail();
 
         // store the generated token/verification code to the selected user
         $user->verification_code = $verification_code;
@@ -172,8 +173,6 @@ class RegistrationController extends Controller
             // set email recepient and subject
             $message->to($recipient, $recipientName)->subject('Welcome to WorkWork!');
         });
-
-        Auth::logout();
 
         return redirect('/sent/message');
     }

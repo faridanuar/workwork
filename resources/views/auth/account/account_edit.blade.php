@@ -16,10 +16,16 @@
 
 			<form method="post" action="/account/update" name="myForm">
 				{!! csrf_field() !!}
+				
 				<div class="form-group">
 					Email:
 					<input type="email" class="form-control" name="email" value="{{ $user->email }}" />
 				</div>
+				@if ($errors->has('email'))
+					<div class="alert alert-danger">
+				        {{ $errors->first('email') }}
+				    </div>
+	            @endif
 				
 				<div class="form-group">
 					Name:

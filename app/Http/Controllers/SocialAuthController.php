@@ -7,6 +7,9 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\SocialAccountService;
+
+use App\User;
+
 use Socialite;
 
 class SocialAuthController extends Controller
@@ -19,7 +22,12 @@ class SocialAuthController extends Controller
     public function callback(SocialAccountService $service)
     {
         $user = $service->createOrGetUser(Socialite::driver('facebook')->user());
-        $user->verified = 1;
+
+        if($user->email)
+        {
+            $user->verified = 1;
+        }
+        
         $user->save();
 
         auth()->login($user);
