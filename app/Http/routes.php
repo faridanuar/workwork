@@ -232,3 +232,14 @@ Route::get('/cancel', 'StatusController@cancel');
 
 Route::get('/resume', 'StatusController@resume');
 
+/**
+* Admin routes
+*/
+Route::get('/admin/dashboard', 'AdminController@dashboard');
+Route::get('/admin/create/advert', 'AdminController@create');
+Route::post('/admin/store/advert', 'AdminController@store');
+Route::get('/admin/advert/upload/logo', 'AdminController@logo');
+Route::post('/admin/advert/store/logo', 'AdminController@uploadLogo');
+Route::get('/admin/advert/change/owner', 'AdminController@owner');
+
+

@@ -114,4 +114,14 @@ class Advert extends Model
         
     }
 
+    public function saveSchedule()
+    {
+
+    }
+
+    public function saveSkills()
+    {
+        
+    }
+
 }
