@@ -99,7 +99,7 @@ class Advert extends Model
         return $this->belongsToMany(DailySchedule::class, 'advert_daily', 'advert_id', 'daily_schedule_id')->withPivot('start_time','end_time');
     }
 
-    /**
+   /**
     * Get tags assosicated with the given advert
     *
     *

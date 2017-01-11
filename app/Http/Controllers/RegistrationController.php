@@ -121,10 +121,14 @@ class RegistrationController extends Controller
         return redirect('/login');
     }
 
+
+
     public function getToken()
     {
         return view('auth.verifications.get_email');
     }
+
+    
 
     public function sendToken(Request $request)
     {

@@ -70,7 +70,7 @@ class PasswordResetController extends Controller
             $m->to($recipient, $recipientName)->subject('Password');
         });
 
-        flash('we have sent your reset link. Please check our email','info');
+        flash('we have sent your reset link. Please check your email','info');
 
         return redirect()->back();
 	}
