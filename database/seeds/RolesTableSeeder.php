@@ -13,6 +13,7 @@ class RolesTableSeeder extends Seeder
     public function run()
     {
         DB::table('roles')->insert([
+            /*
         	[
 	            'name' => 'job_seeker',
 	            'label' => 'Job Seeker',
@@ -21,11 +22,17 @@ class RolesTableSeeder extends Seeder
             	'name' => 'employer',
 	            'label' => 'Employer',
             ],
+            [
+                'name' => 'admin',
+                'label' => 'Administrator',
+            ]
+            */
         ]);
 
 
 
         DB::table('permissions')->insert([
+            /*
         	[
 	            'name' => 'click_apply',
 	            'label' => 'Click The Apply Button',
@@ -62,10 +69,16 @@ class RolesTableSeeder extends Seeder
                 'name' => 'view_dashboard',
                 'label' => 'View Dashboard',
             ],
+            */
+            [
+                'name' => 'view_admin_features',
+                'label' => 'View Administrator tools and features',
+            ],
         ]);
 
 
         DB::table('permission_role')->insert([
+            /*
         	[
 	            'permission_id' => 1,
 	            'role_id' => 1,
@@ -104,7 +117,12 @@ class RolesTableSeeder extends Seeder
             ],
             [
                 'permission_id' => 9,
-                    'role_id' => 2,
+                'role_id' => 2,
+            ],
+            */
+            [
+                'permission_id' => 10,
+                    'role_id' => 3,
             ],
         ]);
     }

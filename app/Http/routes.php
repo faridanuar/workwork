@@ -8,7 +8,6 @@
 
 //Route::auth();
 
-
 /**
  * Home-Dashboard routes
  */
@@ -171,6 +170,7 @@ Route::post('/selected-category', 'JobSeekerProfileController@getCategory');
 
 // ajax post url (Job Seeker side)
 Route::post('/viewed', 'JobSeekerProfileController@requestViewed');
+
 Route::post('/viewed/category', 'JobSeekerProfileController@setAsViewed');
 
 /**
@@ -231,4 +231,28 @@ Route::get('/status', 'StatusController@status');
 Route::get('/cancel', 'StatusController@cancel');
 
 Route::get('/resume', 'StatusController@resume');
+
+/**
+* Admin routes
+*/
+Route::get('/primary/a/register', 'Admin\AdminRegistrationController@register');
+
+Route::post('/primary/a/register', 'Admin\AdminRegistrationController@postRegister');
+
+Route::get('/a/login', 'Admin\AdminSessionsController@login');
+
+Route::post('/a/login', 'Admin\AdminSessionsController@postLogin');
+
+Route::get('/a/dashboard', 'Admin\AdminController@dashboard');
+
+Route::get('/a/advert/create', 'Admin\AdminController@create');
+
+Route::post('/a/advert/create', 'AdminController@store');
+
+Route::get('/a/advert/logo/upload', 'Admin\AdminController@logo');
+
+Route::post('/a/advert/logo/store', 'Admin\AdminController@uploadLogo');
+
+Route::get('/a/advert/change/owner', 'Admin\AdminController@owner');
+
 

@@ -62,52 +62,10 @@ class TypeController extends Controller
             //assign user a roles with permissions using "assignRole" method from hasRoles trait
             $user->assignRole('employer');
 
-            /**
-            // use send method form Mail facade to send email. ex: send('view', 'info / array of data', fucntion)
-            Mail::send('mail.welcomeEmployer', compact('user', 'website'), function ($m) use ($user) {
-
-                $config = config('services.mailgun');
-
-                $domain = $config['sender'];
-
-                //recipient = $user->email;
-                $recipient = 'farid@pocketpixel.com';
-
-                $recipientName = $user->name;
-
-                // set email sender stmp url and sender name
-                $m->from($domain, 'WorkWork');
-
-                // set email recepient and subject
-                $m->to($recipient, $recipientName)->subject('Welcome to WorkWork!');
-            });
-            */
-
         }elseif($user->type === 'job_seeker'){
 
             //assign user a roles with permissions using "assignRole" method from hasRoles trait
             $user->assignRole('job_seeker');
-
-            /**
-            // use send method form Mail facade to send email. ex: send('view', 'info / array of data', fucntion)
-            Mail::send('mail.welcomeJobSeeker', compact('user','website'), function ($m) use ($user) {
-
-                $config = config('services.mailgun');
-
-                $domain = $config['sender'];
-
-                //recipient = $user->email;
-                $recipient = 'farid@pocketpixel.com';
-
-                $recipientName = $user->name;
-
-                // set email sender stmp url and sender name
-                $m->from($domain, 'WorkWork');
-
-                // set email recepient and subject
-                $m->to($recipient, $recipientName)->subject('Welcome to WorkWork!');
-            });
-            */
         }
 
         // check if save is successful

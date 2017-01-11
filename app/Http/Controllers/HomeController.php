@@ -55,7 +55,7 @@ class HomeController extends Controller
         $photo = $user->currentAvatar();
 
         // check user's acc type
-        if($user->type === "employer")
+        if($user->hasRole('employer'))
         {
             // get user's profile related info
             $role = $user->employer;
@@ -121,7 +121,7 @@ class HomeController extends Controller
                     $link = "";
             }
 
-        }elseif($user->type === "job_seeker"){
+        }elseif($user->hasRole('job_seeker')){
 
             // get user's profile related info
             $role = $user->jobSeeker;
