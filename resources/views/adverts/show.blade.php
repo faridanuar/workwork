@@ -1,5 +1,12 @@
 @extends('layouts.app')
+
+@section('meta_title', '{{ $advert->job_title }}')
+@section('meta_description', '{!! nl2br(e($advert->description)) !!}')
+@section('meta_url', '{{ $url }}')
+@section('meta_image', 'http://www.workwork.my/{{ $advert->employer->logo }}')
+
 @section('body-id', 'advert-view')
+
 @section('content')
 <div class="row" id="advert">
     <div class="col-sm-8">
@@ -46,9 +53,7 @@
                 </div>
                 <div class="skill visible-xs-block">
                     <h3>Skills</h3>
-                    <div class="skill-description">
-                        {{ $advert->skill }}
-                    </div>
+                    {{ $skills }}
                 </div>
 
                 <!--
@@ -92,6 +97,7 @@
 
                 <div class="business-name visible-xs-block">
                     <hr>
+                    <h3>Company</h3>
                     <a href="/company/{{ $advert->employer_id }}/{{ $advert->employer->business_name }}">{{ $advert->employer->business_name }}</a>
                 </div>
                 <!-- <div class="location">{{ $advert->location }}</div> -->

@@ -7,7 +7,7 @@
 
 <div class="row">
     <div class="col-sm-3 col-md-2">
-        <img src="{{ $photo }}" class="img-responsive img-thumbnail" />
+        <img src="{{ $avatar }}" class="img-responsive img-thumbnail" />
         <a href="/avatar" class="btn btn-link btn-block btn-sm">Change your avatar</a>
     </div>
     <div class="col-sm-9 col-md-8">

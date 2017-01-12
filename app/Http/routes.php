@@ -234,14 +234,15 @@ Route::get('/resume', 'StatusController@resume');
 
 /**
 * Admin routes
-*/
-Route::get('/primary/a/register', 'Admin\AdminRegistrationController@register');
+Route::get('/a/primary/register', 'Admin\AdminRegistrationController@register');
 
-Route::post('/primary/a/register', 'Admin\AdminRegistrationController@postRegister');
+Route::post('/a/primary/register', 'Admin\AdminRegistrationController@postRegister');
 
 Route::get('/a/login', 'Admin\AdminSessionsController@login');
 
 Route::post('/a/login', 'Admin\AdminSessionsController@postLogin');
+
+Route::get('/a/logout', 'Admin\AdminSessionsController@logout');
 
 Route::get('/a/dashboard', 'Admin\AdminController@dashboard');
 
@@ -254,5 +255,8 @@ Route::get('/a/advert/logo/upload', 'Admin\AdminController@logo');
 Route::post('/a/advert/logo/store', 'Admin\AdminController@uploadLogo');
 
 Route::get('/a/advert/change/owner', 'Admin\AdminController@owner');
+
+Route::get('/a/activity/history', 'Admin\AdminController@history');
+*/
 
 

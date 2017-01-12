@@ -1,5 +1,10 @@
 @extends('layouts.app')
 
+@section('meta_title', 'WorkWork - portal pencarian kerja part-time')
+@section('meta_description', 'Jika anda mencari kerja part-time atau sedang mencari pekerja part-time, di sinilah tempatnya! #kerjakerjakerja')
+@section('meta_url', 'http://www.workwork.my/')
+@section('meta_image', 'http://www.workwork.my/images/fb-image.jpg')
+
 @section('content')
 
 <div class="flash">

@@ -121,10 +121,14 @@ class AdvertsController extends Controller
 		if($advert->skills)
 		{
 			$skills = $advert->skills->implode('skill',',');
+		}else{
+			$skills = "";
 		}
 
+		$url = $request->fullUrl();
+
 		// display "show" page
-		return view('adverts.show', compact('advert','skills','authorize','asEmployer','user','done','notDone'));
+		return view('adverts.show', compact('advert', 'skills', 'authorize', 'asEmployer', 'user', 'done', 'notDone', 'url'));
 	}
 
 

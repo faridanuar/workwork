@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 
 use Illuminate\Http\Request;
 
+use Auth;
+
 use App\Http\Requests;
 
 class AdminSessionsController extends Controller
@@ -24,7 +26,7 @@ class AdminSessionsController extends Controller
      */
     public function login()
     {
-        return view('auth.admin.admin_login');
+        return view('admin.auth.admin_login');
     }
     /**
      * Perform the login.
@@ -40,7 +42,7 @@ class AdminSessionsController extends Controller
         {
             flash('Welcome back!','info');
 
-            return redirect()->intended('/dashboard');
+            return redirect()->intended('/a/dashboard');
         }
 
         flash('The credentials did not match our records.','error');
@@ -59,7 +61,7 @@ class AdminSessionsController extends Controller
     {
         Auth::logout();
         flash('You have now been signed out.','info');
-        return redirect('/login');
+        return redirect('/a/login');
     }
 
 
@@ -89,6 +91,7 @@ class AdminSessionsController extends Controller
             'email'    => $request->input('email'),
             'password' => $request->input('password'),
             'type' => 'admin',
+            'verified' => 1
         ];
     }
 }

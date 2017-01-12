@@ -52,7 +52,7 @@ class HomeController extends Controller
         $avatar = $user->avatar;
 
         // check if user's avatar exist & get the provided avatar
-        $photo = $user->currentAvatar();
+        $avatar = $user->currentAvatar();
 
         // check user's acc type
         if($user->hasRole('employer'))
@@ -154,7 +154,7 @@ class HomeController extends Controller
         }
 
         // return user to home dashboard
-        return view('dashboard', compact('user', 'photo', 'informations', 'message', 'message1', 'text', 'text1', 'link', 'site', 'adverts', 'level3Adverts'));
+        return view('dashboard', compact('user', 'avatar', 'informations', 'message', 'message1', 'text', 'text1', 'link', 'site', 'adverts', 'level3Adverts'));
     }
 
 
