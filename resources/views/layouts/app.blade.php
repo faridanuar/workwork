@@ -7,14 +7,11 @@
 
     <meta property="fb:app_id" content="1578992975731734" />
     <meta property="fb:admins" content="622633523" />
-    <meta property="og:title" content="@yield('meta_title')" />
-    {{-- <meta property="og:title" content="WorkWork - portal pencarian kerja part-time" /> --}}
-    <meta property="og:description" content="@yield('meta_description')" />
-    {{-- <meta property="og:description" content="Jika anda mencari kerja part-time atau sedang mencari pekerja part-time, di sinilah tempatnya! #kerjakerjakerja" /> --}}
     <meta property="og:type" content="website" />
-    <meta property="og:url" content="@yield('meta_url')" />
+    @yield('meta_info')
+    {{-- <meta property="og:title" content="WorkWork - portal pencarian kerja part-time" /> --}}
+    {{-- <meta property="og:description" content="Jika anda mencari kerja part-time atau sedang mencari pekerja part-time, di sinilah tempatnya! #kerjakerjakerja" /> --}}
     {{-- <meta property="og:url" content="http://www.workwork.my/" /> --}}
-    <meta property="og:image" content="@yield('meta_image')" />
     {{-- <meta property="og:image" content="http://www.workwork.my/images/fb-image.jpg" /> --}}
     <meta property="og:image:type" content="image/jpeg" />
     <meta property="og:image:width" content="1200" />

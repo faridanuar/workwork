@@ -1,9 +1,11 @@
 @extends('layouts.app')
 
-@section('meta_title', (string)$advert->job_title)
-@section('meta_description', (string)$advert->description)
-@section('meta_url', (string)$url)
-@section('meta_image', 'http://www.workwork.my/'.(string)$advert->employer->logo)
+@section('meta_info')
+    <meta property="og:title" content="{{ $advert->job_title }}" />
+    <meta property="og:description" content="{!! nl2br(e($advert->description)) !!}" />
+    <meta property="og:url" content="{{ $url }}" />
+    <meta property="og:image" content="http://www.workwork.my/{{ $advert->employer->user->avatar }}" />
+@stop
 
 @section('body-id', 'advert-view')
 

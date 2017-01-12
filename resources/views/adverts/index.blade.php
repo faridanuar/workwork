@@ -1,9 +1,11 @@
 @extends('layouts.app')
 
-@section('meta_title', 'WorkWork - portal pencarian kerja part-time')
-@section('meta_description', 'Jika anda mencari kerja part-time atau sedang mencari pekerja part-time, di sinilah tempatnya! #kerjakerjakerja')
-@section('meta_url', 'http://www.workwork.my/')
-@section('meta_image', 'http://www.workwork.my/images/fb-image.jpg')
+@section('meta_info')
+	<meta property="og:title" content="WorkWork - portal pencarian kerja part-time" />
+    <meta property="og:description" content="Jika anda mencari kerja part-time atau sedang mencari pekerja part-time, di sinilah tempatnya! #kerjakerjakerja" />
+    <meta property="og:url" content="http://www.workwork.my/" />
+    <meta property="og:image" content="http://www.workwork.my/images/fb-image.jpg" />
+@stop
 
 @section('content')
 
