@@ -1,9 +1,9 @@
 @extends('layouts.app')
 
-@section('meta_title', $advert->job_title)
-@section('meta_description', nl2br(e($advert->description)))
-@section('meta_url', $url)
-@section('meta_image', 'http://www.workwork.my/'.$advert->employer->logo)
+@section('meta_title', (string)$advert->job_title)
+@section('meta_description', (string)$advert->description)
+@section('meta_url', (string)$url)
+@section('meta_image', 'http://www.workwork.my/'.(string)$advert->employer->logo)
 
 @section('body-id', 'advert-view')
 
