@@ -101,7 +101,7 @@ var resultsTemplate =
 				'<div class="location hidden">@{{{ _highlightResult.location.value }}}</div>' +
 				'<div class="street hidden">@{{ street }}</div>' +
 				'<div class="skill hidden">Skill: @{{{ _highlightResult.skill.value }}}</div>' +
-        '<img src="@{{ avatar }}" class="avatar-tn" height="30" width="30" />' +
+        '<img src="@{{ logo }}" class="avatar-tn" height="30" width="30" />' +
 			'</div>' +
 		'</div>' +
 	'</a>';

@@ -127,8 +127,12 @@ class AdvertsController extends Controller
 
 		$url = $request->fullUrl();
 
+		$photo = $advert->employer->business_logo;
+		$info = pathinfo(storage_path().$photo);
+        $extension = $info['extension'];
+
 		// display "show" page
-		return view('adverts.show', compact('advert', 'skills', 'authorize', 'asEmployer', 'user', 'done', 'notDone', 'url'));
+		return view('adverts.show', compact('advert', 'photo', 'extension', 'skills', 'authorize', 'asEmployer', 'user', 'done', 'notDone', 'url'));
 	}
 
 
@@ -789,7 +793,7 @@ class AdvertsController extends Controller
 			        'rate'  => $advert->rate,
 			        'oku_friendly'  => $advert->oku_friendly,
 			        'published' => $advert->published,
-			        'avatar'  => $user->avatar,
+			        'logo'  => $user->employer->business_logo,
 			        'schedule_type' => $advert->schedule_type,
 			        'start_date' => $startDate,
 					'end_date' => $endDate,

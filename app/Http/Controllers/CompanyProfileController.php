@@ -211,7 +211,7 @@ class CompanyProfileController extends Controller
 
 
 
-    protected function uploadLogo(Request $request)
+    protected function uploadLogo(Request $request, Search $search)
     {
         // store user's info in variable
         $employer = $request->user()->employer()->first();
@@ -221,22 +221,55 @@ class CompanyProfileController extends Controller
             'photo' => 'required|mimes:jpg,jpeg,png,bmp' // validate image
         ]);
 
+        // fetch photo
     	$file = $request->file('photo');
 
+        // set uploaded photo name into a unique name
     	$name = time(). '-' .$file->getClientOriginalName();
 
+        // set file directory for photo to be moved
     	$path = "images/profile_images/logo";
 
+        // compress, save and move the photo to the given path
         Image::make($file)->fit(200, 200)->save($path."/".$name);
 
-    	$employer->update([ 'business_logo' => "/".$path."/".$name ]);
+        // get the new created photo directory path
+        $pathURL = "/".$path."/".$name;
+
+        // save the new photo directory path into the database
+    	$employer->business_logo = $pathURL;
 
         $employer->save();
+
+        // fetch employer's created adverts
+        $adverts = Advert::where('employer_id', '=',$employer->id);
+
+        // filter and fetch live/published adverts only
+        $liveAdverts = $adverts->where('published', 1)->get();
+
+        //fetch data from config.php
+        $config = config('services.algolia');
+
+        // provide index
+        $index = $config['index'];
+
+        // select algolia index/indice name
+        $indexFromAlgolia = $search->index($index);
+
+        // loop algolia object update for each row
+        foreach($liveAdverts as $liveAdvert)
+        {
+            // update algolia existing object. Determine which by row id
+            $object = $indexFromAlgolia->partialUpdateObject([
+                'logo' => $pathURL,
+                'objectID' => $liveAdvert->id,
+            ]);
+        }
     }
 
 
 
-    public function remove(Request $request, $logo_id)
+    public function remove(Request $request, $logo_id, Search $search)
     {
         $employer = Employer::findOrFail($logo_id);
 
@@ -250,31 +283,41 @@ class CompanyProfileController extends Controller
             return $this->unauthorized($request);
         }
 
-        if($logo != "" && $logo != null && $logo != "/images/defaults/default.jpg")
+        $employer->business_logo = "/images/defaults/default.jpg";
+
+        $employer->save();
+
+        // determine which rows to fetch
+        $adverts = Advert::where('employer_id', '=',$employer->id);
+
+        // provide path URl for Database
+        $pathURL = "/images/defaults/default.jpg";
+
+        // fetch published adverts only
+        $liveAdverts = $adverts->where('published', 1)->get();
+
+        //fetch data from config.php
+        $config = config('services.algolia');
+
+        // provide index
+        $index = $config['index'];
+
+        // select algolia index/indice name
+        $indexFromAlgolia = $search->index($index);
+
+        // loop algolia object update for each row
+        foreach($liveAdverts as $liveAdvert)
         {
-
-            $exist = true;
-
-        }else{
-
-            $exist = false;
+            // update algolia existing object. Determine which by row id
+            $object = $indexFromAlgolia->partialUpdateObject([
+                'logo' => $pathURL,
+                'objectID' => $liveAdvert->id,
+            ]);
         }
 
-        if($exist === true){
+        flash('Your photo has been successfully removed', 'success');
 
-                $employer->business_logo = "/images/defaults/default.jpg";
-                $employer->save();
-
-                flash('Your photo has been successfully removed', 'success');
-
-                return redirect()->back();
-
-        }else{
-
-            flash('Error, please try again', 'error');
-
-            return redirect()->back();
-        }
+        return redirect()->back();
     }
 
 

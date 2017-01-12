@@ -13,7 +13,7 @@
     {{-- <meta property="og:description" content="Jika anda mencari kerja part-time atau sedang mencari pekerja part-time, di sinilah tempatnya! #kerjakerjakerja" /> --}}
     {{-- <meta property="og:url" content="http://www.workwork.my/" /> --}}
     {{-- <meta property="og:image" content="http://www.workwork.my/images/fb-image.jpg" /> --}}
-    <meta property="og:image:type" content="image/jpeg" />
+    {{-- <meta property="og:image:type" content="image/jpeg" /> --}}
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
     <meta property="og:locale" content="ms_MY" />

@@ -28,7 +28,7 @@ class PublishAdvert
     {
         $advert = $event->advert;
 
-        $avatar = $advert->employer->user->avatar;
+        $logo = $advert->employer->business_logo;
         $businessName = $advert->employer->business_name;
 
         $scheduleType = $advert->schedule_type;
@@ -83,7 +83,7 @@ class PublishAdvert
             'rate' => $advert->rate,
             'oku_friendly' => $advert->oku_friendly,
             'published' => $advert->published,
-            'avatar' => $avatar,
+            'logo' => $logo,
             'schedule_type' => $advert->schedule_type,
             'start_date' => $startDate,
             'end_date' => $endDate,

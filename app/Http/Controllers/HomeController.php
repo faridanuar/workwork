@@ -213,41 +213,7 @@ class HomeController extends Controller
         $user->update([ 'avatar' => $pathURL ]);
 
         $user->save();
-
-        // run process if user is an employer
-        if($user->employer)
-        {
-            // determine which rows to fetch
-            $adverts = Advert::where('employer_id', '=',$user->employer->id);
-
-            //MASS UPDATE existing advert's "avatar" column to database
-            //$adverts->update([ 'avatar' => $pathURL ]);
-
-            // fetch the rows
-            $rows = $adverts->get();
-
-            //fetch data from config.php
-            $config = config('services.algolia');
-
-            // provide index
-            $index = $config['index'];
-
-            // select algolia index/indice name
-            $indexFromAlgolia = $search->index($index);
-
-            $liveAds = $adverts->where('published', 1)->get();
-
-            // loop algolia object update for each row
-            foreach($liveAds as $liveAd)
-            {
-                // update algolia existing object. Determine which by row id
-                $object = $indexFromAlgolia->partialUpdateObject([
-                    'avatar' => $pathURL,
-                    'objectID' => $liveAd->id,
-                ]);
-            }
-        }
-}
+    }
 
 
     /**
@@ -257,40 +223,10 @@ class HomeController extends Controller
     public function remove(Request $request, Search $search)
     {
         $user = $request->user();
+
         $user->avatar = "/images/defaults/default.jpg";
+        
         $user->save();
-
-        // run process IF user is an employer
-        if($user->type === "employer")
-        {
-            // determine which rows to fetch
-            $adverts = Advert::where('employer_id', '=',$user->employer->id);
-
-            // provide path URl for Database
-            $pathURL = "/images/defaults/default.jpg";
-
-            // fetch published adverts only
-            $liveAdverts = $adverts->where('published', 1)->get();
-
-            //fetch data from config.php
-            $config = config('services.algolia');
-
-            // provide index
-            $index = $config['index'];
-
-            // select algolia index/indice name
-            $indexFromAlgolia = $search->index($index);
-
-            // loop algolia object update for each row
-            foreach($liveAdverts as $liveAdvert)
-            {
-                // update algolia existing object. Determine which by row id
-                $object = $indexFromAlgolia->partialUpdateObject([
-                    'avatar' => $pathURL,
-                    'objectID' => $liveAdvert->id,
-                ]);
-            }
-        }
 
         // flash message
         flash('Your photo has been successfully removed', 'success');
