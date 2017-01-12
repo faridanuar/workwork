@@ -49,7 +49,11 @@
 
                             <ul class="dropdown-menu" role="menu">
                                 <li><a href="/account">Account</a></li>
-                                <li><a href="{{ url('/logout') }}"><i class="fa fa-btn fa-sign-out"></i>@lang('navigation.logout')</a></li>
+                                @if(Auth::user()->type == "admin")
+                                    <li><a href="{{ url('/a/logout') }}"><i class="fa fa-btn fa-sign-out"></i>@lang('navigation.logout')</a></li>
+                                @else
+                                    <li><a href="{{ url('/logout') }}"><i class="fa fa-btn fa-sign-out"></i>@lang('navigation.logout')</a></li>
+                                @endif
                             </ul>
                         </li>
                     @endif
@@ -62,9 +66,15 @@
     <nav class="auth-nav">
         <div class="container">
             <ul>
-                <li>
-                    <a href="/dashboard" class="auth-nav-item" aria-selected="{{ set_active('dashboard') }}">@lang('navigation.dashboard')</a>
-                </li>
+                @if(Auth::user()->type == "admin")
+                    <li>
+                        <a href="/a/dashboard" class="auth-nav-item" aria-selected="{{ set_active('dashboard') }}">@lang('navigation.dashboard')</a>
+                    </li>
+                @else
+                    <li>
+                        <a href="/dashboard" class="auth-nav-item" aria-selected="{{ set_active('dashboard') }}">@lang('navigation.dashboard')</a>
+                    </li>
+                @endif
                 @can('view_my_adverts')
                     @if(Auth::user()->employer)
                         <li>

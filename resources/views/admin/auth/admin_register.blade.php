@@ -3,7 +3,7 @@
 <div class="panel-ww-registration panel panel-default center-block">
     <div class="panel-heading panel-heading-ww">Sign Up</div>
     <div class="panel-body">
-        <form role="form" method="POST" action="{{ url('/a/register') }}" id="myForm">
+        <form role="form" method="POST" action="{{ url('/a/primary/register') }}" id="myForm">
             {!! csrf_field() !!}
 
             <div class="form-group{{ $errors->has('name') ? ' has-error' : '' }}">

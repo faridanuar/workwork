@@ -9,6 +9,9 @@ use Illuminate\Http\Request;
 use Auth;
 use Mail;
 
+use App\User;
+use App\Employer;
+
 use App\Http\Requests;
 
 class AdminRegistrationController extends Controller
@@ -29,7 +32,7 @@ class AdminRegistrationController extends Controller
      */
     public function register()
     {
-        return view('auth.admin.admin_register');
+        return view('admin.auth.admin_register');
     }
 
 
@@ -51,13 +54,23 @@ class AdminRegistrationController extends Controller
         ]);
 
         // create a new user with the given field
-        $user = User::create($request->all());
+        $user = User::create([
+                   'name' => $request->name,
+                   'email' => $request->email,
+                   'password' => $request->password,
+                   'type' => "admin",
+                   'avatar' => "/images/defaults/default.jpg"
+                ]);
 
-        $user->type = 'admin';
+        // assign user a roles with permissions using "assignRole" method from hasRoles trait
+        $user->assignRole('admin');
 
-        $user->avatar = "/images/defaults/default.jpg";
-
-        $user->save();
+        // create a new company profile and store it in employers table
+        $employer = $user->employer()->create([
+            // 'column' => request->'field'
+            'business_name' => "WorkWork",
+            'business_category' => "Others",
+        ]);
 
         // flash info message after registered
         flash('You can now Login', 'info');
