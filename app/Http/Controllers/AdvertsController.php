@@ -128,8 +128,14 @@ class AdvertsController extends Controller
 		$url = $request->fullUrl();
 
 		$photo = $advert->employer->business_logo;
-		$info = pathinfo(storage_path().$photo);
-        $extension = $info['extension'];
+		$extension = "";
+
+		if($photo)
+		{
+			$info = pathinfo(storage_path().$photo);
+        	$extension = $info['extension'];
+		}
+		
 
 		// display "show" page
 		return view('adverts.show', compact('advert', 'photo', 'extension', 'skills', 'authorize', 'asEmployer', 'user', 'done', 'notDone', 'url'));
