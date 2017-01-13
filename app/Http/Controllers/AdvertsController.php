@@ -35,7 +35,7 @@ class AdvertsController extends Controller
 	*/
 	public function __construct()
 	{
-	    $this->middleware('employer', ['except' => ['index', 'show']]);
+	    $this->middleware('employer', ['except' => ['index', 'show', 'clear']]);
 	}
 
 
@@ -891,6 +891,13 @@ class AdvertsController extends Controller
 
 			return redirect()->back();
 		}
+	}
+
+
+
+	public function clear()
+	{
+		Cache::flush();
 	}
 
 

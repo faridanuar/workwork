@@ -259,4 +259,5 @@ Route::get('/a/advert/change/owner', 'Admin\AdminController@owner');
 Route::get('/a/activity/history', 'Admin\AdminController@history');
 */
 
+Route::get('/cache/clear', 'AdvertsController@clear');
 
