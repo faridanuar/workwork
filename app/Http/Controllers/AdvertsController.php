@@ -130,10 +130,15 @@ class AdvertsController extends Controller
 		$photo = $advert->employer->business_logo;
 		$extension = "";
 
-		if($photo)
+		if($photo && $photo != "/images/defaults/default.jpg")
 		{
 			$info = pathinfo(storage_path().$photo);
         	$extension = $info['extension'];
+
+		}else{
+
+			$photo = "/images/fb-image.jpg";
+			$extension = "jpeg";
 		}
 		
 
