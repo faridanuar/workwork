@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('meta_info')
-    <meta property="og:title" content="{{ $advert->job_title }} - {{ $business_name }}" />
+    <meta property="og:title" content="{{ $advert->job_title }} - {{ $advert->employer->business_name }}" />
     <meta property="og:description" content="{!! nl2br(e($advert->description)) !!}" />
     <meta property="og:url" content="{{ $url }}" />
     <meta property="og:image" content="http://www.workwork.my/{{ $photo }}" />
