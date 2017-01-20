@@ -18,11 +18,17 @@
         </div>
 
         @if ($authorize === true)
+
             @if($user->ftu_level < 4)
+
                 @include('messages.ftu_level')
+
             @elseif($advert->advert_level < 3)
+
                 @include('messages.advert_level')
+
             @endif
+
         @endif
 
         <div class="panel panel-default">
@@ -35,25 +41,49 @@
                 <hr>
                 <div class="media">
                     <div class="media-left">
-                        <a href="#">
-                            <img src="{{ $photo }}" class="media-object avatar-tn img-circle" height="30" width="30" />
-                        </a>
+                        @if($asAdmin === true)
+
+                            <a href="#">
+                                <img src="{{ $advert->logo_from }}" class="media-object avatar-tn img-circle" height="30" width="30" />
+                            </a>
+
+                        @else
+
+                            <a href="#">
+                                <img src="{{ $photo }}" class="media-object avatar-tn img-circle" height="30" width="30" />
+                            </a>
+
+                        @endif
                     </div>
                     <div class="media-body">
                         <h4 class="media-heading">
                         <div class="business-name">
-                            <small>Posted by:</small>
-                            <a href="/company/{{ $advert->employer_id }}/{{ $advert->employer->business_name }}">{{ $advert->employer->business_name }}</a>
+                            @if($asAdmin === true)
+
+                                <small>Advert by:</small>
+                                {{ $advert->advert_from }}
+
+                            @else
+
+                                <small>Posted by:</small>
+                                <a href="/company/{{ $advert->employer_id }}/{{ $advert->employer->business_name }}">{{ $advert->employer->business_name }}</a>
+
+                            @endif
                         </div>
                         </h4>
                     </div>
                 </div>
 
                 <hr>
+
                 <div class="category visible-xs-block">
+                    <h3>Share with friends </h3>
+                    <div class="addthis_inline_share_toolbox"></div>
+
                     <h3>Category</h3>
                     <span class="label label-default">{{ $advert->category }}</span>
                 </div>
+
                 <div class="skill visible-xs-block">
                     <h3>Skills</h3>
                     {{ $skills }}
@@ -76,20 +106,28 @@
 
                 <div class="schedule">
                     <h3>Work Schedule</h3>
+
                     @if($advert->schedule_type === 'specific')
+
                         <div>Specific</div>
                         <div>{{ $advert->specificSchedule->start_date }} - {{ $advert->specificSchedule->end_date }}</div>
                         <div>{{ $advert->specificSchedule->start_time }} - {{ $advert->specificSchedule->end_time }}</div>
+
                     @elseif($advert->schedule_type === 'daily')
+
                         <div><u>Daily</u></div>
+
                         @foreach($advert->dailySchedule as $day)
                             <div>{{ $day->day }} : {{ $day->pivot->start_time }} - {{ $day->pivot->end_time }}</div>
                         @endforeach
-                        <p />
+
                         <div><u>Duration</u></div>
                         <div>Starts: {{ $advert->daily_start_date }} - Ends: {{ $advert->daily_end_date }}</div>
+
                     @else
+
                         <div>No Schedule</div>
+
                     @endif
                 </div>
 
@@ -101,7 +139,17 @@
                 <div class="business-name visible-xs-block">
                     <hr>
                     <h3>Company</h3>
-                    <a href="/company/{{ $advert->employer_id }}/{{ $advert->employer->business_name }}">{{ $advert->employer->business_name }}</a>
+
+                    @if($asAdmin === true)
+
+                        {{ $advert->advert_from }}
+
+                    @else
+                        
+                        <a href="/company/{{ $advert->employer_id }}/{{ $advert->employer->business_name }}">{{ $advert->employer->business_name }}</a>
+
+                    @endif
+
                 </div>
                 <!-- <div class="location">{{ $advert->location }}</div> -->
                 <div class="address visible-xs-block">
@@ -113,26 +161,31 @@
                 </div>
 
                 <div class="visible-xs-block">
-                    @if ($authorize === true)
+                    @if($authorize === true)
 
                     	@can('edit_advert')
                         	<a href="/adverts/{{ $advert->id }}/{{ strtolower($advert->job_title) }}/edit" class="btn btn-default">Edit</a>
+
                             @if($advert->published === 0)
+
                                 <form method="post" action="/adverts/publish">
                                     {{ csrf_field() }}
                                     <input type="hidden" id="id" name="id" value="{{ $advert->id }}" />
                                     <button type="submit" class="btn btn-primary">Publish</button>
                                 </form>
+
                             @else
+
                                 <form method="post" action="/adverts/unpublish">
                                     {{ csrf_field() }}
                                     <input type="hidden" id="id" name="id" value="{{ $advert->id }}" />
                                     <button type="submit" class="btn btn-primary">Unpublish</button>
                                 </form>
+
                             @endif
                     	@endcan
 
-                    @elseif ( $asEmployer === false )
+                    @elseif($asEmployer === false)
 
                     	<a href="/adverts/{{ $advert->id }}/{{ strtolower($advert->job_title) }}/apply" class="btn btn-primary btn-lg btn-block btn-ww-lg">Apply</a>
 
@@ -144,6 +197,8 @@
     <div class="col-sm-4 hidden-xs hidden-print">
         <div class="panel panel-default" id="advertInfo">
             <div class="panel-body">
+                <h3>Share with friends </h3>
+                <div class="addthis_inline_share_toolbox"></div>
                 <div class="category">
                     <h3>Category</h3>
                     <span class="label label-default">{{ $advert->category }}</span>
@@ -161,7 +216,17 @@
                 <hr>
                 <div>
                     <h3>Company</h3>
-                    <a href="/company/{{ $advert->employer_id }}/{{ $advert->employer->business_name }}">{{ $advert->employer->business_name }}</a>
+                    
+                    @if($asAdmin === true)
+
+                        {{ $advert->advert_from }}
+
+                    @else
+                        
+                        <a href="/company/{{ $advert->employer_id }}/{{ $advert->employer->business_name }}">{{ $advert->employer->business_name }}</a>
+
+                    @endif
+                    
                 </div>
                 <div class="address">
                     <div class="street">{{ $advert->street }}</div>
@@ -171,29 +236,69 @@
                 </div>
                 <hr>
                 <div class="actions">
-                    @if ($authorize === true)
+                    @if($authorize === true)
+
                         @can('edit_advert')
                             <a href="/adverts/{{ $advert->id }}/{{ strtolower($advert->job_title) }}/edit" class="btn btn-link">Edit</a>
+
                             @if($advert->published === 0)
+
                                 <form method="post" action="/adverts/publish">
                                     {{ csrf_field() }}
                                     <input type="hidden" id="id" name="id" value="{{ $advert->id }}" />
                                     <button type="submit" class="btn btn-default">Publish</button>
                                 </form>
+
                             @else
+
                                 <form method="post" action="/adverts/unpublish">
                                     {{ csrf_field() }}
                                     <input type="hidden" id="id" name="id" value="{{ $advert->id }}" />
                                     <button type="submit" class="btn btn-default">Unpublish</button>
                                 </form>
+
                             @endif
                         @endcan
-                    @elseif ( $asEmployer === false )
+
+                    @elseif( $asEmployer === false )
+
                         <a href="/adverts/{{ $advert->id }}/{{ strtolower($advert->job_title) }}/apply" class="btn btn-primary btn-lg btn-block btn-ww-lg">Apply</a>
+
                     @endif
+
+                    @can('view_admin_features')
+                        @if($authorize === true)
+
+                            <a href="/a/advert/{{ $advert->id }}/{{ strtolower($advert->job_title) }}/edit" class="btn btn-link">Edit</a>
+
+                            @if($advert->published === 0)
+
+                                <form method="post" action="/a/advert/publish">
+                                    {{ csrf_field() }}
+                                    <input type="hidden" id="id" name="id" value="{{ $advert->id }}" />
+                                    <button type="submit" class="btn btn-default">Publish</button>
+                                </form>
+
+                            @else
+
+                                <form method="post" action="/a/advert/unpublish">
+                                    {{ csrf_field() }}
+                                    <input type="hidden" id="id" name="id" value="{{ $advert->id }}" />
+                                    <button type="submit" class="btn btn-default">Unpublish</button>
+                                </form>
+
+                            @endif
+
+                        @endif
+                    @endcan
+
                 </div>
             </div>
         </div>
     </div>
 </div>
+@stop
+
+@section('js_plugins')
+<script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5876f7c1f3ac37d4"></script> 
 @stop

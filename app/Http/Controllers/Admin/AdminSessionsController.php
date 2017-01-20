@@ -40,8 +40,6 @@ class AdminSessionsController extends Controller
 
         if($this->signIn($request))
         {
-            flash('Welcome back!','info');
-
             return redirect()->intended('/a/dashboard');
         }
 

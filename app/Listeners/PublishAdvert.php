@@ -28,8 +28,18 @@ class PublishAdvert
     {
         $advert = $event->advert;
 
-        $logo = $advert->employer->business_logo;
-        $businessName = $advert->employer->business_name;
+        if($advert->employer->user->type === "admin")
+        {
+            $businessName = $advert->advert_from;
+
+            $logo = $advert->logo_from;
+
+        }else{
+
+            $businessName = $advert->employer->business_name;
+
+            $logo = $advert->employer->business_logo;
+        }
 
         $scheduleType = $advert->schedule_type;
         $startDate = null;
@@ -56,6 +66,9 @@ class PublishAdvert
                 {
                     $days = $advert->dailySchedule;
                 }
+                
+                $dailyStart = $advert->daily_start_date;
+                $dailyEnd = $advert->daily_end_date;
                 break;
             default:
         }

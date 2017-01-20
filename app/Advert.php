@@ -34,6 +34,7 @@ class Advert extends Model
         'schedule_type',
         'daily_start_date',
         'daily_end_date',
+        'advert_from'
     ];
 
     // identify the date to make carbon instance
@@ -47,7 +48,7 @@ class Advert extends Model
     */
     public function scopeLocatedAt($query, $id, $job_title)
     {
-        //$job_title = str_replace('-', ' ', $job_title);
+        $job_title = str_replace('-', ' ', $job_title);
 
         return $query->where(compact('id', 'job_title'));
     }

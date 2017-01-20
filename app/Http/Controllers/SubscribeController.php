@@ -275,10 +275,12 @@ class SubscribeController extends Controller
 						$price = 49;
 			        	$days = 60;
 						break;
+
 					case "1_Month_Plan":
 						$price = 29;
 			        	$days = 30;
 						break;
+
 					default:
 						$price = 0;
 			        	$days = 0;

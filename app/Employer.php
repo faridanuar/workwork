@@ -61,9 +61,23 @@ class Employer extends Model
 
         if(!$employerID)
         {
-            return redirect('/');
+            return null;
         }
 
         return $this->id == $employerID;
+    }
+
+    public function currentLogo()
+    {
+        if( ($this->business_logo != null) && ($this->business_logo != "") && ($this->business_logo != "/images/defaults/default.jpg") )
+        {
+            $givenLogo = $this->business_logo;
+
+        }else{
+            
+            $givenLogo = "/images/defaults/default.jpg";
+        }
+
+        return $givenLogo;
     }
 }

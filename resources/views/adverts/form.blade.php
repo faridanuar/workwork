@@ -1,7 +1,7 @@
 @inject('countries', 'App\Http\Utilities\Country')
 @inject('categories', 'App\Http\Utilities\Category')
 
-{{ csrf_field() }}
+{!! csrf_field() !!}
 
 <div class="form-group">
 	<label for="job_title">@lang('forms.ad_job_title_label')</label>

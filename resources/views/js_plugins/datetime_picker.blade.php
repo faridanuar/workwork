@@ -3,13 +3,17 @@
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.43/js/bootstrap-datetimepicker.min.js"></script>
 <script type="text/javascript">
     $(function () {
+
+        var date = new Date();
+        var year = date.getFullYear();
+
     	$('#datetimepicker1').datetimepicker({
             format: 'L',
-            minDate: Date(),
+            minDate: '1/1/' + year,
         });
     	$('#datetimepicker2').datetimepicker({
             format: 'L',
-            minDate: Date(),
+            minDate: '1/1/' + year,
         });
         $('#datetimepicker3').datetimepicker({
             format: 'LT',
@@ -61,11 +65,11 @@
         });
         $('#datetimepicker5').datetimepicker({
             format: 'L',
-            minDate: Date(),
+            minDate: '1/1/' + year,
         });
         $('#datetimepicker6').datetimepicker({
             format: 'L',
-            minDate: Date(),
+            minDate: '1/1/' + year,
         });
     });
 </script>

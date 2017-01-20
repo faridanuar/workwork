@@ -21,9 +21,8 @@
 			<p></p>
 			
 			<div>
-				<a href="/account/edit" class="btn btn-default btn-sm">EDIT</a>
+				<a href="/account/edit" class="btn btn-default btn-sm">Edit</a>
 			</div>
 		</div>
-	</div>
 </div>
 @stop

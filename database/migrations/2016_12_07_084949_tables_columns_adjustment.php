@@ -14,7 +14,6 @@ class TablesColumnsAdjustment extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
             $table->boolean('trial_used')->default(0);
-            $table->boolean('free_plan_used')->default(0);
             $table->integer('flagged_count')->unsigned();
         });
 
@@ -37,7 +36,6 @@ class TablesColumnsAdjustment extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
             $table->dropColumn('trial_used');
-            $table->dropColumn('free_plan_used');
             $table->dropColumn('flagged_count');
         });
 
@@ -45,7 +43,6 @@ class TablesColumnsAdjustment extends Migration
             $table->string('business_name')->nullable();
             $table->string('avatar')->nullable();
             $table->renameColumn('free_plan_used', 'trial_used');
-            $table->integer('trial_used')->unsigned()->change();
             $table->dropColumn('sms_count');
             $table->dropColumn('about_to_expire')->default(0);
         });

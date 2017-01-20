@@ -54,6 +54,7 @@ class Kernel extends HttpKernel
         'noRoleType' => \App\Http\Middleware\MustNotHaveRoleType::class,
         'subscribed' => \App\Http\Middleware\MustBeSubscribed::class,
         'noCompanyProfile' => \App\Http\Middleware\NoCompanyProfile::class,
-        'noProfile' => \App\Http\Middleware\NoProfile::class
+        'noProfile' => \App\Http\Middleware\NoProfile::class,
+        'admin' => \App\Http\Middleware\MustBeAdmin::class
     ];
 }

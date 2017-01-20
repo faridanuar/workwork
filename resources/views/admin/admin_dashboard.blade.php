@@ -15,12 +15,40 @@
         <div class="panel panel-default">
             <div class="panel-body">
                     <a href="/a/advert/create" class="btn btn-default btn-sm">Create New Advert</a>
+                    <a href="/a/profile/{{ $user->employer->id }}/{{ $user->employer->business_name }}" class="btn btn-default btn-sm">profile</a>
                     <a href="/a/activity/history" class="btn btn-default btn-sm">History</a>
             </div>
         </div>
 
         <div class="form-group">
-           List of Created Adverts <span class="badge">0</span>
+            <div>
+                List of Created Adverts <span class="badge">{{ count($adverts) }}</span>
+            </div>
+
+            <p></p>
+
+            @forelse( $adverts as $advert )
+                <div class="form-group">
+                    {{ $advert->job_title }} - {{ $advert->advert_from }} -
+                    
+                    @if($advert->published != 0)
+                        <span class="label label-success label">PUBLISHED</span> 
+                    @else
+                        <span class="label label-warning">UNPUBLISHED</span> 
+                    @endif
+
+                    <p></p>
+
+                    <a class="btn btn-default btn-sm" href="/adverts/{{ $advert->id }}/{{ $advert->job_title }}">View</a> 
+                    <a class="btn btn-default btn-sm" href="/a/advert/{{ $advert->id }}/{{ $advert->job_title }}/logo/upload">Edit Logo</a> 
+                    <a class="btn btn-default btn-sm" href="/a/advert/{{ $advert->id }}/{{ $advert->job_title }}/change/owner">Change Owner</a>
+
+                </div>
+            @empty
+                <div class="form-group">
+                    No available adverts...
+                </div>
+            @endforelse
         </div>
 
         <div>

@@ -9,8 +9,8 @@
 </div>
 
 <div class="form-group">
-	<label for="business_name">Company Name</label>
-	<input type="text" name="business_name" id="business_name" class="form-control" value="{{ old('business_name') }}" maxlength="60" required>
+	<label for="advert_from">Advert From</label>
+	<input type="text" name="advert_from" id="advert_from" class="form-control" value="{{ old('advert_from') }}" maxlength="60" required>
 </div>
 
 <div class="form-group">

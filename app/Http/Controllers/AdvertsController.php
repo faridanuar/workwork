@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth;
 
 use Event;
 use Cache;
+use Session;
 
 use Carbon\Carbon;
 
@@ -92,6 +93,7 @@ class AdvertsController extends Controller
 		$authorize = "";
 		$asEmployer = false;
 		$skills = "";
+		$asAdmin = false;
 		
 		if($user)
 		{
@@ -99,7 +101,9 @@ class AdvertsController extends Controller
 			{
 				$done = 3;
 		        $notDone = 3;
+
 	    	}else{
+
 	    		$done = 2;
 		        $notDone = 2;
 	    	}
@@ -116,6 +120,11 @@ class AdvertsController extends Controller
 					$authorize = true;
 				}
 			}
+		}
+
+		if($advert->employer->user->type === "admin")
+		{
+			$asAdmin = true;
 		}
 
 		if($advert->skills)
@@ -137,13 +146,13 @@ class AdvertsController extends Controller
 
 		}else{
 
-			$photo = "/images/fb-image.jpg";
+			$photo = "/images/defaults/default.jpg";
 			$extension = "jpeg";
 		}
 		
 
 		// display "show" page
-		return view('adverts.show', compact('advert', 'photo', 'extension', 'skills', 'authorize', 'asEmployer', 'user', 'done', 'notDone', 'url'));
+		return view('adverts.show', compact('advert', 'photo', 'extension', 'skills', 'authorize', 'asEmployer', 'user', 'done', 'notDone', 'url', 'asAdmin'));
 	}
 
 
@@ -891,13 +900,6 @@ class AdvertsController extends Controller
 
 			return redirect()->back();
 		}
-	}
-
-
-
-	public function clear()
-	{
-		Cache::flush();
 	}
 
 

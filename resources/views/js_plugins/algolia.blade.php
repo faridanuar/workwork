@@ -14,7 +14,10 @@ autocomplete('#search-box', { hint: false }, [
           return (
           	'<div class="hits">'+
           		'<span class="job_title">' + suggestion._highlightResult.job_title.value + '</span>' +
-          	'</div>'
+          	'</div>' +
+            '<div class="ais-search-box--powered-by">'+
+              '<span class="business_name">' + suggestion._highlightResult.business_name.value + '</span>' +
+            '</div>'
           );
         }
       }
@@ -24,6 +27,7 @@ autocomplete('#search-box', { hint: false }, [
       templates: {
         suggestion: function(suggestion) {
           return (
+            '<hr />' +
             '<span>' +
               '<div class="ais-search-box--powered-by">' +
                 'Search by' +
@@ -88,10 +92,9 @@ search.addWidget(
 );
 
 
-
 // hits templates
 var resultsTemplate =
-	'<a class="panel-job-links" href="/adverts/@{{ id }}/@{{ job_title }}">' +
+	'<a class="panel-job-links" href="/adverts/@{{ id }}/@{{ job_title }}" >' +
 		'<div class="panel panel-default">' +
 		  	'<div class="panel-body">' +
                 '<div class="business-name">@{{{ _highlightResult.business_name.value }}}</div>' +
@@ -123,7 +126,6 @@ search.addWidget(
     autoHideContainer: false
   })
 );
-
 
 
 // display hits widget

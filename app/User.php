@@ -64,7 +64,7 @@ class User extends Authenticatable
 
         if(!$userID)
         {
-            return redirect('/');
+            return null;
         }
 
         return $this->id == $userID;
@@ -72,10 +72,12 @@ class User extends Authenticatable
 
     public function currentAvatar()
     {
-        if($this->avatar != null || $this->avatar != "" || $this->avatar != "/images/defaults/default.jpg")
+        if( ($this->avatar != null) && ($this->avatar != "") && ($this->avatar != "/images/defaults/default.jpg") )
         {
             $givenAvatar = $this->avatar;
+
         }else{
+            
             $givenAvatar = "/images/defaults/default.jpg";
         }
 

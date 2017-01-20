@@ -6,7 +6,7 @@
 
 // Route::get('/time', 'HomeController@time');
 
-//Route::auth();
+// Route::auth();
 
 /**
  * Home-Dashboard routes
@@ -234,6 +234,7 @@ Route::get('/resume', 'StatusController@resume');
 
 /**
 * Admin routes
+*/
 Route::get('/a/primary/register', 'Admin\AdminRegistrationController@register');
 
 Route::post('/a/primary/register', 'Admin\AdminRegistrationController@postRegister');
@@ -248,16 +249,32 @@ Route::get('/a/dashboard', 'Admin\AdminController@dashboard');
 
 Route::get('/a/advert/create', 'Admin\AdminController@create');
 
-Route::post('/a/advert/create', 'AdminController@store');
+Route::post('/a/advert/create', 'Admin\AdminController@store');
 
-Route::get('/a/advert/logo/upload', 'Admin\AdminController@logo');
+Route::post('/a/advert/publish', 'Admin\AdminController@publish');
 
-Route::post('/a/advert/logo/store', 'Admin\AdminController@uploadLogo');
+Route::post('/a/advert/unpublish', 'Admin\AdminController@unpublish');
+
+Route::get('/a/advert/{id}/{job_title}/logo/upload', 'Admin\AdminController@logo')->name('logo');;
+
+Route::post('/a/advert/{id}/{job_title}/logo/store', 'Admin\AdminController@uploadLogo');
+
+Route::get('/a/advert/{id}/{job_title}/edit', 'Admin\AdminController@edit');
+
+Route::post('/a/advert/{id}/{job_title}/update', 'Admin\AdminController@update');
+
+Route::get('/a/advert/{id}/{job_title}/change/owner', 'Admin\AdminController@owner');
+
+Route::post('/a/advert/{id}/{job_title}/cnange/owner', 'Admin\AdminController@changeOwner');
+
+Route::get('/a/profile/{id}/{business_name}', 'Admin\AdminProfileController@profile');
+
+Route::get('/a/profile/edit', 'Admin\AdminProfileController@edit');
+
+Route::post('/a/profile/update', 'Admin\AdminProfileController@update');
 
 Route::get('/a/advert/change/owner', 'Admin\AdminController@owner');
 
 Route::get('/a/activity/history', 'Admin\AdminController@history');
-*/
 
-Route::get('/cache/clear', 'AdvertsController@clear');
 

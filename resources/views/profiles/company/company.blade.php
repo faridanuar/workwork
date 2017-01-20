@@ -84,7 +84,7 @@
 					<hr>
 
 					<div>
-						<a href="/company/edit" class="btn btn-default">EDIT</a>
+						<a href="/company/edit" class="btn btn-default">Edit</a>
 					</div>
 				@endif
 			@endcan

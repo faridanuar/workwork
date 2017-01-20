@@ -36,7 +36,10 @@ autocomplete('#global-search', { hint: false }, [
           return (
           	'<div class="hits">' +
           		'<span class="job_title">' + suggestion._highlightResult.job_title.value + '</span>' +
-          	'</div>'
+          	'</div>' +
+            '<div class="ais-search-box--powered-by">'+
+              '<span class="business_name">' + suggestion._highlightResult.business_name.value + '</span>' +
+            '</div>'
           );
         }
       }
