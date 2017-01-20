@@ -66,7 +66,7 @@ class AdminRegistrationController extends Controller
         $user->assignRole('admin');
 
         // create a new company profile and store it in employers table
-        $employer = $user->employer()->create([
+        $employer = $user->employer->create([
             // 'column' => request->'field'
             'business_name' => "WorkWork",
             'business_category' => "Others",
