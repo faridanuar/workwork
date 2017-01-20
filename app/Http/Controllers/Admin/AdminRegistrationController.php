@@ -62,15 +62,15 @@ class AdminRegistrationController extends Controller
                    'avatar' => "/images/defaults/default.jpg"
                 ]);
 
+        // assign user a roles with permissions using "assignRole" method from hasRoles trait
+        $user->assignRole('admin');
+
         // create a new company profile and store it in employers table
         $user->employer()->create([
             // 'column' => request->'field'
             'business_name' => "WorkWork",
             'business_category' => "Others",
         ]);
-
-        // assign user a roles with permissions using "assignRole" method from hasRoles trait
-        $user->assignRole('admin');
 
         // flash info message after registered
         flash('You can now Login', 'info');

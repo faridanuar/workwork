@@ -237,7 +237,7 @@ Route::get('/resume', 'StatusController@resume');
 */
 Route::get('/a/primary/register', 'Admin\AdminRegistrationController@register');
 
-Route::post('/a/primary/register/store', 'Admin\AdminRegistrationController@postRegister');
+Route::post('/a/primary/register', 'Admin\AdminRegistrationController@postRegister');
 
 Route::get('/a/login', 'Admin\AdminSessionsController@login');
 
