@@ -90,7 +90,8 @@
 			@endcan
 
 			@can('rate_company')
-				@if($rated === false)
+				@if($company->user->hasRole('employer'))
+					@if($rated === false)
 					<h4>Rate:</h4>
 
 					<form action="/company/{{ $company->id }}/{{ $company->business_name }}/rate" method="post" id="rateForm">
@@ -130,6 +131,7 @@
 								@endforeach
 							</ul>
 						</div>
+						@endif
 					@endif
 				@endif
 			@endcan

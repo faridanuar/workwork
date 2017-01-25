@@ -27,7 +27,7 @@ class ApplyController extends Controller
 
 
 	/**
-	* return view file
+	* return apply page view
 	*/
     public function apply(Request $request, $id, $job_title)
 	{
@@ -38,7 +38,9 @@ class ApplyController extends Controller
 			flash("Sorry, you need to create your profile before applying", 'info');
 
 			return redirect('profile/create');
+
 		}else{
+
 			// display only the first retrieved
 			$jobSeeker = $user->jobSeeker;
 		}
@@ -49,7 +51,7 @@ class ApplyController extends Controller
 		$application = Application::where('advert_id', $advert->id)
 						->where('job_seeker_id', $jobSeeker->id)
 						->where('employer_id', $advert->employer->id)
-						->where('responded', 0)->first();
+						->where('employer_responded', 0)->first();
 
 		if($application)
 		{
@@ -82,10 +84,14 @@ class ApplyController extends Controller
 		// create a new Application model / a new row of data
 		$application = new Application;
 
+		// store introduction field's value
 		$application->introduction = $request->introduction;
 
 		// add a field to "status" column
 		$application->status = 'PENDING';
+
+		// add the advert job title to "advert_job_title" column
+		$application->advert_job_title = $advert->job_title;
 
 		// use associate method to get model relationship from other Job_Seeker model and store its "id"
 		$application->jobSeeker()->associate($thisJobSeeker);
@@ -128,18 +134,22 @@ class ApplyController extends Controller
 			                	$proceed = "true";
 			                }
 			                break;
+
 			            case "Trial":
 			                if($advert->sms_count > 0)
 			                {
 			                	$proceed = "true";
 			                }    
 			                break;
+
 		                case "1_Month_Plan":
-		                	$proceed = "true";    
+		                	$proceed = "true";
 			                break;
+
 		                case "2_Month_Plan":
 		                	$proceed = "true";    
 			                break;
+
 			            default: 
 			        }
 
@@ -215,7 +225,7 @@ class ApplyController extends Controller
 			    					'domain' => $domain, 
 			    					'recipient' => $recipient,
 			    					'recipientName' => $recipientName, 
-			    				];
+			    				 ];
 
 					// use send method from Mail facade to send email. ex: send('view', 'info / array of data', fucntion)
 		            Mail::send($emailView, $data, function ($message) use ($parameter) {
@@ -231,9 +241,12 @@ class ApplyController extends Controller
 
 			// set flash attribute and key. example --> flash('success message', 'flash_message_level')
 			flash('Your application has been sent. Now you have to wait for confirmation from the employer', 'success');
+
 		}else{
+
 			// set flash attribute and key. example --> flash('success message', 'flash_message_level')
 			flash('Uh Oh, something went wrong when saving your application. Please try again later.', 'error');
+			
 			return redirect()->back();
 		}
 

@@ -20,6 +20,7 @@ class Kernel extends ConsoleKernel
     protected $commands = [
          \App\Console\Commands\AlgoliaIndexer::class,
          \App\Console\Commands\CheckAdvertsExpiration::class,
+         \App\Console\Commands\FillApplicationsMissingJobTitle::class,
     ];
 
     /**

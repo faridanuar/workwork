@@ -60,7 +60,7 @@ class Advert extends Model
     */
     public function applications()
     {
-        return $this->hasMany(Application::class);
+        return $this->hasMany(Application::class, 'advert_id');
     }
 
    /**

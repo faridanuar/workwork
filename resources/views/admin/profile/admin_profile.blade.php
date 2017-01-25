@@ -7,9 +7,7 @@
 	@include('messages.flash')
 </div>
 
-Aww its empty D:
 
-{{--
 <div class="ftu-panel panel-ww-600 panel panel-default center-block">
     <div class="panel-heading panel-heading-ww">{{ $company->business_name }}</div>
 		<div class="panel-body">
@@ -83,7 +81,7 @@ Aww its empty D:
 					<hr>
 
 					<div>
-						<a href="/a/profile/edit" class="btn btn-default">Edit</a>
+						<a href="/a/company/edit" class="btn btn-default">Edit</a>
 					</div>
 				@endif
 			@endcan
@@ -91,5 +89,5 @@ Aww its empty D:
 		</div>
 	</div>
 </div>
---}}
+
 @stop

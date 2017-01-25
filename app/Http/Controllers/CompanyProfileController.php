@@ -129,6 +129,7 @@ class CompanyProfileController extends Controller
 
         // get new company name
         $newCompanyName = $request->business_name;
+
         // get current company name
         $currentCompanyName = $employer->business_name;
 
@@ -165,17 +166,16 @@ class CompanyProfileController extends Controller
         }
 
         $employer->update([
-
-                'business_name' => $request->business_name,
-                'business_category' => $request->business_category,
-                'business_contact' => $request->business_contact,
-                'business_website' => $request->business_website,
-                'location' => $request->location,
-                'street' => $request->street,
-                'city' => $request->city,
-                'zip' => $request->zip,
-                'state' => $request->state,
-                'company_intro' => $request->company_intro,
+            'business_name' => $request->business_name,
+            'business_category' => $request->business_category,
+            'business_contact' => $request->business_contact,
+            'business_website' => $request->business_website,
+            'location' => $request->location,
+            'street' => $request->street,
+            'city' => $request->city,
+            'zip' => $request->zip,
+            'state' => $request->state,
+            'company_intro' => $request->company_intro,
         ]);
 
         $employer->save();
@@ -198,11 +198,13 @@ class CompanyProfileController extends Controller
         {
 
             $fileExist = true;
+
             $photo = $logo;
 
         }else{
 
             $fileExist = false;
+            
             $photo = "/images/defaults/default.jpg";
         }
 
@@ -392,6 +394,7 @@ class CompanyProfileController extends Controller
     public function allList($id)
     {
         $advert = Advert::find($id);
+
         $currentPlan = $advert->current_plan;
 
         switch ($currentPlan)
@@ -399,17 +402,23 @@ class CompanyProfileController extends Controller
             case "Free":
                 $count = 3;
                 break;
+
             case "Trial":
                 $count = 10;    
                 break;
+
             default: 
+                $count = 1; 
         }
 
         if($currentPlan != '1_Month_Plan' && $currentPlan != '2_Month_Plan')
         {
             $limitedRequest = Application::where('advert_id', $id)->take($count);
+
             $allInfos = $limitedRequest->get();
+
         }else{
+
             $allInfos = Application::where('advert_id', $id)->paginate(5);
         }
 
@@ -421,6 +430,7 @@ class CompanyProfileController extends Controller
     public function pendingList($id)
     {
         $advert = Advert::find($id);
+
         $currentPlan = $advert->current_plan;
 
         switch ($currentPlan)
@@ -428,17 +438,23 @@ class CompanyProfileController extends Controller
             case "Free":
                 $count = 3;
                 break;
+
             case "Trial":
                 $count = 10;    
                 break;
-            default: 
+
+            default:
+                $count = 1;    
         }
 
         if($currentPlan != '1_Month_Plan' && $currentPlan != '2_Month_Plan')
         {
             $limitedRequest = Application::where('advert_id', $id)->take($count);
+
             $requestInfos = $limitedRequest->get();
+
         }else{
+
             $requestInfos = Application::where('advert_id', $id)->where('status', 'PENDING')->paginate(5);
         }
         
@@ -472,20 +488,24 @@ class CompanyProfileController extends Controller
     public function response(Request $request, $id)
     {
         $application = Application::find($id);
+
         $recipientName = $application->jobSeeker->user->name;
+
         $contact = $application->jobSeeker->user->contact;
 
         $status = $request->status;
 
-        if($status != "REJECTED"){
-
+        if($status != "REJECTED")
+        {
             $this->validate($request, [
                 'status' => 'required|max:50',
                 'arrangement' => 'required',
             ]);
 
             $comment = $request->arrangement;
+
         }else{
+
             $this->validate($request, [
                 'status' => 'required|max:50',
                 'feedback' => 'required',
@@ -499,7 +519,7 @@ class CompanyProfileController extends Controller
             'employer_comment' => $comment,
         ]);
 
-        $application->responded = 1;
+        $application->employer_responded = 1;
 
         if($application->save())
         {
@@ -507,11 +527,17 @@ class CompanyProfileController extends Controller
 
             // Step 2: set our AccountSid and AuthToken from www.twilio.com/user/account
             $AccountSid = $config['acc_id'];
+
             $AuthToken = $config['auth_token'];
+
             $websiteURL = $config['site_url'];
+
             $url = $websiteURL."my/applications/$id";
+
             $job_title = $application->advert->job_title;
+
             $contact = $application->jobSeeker->user->contact;
+
             $JobSeekerName = $application->jobSeeker->user->name;
 
             if($application->jobSeeker->user->contact_verified != 0)
@@ -555,9 +581,13 @@ class CompanyProfileController extends Controller
 
             // testing recipient email => $recipient = "farid@pocketpixel.com";
             $config = config('services.mailgun');
+
             $domain = $config['sender'];
+
             $recipient = $application->jobSeeker->user->email;
+
             $recipientName = $application->jobSeeker->user->name;
+
             $emailView = 'mail.application_notification';
 
             $data = [
@@ -569,7 +599,7 @@ class CompanyProfileController extends Controller
                             'domain' => $domain,
                             'recipient' => $recipient,
                             'recipientName' => $recipientName
-                        ];
+                         ];
 
             if($application->jobSeeker->user->verified != 0)
             {
@@ -589,9 +619,12 @@ class CompanyProfileController extends Controller
 
             // set flash attribute and key. example --> flash('success message', 'flash_message_level')
             flash('Your response has been sent', 'success');
+
         }else{
+
             // set flash attribute and key. example --> flash('success message', 'flash_message_level')
             flash('Uh Oh, something went wrong when saving your response. Please try again later.', 'error');
+
             return redirect()->back();
         }
         return redirect()->back();
@@ -619,7 +652,9 @@ class CompanyProfileController extends Controller
             {
                 return response(['message' => 'No!'], 403);
             }
+
             flash('not the owner','error');
+
             return redirect('/');
         }
 
@@ -628,50 +663,66 @@ class CompanyProfileController extends Controller
         if($advert->current_plan === "Free")
         {
             $allowedCount = 3;
+
             $advertCount = count($allAdverts);
 
             if($advertCount > $allowedCount)
             {
                 flash('Sorry, You are only limited to view the first'.$allowedCount.'request only', 'info');
+
                 return redirect('/adverts');
             }
 
         }elseif($advert->current_plan === "Trial"){
 
             $allowedCount = 10;
+
             $advertCount = count($allAdverts);
 
             if($advertCount > $allowedCount)
             {
                 flash('Sorry, You are only limited to view the first'.$allowedCount.'request only', 'info');
+
                 return redirect('/adverts');
             }
 
         }
 
         $application = Application::find($application_id);
+
         $jobSeeker = JobSeeker::find($application->job_seeker_id);
+
         $employer = Employer::find($application->employer->id);
+
         $avatar = $jobSeeker->user->avatar;
+
         $ratings = $jobSeeker->ownRatings->count();
+
         $rated = false;
+
         $haveRating = JobSeekerRating::where('job_seeker_id', $jobSeeker->id)->where('employer_id', $employer->id )->first();
 
 
-        if($avatar){
+        if($avatar)
+        {
             $photo = $jobSeeker->user->avatar;
+
         }else{
+
             $photo = "/images/defaults/default.jpg";
         }
         
         if($ratings === 0)
         {
             $average = 0;
+
         }else{
+
             $average = $jobSeeker->ownRatings->avg('rating');
         }
 
-        if($haveRating){
+        if($haveRating)
+        {
             if($haveRating->employer_id === $employer->id)
             {
                 $rated = true;
@@ -686,12 +737,15 @@ class CompanyProfileController extends Controller
     public function setAsReceived(Request $request)
     {
         $status = $request->status;
+
         $applicationID = $request->applicationID;
 
         if($status === 'PENDING')
         {
             $application = Application::findOrFail($applicationID);
+
             $application->status = "RECEIVED";
+
             $application->save();
         }
     }

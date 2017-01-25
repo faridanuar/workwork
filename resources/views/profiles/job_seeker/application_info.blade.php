@@ -3,7 +3,7 @@
 @section('content')
 
 <div class="ftu-panel panel-ww-600 panel panel-default center-block">
-    <div class="panel-heading panel-heading-ww">Job request for: {{$appInfo->advert->job_title}}</div>
+    <div class="panel-heading panel-heading-ww">Job request for: {{$appInfo->advert_job_title}}</div>
       <div class="panel-body">
         <div class="form-group">
           <a href="/my/applications" class="btn btn-default btn-sm">Back</a>
@@ -32,7 +32,7 @@
 @section('js_plugins')
   <script type="text/javascript">
   var applicationID = '{{ $appInfo->id }}';
-  var applicationStatus = '{{ $appInfo->responded }}';
+  var applicationStatus = '{{ $appInfo->employer_responded }}';
 
   $(document).ready(function(){
     if(applicationStatus != 0)

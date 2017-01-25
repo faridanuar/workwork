@@ -52,62 +52,79 @@ class CheckAdvertsExpiration extends Command
         foreach($adverts as $advert)
         {
             $todaysDate = Carbon::now();
+
             $endDate = $advert->plan_ends_at;
+
             $expDate =  $todaysDate->diffInDays($endDate, false);
 
-            if($expDate < 0){
+            if($advert->current_plan != 'admin')
+            {
 
-                if($advert->published != 0)
+                if($expDate <= 0)
                 {
-                    $advert->published = 0;
+
+                    if($advert->published != 0)
+                    {
+                        $advert->published = 0;
+
+                        $advert->save();
+
+                        $config = config('services.algolia');
+
+                        $index = $config['index'];
+
+                        $indexFromAlgolia = $search->index($index);
+
+                        $object = $indexFromAlgolia->deleteObject($advert->id);
+                    }
+
+                }elseif($expDate > 0 && $expDate < 4){
+
+                    $advert->about_to_expire = 1;
+
                     $advert->save();
 
-                    $config = config('services.algolia');
-                    $index = $config['index'];
-                    $indexFromAlgolia = $search->index($index);
-                    $object = $indexFromAlgolia->deleteObject($advert->id);
-                }
+                    $user = $advert->employer->user;
 
-            }elseif($expDate > 0 && $expDate < 4){
-
-                $advert->about_to_expire = 1;
-                $advert->save();
-
-                $user = $advert->employer->user;
-
-                if($user->verified === 1)
-                {
-                    if($user->email)
+                    if($user->verified === 1)
                     {
-                        $emailView = 'mail.notify_expiration';
+                        if($user->email)
+                        {
+                            $emailView = 'mail.notify_expiration';
 
-                        // fetch mailgun attributes from SERVICES file
-                        $config = config('services.mailgun');
-                        // applications domain
-                        $domain = $config['sender'];
-                        // fetch website provided url
-                        $website = $config['site_url'];
+                            // fetch mailgun attributes from SERVICES file
+                            $config = config('services.mailgun');
 
-                        // set the values in array
-                        $data = ['user' => $user, 'website' => $website, 'advert' => $advert];
-                        $parameter = ['user' => $user, 'domain' => $domain];
+                            // applications domain
+                            $domain = $config['sender'];
 
-                        // use send method form Mail facade to send email. ex: send('view', 'info / array of data', fucntion)
-                        Mail::send($emailView, $data, function ($message) use ($parameter) {
+                            // fetch website provided url
+                            $website = $config['site_url'];
 
-                            // Recipient Test Email => $recipient = "farid@pocketpixel.com";
+                            // set the values in array
+                            $data = ['user' => $user, 'website' => $website, 'advert' => $advert];
 
-                            // get the necessary required values for mailgun
-                            $appDomain = $parameter['domain'];
-                            $recipient = $parameter['user']->email;
-                            $recipientName = $parameter['user']->name;
+                            $parameter = ['user' => $user, 'domain' => $domain];
 
-                            // set email sender stmp url and sender name
-                            $message->from($appDomain, 'WorkWork');
+                            // use send method form Mail facade to send email. ex: send('view', 'info / array of data', fucntion)
+                            Mail::send($emailView, $data, function ($message) use ($parameter) {
 
-                            // set email recepient and subject
-                            $message->to($recipient, $recipientName)->subject('Notice');
-                        });
+                                // Recipient Test Email => $recipient = "farid@pocketpixel.com";
+
+                                // get the necessary required values for mailgun
+                                $appDomain = $parameter['domain'];
+
+                                $recipient = $parameter['user']->email;
+
+                                $recipientName = $parameter['user']->name;
+
+                                // set email sender stmp url and sender name
+                                $message->from($appDomain, 'WorkWork');
+
+                                // set email recepient and subject
+                                $message->to($recipient, $recipientName)->subject('Notice');
+                            });
+                        }
                     }
                 }
             }

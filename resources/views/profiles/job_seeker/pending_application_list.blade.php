@@ -11,7 +11,7 @@
 		<div class="panel panel-default">
 			<div class="panel-body">
 				<div>
-					Job: {{ $requestInfo->advert->job_title }}
+					Job: {{ $requestInfo->advert_job_title }}
 				</div>
 
 				<hr>

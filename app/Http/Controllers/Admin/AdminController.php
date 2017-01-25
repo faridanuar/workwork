@@ -8,6 +8,8 @@ use Illuminate\Http\Request;
 
 use Illuminate\Support\Facades\Auth;
 
+use Mail;
+use Services_Twilio;
 use Image;
 use Event;
 use Cache;
@@ -15,10 +17,14 @@ use Session;
 
 use App\User;
 use App\Advert;
+use App\Application;
 use App\Skill;
 use App\Employer;
+use App\JobSeeker;
+use App\JobSeekerRating;
 use App\SpecificSchedule;
 use App\DailySchedule;
+use App\Activity;
 
 use Carbon\Carbon;
 
@@ -49,7 +55,7 @@ class AdminController extends Controller
     	// check if user's avatar exist & get the provided avatar
         $avatar = $user->currentAvatar();
 
-        $adverts = Advert::where('employer_id', $user->employer->id)->get();
+        $adverts = Advert::where('employer_id', $user->employer->id)->orderBy('published', 'desc')->paginate(10);
 
     	return view('admin.admin_dashboard', compact('user', 'avatar', 'adverts'));
     }
@@ -69,7 +75,9 @@ class AdminController extends Controller
     public function store(AdvertRequest $request)
     {
     	$saveLater = $request->saveLater;
+
 		$scheduleType = $request->scheduleType;
+
 		$days = $request->day;
 
 		if($saveLater != "true")
@@ -115,10 +123,12 @@ class AdminController extends Controller
 						}
 
 						$this->validate($request, [
-						        'dailyStartDate' => 'required|max:20',
-					            'dailyEndDate' => 'required|max:20',           
+					        'dailyStartDate' => 'required|max:20',
+				            'dailyEndDate' => 'required|max:20',           
 					    ]);
+
 					}else{
+
 						$messages = [
 							'day.required' => 'You need to choose the selected day when setting the time',
 						];
@@ -128,15 +138,19 @@ class AdminController extends Controller
 					    ], $messages);
 					}
 			    	break;
+
 			    default:
 			}
 		}
 
 		$user = $request->user();
 
-		if($request->oku_friendly != null){
+		if($request->oku_friendly != null)
+		{
 			$oku_friendly = "yes";
+
 		}else{
+
 			$oku_friendly = "no";
 		}
 
@@ -171,24 +185,31 @@ class AdminController extends Controller
 					'end_time' => $request->endTime,
 				]);
 				break;
+
 			case "daily":
 				$starts = $request->startDayTime;
+
 				$ends = $request->endDayTime;
 
 				foreach($days as $key => $dayName)
 				{
 					$dayName = DailySchedule::find($key);
-					$advert->dailySchedule()->attach($dayName,[
-							'start_time'=>$starts[$key],
-							'end_time'=>$ends[$key]
-						]);
+
+					$advert->dailySchedule()
+							->attach($dayName,[
+								'start_time'=>$starts[$key],
+								'end_time'=>$ends[$key]
+							]);
 				}
+
 				$advert->update([
 					'daily_start_date' => $request->dailyStartDate,
 					'daily_end_date' => $request->dailyEndDate
 				]);
+
 				$advert->save();
 				break;
+
 			default:
 		}
 
@@ -203,21 +224,31 @@ class AdminController extends Controller
 			if(count(Skill::where('skill',$skill)->get()) > 0)
 			{	
 				$skill = Skill::where('skill',$skill)->get();
+
 				$advert->skills()->attach($skill);
+
 			}else{
+
 				$newSkill = new Skill;
+
 				$newSkill->skill = $skill;
+
 				$newSkill->save();
+
 				$advert->skills()->attach($newSkill);
 			}
 		}
 
+		$advert->current_plan = 'admin';
+
 		switch ($saveLater)
 		{
 			case "true":
+
 				$advert->ready_to_publish = 0;
 
 				$advert->save();
+
 				$user->save();
 
 				flash('Your advert has been successfully saved but not yet published', 'info');
@@ -234,8 +265,18 @@ class AdminController extends Controller
 				}
 				
 				$advert->save();
+
 				$user->save();
 		}
+
+		$activity = new Activity;
+
+		$activity->create([
+				'activity' => 'create',
+				'description' => 'A new advert was created name: ' . $advert->job_title,
+				'table' => 'adverts',
+				'user' => $user->name
+			]);
 
 		return redirect()->route('logo', [$advert->id, $advert->job_title]);
     }
@@ -254,11 +295,13 @@ class AdminController extends Controller
         if($logo != "" && $logo != null && $logo != "/images/defaults/default.jpg")
         {
             $fileExist = true;
+
             $photo = $logo;
 
         }else{
 
             $fileExist = false;
+
             $photo = "/images/defaults/default.jpg";
         }
 
@@ -320,6 +363,15 @@ class AdminController extends Controller
                 'objectID' => $liveAdvert->id,
             ]);
         }
+
+        $activity = new Activity;
+
+		$activity->create([
+				'activity' => 'upload logo',
+				'description' => 'A new logo was added to: ' . $advert->job_title,
+				'table' => 'adverts',
+				'user' => $user->name
+			]);
     }
 
 
@@ -350,17 +402,24 @@ class AdminController extends Controller
 			{
 				return response(['message' => 'No!'], 403);
 			}
+
 			flash('not the owner','error');
+
 			return redirect('/');
 		}
 
 		$skills = $advert->skills->implode('skill',',');
+
 		$scheduleType = $advert->schedule_type;
+
 		$dayName = new DailySchedule;
+
 		$startDate = null;
 		$endDate = null;
+
 		$startTime = null;
 		$endTime = null;
+
 		$days = null;
 		$dailyStart = null;
 		$dailyEnd = null; 
@@ -371,8 +430,11 @@ class AdminController extends Controller
 				if($advert->specificSchedule)
 				{
 					$startDate = $advert->specificSchedule->start_date;
+
 					$endDate = $advert->specificSchedule->end_date;
+
 					$startTime = $advert->specificSchedule->start_time;
+
 					$endTime = $advert->specificSchedule->end_date;
 				}
 				break;
@@ -381,10 +443,13 @@ class AdminController extends Controller
 				if($advert->dailySchedule)
 				{
 					$days = $advert->dailySchedule;
+
 					$dailyStart = $advert->daily_start_date;
+
 					$dailyEnd = $advert->daily_end_date; 
 				}
 				break;
+
 			default:
 		}
 		
@@ -402,10 +467,13 @@ class AdminController extends Controller
 	public function update(AdvertRequest $request, Search $search, $id, $job_title)
 	{
 		$user = $request->user();
+
 		$advert = Advert::locatedAt($id, $job_title)->firstOrFail();
+
 		$saveLater = $request->saveLater;
 
 		$scheduleType = $request->scheduleType;
+
 		$days = $request->day;
 
 		if($saveLater != true)
@@ -451,8 +519,8 @@ class AdminController extends Controller
 					    	], $messages);
 						}
 						$this->validate($request, [
-						        'dailyStartDate' => 'required|max:20',
-					            'dailyEndDate' => 'required|max:20',           
+					        'dailyStartDate' => 'required|max:20',
+				            'dailyEndDate' => 'required|max:20',           
 					    ]);
 
 					}else{
@@ -545,27 +613,27 @@ class AdminController extends Controller
 						'daily_start_date' => null,
 						'daily_end_date' => null
 					]);
-					$advert->save();
 				}
 
 				$starts = $request->startDayTime;
+
 				$ends = $request->endDayTime;
 
 				foreach($days as $key => $dayName)
 				{
 					$dayName = DailySchedule::find($key);
-					$advert->dailySchedule()->attach($dayName,[
-							'start_time'=>$starts[$key],
-							'end_time'=>$ends[$key]
-						]);
+
+					$advert->dailySchedule()
+							->attach($dayName,[
+								'start_time'=>$starts[$key],
+								'end_time'=>$ends[$key]
+							]);
 				}
 
 				$advert->update([
 					'daily_start_date' => $request->dailyStartDate,
 					'daily_end_date' => $request->dailyEndDate
 				]);
-
-				$advert->save();
 				break;
 
 			default:
@@ -602,28 +670,38 @@ class AdminController extends Controller
 			if(count(Skill::where('skill',$skill)->get()) > 0)
 			{	
 				$skill = Skill::where('skill',$skill)->get();
+
 				$advert->skills()->attach($skill);
 
 			}else{
 
 				$newSkill = new Skill;
+
 				$newSkill->skill = $skill;
+
 				$newSkill->save();
+
 				$advert->skills()->attach($newSkill);
 			}
 		}
 
 		$config = config('services.algolia');
+
 		$index = $config['index'];
+
 		$indexFromAlgolia = $search->index($index);
 
 		switch ($saveLater)
 		{
 			case "true":
 				$advert->ready_to_publish = 0;
+
 				$advert->published = 0;
+
 				$advert->save();
+
 				$objectID = $advert->id;
+
 				$object = $indexFromAlgolia->deleteObject($objectID);
 
 				if($object)
@@ -642,6 +720,7 @@ class AdminController extends Controller
 
 			default:
 				$advert->ready_to_publish = 1;
+
 				$advert->save();
 
 
@@ -666,7 +745,9 @@ class AdminController extends Controller
 		        */
 
 	        	$advert->published = 1;
+
 				$advert->advert_level = 4;
+
 				$advert->save();
 
 				Event::fire(new PostingAdvert($advert, $search));
@@ -680,6 +761,15 @@ class AdminController extends Controller
 				*/
 				
 				Event::fire(new AdvertCaching($advert));
+
+				$activity = new Activity;
+
+				$activity->create([
+					'activity' => 'upload logo',
+					'description' => 'Advert '. $advert->job_title . 'was updated',
+					'table' => 'adverts',
+					'user' => $user->name
+				]);
 
 				flash('Your advert has been successfully published.', 'success');
 
@@ -697,13 +787,16 @@ class AdminController extends Controller
 	public function publish(Request $request, Search $search)
 	{
 		$user = $request->user();
+
 		$advert = Advert::find($request->id);
+
 		$ready = $advert->ready_to_publish;
 
         switch ($ready)
         {
         	case 0:
 	        	flash('You need to update your advert, then publish', 'info');
+
 	        	return redirect()->back();
 	        	break;
 
@@ -730,22 +823,31 @@ class AdminController extends Controller
         */
 
 		$advert->published = 1;
+
 		$advert->advert_level = 4;
+
 		$advert->save();
 
 		if($advert)
 		{
 			$scheduleType = $advert->scheduleType;
+
 			$config = config('services.algolia');
+
 			$index = $config['index'];
+
 			$indexFromAlgolia = $search->index($index);
+
 			$objectID = $advert->id;
 
 			$scheduleType = $advert->schedule_type;
+
 			$startDate = null;
 			$endDate = null;
+
 			$startTime = null;
 			$endTime = null;
+
 			$days = null;
 			$dailyStart = null;
 			$dailyEnd = null; 
@@ -756,8 +858,11 @@ class AdminController extends Controller
 					if($advert->specificSchedule)
 					{
 						$startDate = $advert->specificSchedule->start_date;
+
 						$endDate = $advert->specificSchedule->end_date;
+
 						$startTime = $advert->specificSchedule->start_time;
+
 						$endTime = $advert->specificSchedule->end_date;
 					}
 					break;
@@ -768,6 +873,7 @@ class AdminController extends Controller
 						$days = $advert->dailySchedule;
 					}
 					break;
+
 				default:
 			}
 
@@ -810,6 +916,15 @@ class AdminController extends Controller
 
 			if($object)
 			{
+				$activity = new Activity;
+
+				$activity->create([
+					'activity' => 'publish advert',
+					'description' => 'Advert '. $advert->job_title . ' was published',
+					'table' => 'adverts',
+					'user' => $user->name
+				]);
+
 				// set flash attribute and key. example --> flash('success message', 'flash_message_level')
 				flash('Your advert has been successfully published.', 'success');
 
@@ -841,21 +956,36 @@ class AdminController extends Controller
 	public function unpublish(Request $request, Search $search)
 	{
 		$advert = Advert::find($request->id);
+
 		$advert->published = 0;
+
 		$advert->save();
 
 		if($advert)
 		{
 			$config = config('services.algolia');
+
 			$index = $config['index'];
+
 			$indexFromAlgolia = $search->index($index);
+
 			$objectID = $advert->id;
+
 			$object = $indexFromAlgolia->deleteObject($objectID);
 
 			Event::fire(new AdvertCaching($advert));
 
 			if($object)
 			{
+				$activity = new Activity;
+
+				$activity->create([
+					'activity' => 'unpublish advert',
+					'description' => 'Advert '. $advert->job_title . ' was unpublished',
+					'table' => 'adverts',
+					'user' => $user->name
+				]);
+
 				// set flash attribute and key. example --> flash('success message', 'flash_message_level')
 				flash('Your advert has been unpublished.', 'info');
 
@@ -909,9 +1039,20 @@ class AdminController extends Controller
 
 		$businessID = $request->business_id;
 
+		$currentEmployerID = $request->user->employer->id;
+
 		$employer = Employer::findOrFail($businessID);
 
 		$advert = Advert::findOrFail($id);
+
+		$applications = Application::where('employer_id', '=', $currentEmployerID);
+
+		foreach( $applications as $application )
+		{
+			$application->employer_id = $employer->id;
+
+			$application->save();
+		}
 
 		$advert->employer_id = $employer->id;
 
@@ -945,13 +1086,29 @@ class AdminController extends Controller
 		if($advert->published === 1)
 		{
 			$config = config('services.algolia');
+
 			$index = $config['index'];
+
 			$indexFromAlgolia = $search->index($index);
 
 			Event::fire(new AdvertCaching($advert));
 
 			Event::fire(new PostingAdvert($advert, $search));
 		}
+
+		$activity = new Activity;
+
+		$activity->create([
+			'activity' => 'change owner',
+			'description' => 'The owner for advert '. 
+								$advert->job_title . 
+								'has been change from '. 
+								$user->name . 
+								' to an employer named '.
+								$employer->name,
+			'table' => 'adverts',
+			'user' => $user->name
+		]);
 
 		flash('The owner of the advert has been changed!', 'success');
 
@@ -960,9 +1117,278 @@ class AdminController extends Controller
 
 
 
-    public function history()
+    public function allList($id)
     {
-    	return view('admin.admin_activity_history');
+        $advert = Advert::find($id);
+
+        $allInfos = Application::where('advert_id', $id)->paginate(5);
+
+        return view('admin.admin_all_job_requests', compact('allInfos', 'id', 'advert'));
+    }
+
+
+
+    public function pendingList($id)
+    {
+        $advert = Advert::find($id);
+
+        $requestInfos = Application::where('advert_id', $id)->where('status', 'PENDING')->paginate(5);
+        
+        return view('admin.admin_pending_job_requests', compact('requestInfos', 'id', 'advert'));
+    }
+
+
+
+    public function rejectedList($id)
+    {
+        $advert = Advert::find($id);
+
+        $rejectedInfos = Application::where('advert_id', $id)->where('status', 'REJECTED')->paginate(5);
+
+        return view('admin.admin_rejected_job_requests', compact('rejectedInfos', 'id', 'advert'));
+    }
+
+
+
+    public function acceptedList($id)
+    {
+        $advert = Advert::find($id);
+
+        $acceptedInfos = Application::where('advert_id', $id)->where('status', 'ACCEPTED FOR INTERVIEW')->paginate(5);
+
+        return view('admin.admin_accepted_job_requests', compact('acceptedInfos', 'id', 'advert'));
+    }
+
+
+
+    public function applicantInfo(Request $request, $id, $application_id)
+    {
+        $advert = Advert::find($id);
+
+        $user = $request->user();
+
+        //check if job advert is own by user
+        /*
+        if(!$advert->ownedBy($user))
+        {
+            return $this->unauthorized($request);
+        }
+        */
+
+        if($advert->employer->user->id != $user->id)
+        {
+            if($request->ajax())
+            {
+                return response(['message' => 'No!'], 403);
+            }
+            flash('not the owner','error');
+            return redirect('/');
+        }
+
+        $allAdverts = $user->employer->adverts->where('id', '<=', $advert->id);
+
+        $application = Application::find($application_id);
+
+        $jobSeeker = JobSeeker::find($application->job_seeker_id);
+
+        $employer = Employer::find($application->employer->id);
+
+        $ratings = $jobSeeker->ownRatings->count();
+
+        $rated = false;
+
+        $haveRating = JobSeekerRating::where('job_seeker_id', $jobSeeker->id)->where('employer_id', $employer->id )->first();
+
+        $photo = $jobSeeker->user->currentAvatar();
+        
+        if($ratings === 0)
+        {
+            $average = 0;
+
+        }else{
+
+            $average = $jobSeeker->ownRatings->avg('rating');
+        }
+
+        if($haveRating)
+        {
+            if($haveRating->employer_id === $employer->id)
+            {
+                $rated = true;
+            } 
+        }
+
+        return view('admin.admin_applicant_info', compact('id','photo','jobSeeker','rated','average','ratings','application'));
+    }
+
+
+
+    public function response(Request $request, $application_id)
+    {
+        $application = Application::find($application_id);
+
+        $recipientName = $application->jobSeeker->user->name;
+
+        $contact = $application->jobSeeker->user->contact;
+
+        $status = $request->status;
+
+        if($status != "REJECTED"){
+
+            $this->validate($request, [
+                'status' => 'required|max:50',
+                'arrangement' => 'required',
+            ]);
+
+            $comment = $request->arrangement;
+
+        }else{
+
+            $this->validate($request, [
+                'status' => 'required|max:50',
+                'feedback' => 'required',
+            ]);
+
+            $comment = $request->feedback;
+        }
+
+        $application->update([
+            'status' => $request->status,
+            'employer_comment' => $comment,
+        ]);
+
+        $application->responded = 1;
+
+        if($application->save())
+        {
+            $config = config('services.twilio');
+
+            // Step 2: set our AccountSid and AuthToken from www.twilio.com/user/account
+            $AccountSid = $config['acc_id'];
+
+            $AuthToken = $config['auth_token'];
+
+            $websiteURL = $config['site_url'];
+
+            $url = $websiteURL."my/applications/$application_id";
+
+            $job_title = $application->advert->job_title;
+
+            $contact = $application->jobSeeker->user->contact;
+
+            $JobSeekerName = $application->jobSeeker->user->name;
+
+            if($application->jobSeeker->user->contact_verified != 0)
+            {
+                if($application->jobSeeker->user->contact)
+                {
+
+                    // Step 3: instantiate a new Twilio Rest Client
+                    $client = new Services_Twilio($AccountSid, $AuthToken);
+
+                    // Step 4: make an array of people we know, to send them a message. 
+                    // Feel free to change/add your own phone number and name here.
+                    $people = array(
+                        //"+60176613069" => $recipientName,
+                        "+6".$contact => $JobSeekerName,
+                        //"+14158675310" => "Boots",
+                        //"+14158675311" => "Virgil",
+                    );
+                    
+                    // Step 5: Loop over all our friends. $number is a phone number above, and 
+                    // $name is the name next to it
+                    foreach ($people as $number => $name) {
+
+                        $sms = $client->account->messages->sendMessage(
+
+                            // Step 6: Change the 'From' number below to be a valid Twilio number 
+                            // that you've purchased, or the (deprecated) Sandbox number
+                            "+12602184571", 
+
+                            // the number we are sending to - Any phone number
+                            $number,
+
+                            // the sms body
+                            "Your request job for $job_title has been responded, full details here: $url ."
+                        );
+                        // Display a confirmation message on the screen
+                        //echo "Sent message to $name";
+                    }
+                }
+            }
+
+            // testing recipient email => $recipient = "farid@pocketpixel.com";
+            $config = config('services.mailgun');
+
+            $domain = $config['sender'];
+
+            $recipient = $application->jobSeeker->user->email;
+
+            $recipientName = $application->jobSeeker->user->name;
+
+            $emailView = 'mail.application_notification';
+
+            $data = [
+                        'websiteURL' => $websiteURL,
+                        'application' => $application
+                    ];
+
+            $parameter = [
+                            'domain' => $domain,
+                            'recipient' => $recipient,
+                            'recipientName' => $recipientName
+                         ];
+
+            if($application->jobSeeker->user->verified != 0)
+            {
+                if($application->jobSeeker->user->email)
+                {
+                    // use send method from Mail facade to send email. ex: send('view', 'info / array of data', fucntion)
+                    Mail::send($emailView, $data, function ($message) use ($parameter) {
+
+                        // provide sender domain and sender name
+                        $message->from($parameter['domain'], 'WorkWork');
+
+                        // provide recipient email, recipient name and email subject
+                        $message->to($parameter['recipient'], $parameter['recipientName'])->subject('Application Notification');
+                    });
+                }
+            }
+
+            $activity = new Activity;
+
+			$activity->create([
+				'activity' => 'respond job request',
+				'description' => 'Job request for '.
+								 $application->job_title . 
+								 'from Job Seeker named ' . 
+								 $application->jobSeeker->user->name . 
+								 ' has been responded',
+				'table' => 'adverts',
+				'user' => $user->name
+			]);
+
+            // set flash attribute and key. example --> flash('success message', 'flash_message_level')
+            flash('Your response has been sent', 'success');
+
+        }else{
+
+            // set flash attribute and key. example --> flash('success message', 'flash_message_level')
+            flash('Uh Oh, something went wrong when saving your response. Please try again later.', 'error');
+
+            return redirect()->back();
+        }
+
+        return redirect()->back();
+    }
+
+
+
+    public function history(Request $request)
+    {
+    	$activities = Activity::orderBy('id', 'desc')->paginate(10);
+
+    	return view('admin.admin_activity_history', compact('activities'));
     }
 
 

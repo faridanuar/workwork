@@ -35,8 +35,9 @@ Route::get('/send/verification', 'HomeController@sendRequestedToken');
 // contact verification page
 Route::get('/contact/verification', 'HomeController@contact');
 
-// ajax post request
+// ajax post request (User Side)
 Route::post('/request/contact/code', 'HomeController@sendContactToken');
+
 Route::post('/update/contact', 'HomeController@updateContact');
 
 // verify contact
@@ -135,7 +136,6 @@ Route::post('/profile/{id}/rate', 'CompanyProfileController@rate');
 
 // ajax post url (Employer side)
 Route::post('/viewed/applicant', 'CompanyProfileController@setAsReceived');
-
 
 /**
  * Job Seeker Profile routes
@@ -255,7 +255,7 @@ Route::post('/a/advert/publish', 'Admin\AdminController@publish');
 
 Route::post('/a/advert/unpublish', 'Admin\AdminController@unpublish');
 
-Route::get('/a/advert/{id}/{job_title}/logo/upload', 'Admin\AdminController@logo')->name('logo');;
+Route::get('/a/advert/{id}/{job_title}/logo/upload', 'Admin\AdminController@logo')->name('logo');
 
 Route::post('/a/advert/{id}/{job_title}/logo/store', 'Admin\AdminController@uploadLogo');
 
@@ -267,14 +267,29 @@ Route::get('/a/advert/{id}/{job_title}/change/owner', 'Admin\AdminController@own
 
 Route::post('/a/advert/{id}/{job_title}/cnange/owner', 'Admin\AdminController@changeOwner');
 
-Route::get('/a/profile/{id}/{business_name}', 'Admin\AdminProfileController@profile');
-
-Route::get('/a/profile/edit', 'Admin\AdminProfileController@edit');
-
-Route::post('/a/profile/update', 'Admin\AdminProfileController@update');
-
 Route::get('/a/advert/change/owner', 'Admin\AdminController@owner');
 
 Route::get('/a/activity/history', 'Admin\AdminController@history');
+
+Route::get('/a/advert/{id}/{job_title}/requests/all', 'Admin\AdminController@allList');
+
+Route::get('/a/advert/{id}/{job_title}/requests/pending', 'Admin\AdminController@pendingList');
+
+Route::get('/a/advert/{id}/{job_title}/requests/rejected', 'Admin\AdminController@rejectedList');
+
+Route::get('/a/advert/{id}/{job_title}/requests/accepted', 'Admin\AdminController@acceptedList');
+
+Route::get('/a/advert/{id}/job/requests/{application_id}', 'Admin\AdminController@applicantInfo');
+
+Route::post('/a/job/requests/{application_id}/response', 'Admin\AdminController@response');
+
+/**
+* Admin profile routes
+*/
+Route::get('/a/company/{id}/{business_name}', 'Admin\AdminProfileController@profile')->name('admin_profile');
+
+Route::get('/a/company/edit', 'Admin\AdminProfileController@edit');
+
+Route::post('/a/company/update', 'Admin\AdminProfileController@update');
 
 

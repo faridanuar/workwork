@@ -43,7 +43,6 @@ class AlgoliaIndexer extends Command
     {
         $table = $this->argument('table');
 
-
         $collection = collect(
 
             \DB::table($table)->get()
@@ -56,10 +55,8 @@ class AlgoliaIndexer extends Command
 
         });
 
-
         $search->index($table)->saveObjects($collection);
         
-
         $this->info('All Done!');
 
     }

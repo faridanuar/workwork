@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
 use App\User;
+use App\EmployerRating;
 
 use App\Employer;
 
@@ -16,7 +17,7 @@ class AdminProfileController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('admin', ['except' => ['profile', 'companyReview']]);
+        $this->middleware('admin');
     }
 
 
@@ -102,12 +103,12 @@ class AdminProfileController extends Controller
 
         $employer = $user->employer;
 
-        return view('admin.admin_profile', compact('user','employer'));
+        return view('admin.profile.admin_profile_edit', compact('user','employer'));
     }
 
 
 
-    public function update(EmployerRequest $request, Search $search)
+    public function update(Request $request)
     {
         $this->validate($request, [
                 'business_name' => 'required',
@@ -158,7 +159,6 @@ class AdminProfileController extends Controller
         */
 
         $employer->update([
-
                 'business_name' => $request->business_name,
                 'business_category' => $request->business_category,
                 'business_contact' => $request->business_contact,
@@ -171,10 +171,8 @@ class AdminProfileController extends Controller
                 'company_intro' => $request->company_intro,
         ]);
 
-        $employer->save();
-
         flash('Your profile has been updated', 'success');
 
-        return redirect()->route('company', [$employer->id,$employer->business_name]);
+        return redirect()->route('admin_profile', [$employer->id,$employer->business_name]);
     }
 }

@@ -44,13 +44,13 @@ class JobSeekerProfileController extends Controller
     public function getCategory(Request $request)
     {
         $this->validate($request, [
-
-        'job_category' => 'required',
-
+            'job_category' => 'required',
         ]);
 
         $user = $request->user();
+
         $user->ftu_level = 2;
+
         $user->save();
 
         $jobSeeker = $user->jobSeeker;
@@ -60,10 +60,12 @@ class JobSeekerProfileController extends Controller
         foreach($categories as $category)
         {
             $jobCategory = Category::where('name', $category)->get();
+
             $jobSeeker->categories()->attach($jobCategory);
         }
 
         flash('Welcome to WorkWork Job Seeker!','success');
+
         return redirect('/');
     }
 
@@ -75,18 +77,9 @@ class JobSeekerProfileController extends Controller
 
         $ratings = $profileInfo->ownRatings->count();
 
-        $avatar = $profileInfo->user->avatar;
-
         $user = $request->user();
 
-        if($avatar != "" || $avatar != null){
-
-            $photo = $avatar;
-
-        }else{
-
-            $photo = "/images/defaults/default.jpg";
-        }
+        $photo = $profileInfo->user->currentAvatar();
 
         if($ratings === 0)
         {
@@ -97,7 +90,8 @@ class JobSeekerProfileController extends Controller
             $average = $profileInfo->ownRatings->avg('rating');
         }
 
-        if($user){
+        if($user)
+        {
             $jobSeeker = $user->jobSeeker;
 
             if($jobSeeker)
@@ -146,7 +140,6 @@ class JobSeekerProfileController extends Controller
     	]);
 
     	$jobSeeker->update([
-
                 'age' => $request->age,
                 'location' => $request->location,
 				'street' => $request->street,
@@ -173,10 +166,8 @@ class JobSeekerProfileController extends Controller
         $user = $request->user();
 
         $this->validate($request, [
-
-        'star' => 'required',
-        'comment' => 'required|max:255',
-
+            'star' => 'required',
+            'comment' => 'required|max:255',
         ]);
 
         $jobSeeker = $user->jobSeeker;
@@ -211,21 +202,33 @@ class JobSeekerProfileController extends Controller
         return view('profiles.job_seeker.profile_reviews', compact('userReviews'));
     }
 
+
+
     public function allList(Request $request)
     {
         $jobSeeker = $request->user()->jobSeeker;
         
-        $requestInfos = $jobSeeker->applications()->where('job_seeker_id', $jobSeeker->id)->orderBy('created_at', 'desc')->orderBy('responded', 'asc')->paginate(5);
+        $requestInfos = $jobSeeker
+                        ->applications()
+                        ->where('job_seeker_id', $jobSeeker->id)
+                        ->orderBy('created_at', 'desc')
+                        ->orderBy('employer_responded', 'asc')
+                        ->paginate(5);
 
         return view('profiles.job_seeker.all_applications', compact('jobSeeker','requestInfos'));
     }
+
 
 
     public function pendingList(Request $request)
     {
         $jobSeeker = $request->user()->jobSeeker;
         
-        $requestInfos = $jobSeeker->applications()->where('job_seeker_id', $jobSeeker->id)->where('status', 'PENDING')->paginate(5);
+        $requestInfos = $jobSeeker
+                        ->applications()
+                        ->where('job_seeker_id', $jobSeeker->id)
+                        ->where('status', 'PENDING')
+                        ->paginate(5);
 
         return view('profiles.job_seeker.pending_application_list', compact('jobSeeker','requestInfos'));
     }
@@ -236,7 +239,11 @@ class JobSeekerProfileController extends Controller
     {
         $jobSeeker = $request->user()->jobSeeker;
 
-        $rejectedInfos = $jobSeeker->applications()->where('job_seeker_id', $jobSeeker->id)->where('status', 'REJECTED')->paginate(5);
+        $rejectedInfos = $jobSeeker
+                        ->applications()
+                        ->where('job_seeker_id', $jobSeeker->id)
+                        ->where('status', 'REJECTED')
+                        ->paginate(5);
 
         return view('profiles.job_seeker.rejected_application_list', compact('jobSeeker','rejectedInfos'));
     }
@@ -247,7 +254,11 @@ class JobSeekerProfileController extends Controller
     {
         $jobSeeker = $request->user()->jobSeeker;
         
-        $acceptedInfos = $jobSeeker->applications()->where('job_seeker_id', $jobSeeker->id)->where('status', 'ACCEPTED FOR INTERVIEW')->paginate(5);
+        $acceptedInfos = $jobSeeker
+                        ->applications()
+                        ->where('job_seeker_id', $jobSeeker->id)
+                        ->where('status', 'ACCEPTED FOR INTERVIEW')
+                        ->paginate(5);
 
         return view('profiles.job_seeker.accepted_application_list', compact('jobSeeker','acceptedInfos'));
     }
@@ -267,15 +278,23 @@ class JobSeekerProfileController extends Controller
     {
         $jobSeeker = $request->user()->jobSeeker;
 
-        $viewed = $request->viewed;
+        $viewedCategory = $request->viewed_category;
 
-        if($viewed === 'accepted')
+        if($viewedCategory === 'accepted')
         {
-            $requests = $jobSeeker->applications->where('status', 'ACCEPTED FOR INTERVIEW')->where('responded', 1)->where('viewed', 0);
+            $requests = $jobSeeker
+                        ->applications
+                        ->where('status', 'ACCEPTED FOR INTERVIEW')
+                        ->where('employer_responded', 1)
+                        ->where('job_seeker_viewed_notification', 0);
 
-        }elseif($viewed === 'rejected'){
+        }elseif($viewedCategory === 'rejected'){
 
-            $requests = $jobSeeker->applications->where('status', 'REJECTED')->where('responded', 1)->where('viewed', 0);
+            $requests = $jobSeeker
+                        ->applications
+                        ->where('status', 'REJECTED')
+                        ->where('employer_responded', 1)
+                        ->where('job_seeker_viewed_notification', 0);
 
         }else{
 
@@ -284,7 +303,8 @@ class JobSeekerProfileController extends Controller
 
         foreach($requests as $requested)
         {
-            $requested->viewed = 1;
+            $requested->job_seeker_viewed_notification = 1;
+
             $requested->save();
         }
     }
@@ -298,7 +318,9 @@ class JobSeekerProfileController extends Controller
         $id = $request->applicationID;
 
         $requests = $jobSeeker->applications->find($id);
-        $requests->viewed = 1;
+
+        $requests->job_seeker_viewed_notification = 1;
+
         $requests->save();
     }
 }

@@ -11,7 +11,7 @@
 		<div class="panel panel-default">
 			<div class="panel-body">
 				<div>
-					Job: {{ $acceptedInfo->advert->job_title }}
+					Job: {{ $acceptedInfo->advert_job_title }}
 				</div>
 
 				<hr>
@@ -41,7 +41,7 @@
 	      url: "/viewed/category",
 	      context: document.body,
 	      data: {
-	            'viewed': 'accepted',
+	            'viewed_category': 'accepted',
 	            '_token': '{!! csrf_token() !!}'
 	            }
 	    });
