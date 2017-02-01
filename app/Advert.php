@@ -34,7 +34,8 @@ class Advert extends Model
         'schedule_type',
         'daily_start_date',
         'daily_end_date',
-        'advert_from'
+        'advert_from',
+        'logo_from'
     ];
 
     // identify the date to make carbon instance

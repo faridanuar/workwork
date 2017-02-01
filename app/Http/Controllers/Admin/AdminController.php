@@ -173,6 +173,7 @@ class AdminController extends Controller
 	        'rate'  => $request->rate,
 	        'oku_friendly'  => $oku_friendly,
 	        'schedule_type' => $request->scheduleType,
+	        'logo_from' => '/images/defaults/default.jpg'
 		]);
 
 		switch($scheduleType)
@@ -339,32 +340,32 @@ class AdminController extends Controller
 
         $advert->save();
 
-        // fetch advert's created adverts
-        $adverts = Advert::where('advert_from', '=', $advert->advert_from);
-
-        // filter and fetch live/published adverts only
-        $liveAdverts = $adverts->where('published', 1)->get();
-
-        //fetch data from config.php
-        $config = config('services.algolia');
-
-        // provide index
-        $index = $config['index'];
-
-        // select algolia index/indice name
-        $indexFromAlgolia = $search->index($index);
-
-        // loop algolia object update for each row
-        foreach($liveAdverts as $liveAdvert)
+        if($advert->published === 1)
         {
-            // update algolia existing object. Determine which by row id
-            $object = $indexFromAlgolia->partialUpdateObject([
+        	// filter and fetch live/published adverts only
+	        $liveAdvert = $advert;
+
+	        // fetch data from config.php
+	        $config = config('services.algolia');
+
+	        // provide index
+	        $index = $config['index'];
+
+	        // select algolia index/indice name
+	        $indexFromAlgolia = $search->index($index);
+
+	        // update algolia existing object. Determine which by row id
+            $indexFromAlgolia->partialUpdateObject([
                 'logo' => $pathURL,
                 'objectID' => $liveAdvert->id,
             ]);
         }
 
+        Event::fire(new AdvertCaching($advert));
+
         $activity = new Activity;
+
+        $user = $request->user();
 
 		$activity->create([
 				'activity' => 'upload logo',
@@ -372,6 +373,47 @@ class AdminController extends Controller
 				'table' => 'adverts',
 				'user' => $user->name
 			]);
+    }
+
+
+
+    public function removeLogo(Request $request, $id, Search $search)
+    {
+        $advert = Advert::findOrFail($id);
+
+        $advert->logo_from = "/images/defaults/default.jpg";
+
+        $advert->save();
+
+        if($advert->published === 1)
+        {
+        	// provide path URl for Database
+	        $pathURL = "/images/defaults/default.jpg";
+
+	        // fetch published adverts only
+	        $liveAdvert = $advert;
+
+	        //fetch data from config.php
+	        $config = config('services.algolia');
+
+	        // provide index
+	        $index = $config['index'];
+
+	        // select algolia index/indice name
+	        $indexFromAlgolia = $search->index($index);
+
+	        // update algolia existing object. Determine which by row id
+            $indexFromAlgolia->partialUpdateObject([
+                'logo' => $pathURL,
+                'objectID' => $liveAdvert->id,
+            ]);
+        }
+
+        Event::fire(new AdvertCaching($advert));
+
+        flash('Your photo has been successfully removed', 'success');
+
+        return redirect()->back();
     }
 
 
@@ -977,6 +1019,8 @@ class AdminController extends Controller
 
 			if($object)
 			{
+				$user = $request->user();
+
 				$activity = new Activity;
 
 				$activity->create([
@@ -1034,14 +1078,14 @@ class AdminController extends Controller
 	public function changeOwner(Request $request, Search $search, $id, $job_title)
 	{
 		$this->validate($request, [
-				'business_id' => 'required'
+				'company_id' => 'required'
 			]);
 
-		$businessID = $request->business_id;
+		$companyID = $request->company_id;
 
-		$currentEmployerID = $request->user->employer->id;
+		$currentEmployerID = $request->user()->employer->id;
 
-		$employer = Employer::findOrFail($businessID);
+		$employer = Employer::findOrFail($companyID);
 
 		$advert = Advert::findOrFail($id);
 
@@ -1095,6 +1139,8 @@ class AdminController extends Controller
 
 			Event::fire(new PostingAdvert($advert, $search));
 		}
+
+		$user = $request->user();
 
 		$activity = new Activity;
 

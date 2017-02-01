@@ -259,13 +259,15 @@ Route::get('/a/advert/{id}/{job_title}/logo/upload', 'Admin\AdminController@logo
 
 Route::post('/a/advert/{id}/{job_title}/logo/store', 'Admin\AdminController@uploadLogo');
 
+Route::delete('/a/advert/{id}/{job_title}/logo/remove', 'Admin\AdminController@removeLogo');
+
 Route::get('/a/advert/{id}/{job_title}/edit', 'Admin\AdminController@edit');
 
 Route::post('/a/advert/{id}/{job_title}/update', 'Admin\AdminController@update');
 
 Route::get('/a/advert/{id}/{job_title}/change/owner', 'Admin\AdminController@owner');
 
-Route::post('/a/advert/{id}/{job_title}/cnange/owner', 'Admin\AdminController@changeOwner');
+Route::post('/a/advert/{id}/{job_title}/change/owner', 'Admin\AdminController@changeOwner');
 
 Route::get('/a/advert/change/owner', 'Admin\AdminController@owner');
 
@@ -291,5 +293,11 @@ Route::get('/a/company/{id}/{business_name}', 'Admin\AdminProfileController@prof
 Route::get('/a/company/edit', 'Admin\AdminProfileController@edit');
 
 Route::post('/a/company/update', 'Admin\AdminProfileController@update');
+
+Route::get('/a/company/logo', 'Admin\AdminProfileController@logo');
+
+Route::post('/a/company/upload/logo', 'Admin\AdminProfileController@uploadLogo');
+
+Route::delete('/a/company/remove/logo', 'Admin\AdminProfileController@remove');
 
 

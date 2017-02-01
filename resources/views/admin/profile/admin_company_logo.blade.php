@@ -24,7 +24,7 @@
 			<hr>
 
 			<div class="upload-box">
-				<form id="addPhotosForm" method="post" action="/a/advert/{{ $advert->id }}/{{ $advert->job_title }}/logo/store" enctype="multipart/form-data" class="dropzone">
+				<form id="addPhotosForm" method="post" action="/a/company/upload/logo" enctype="multipart/form-data" class="dropzone">
 				{{ csrf_field() }}
 
 				</form>
@@ -33,7 +33,7 @@
 			<p></p>
 
 			<div class="form-group">
-				<form method="post" action="/a/advert/{{ $advert->id }}/{{ $advert->job_title }}/logo/remove">
+				<form method="post" action="/a/company/remove/logo">
 					{!! csrf_field() !!}
 
 					<input type="hidden" name="_method" value="DELETE">
@@ -41,7 +41,7 @@
 					@if($fileExist === true)
 						<button type="submit" class="btn btn-primary">Remove</button>
 					@endif
-						<a href="/a/dashboard" class="btn btn-link">Done</a>
+						<a href="/a/company/{{ $employer->id }}/{{ $employer->business_name }}" class="btn btn-link">Done</a>
 				</form>
 			</div>
 		</div>

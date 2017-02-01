@@ -24,7 +24,7 @@
 			
 			@can('view_admin_features')
 				@if($authorize === true)
-					<a href="a/logo" class="btn btn-default btn-sm">Add Logo</a>
+					<a href="/a/company/logo" class="btn btn-default btn-sm">Add Logo</a>
 				@endif
 			@endcan
 

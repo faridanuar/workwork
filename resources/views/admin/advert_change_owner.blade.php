@@ -20,23 +20,52 @@
 			</div>
 
 			<div class="form-group">
-				<form method="post" action="/a/advert/{{ $advert->id }}/{{ $advert->job_title }}/cnange/owner">
+				<form method="post" action="/a/advert/{{ $advert->id }}/{{ $advert->job_title }}/change/owner">
 					{!! csrf_field() !!}
 					<div class="form-group">
-						<input type="number" name="business_id" class="form-control" id="business_id" value="{{ old('business_id') }}"placeholder="Add the company ID here" />
+						<input type="number" name="company_id" class="form-control" id="business_id" value="{{ old('business_id') }}"placeholder="Add the company ID here" />
 					</div>
 
 					<div class="form-group">
-						@if ($errors->has('business_id'))
+						@if ($errors->has('company_id'))
 		                    <span class="alert alert-danger">
-		                        <strong>{{ $errors->first('business_id') }}</strong>
+		                        <strong>{{ $errors->first('company_id') }}</strong>
 		                    </span>
 	                	@endif
                 	</div>
                 	
                 	<div class="form-group">
-						<input type="submit" name="submitBtn" class="form-control" id="submitBtn" value="Change Owner" />
+                		<button type="button" class="form-control" data-toggle="modal" data-target="#confirm">Change Owner</button>
+                	</div>
+
+                	<!-- Modal -->
+					<div id="confirm" class="modal fade" role="dialog">
+					  <div class="modal-dialog">
+
+					    <!-- Modal content-->
+					    <div class="modal-content">
+					      <div class="modal-header">
+					        <button type="button" class="close" data-dismiss="modal">&times;</button>
+					        <h4 class="modal-title">Are you sure? (This action cannot be undone)</h4>
+					      </div>
+
+					      <div class="modal-body">
+					      	<center>
+						      	<button type="button" class="btn btn-default" data-dismiss="modal">no</button>
+						        <input type="submit" name="submitBtn" class="btn btn-default" id="submitBtn" value="yes" />
+					        </center>
+					      </div>
+
+					      <div class="modal-footer">
+					        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+					      </div>
+					    </div>
+
+					  </div>
 					</div>
+
+						
+					
 				</form>
 			</div>
 		</div>

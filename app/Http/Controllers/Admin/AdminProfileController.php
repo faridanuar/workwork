@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 
 use Illuminate\Http\Request;
 
+use Image;
+
 use App\User;
 use App\EmployerRating;
 
@@ -174,5 +176,85 @@ class AdminProfileController extends Controller
         flash('Your profile has been updated', 'success');
 
         return redirect()->route('admin_profile', [$employer->id,$employer->business_name]);
+    }
+
+
+
+    public function logo(Request $request)
+    {
+        $user = $request->user();
+
+        $employer = $user->employer;
+
+        $logo = $employer->business_logo;
+
+        //check if photo path exist
+        if($logo != "" && $logo != null && $logo != "/images/defaults/default.jpg")
+        {
+
+            $fileExist = true;
+
+            $photo = $logo;
+
+        }else{
+
+            $fileExist = false;
+            
+            $photo = "/images/defaults/default.jpg";
+        }
+
+        return view('admin.profile.admin_company_logo', compact('photo', 'employer', 'fileExist'));
+    }
+
+
+
+    protected function uploadLogo(Request $request)
+    {
+        // store user's info in variable
+        $employer = $request->user()->employer;
+
+        $this->validate($request, [
+
+            'photo' => 'required|mimes:jpg,jpeg,png,bmp' // validate image
+        ]);
+
+        // fetch photo
+        $file = $request->file('photo');
+
+        // set uploaded photo name into a unique name
+        $name = time(). '-' .$file->getClientOriginalName();
+
+        // set file directory for photo to be moved
+        $path = "images/profile_images/logo";
+
+        // compress, save and move the photo to the given path
+        Image::make($file)->fit(200, 200)->save($path."/".$name);
+
+        // get the new created photo directory path
+        $pathURL = "/".$path."/".$name;
+
+        // save the new photo directory path into the database
+        $employer->business_logo = $pathURL;
+
+        $employer->save();
+    }
+
+
+
+    public function remove(Request $request)
+    {
+        $employer = $request->user()->employer;
+
+        $logo = $employer->business_logo;
+
+        $user = $request->user();
+
+        $employer->business_logo = "/images/defaults/default.jpg";
+
+        $employer->save();
+
+        flash('Your company logo has been removed', 'success');
+
+        return redirect()->back();
     }
 }

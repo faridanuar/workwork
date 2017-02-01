@@ -151,6 +151,11 @@ class HomeController extends Controller
                     $text1 = "";
                     $link = "";
             }
+
+        }elseif($user->hasRole('admin')){
+
+            return redirect('/a/dashboard');
+
         }
 
         // return user to home dashboard
