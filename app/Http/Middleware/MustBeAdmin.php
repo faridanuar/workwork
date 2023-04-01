@@ -20,21 +20,21 @@ class MustBeAdmin
         //store user info in a variable
         $user = $request->user();
 
-        //check if user is not authenticated and does not have admin role
-        if(!$user)
-        {
-            // redirect if user is not authorized
-            return redirect()->guest('login');
+        // //check if user is not authenticated and does not have admin role
+        // if(!$user)
+        // {
+        //     // redirect if user is not authorized
+        //     return redirect()->guest('login');
 
-        }elseif($user->type != "admin" || !$user->hasRole('admin')){
+        // }elseif($user->type != "admin" || !$user->hasRole('admin')){
 
-            // redirect to home
-            return redirect('/');
+        //     // redirect to home
+        //     return redirect('/');
 
-        }elseif(!$user->employer){
+        // }elseif(!$user->employer){
             
-            return redirect('/a/dashboard');
-        }
+        //     return redirect('/a/dashboard');
+        // }
 
         // return to true if user is authorized
         return $next($request);

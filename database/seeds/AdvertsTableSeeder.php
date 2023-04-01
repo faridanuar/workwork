@@ -19,7 +19,6 @@ class AdvertsTableSeeder extends Seeder
         foreach (range(1,10) as $index) {
             DB::table('adverts')->insert([
                 'job_title'     =>  $faker->jobTitle,
-                'business_name' =>  $faker->company,
                 'location'      =>  $faker->streetName,
                 'street'        =>  $faker->streetAddress,
                 'city'          =>  $faker->city,
@@ -28,7 +27,7 @@ class AdvertsTableSeeder extends Seeder
                 'country'       =>  $faker->country,
                 'salary'        =>  $faker->numberBetween(10,100),
                 // 'description'    =>  $faker->paragraphs(5),
-                'business_logo' =>  $faker->imageUrl($width = 200, $height = 200, 'abstract'),
+                //'business_logo' =>  $faker->imageUrl($width = 200, $height = 200, 'abstract'),
                 'description'   =>  $faker->realText($maxNbChars = 600, $indexSize = 2),
             ]);
         }

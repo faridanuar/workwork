@@ -1,0 +1,51 @@
+services:
+  app:
+    build:
+      args:
+        user: farid
+        uid: 1000
+      context: ./
+      dockerfile: Dockerfile
+    depends_on:
+        - db
+        - nginx
+    image: workwork
+    container_name: workwork-app
+    restart: unless-stopped
+    working_dir: /var/www/
+    volumes:
+      - ./:/var/www
+    networks:
+      - workwork
+  
+  db:
+    image: mysql:5.7
+    container_name: workwork-db
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: ${DB_DATABASE}
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+      MYSQL_USER: ${DB_USERNAME}
+      SERVICE_TAGS: dev
+      SERVICE_NAME: mysql
+    volumes:
+      - ./docker-compose/mysql:/docker-entrypoint-initdb.d
+    networks:
+      - workwork
+
+  nginx:
+    image: nginx:1.17-alpine
+    container_name: workwork-nginx
+    restart: unless-stopped
+    ports:
+      - 2000:2000
+    volumes:
+      - ./:/var/www
+      - ./docker-compose/nginx:/etc/nginx/conf.d
+    networks:
+      - workwork
+
+networks:
+  workwork:
+    driver: bridge

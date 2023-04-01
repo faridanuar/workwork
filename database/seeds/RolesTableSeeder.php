@@ -13,7 +13,6 @@ class RolesTableSeeder extends Seeder
     public function run()
     {
         DB::table('roles')->insert([
-            /*
         	[
 	            'name' => 'job_seeker',
 	            'label' => 'Job Seeker',
@@ -26,7 +25,6 @@ class RolesTableSeeder extends Seeder
                 'name' => 'admin',
                 'label' => 'Administrator',
             ]
-            */
         ]);
 
 
@@ -121,9 +119,29 @@ class RolesTableSeeder extends Seeder
             ],
             */
             [
-                'permission_id' => 10,
-                    'role_id' => 3,
+                'permission_id' => 1,
+                'role_id' => 3,
             ],
+        ]);
+
+        DB::table('users')->insert([
+            [
+        	    'name' => 'Admin', 
+                'email' => 'admin@example.com', 
+                'password' => bcrypt('asdasd'), 
+                'remember_token' => str_random(10),
+                'avatar' => null, 
+                'contact' => '0123456789', 
+                'type' => 'admin',
+                'verified' => 1,
+            ]
+        ]);
+
+        DB::table('role_user')->insert([
+            [
+        	    'user_id' => 1, 
+                'role_id' => 3, 
+            ]
         ]);
     }
 }

@@ -51,11 +51,12 @@ class AdminController extends Controller
     public function dashboard(Request $request)
     {
     	$user = $request->user();
+		$adverts = [];
 
     	// check if user's avatar exist & get the provided avatar
         $avatar = $user->currentAvatar();
 
-        $adverts = Advert::where('employer_id', $user->employer->id)->orderBy('published', 'desc')->paginate(10);
+        if($user->employer) $adverts = Advert::where('employer_id', $user->employer->id)->orderBy('published', 'desc')->paginate(10);
 
     	return view('admin.admin_dashboard', compact('user', 'avatar', 'adverts'));
     }
