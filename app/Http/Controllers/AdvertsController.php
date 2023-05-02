@@ -46,6 +46,7 @@ class AdvertsController extends Controller
 	*/
 	public function index(Request $request)
 	{
+		$adverts = Advert::where(['published' => 1])->orderBy('created_at', 'desc')->paginate(5);
 		$categories = false;
 
 		if($request->user())
@@ -58,7 +59,7 @@ class AdvertsController extends Controller
 			}
 		}
 
-		return view('adverts.index', compact('categories'));
+		return view('adverts.index', compact('adverts', 'categories'));
 	}
 
 

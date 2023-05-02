@@ -1,52 +1,50 @@
 <!-- this configuration uses algolia javascript plugin -->
 <script>
 //Initialise for autocomplete js
-//var client = algoliasearch(itsAppID, itsApiKey)
-//var index = client.initIndex(itsIndex);
+var client = algoliasearch(itsAppID, itsApiKey)
+var index = client.initIndex(itsIndex);
 
 //autocomplete function configurations
 autocomplete('#search-box', { hint: false }, [
-    {
-      source: autocomplete.sources.hits(index, { hitsPerPage: 6 }),
-      displayKey: 'job_title',
-      templates: {
-        suggestion: function(suggestion) {
-          return (
-          	'<div class="hits">'+
-          		'<span class="job_title">' + suggestion._highlightResult.job_title.value + '</span>' +
-          	'</div>' +
-            '<div class="ais-search-box--powered-by">'+
-              '<span class="business_name">' + suggestion._highlightResult.business_name.value + '</span>' +
-            '</div>'
-          );
-        }
-      }
-    },
-    {
-      source: autocomplete.sources.hits(index, { hitsPerPage: 1 }),
-      templates: {
-        suggestion: function(suggestion) {
-          return (
-            '<hr />' +
-            '<span>' +
-              '<div class="ais-search-box--powered-by">' +
-                'Search by' +
-                '<a class="ais-search-box--powered-by-link" href="https://www.algolia.com/?utm_source=instantsearch.js&amp;utm_medium=website&amp;utm_content=community.algolia.com&amp;utm_campaign=poweredby" target="_blank">' +
-                  'Algolia' +
-                '</a>' +
-              '</div>' +
-           '</span>'
-          );
-        }
+  {
+    source: autocomplete.sources.hits(index, { hitsPerPage: 6 }),
+    displayKey: 'job_title',
+    templates: {
+      suggestion: function(suggestion) {
+        return (
+          '<div class="hits">'+
+            '<span class="job_title">' + suggestion._highlightResult.job_title.value + '</span>' +
+          '</div>' +
+          '<div class="ais-search-box--powered-by">'+
+            '<span class="business_name">' + suggestion._highlightResult.business_name.value + '</span>' +
+          '</div>'
+        );
       }
     }
-  ]).on('autocomplete:selected', function(event, suggestion, dataset) {
-    console.log(suggestion, dataset);
-  });
+  },
+  {
+    source: autocomplete.sources.hits(index, { hitsPerPage: 1 }),
+    templates: {
+      suggestion: function(suggestion) {
+        return (
+          '<hr />' +
+          '<span>' +
+            '<div class="ais-search-box--powered-by">' +
+              'Search by' +
+              '<a class="ais-search-box--powered-by-link" href="https://www.algolia.com/?utm_source=instantsearch.js&amp;utm_medium=website&amp;utm_content=community.algolia.com&amp;utm_campaign=poweredby" target="_blank">' +
+                'Algolia' +
+              '</a>' +
+            '</div>' +
+          '</span>'
+        );
+      }
+    }
+  }
+]).on('autocomplete:selected', function(event, suggestion, dataset) {
+  console.log(suggestion, dataset);
+});
 
-
-if( '{{ $categories }}' != false )
-{
+if( '{{ $categories }}' != false ) {
   // array attribute in a variable
   var string = '{{ $categories }}';
   var recommend = string.split(",");
@@ -69,8 +67,7 @@ if( '{{ $categories }}' != false )
       facets: ['group']
     },
   });
-
-}else{
+} else {
   // initialise instant search
   var search = instantsearch({
     appId: itsAppID,
@@ -79,8 +76,6 @@ if( '{{ $categories }}' != false )
     urlSync: true,
   });
 }
-
-
 
 // search widgets
 search.addWidget(
@@ -91,6 +86,17 @@ search.addWidget(
 	})
 );
 
+// display hits widget
+search.addWidget(
+	instantsearch.widgets.hits({
+	  container: '#hits-container',
+	  templates: {
+	  	empty: noResultsTemplate,
+	    item: resultsTemplate
+	  },
+	  hitsPerPage: 20
+	})
+);
 
 // hits templates
 var resultsTemplate =
@@ -115,96 +121,50 @@ var noResultsTemplate =
 		'@lang("adverts.no_results")' +
 	'</div>';
 
+// search.addWidget(
+//   instantsearch.widgets.clearAll({
+//     container: '#clear-all',
+//     templates: {
+//       link: '@lang("adverts.clear_all")'
+//     },
+//     autoHideContainer: false
+//   })
+// );
 
+// search.addWidget(
+//   instantsearch.widgets.sortBySelector({
+//     container: '#sort-by-container',
+//     indices: [
+//       {name: itsIndex, label: '@lang("adverts.all")'},
+//       {name: salaryASC, label: '@lang("adverts.lowest")'},
+//       {name: salaryDESC, label: '@lang("adverts.highest")'}
+//     ],
+//   })
+// );
 
-search.addWidget(
-  instantsearch.widgets.clearAll({
-    container: '#clear-all',
-    templates: {
-      link: '@lang("adverts.clear_all")'
-    },
-    autoHideContainer: false
-  })
-);
-
-
-// display hits widget
-search.addWidget(
-	instantsearch.widgets.hits({
-	  container: '#hits-container',
-	  templates: {
-	  	empty: noResultsTemplate,
-	    item: resultsTemplate
-	  },
-	  hitsPerPage: 20
-	})
-);
-
-
-
-search.addWidget(
-  instantsearch.widgets.sortBySelector({
-    container: '#sort-by-container',
-    indices: [
-      {name: itsIndex, label: '@lang("adverts.all")'},
-      {name: salaryASC, label: '@lang("adverts.lowest")'},
-      {name: salaryDESC, label: '@lang("adverts.highest")'}
-    ],
-  })
-);
-
-
-
-search.addWidget(
-  instantsearch.widgets.refinementList({
-    container: '#categories',
-    attributeName: 'category',
-    operator: 'or',
-    limit: 10,
-    templates: {
-      header: '<div class="heading">@lang("adverts.category")</div>'
-    }
-  })
-);
-
-
+// search.addWidget(
+//   instantsearch.widgets.refinementList({
+//     container: '#categories',
+//     attributeName: 'category',
+//     operator: 'or',
+//     limit: 10,
+//     templates: {
+//       header: '<div class="heading">@lang("adverts.category")</div>'
+//     }
+//   })
+// );
 
 // pagination widget
 search.addWidget(
 	instantsearch.widgets.pagination({
 	  container: '#pagination-container',
 	  maxPages: 20,
-	  scrollTo: '#results',
     cssClasses: {
       root: 'pagination',
       active: 'active'
     }
 	})
 );
-
-
-var container = document.querySelector('#pagination-container');
-var paginationWidget = instantsearch.widgets.pagination({
-  container: container,
-  maxPages: 20,
-  scrollTo: '#results',
-  cssClasses: {
-    root: 'pagination',
-    active: 'active'
-  }
-});
-
-
-// var oldRender = paginationWidget.render;
-// paginationWidget.render = function(params) {
-//   var currentState = params.results;
-//   if(currentState.nbPages===0) container.style.display='none';
-//   else container.style.display = 'block';
-//   oldRender.call(this, arguments);
-// }
-// search.addWidget(paginationWidget);
-
-
 
 // Once all the widgets have been added to the instantsearch instance, start rendering by calling start() method
 search.start();

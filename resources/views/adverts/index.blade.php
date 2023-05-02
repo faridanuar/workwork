@@ -26,29 +26,43 @@
 
 <div class="row">
 	<div class="col-md-3 hidden-xs">
-		<div id="filter-tool" class="panel panel-default">
+		{{-- <div id="filter-tool" class="panel panel-default">
 			<div class="panel-body">
 				<div class="title">@lang('adverts.filter')</div>
 				<div id="sort-by-container" class="panel-section"></div>
 				<div id="categories" class="panel-section"></div>
 				<div id="clear-all" class="panel-bottom-action"></div>
 			</div>
-		</div>
+		</div> --}}
 	</div>
 
 
-    <div class="col-md-6" id="adverts" >
-    	<div class="form-group">
-
+    <div class="col-md-6">
+    	{{-- <div class="form-group">
 		    <input type="text" class="form-control" id="search-box" />
+	    </div> --}}
 
-	    </div>
-		<div class="results" id="results">
-
-		    <div id="hits-container"></div>
-		    <center><div id="pagination-container"></div></center>
-
+		<div id="hits-container">
+			@foreach ($adverts as $advert)
+				<div class="panel panel-default">
+					<a href="/adverts/{{ $advert->id }}/{{ $advert->job_title }}" style="text-decoration: none;">
+						<div class="panel-body">
+							<div><span style="font-weight:bold;">{{ $advert->job_title }}</span></div>
+							<div><span style="font-size:12px;color:grey;">{{ $advert->employer->business_name }}</span></div>
+							<div><span style="font-size:12px;color:grey;">{{ $advert->location }}</span></div>
+							<div><span style="font-size:12px;color:grey;font-weight:bold;">RM{{ $advert->salary }}</span></div>
+							<div><span  style="font-size:12px;color:grey;float:right">{{ date('d/m/Y H:i A', strtotime($advert->created_at)) }}</span></div>
+						</div>
+					</a>
+				</div>
+			@endforeach
 		</div>
+
+		<center>
+			<div id="pagination-container">
+				{{ $adverts->links() }}
+			</div>
+		</center>
 	</div>
 
 
