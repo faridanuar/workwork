@@ -38,8 +38,10 @@
 					</div>
 				@endif
 				
+				@if ($application->status == 'pending'):
 				<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#reason-modal-1" >Reject</button>
 				<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#reason-modal-2" >Accept For Interview</button>
+				@endif
 
 				<!-- Modal 1-->
 				<div id="reason-modal-1" class="modal fade" role="dialog">

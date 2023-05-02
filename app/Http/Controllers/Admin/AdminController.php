@@ -1280,6 +1280,8 @@ class AdminController extends Controller
 
         $status = $request->status;
 
+		$user = $application->jobSeeker->user;
+
         if($status != "REJECTED"){
 
             $this->validate($request, [
@@ -1304,103 +1306,103 @@ class AdminController extends Controller
             'employer_comment' => $comment,
         ]);
 
-        $application->responded = 1;
+        //$application->responded = 1;
 
         if($application->save())
         {
-            $config = config('services.twilio');
+            // $config = config('services.twilio');
 
-            // Step 2: set our AccountSid and AuthToken from www.twilio.com/user/account
-            $AccountSid = $config['acc_id'];
+            // // Step 2: set our AccountSid and AuthToken from www.twilio.com/user/account
+            // $AccountSid = $config['acc_id'];
 
-            $AuthToken = $config['auth_token'];
+            // $AuthToken = $config['auth_token'];
 
-            $websiteURL = $config['site_url'];
+            // $websiteURL = $config['site_url'];
 
-            $url = $websiteURL."my/applications/$application_id";
+            // $url = $websiteURL."my/applications/$application_id";
 
-            $job_title = $application->advert->job_title;
+            // $job_title = $application->advert->job_title;
 
-            $contact = $application->jobSeeker->user->contact;
+            // $contact = $application->jobSeeker->user->contact;
 
-            $JobSeekerName = $application->jobSeeker->user->name;
+            // $JobSeekerName = $application->jobSeeker->user->name;
 
-            if($application->jobSeeker->user->contact_verified != 0)
-            {
-                if($application->jobSeeker->user->contact)
-                {
+            // if($application->jobSeeker->user->contact_verified != 0)
+            // {
+            //     if($application->jobSeeker->user->contact)
+            //     {
 
-                    // Step 3: instantiate a new Twilio Rest Client
-                    $client = new Services_Twilio($AccountSid, $AuthToken);
+            //         // Step 3: instantiate a new Twilio Rest Client
+            //         $client = new Services_Twilio($AccountSid, $AuthToken);
 
-                    // Step 4: make an array of people we know, to send them a message. 
-                    // Feel free to change/add your own phone number and name here.
-                    $people = array(
-                        //"+60176613069" => $recipientName,
-                        "+6".$contact => $JobSeekerName,
-                        //"+14158675310" => "Boots",
-                        //"+14158675311" => "Virgil",
-                    );
+            //         // Step 4: make an array of people we know, to send them a message. 
+            //         // Feel free to change/add your own phone number and name here.
+            //         $people = array(
+            //             //"+60176613069" => $recipientName,
+            //             "+6".$contact => $JobSeekerName,
+            //             //"+14158675310" => "Boots",
+            //             //"+14158675311" => "Virgil",
+            //         );
                     
-                    // Step 5: Loop over all our friends. $number is a phone number above, and 
-                    // $name is the name next to it
-                    foreach ($people as $number => $name) {
+            //         // Step 5: Loop over all our friends. $number is a phone number above, and 
+            //         // $name is the name next to it
+            //         foreach ($people as $number => $name) {
 
-                        $sms = $client->account->messages->sendMessage(
+            //             $sms = $client->account->messages->sendMessage(
 
-                            // Step 6: Change the 'From' number below to be a valid Twilio number 
-                            // that you've purchased, or the (deprecated) Sandbox number
-                            "+12602184571", 
+            //                 // Step 6: Change the 'From' number below to be a valid Twilio number 
+            //                 // that you've purchased, or the (deprecated) Sandbox number
+            //                 "+12602184571", 
 
-                            // the number we are sending to - Any phone number
-                            $number,
+            //                 // the number we are sending to - Any phone number
+            //                 $number,
 
-                            // the sms body
-                            "Your request job for $job_title has been responded, full details here: $url ."
-                        );
-                        // Display a confirmation message on the screen
-                        //echo "Sent message to $name";
-                    }
-                }
-            }
+            //                 // the sms body
+            //                 "Your request job for $job_title has been responded, full details here: $url ."
+            //             );
+            //             // Display a confirmation message on the screen
+            //             //echo "Sent message to $name";
+            //         }
+            //     }
+            // }
 
-            // testing recipient email => $recipient = "farid@pocketpixel.com";
-            $config = config('services.mailgun');
+            // // testing recipient email => $recipient = "farid@pocketpixel.com";
+            // $config = config('services.mailgun');
 
-            $domain = $config['sender'];
+            // $domain = $config['sender'];
 
-            $recipient = $application->jobSeeker->user->email;
+            // $recipient = $application->jobSeeker->user->email;
 
-            $recipientName = $application->jobSeeker->user->name;
+            // $recipientName = $application->jobSeeker->user->name;
 
-            $emailView = 'mail.application_notification';
+            // $emailView = 'mail.application_notification';
 
-            $data = [
-                        'websiteURL' => $websiteURL,
-                        'application' => $application
-                    ];
+            // $data = [
+            //             'websiteURL' => $websiteURL,
+            //             'application' => $application
+            //         ];
 
-            $parameter = [
-                            'domain' => $domain,
-                            'recipient' => $recipient,
-                            'recipientName' => $recipientName
-                         ];
+            // $parameter = [
+            //                 'domain' => $domain,
+            //                 'recipient' => $recipient,
+            //                 'recipientName' => $recipientName
+            //              ];
 
-            if($application->jobSeeker->user->verified != 0)
-            {
-                if($application->jobSeeker->user->email)
-                {
-                    // use send method from Mail facade to send email. ex: send('view', 'info / array of data', fucntion)
-                    Mail::send($emailView, $data, function ($message) use ($parameter) {
+            // if($application->jobSeeker->user->verified != 0)
+            // {
+            //     if($application->jobSeeker->user->email)
+            //     {
+            //         // use send method from Mail facade to send email. ex: send('view', 'info / array of data', fucntion)
+            //         Mail::send($emailView, $data, function ($message) use ($parameter) {
 
-                        // provide sender domain and sender name
-                        $message->from($parameter['domain'], 'WorkWork');
+            //             // provide sender domain and sender name
+            //             $message->from($parameter['domain'], 'WorkWork');
 
-                        // provide recipient email, recipient name and email subject
-                        $message->to($parameter['recipient'], $parameter['recipientName'])->subject('Application Notification');
-                    });
-                }
-            }
+            //             // provide recipient email, recipient name and email subject
+            //             $message->to($parameter['recipient'], $parameter['recipientName'])->subject('Application Notification');
+            //         });
+            //     }
+            // }
 
             $activity = new Activity;
 

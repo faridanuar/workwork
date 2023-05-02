@@ -155,42 +155,42 @@ class ApplyController extends Controller
 
 			    	if($proceed === "true")
 			    	{
-					    // Step 3: instantiate a new Twilio Rest Client
-					    $client = new Services_Twilio($AccountSid, $AuthToken);
+					    // // Step 3: instantiate a new Twilio Rest Client
+					    // $client = new Services_Twilio($AccountSid, $AuthToken);
 
-					    // Step 4: make an array of people we know, to send them a message. 
-					    // Feel free to change/add your own phone number and name here.
-					    $people = array(
-					    	//"+60176613069" => $user->name,
-					       	"+6".$contact => $employerName,
-					        //"+14158675310" => "Boots",
-					        //"+14158675311" => "Virgil",
-					    );
+					    // // Step 4: make an array of people we know, to send them a message. 
+					    // // Feel free to change/add your own phone number and name here.
+					    // $people = array(
+					    // 	//"+60176613069" => $user->name,
+					    //    	"+6".$contact => $employerName,
+					    //     //"+14158675310" => "Boots",
+					    //     //"+14158675311" => "Virgil",
+					    // );
 					    
-					    // Step 5: Loop over all our friends. $number is a phone number above, and 
-					    // $name is the name next to it
-					    foreach ($people as $number => $name) {
+					    // // Step 5: Loop over all our friends. $number is a phone number above, and 
+					    // // $name is the name next to it
+					    // foreach ($people as $number => $name) {
 
-					        $sms = $client->account->messages->sendMessage(
+					    //     $sms = $client->account->messages->sendMessage(
 
-					        	// Step 6: Change the 'From' number below to be a valid Twilio number 
-					        	// that you've purchased, or the (deprecated) Sandbox number
-					            "+12602184571", 
+					    //     	// Step 6: Change the 'From' number below to be a valid Twilio number 
+					    //     	// that you've purchased, or the (deprecated) Sandbox number
+					    //         "+12602184571", 
 
-					            // the number we are sending to - Any phone number
-					            $number,
+					    //         // the number we are sending to - Any phone number
+					    //         $number,
 
-					            // the sms body
-					            "You have a job request for advert: $job_title. Applicant's Name: $applicantName, full details here: $url ."
-					        );
-					        // Display a confirmation message on the screen
-					        //echo "Sent message to $name";
+					    //         // the sms body
+					    //         "You have a job request for advert: $job_title. Applicant's Name: $applicantName, full details here: $url ."
+					    //     );
+					    //     // Display a confirmation message on the screen
+					    //     //echo "Sent message to $name";
 
-					        if(!$sms)
-					        {
-					        	echo "Error";
-					        }
-					    }
+					    //     if(!$sms)
+					    //     {
+					    //     	echo "Error";
+					    //     }
+					    // }
 
 					    $subtract = $advert->sms_count - 1;
 					    $advert->sms_count = $subtract;
@@ -227,15 +227,15 @@ class ApplyController extends Controller
 			    					'recipientName' => $recipientName, 
 			    				 ];
 
-					// use send method from Mail facade to send email. ex: send('view', 'info / array of data', fucntion)
-		            Mail::send($emailView, $data, function ($message) use ($parameter) {
+					// // use send method from Mail facade to send email. ex: send('view', 'info / array of data', fucntion)
+		            // Mail::send($emailView, $data, function ($message) use ($parameter) {
 
-			            // provide sender domain and sender name
-		                $message->from($parameter['domain'], 'WorkWork');
+			        //     // provide sender domain and sender name
+		            //     $message->from($parameter['domain'], 'WorkWork');
 
-		                // provide recipient email, name and email subject
-		                $message->to($parameter['recipient'], $parameter['recipientName'])->subject('Job Request!');
-		            });
+		            //     // provide recipient email, name and email subject
+		            //     $message->to($parameter['recipient'], $parameter['recipientName'])->subject('Job Request!');
+		            // });
 		        }
 	        }
 

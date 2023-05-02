@@ -183,7 +183,6 @@ search.addWidget(
 );
 
 
-/*
 var container = document.querySelector('#pagination-container');
 var paginationWidget = instantsearch.widgets.pagination({
   container: container,
@@ -194,7 +193,7 @@ var paginationWidget = instantsearch.widgets.pagination({
     active: 'active'
   }
 });
-*/
+
 
 // var oldRender = paginationWidget.render;
 // paginationWidget.render = function(params) {

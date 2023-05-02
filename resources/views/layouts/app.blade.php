@@ -9,20 +9,20 @@
     <meta property="fb:admins" content="622633523" />
     <meta property="og:type" content="website" />
     @yield('meta_info')
-    {{-- <meta property="og:title" content="WorkWork - portal pencarian kerja part-time" /> --}}
+    {{-- <meta property="og:title" content="Job Finder - portal pencarian kerja part-time" /> --}}
     {{-- <meta property="og:description" content="Jika anda mencari kerja part-time atau sedang mencari pekerja part-time, di sinilah tempatnya! #kerjakerjakerja" /> --}}
-    {{-- <meta property="og:url" content="http://www.workwork.my/" /> --}}
-    {{-- <meta property="og:image" content="http://www.workwork.my/images/fb-image.jpg" /> --}}
+    {{-- <meta property="og:url" content="http://www.Job Finder.my/" /> --}}
+    {{-- <meta property="og:image" content="http://www.Job Finder.my/images/fb-image.jpg" /> --}}
     {{-- <meta property="og:image:type" content="image/jpeg" /> --}}
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
     <meta property="og:locale" content="ms_MY" />
     <meta property="og:locale:alternate" content="en_GB" />
-    <meta property="og:site_name" content="WorkWork" />
+    <meta property="og:site_name" content="Job Finder" />
 
 
-    <title>WorkWork - portal pencarian kerja part-time</title>
-    <link rel="shortcut icon" href="/images/favicon.png" type="image/png">
+    <title>Job Finder - portal pencarian kerja part-time</title>
+    {{-- <link rel="shortcut icon" href="/images/favicon.png" type="image/png"> --}}
 
     <!-- Styles -->
     <link rel="stylesheet" href="{{ elixir('css/app.css') }}" media="screen" charset="utf-8">

@@ -4,8 +4,8 @@
     <meta property="og:title" content="{{ $advert->job_title }} - {{ $advert->employer->business_name }}" />
     <meta property="og:description" content="{!! nl2br(e($advert->description)) !!}" />
     <meta property="og:url" content="{{ $url }}" />
-    <meta property="og:image" content="http://www.workwork.my/{{ $photo }}" />
-    <meta property="og:image:type" content="image/{{ $extension }}" />
+    {{-- <meta property="og:image" content="http://www.workwork.my/{{ $photo }}" />
+    <meta property="og:image:type" content="image/{{ $extension }}" /> --}}
 @stop
 
 @section('body-id', 'advert-view')

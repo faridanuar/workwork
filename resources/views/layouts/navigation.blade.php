@@ -13,8 +13,8 @@
 
                 <!-- Branding Image -->
                 <a class="navbar-brand" href="{{ url('/') }}">
-                    <img alt="WorkWork" src="/images/logo-workwork.png" height="25" width="196" class="hidden-sm">
-                    <img alt="WorkWork" src="/images/logo-symbol.png" height="25" class="visible-sm-inline">
+                    {{-- <img alt="Job Finder" src="/images/logo-JobFinder.png" height="25" width="196" class="hidden-sm">
+                    <img alt="Job Finder" src="/images/logo-symbol.png" height="25" class="visible-sm-inline"> --}}
                 </a>
             </div>
             <!-- global searchbox -->

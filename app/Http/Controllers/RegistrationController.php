@@ -65,9 +65,10 @@ class RegistrationController extends Controller
 
         // store the generated token/verification code to the selected user
         $user->verification_code = $verification_code;
+        $user->verified = 1;
         $user->save();
 
-        // fetch mailgun attributes from SERVICES file
+        //fetch mailgun attributes from SERVICES file
         $config = config('services.mailgun');
         // applications domain
         $domain = $config['sender'];
@@ -98,22 +99,22 @@ class RegistrationController extends Controller
             default:
         }
 
-        // use send method form Mail facade to send email. ex: send('view', 'info / array of data', fucntion)
-        Mail::send($emailView, $data, function ($message) use ($parameter) {
+        // // use send method form Mail facade to send email. ex: send('view', 'info / array of data', fucntion)
+        // Mail::send($emailView, $data, function ($message) use ($parameter) {
 
-            // Recipient Test Email => $recipient = "farid@pocketpixel.com";
+        //     // Recipient Test Email => $recipient = "farid@pocketpixel.com";
 
-            // get the necessary required values for mailgun
-            $appDomain = $parameter['domain'];
-            $recipient = $parameter['user']->email;
-            $recipientName = $parameter['user']->name;
+        //     // get the necessary required values for mailgun
+        //     $appDomain = $parameter['domain'];
+        //     $recipient = $parameter['user']->email;
+        //     $recipientName = $parameter['user']->name;
 
-            // set email sender stmp url and sender name
-            $message->from($appDomain, 'WorkWork');
+        //     // set email sender stmp url and sender name
+        //     $message->from($appDomain, 'WorkWork');
 
-            // set email recepient and subject
-            $message->to($recipient, $recipientName)->subject('Welcome to WorkWork!');
-        });
+        //     // set email recepient and subject
+        //     $message->to($recipient, $recipientName)->subject('Welcome to WorkWork!');
+        // });
 
         // flash info message after registered
         flash('We have sent you an email. Please verify your email first before logging in', 'info');

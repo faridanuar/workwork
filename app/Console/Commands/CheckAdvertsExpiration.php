@@ -90,40 +90,40 @@ class CheckAdvertsExpiration extends Command
                     {
                         if($user->email)
                         {
-                            $emailView = 'mail.notify_expiration';
+                            // $emailView = 'mail.notify_expiration';
 
-                            // fetch mailgun attributes from SERVICES file
-                            $config = config('services.mailgun');
+                            // // fetch mailgun attributes from SERVICES file
+                            // $config = config('services.mailgun');
 
-                            // applications domain
-                            $domain = $config['sender'];
+                            // // applications domain
+                            // $domain = $config['sender'];
 
-                            // fetch website provided url
-                            $website = $config['site_url'];
+                            // // fetch website provided url
+                            // $website = $config['site_url'];
 
-                            // set the values in array
-                            $data = ['user' => $user, 'website' => $website, 'advert' => $advert];
+                            // // set the values in array
+                            // $data = ['user' => $user, 'website' => $website, 'advert' => $advert];
 
-                            $parameter = ['user' => $user, 'domain' => $domain];
+                            // $parameter = ['user' => $user, 'domain' => $domain];
 
-                            // use send method form Mail facade to send email. ex: send('view', 'info / array of data', fucntion)
-                            Mail::send($emailView, $data, function ($message) use ($parameter) {
+                            // // use send method form Mail facade to send email. ex: send('view', 'info / array of data', fucntion)
+                            // Mail::send($emailView, $data, function ($message) use ($parameter) {
 
-                                // Recipient Test Email => $recipient = "farid@pocketpixel.com";
+                            //     // Recipient Test Email => $recipient = "farid@pocketpixel.com";
 
-                                // get the necessary required values for mailgun
-                                $appDomain = $parameter['domain'];
+                            //     // get the necessary required values for mailgun
+                            //     $appDomain = $parameter['domain'];
 
-                                $recipient = $parameter['user']->email;
+                            //     $recipient = $parameter['user']->email;
 
-                                $recipientName = $parameter['user']->name;
+                            //     $recipientName = $parameter['user']->name;
 
-                                // set email sender stmp url and sender name
-                                $message->from($appDomain, 'WorkWork');
+                            //     // set email sender stmp url and sender name
+                            //     $message->from($appDomain, 'WorkWork');
 
-                                // set email recepient and subject
-                                $message->to($recipient, $recipientName)->subject('Notice');
-                            });
+                            //     // set email recepient and subject
+                            //     $message->to($recipient, $recipientName)->subject('Notice');
+                            // });
                         }
                     }
                 }

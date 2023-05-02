@@ -1,10 +1,10 @@
 @extends('layouts.app')
 
 @section('meta_info')
-	<meta property="og:title" content="WorkWork - portal pencarian kerja part-time" />
+	<meta property="og:title" content="Job Finder - portal pencarian kerja part-time" />
     <meta property="og:description" content="Jika anda mencari kerja part-time atau sedang mencari pekerja part-time, di sinilah tempatnya! #kerjakerjakerja" />
-    <meta property="og:url" content="http://www.workwork.my/" />
-    <meta property="og:image" content="http://www.workwork.my/images/fb-image.jpg" />
+    <meta property="og:url" content="http://www.jobfinder.my/" />
+    <meta property="og:image" content="http://www.jobfinder.my/images/fb-image.jpg" />
     <meta property="og:image:type" content="image/jpeg" />
 @stop
 
@@ -15,8 +15,8 @@
 </div>
 
 <section id="intro">
-	<div class="ww-banner">
-	</div>
+	{{-- <div class="ww-banner">
+	</div> --}}
 	<!-- <article>
 		<p class="lead">
 		@lang('messages.welcome')

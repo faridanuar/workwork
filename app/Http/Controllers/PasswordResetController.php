@@ -49,26 +49,26 @@ class PasswordResetController extends Controller
         // fetch website provided url
         $website = $config['site_url'];
 
-        // use send method form Mail facade to send email. ex: send('view', 'info / array of data', fucntion)
-        Mail::send('auth.emails.password_reset', compact('user','website','reset_token'), function ($m) use ($user,$config) {
+        // // use send method form Mail facade to send email. ex: send('view', 'info / array of data', fucntion)
+        // Mail::send('auth.emails.password_reset', compact('user','website','reset_token'), function ($m) use ($user,$config) {
 
-            // fetch mailgun attributes from SERVICES file
-            //$config = config('services.mailgun');
+        //     // fetch mailgun attributes from SERVICES file
+        //     //$config = config('services.mailgun');
 
-            // fetch mailgun provided domain
-            $domain = $config['sender'];
+        //     // fetch mailgun provided domain
+        //     $domain = $config['sender'];
 
-            $recipient = $user->email;
-            //$recipient = "farid@pocketpixel.com";
+        //     $recipient = $user->email;
+        //     //$recipient = "farid@pocketpixel.com";
 
-            $recipientName = $user->name;
+        //     $recipientName = $user->name;
 
-            // set email sender stmp url and sender name
-            $m->from($domain, 'WorkWork');
+        //     // set email sender stmp url and sender name
+        //     $m->from($domain, 'WorkWork');
 
-            // set email recepient and subject
-            $m->to($recipient, $recipientName)->subject('Password');
-        });
+        //     // set email recepient and subject
+        //     $m->to($recipient, $recipientName)->subject('Password');
+        // });
 
         flash('we have sent your reset link. Please check your email','info');
 

@@ -7,7 +7,7 @@ return [
     'tips' => '<h3>Tips & Tricks</h3>
         <p>As a student, working part-time will give you more cash. Cash for you to supplement your loan or perhaps, to have that better car 🚗</p>',
     'employer_welcome' => '<h3>Hello Employers!</h3>
-        <p>Do you need part-timers? Workwork is giving away part-time advert slots for <strong>free!</strong></p>
+        <p>Do you need part-timers? Job Finder is giving away part-time advert slots for <strong>free!</strong></p>
         <p>Hurry tho, we won\'t be free forever.</p>',
 
 ];

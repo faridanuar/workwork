@@ -290,43 +290,43 @@ class HomeController extends Controller
 
         $contact = $user->contact;
 
-        $config = config('services.twilio');
+        // $config = config('services.twilio');
 
-            // Step 2: set our AccountSid and AuthToken from www.twilio.com/user/account
-            $AccountSid = $config['acc_id'];
-            $AuthToken = $config['auth_token'];
+        // // Step 2: set our AccountSid and AuthToken from www.twilio.com/user/account
+        // $AccountSid = $config['acc_id'];
+        // $AuthToken = $config['auth_token'];
 
-                // Step 3: instantiate a new Twilio Rest Client
-                $client = new Services_Twilio($AccountSid, $AuthToken);
+        // // Step 3: instantiate a new Twilio Rest Client
+        // $client = new Services_Twilio($AccountSid, $AuthToken);
 
-                // Step 4: make an array of people we know, to send them a message. 
-                // Feel free to change/add your own phone number and name here.
-                $people = array(
-                    //"+60176613069" => $user->name,
-                    "+6".$contact => $user->contact,
-                    //"+14158675310" => "Boots",
-                    //"+14158675311" => "Virgil",
-                );
-                
-                // Step 5: Loop over all our friends. $number is a phone number above, and 
-                // $name is the name next to it
-                foreach ($people as $number => $name) {
+        // // Step 4: make an array of people we know, to send them a message. 
+        // // Feel free to change/add your own phone number and name here.
+        // $people = array(
+        //     //"+60176613069" => $user->name,
+        //     "+6".$contact => $user->contact,
+        //     //"+14158675310" => "Boots",
+        //     //"+14158675311" => "Virgil",
+        // );
+        
+        // // Step 5: Loop over all our friends. $number is a phone number above, and 
+        // // $name is the name next to it
+        // foreach ($people as $number => $name) {
 
-                    $sms = $client->account->messages->sendMessage(
+        //     $sms = $client->account->messages->sendMessage(
 
-                        // Step 6: Change the 'From' number below to be a valid Twilio number 
-                        // that you've purchased, or the (deprecated) Sandbox number
-                        "+12602184571", 
+        //         // Step 6: Change the 'From' number below to be a valid Twilio number 
+        //         // that you've purchased, or the (deprecated) Sandbox number
+        //         "+12602184571", 
 
-                        // the number we are sending to - Any phone number
-                        $number,
+        //         // the number we are sending to - Any phone number
+        //         $number,
 
-                        // the sms body
-                        "This is your verification code for WorkWork: $contactCode"
-                    );
-                    // Display a confirmation message on the screen
-                    //echo "Sent message to $name";
-                }
+        //         // the sms body
+        //         "This is your verification code for WorkWork: $contactCode"
+        //     );
+        //     // Display a confirmation message on the screen
+        //     //echo "Sent message to $name";
+        // }
     }
 
 
@@ -464,22 +464,22 @@ class HomeController extends Controller
         $data = ['website' => $website, 'verification_code' => $verification_code];
         $parameter = ['user' => $user, 'domain' => $domain];
 
-        // use send method form Mail facade to send email. ex: send('view', 'info / array of data', fucntion)
-        Mail::send('auth.emails.verify_email', compact('website','verification_code'), function ($message) use ($parameter) {
+        // // use send method form Mail facade to send email. ex: send('view', 'info / array of data', fucntion)
+        // Mail::send('auth.emails.verify_email', compact('website','verification_code'), function ($message) use ($parameter) {
 
-            // Recipient Test Email => $recipient = "farid@pocketpixel.com";
+        //     // Recipient Test Email => $recipient = "farid@pocketpixel.com";
 
-            // get the necessary required values for mailgun
-            $appDomain = $parameter['domain'];
-            $recipient = $parameter['user']->email;
-            $recipientName = $parameter['user']->name;
+        //     // get the necessary required values for mailgun
+        //     $appDomain = $parameter['domain'];
+        //     $recipient = $parameter['user']->email;
+        //     $recipientName = $parameter['user']->name;
 
-            // set email sender stmp url and sender name
-            $message->from($appDomain, 'WorkWork');
+        //     // set email sender stmp url and sender name
+        //     $message->from($appDomain, 'WorkWork');
 
-            // set email recepient and subject
-            $message->to($recipient, $recipientName)->subject('Welcome to WorkWork!');
-        });
+        //     // set email recepient and subject
+        //     $message->to($recipient, $recipientName)->subject('Welcome to WorkWork!');
+        // });
 
         flash('a verification email has been sent to your email address. Please check your inbox for further instruction', 'info');
 

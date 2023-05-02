@@ -124,6 +124,7 @@ class RolesTableSeeder extends Seeder
             ],
         ]);
 
+        // create Admin users
         DB::table('users')->insert([
             [
         	    'name' => 'Admin', 
@@ -141,6 +142,23 @@ class RolesTableSeeder extends Seeder
             [
         	    'user_id' => 1, 
                 'role_id' => 3, 
+            ]
+        ]);
+
+        DB::table('employers')->insert([
+            [
+                'user_id' => 1,
+        	    'business_name' => 'Admin Company Sdn. Bhd.',
+                'business_category' => 'Admin/Data Entry',
+                'business_contact' => '0123456789',
+                'business_website' => 'www.admin-example.com',
+                'location' => 'Kuala Lumpur',
+                'street' => 'Jalan Jaya',
+                'city' => 'Kuala Lumpur',
+                'zip' => '55555',
+                'state' => 'wilayah persekutuan',
+                'company_intro' => 'We are admin',
+                'business_logo' => null,
             ]
         ]);
     }
